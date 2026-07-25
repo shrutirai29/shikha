@@ -17,6 +17,7 @@ import reviewRoutes from "./routes/review/review.routes";
 import paymentRoutes from "./routes/payment/payment.routes";
 import couponRoutes from "./routes/coupon/coupon.routes";
 import userRoutes from "./routes/user/user.routes";
+import addressRoutes from "./routes/address/address.routes";
 import {
   globalRateLimiter,
   authRateLimiter,
@@ -58,6 +59,7 @@ app.get("/", (req, res) => {
 app.use("/api/auth", authRateLimiter, authRoutes);
 app.use("/api/admin", authRateLimiter, adminRoutes);
 app.use("/api/users", userRoutes);
+app.use("/api/addresses", addressRoutes);
 app.use("/api/categories", categoryRoutes);
 app.use("/api/products", productRoutes);
 app.use("/api/cart", cartRoutes);
