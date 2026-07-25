@@ -35,3 +35,5 @@ export const createProductSchema = z.object({
     .boolean()
     .optional(),
 });
+
+export const updateProductSchema = createProductSchema.partial();

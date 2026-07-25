@@ -9,7 +9,7 @@ import {
   deleteProduct,
 } from "../../services/product/product.service";
 
-import { createProductSchema } from "../../validators/product/product.validator";
+import { createProductSchema, updateProductSchema } from "../../validators/product/product.validator";
 
 export const create = asyncHandler(async (req: Request, res: Response) => {
   const validatedData = createProductSchema.parse(req.body);
@@ -57,7 +57,9 @@ export const getOne = asyncHandler(async (req: Request, res: Response) => {
 export const update = asyncHandler(async (req: Request, res: Response) => {
   const id = req.params.id as string;
 
-  const product = await updateProduct(id, req.body);
+  const validatedData = updateProductSchema.parse(req.body);
+
+  const product = await updateProduct(id, validatedData);
 
   res.status(200).json({
     success: true,

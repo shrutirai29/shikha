@@ -6,6 +6,9 @@ dns.setServers(["8.8.8.8", "8.8.4.4"]);
 import dotenv from "dotenv";
 dotenv.config();
 
+import { validateEnv } from "./config/env";
+validateEnv();
+
 import app from "./app";
 import connectDatabase from "./database/database";
 

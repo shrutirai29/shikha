@@ -9,3 +9,5 @@ export const createCategorySchema = z.object({
 
   image: z.string().url().optional(),
 });
+
+export const updateCategorySchema = createCategorySchema.partial();

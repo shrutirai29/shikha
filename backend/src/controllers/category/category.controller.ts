@@ -10,7 +10,7 @@ import {
   updateCategory,
 } from "../../services/category/category.service";
 
-import { createCategorySchema } from "../../validators/category/category.validator";
+import { createCategorySchema, updateCategorySchema } from "../../validators/category/category.validator";
 
 export const create = asyncHandler(async (req: Request, res: Response) => {
   const validatedData = createCategorySchema.parse(req.body);
@@ -58,7 +58,9 @@ export const getOne = asyncHandler(async (req: Request, res: Response) => {
 export const update = asyncHandler(async (req: Request, res: Response) => {
   const id = req.params.id as string;
 
-  const category = await updateCategory(id, req.body);
+  const validatedData = updateCategorySchema.parse(req.body);
+
+  const category = await updateCategory(id, validatedData);
 
   res.status(200).json({
     success: true,
