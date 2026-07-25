@@ -21,6 +21,7 @@ import userRoutes from "./routes/user/user.routes";
 import addressRoutes from "./routes/address/address.routes";
 import dashboardRoutes from "./routes/dashboard/dashboard.routes";
 import analyticsRoutes from "./routes/analytics/analytics.routes";
+import searchRoutes from "./routes/search/search.routes";
 import {
   globalRateLimiter,
   authRateLimiter,
@@ -72,6 +73,7 @@ app.use("/api/users", userRoutes);
 app.use("/api/addresses", addressRoutes);
 app.use("/api/dashboard", dashboardRoutes);
 app.use("/api/analytics", analyticsRoutes);
+app.use("/api/search", searchRoutes);
 app.use("/api/categories", categoryRoutes);
 app.use("/api/products", productRoutes);
 app.use("/api/cart", cartRoutes);
