@@ -1,12 +1,12 @@
-import Admin from "../../models/admin/admin.model";
-import { IAdmin } from "../../interfaces/admin/admin.interface";
+import User from "../../models/auth/auth.model";
+import { IUser } from "../../interfaces/auth/auth.interface";
 import { hashPassword } from "../../utils/password";
 import { ConflictError } from "../../errors/ConflictError";
 
 export const registerAdmin = async (
-  adminData: Partial<IAdmin>
-): Promise<IAdmin> => {
-  const existingAdmin = await Admin.findOne({
+  adminData: Pick<IUser, "name" | "email" | "password">
+): Promise<IUser> => {
+  const existingAdmin = await User.findOne({
     email: adminData.email,
   });
 
@@ -16,9 +16,13 @@ export const registerAdmin = async (
 
   const hashedPassword = await hashPassword(adminData.password!);
 
-  const admin = await Admin.create({
-    ...adminData,
+  const admin = await User.create({
+    name: adminData.name,
+    email: adminData.email.toLowerCase(),
     password: hashedPassword,
+    role: "admin",
+    isVerified: true,
+    isActive: true,
   });
 
   return admin;

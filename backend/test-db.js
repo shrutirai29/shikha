@@ -3,9 +3,12 @@ dns.setServers(["8.8.8.8", "8.8.4.4"]);
 
 const mongoose = require("mongoose");
 
-const uri =
-  process.env.MONGODB_URI ||
-  "mongodb+srv://shrutirai2901_db_user:JFwCQTdeq7QW0uFF@shikhadb.fmgnuqh.mongodb.net/shikha?retryWrites=true&w=majority&appName=ShikhaDB";
+const uri = process.env.MONGODB_URI;
+
+if (!uri) {
+  console.error("MONGODB_URI is required");
+  process.exit(1);
+}
 
 mongoose
   .connect(uri)

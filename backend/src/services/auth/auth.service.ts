@@ -3,6 +3,7 @@ import User from "../../models/auth/auth.model";
 
 import { ConflictError } from "../../errors/ConflictError";
 import { UnauthorizedError } from "../../errors/UnauthorizedError";
+import { ForbiddenError } from "../../errors/ForbiddenError";
 
 import { generateAccessToken } from "../../utils/jwt";
 
@@ -51,6 +52,10 @@ export const login = async (data: LoginDto) => {
 
   if (!user) {
     throw new UnauthorizedError("Invalid email or password");
+  }
+
+  if (!user.isActive) {
+    throw new ForbiddenError("Account is inactive");
   }
 
   const isMatch = await bcrypt.compare(

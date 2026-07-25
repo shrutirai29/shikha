@@ -2,9 +2,10 @@ import { Request, Response, NextFunction } from "express";
 import jwt from "jsonwebtoken";
 import User from "../models/auth/auth.model";
 import { AppError } from "../errors/AppError";
+import { IUser } from "../interfaces/auth/auth.interface";
 
 export interface AuthRequest extends Request {
-  user?: any;
+  user?: IUser;
 }
 
 export const authenticate = async (
@@ -30,6 +31,10 @@ export const authenticate = async (
 
     if (!user) {
       throw new AppError("User not found.", 404);
+    }
+
+    if (!user.isActive) {
+      throw new AppError("Account is inactive.", 403);
     }
 
     req.user = user;
