@@ -46,14 +46,14 @@ router.get(
 router.get(
   "/",
   authenticate,
-  authorize("ADMIN"),
+  authorize("admin"),
   paymentController.getAllPayments
 );
 
 router.patch(
   "/:razorpayOrderId/fail",
   authenticate,
-  authorize("ADMIN"),
+  authorize("admin"),
   paymentController.markPaymentFailed
 );
 

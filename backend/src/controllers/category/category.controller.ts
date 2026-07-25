@@ -25,8 +25,6 @@ export const create = asyncHandler(async (req: Request, res: Response) => {
 });
 
 export const getAll = asyncHandler(async (req: Request, res: Response) => {
-  console.log("NEW GETALL CONTROLLER");
-
   const page = Number(req.query.page) || 1;
   const limit = Number(req.query.limit) || 10;
 
@@ -39,8 +37,6 @@ export const getAll = asyncHandler(async (req: Request, res: Response) => {
     search,
     sort,
   });
-
-  console.log(result);
 
   res.status(200).json({
     success: true,

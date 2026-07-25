@@ -1,8 +1,3 @@
-import { Request } from "express";
+import { AuthRequest as BaseAuthRequest } from "../../middleware/auth.middleware";
 
-export interface AuthRequest extends Request {
-  user: {
-    id: string;
-    role: string;
-  };
-}
+export type AuthRequest = BaseAuthRequest;

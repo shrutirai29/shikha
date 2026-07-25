@@ -6,7 +6,7 @@ import * as orderService from "../../services/order/order.service";
 
 import { asyncHandler } from "../../utils/asyncHandler";
 
-import { createOrderSchema } from "../../validators/order/order.validator";
+import { createOrderSchema, updateOrderStatusSchema } from "../../validators/order/order.validator";
 
 export const createOrder = asyncHandler(
   async (req: AuthRequest, res: Response) => {
@@ -65,9 +65,11 @@ export const getAllOrders = asyncHandler(
 
 export const updateOrderStatus = asyncHandler(
   async (req: AuthRequest, res: Response) => {
+    const { status } = updateOrderStatusSchema.parse(req.body);
+
     const order = await orderService.updateOrderStatus(
       req.params.id as string,
-      req.body.status
+      status
     );
 
     res.status(200).json({

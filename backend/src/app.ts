@@ -14,6 +14,7 @@ import orderRoutes from "./routes/order/order.routes";
 import wishlistRoutes from "./routes/wishlist/wishlist.routes";
 import reviewRoutes from "./routes/review/review.routes";
 import paymentRoutes from "./routes/payment/payment.routes";
+import couponRoutes from "./routes/coupon/coupon.routes";
 
 const app = express();
 
@@ -46,6 +47,7 @@ app.use("/api/orders", orderRoutes);
 app.use("/api/wishlist", wishlistRoutes);
 app.use("/api/reviews", reviewRoutes);
 app.use("/api/payments", paymentRoutes);
+app.use("/api/coupons", couponRoutes);
 
 // Error Handler (Always Last)
 app.use(errorHandler);

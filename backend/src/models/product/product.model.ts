@@ -75,6 +75,9 @@ totalReviews: {
     default: 0,
 },
   },
+  {
+    timestamps: true,
+  }
 );
 
 export default model<IProduct>("Product", productSchema);

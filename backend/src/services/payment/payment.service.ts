@@ -2,6 +2,8 @@
 
 import Payment from "../../models/payment/payment.model";
 import Order from "../../models/order/order.model";
+import Product from "../../models/product/product.model";
+import Coupon from "../../models/coupon/coupon.model";
 
 import razorpay from "../../config/razorpay";
 
@@ -116,12 +118,19 @@ export const createRazorpayOrder = async (
 };
 
 export const verifyPayment = async (
-  data: VerifyPaymentDto
+  data: VerifyPaymentDto,
+  userId?: string
 ) => {
   const payment =
     await getPaymentByRazorpayOrderId(
       data.razorpayOrderId
     );
+
+  if (userId && payment.user.toString() !== userId) {
+    throw new ConflictError(
+      "You are not authorized to verify this payment"
+    );
+  }
 
   if (payment.status === "Paid") {
     throw new ConflictError(
@@ -173,6 +182,20 @@ if (!isValidSignature) {
   order.paymentStatus = "Paid";
 
   await order.save();
+
+  if (order.paymentMethod === "RAZORPAY") {
+    for (const item of order.items) {
+      await Product.findByIdAndUpdate(item.product, {
+        $inc: { stock: -item.quantity },
+      });
+    }
+
+    if (order.coupon) {
+      await Coupon.findByIdAndUpdate(order.coupon, {
+        $inc: { usedCount: 1 },
+      });
+    }
+  }
 
   return {
     message:

@@ -47,3 +47,13 @@ export const createOrderSchema = z.object({
 
   paymentMethod: z.enum(["COD", "RAZORPAY"]),
 });
+
+export const updateOrderStatusSchema = z.object({
+  status: z.enum([
+    "Pending",
+    "Processing",
+    "Shipped",
+    "Delivered",
+    "Cancelled",
+  ]),
+});

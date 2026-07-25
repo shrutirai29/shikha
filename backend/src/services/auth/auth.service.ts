@@ -2,7 +2,7 @@ import bcrypt from "bcrypt";
 import User from "../../models/auth/auth.model";
 
 import { ConflictError } from "../../errors/ConflictError";
-import { NotFoundError } from "../../errors/NotFoundError";
+import { UnauthorizedError } from "../../errors/UnauthorizedError";
 
 import { generateAccessToken } from "../../utils/jwt";
 
@@ -50,7 +50,7 @@ export const login = async (data: LoginDto) => {
   });
 
   if (!user) {
-    throw new NotFoundError("Invalid email or password");
+    throw new UnauthorizedError("Invalid email or password");
   }
 
   const isMatch = await bcrypt.compare(
@@ -59,7 +59,7 @@ export const login = async (data: LoginDto) => {
   );
 
   if (!isMatch) {
-    throw new NotFoundError("Invalid email or password");
+    throw new UnauthorizedError("Invalid email or password");
   }
 
   const token = generateAccessToken(

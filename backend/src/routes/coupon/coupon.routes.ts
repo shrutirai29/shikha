@@ -18,7 +18,7 @@ const router = Router();
 router.post(
   "/",
   authenticate,
-  authorize("ADMIN"),
+  authorize("admin"),
   validate(createCouponSchema),
   couponController.createCoupon
 );
@@ -26,21 +26,21 @@ router.post(
 router.get(
   "/",
   authenticate,
-  authorize("ADMIN"),
+  authorize("admin"),
   couponController.getAllCoupons
 );
 
 router.get(
   "/:couponId",
   authenticate,
-  authorize("ADMIN"),
+  authorize("admin"),
   couponController.getCouponById
 );
 
 router.patch(
   "/:couponId",
   authenticate,
-  authorize("ADMIN"),
+  authorize("admin"),
   validate(updateCouponSchema),
   couponController.updateCoupon
 );
@@ -48,7 +48,7 @@ router.patch(
 router.delete(
   "/:couponId",
   authenticate,
-  authorize("ADMIN"),
+  authorize("admin"),
   couponController.deleteCoupon
 );
 

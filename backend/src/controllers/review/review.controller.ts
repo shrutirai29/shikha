@@ -1,4 +1,4 @@
-import { Request, Response } from "express";
+import { Response } from "express";
 
 import {
   addReview,
@@ -8,76 +8,67 @@ import {
 } from "../../services/review/review.service";
 
 import { createReviewSchema } from "../../validators/review/review.validator";
+import { AuthRequest } from "../../middleware/auth.middleware";
+import { asyncHandler } from "../../utils/asyncHandler";
 
-export const createReview = async (
-  req: Request,
-  res: Response
-): Promise<void> => {
-  const userId = req.user!._id.toString();
-  const productId = req.params.productId as string;
+export const createReview = asyncHandler(
+  async (req: AuthRequest, res: Response) => {
+    const userId = req.user!._id.toString();
+    const productId = req.params.productId as string;
 
-  const data = createReviewSchema.parse(req.body);
+    const data = createReviewSchema.parse(req.body);
 
-  const review = await addReview(userId, productId, data);
+    const review = await addReview(userId, productId, data);
 
-  res.status(201).json({
-    success: true,
-    message: "Review added successfully",
-    data: review,
-  });
-};
+    res.status(201).json({
+      success: true,
+      message: "Review added successfully",
+      data: review,
+    });
+  }
+);
 
-export const getReviews = async (
-  req: Request,
-  res: Response
-): Promise<void> => {
-  const productId = req.params.productId as string;
+export const getReviews = asyncHandler(
+  async (req: AuthRequest, res: Response) => {
+    const productId = req.params.productId as string;
 
-  const reviews = await getProductReviews(productId);
+    const reviews = await getProductReviews(productId);
 
-  res.status(200).json({
-    success: true,
-    count: reviews.length,
-    data: reviews,
-  });
-};
+    res.status(200).json({
+      success: true,
+      count: reviews.length,
+      data: reviews,
+    });
+  }
+);
 
-export const editReview = async (
-  req: Request,
-  res: Response
-): Promise<void> => {
-  const userId = req.user!._id.toString();
-  const reviewId = req.params.reviewId as string;
+export const editReview = asyncHandler(
+  async (req: AuthRequest, res: Response) => {
+    const userId = req.user!._id.toString();
+    const reviewId = req.params.reviewId as string;
 
-  const data = createReviewSchema.parse(req.body);
+    const data = createReviewSchema.parse(req.body);
 
-  const review = await updateReview(
-    userId,
-    reviewId,
-    data
-  );
+    const review = await updateReview(userId, reviewId, data);
 
-  res.status(200).json({
-    success: true,
-    message: "Review updated successfully",
-    data: review,
-  });
-};
+    res.status(200).json({
+      success: true,
+      message: "Review updated successfully",
+      data: review,
+    });
+  }
+);
 
-export const removeReview = async (
-  req: Request,
-  res: Response
-): Promise<void> => {
-  const userId = req.user!._id.toString();
-  const reviewId = req.params.reviewId as string;
+export const removeReview = asyncHandler(
+  async (req: AuthRequest, res: Response) => {
+    const userId = req.user!._id.toString();
+    const reviewId = req.params.reviewId as string;
 
-  const result = await deleteReview(
-    userId,
-    reviewId
-  );
+    const result = await deleteReview(userId, reviewId);
 
-  res.status(200).json({
-    success: true,
-    ...result,
-  });
-};
+    res.status(200).json({
+      success: true,
+      ...result,
+    });
+  }
+);

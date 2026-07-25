@@ -37,11 +37,11 @@ export const createOrder = async (
     }
 
     const price =
-  (product.discountPrice ?? 0) > 0
-    ? product.discountPrice!
-    : product.price!;
+      (product.discountPrice ?? 0) > 0
+        ? product.discountPrice!
+        : product.price!;
 
-subtotal += price * item.quantity;
+    subtotal += price * item.quantity;
 
     orderItems.push({
       product: product._id,
@@ -53,8 +53,6 @@ subtotal += price * item.quantity;
       quantity: item.quantity,
       price,
     });
-
-    subtotal += price * item.quantity;
   }
 
 const discountedSubtotal =
@@ -94,15 +92,18 @@ tax,
 totalAmount,
   });
 
-  // Reduce Stock
-  for (const item of cart.items) {
-    await Product.findByIdAndUpdate(item.product, {
-      $inc: {
-        stock: -item.quantity,
-      },
-    });
+  // Reduce stock immediately for COD; Razorpay orders deduct on payment verify
+  if (data.paymentMethod === "COD") {
+    for (const item of cart.items) {
+      await Product.findByIdAndUpdate(item.product, {
+        $inc: {
+          stock: -item.quantity,
+        },
+      });
+    }
   }
-if (cart.coupon) {
+
+  if (cart.coupon && data.paymentMethod === "COD") {
   await Coupon.findByIdAndUpdate(cart.coupon, {
     $inc: {
       usedCount: 1,

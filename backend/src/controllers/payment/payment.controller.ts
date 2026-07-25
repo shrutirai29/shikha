@@ -11,7 +11,7 @@ export const createRazorpayOrder = async (
   next: NextFunction
 ) => {
   try {
-    const userId = req.user!.id;
+    const userId = req.user!._id.toString();
 
     const data = req.body as CreatePaymentDto;
 
@@ -40,7 +40,10 @@ export const verifyPayment = async (
     const data = req.body as VerifyPaymentDto;
 
     const payment =
-      await paymentService.verifyPayment(data);
+      await paymentService.verifyPayment(
+        data,
+        req.user!._id.toString()
+      );
 
     res.status(200).json({
       success: true,
@@ -80,7 +83,7 @@ export const getMyPayments = async (
   try {
     const payments =
       await paymentService.getUserPayments(
-        req.user!.id
+        req.user!._id.toString()
       );
 
     res.status(200).json({
