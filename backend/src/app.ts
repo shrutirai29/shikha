@@ -19,6 +19,8 @@ import paymentRoutes from "./routes/payment/payment.routes";
 import couponRoutes from "./routes/coupon/coupon.routes";
 import userRoutes from "./routes/user/user.routes";
 import addressRoutes from "./routes/address/address.routes";
+import dashboardRoutes from "./routes/dashboard/dashboard.routes";
+import analyticsRoutes from "./routes/analytics/analytics.routes";
 import {
   globalRateLimiter,
   authRateLimiter,
@@ -68,6 +70,8 @@ app.use("/api/auth", authRateLimiter, authRoutes);
 app.use("/api/admin", authRateLimiter, adminRoutes);
 app.use("/api/users", userRoutes);
 app.use("/api/addresses", addressRoutes);
+app.use("/api/dashboard", dashboardRoutes);
+app.use("/api/analytics", analyticsRoutes);
 app.use("/api/categories", categoryRoutes);
 app.use("/api/products", productRoutes);
 app.use("/api/cart", cartRoutes);
