@@ -40,17 +40,39 @@ const paymentSchema = new Schema<IPayment>(
       default: "",
     },
 
-status: {
-  type: String,
-  enum: [
-    "Pending",
-    "Authorized",
-    "Paid",
-    "Failed",
-    "Refunded",
-  ],
-  default: "Pending",
-},
+    refundId: {
+      type: String,
+      default: "",
+    },
+
+    refundAmount: {
+      type: Number,
+      default: 0,
+      min: 0,
+    },
+
+    refundReason: {
+      type: String,
+      default: "",
+      trim: true,
+    },
+
+    refundedAt: {
+      type: Date,
+      default: null,
+    },
+
+    status: {
+      type: String,
+      enum: [
+        "Pending",
+        "Authorized",
+        "Paid",
+        "Failed",
+        "Refunded",
+      ],
+      default: "Pending",
+    },
   },
   {
     timestamps: true,

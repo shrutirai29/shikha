@@ -9,16 +9,50 @@ import razorpay from "../../config/razorpay";
 
 import { CreatePaymentDto } from "../../dtos/payment/create-payment.dto";
 import { VerifyPaymentDto } from "../../dtos/payment/verify-payment.dto";
+import { RefundPaymentDto } from "../../dtos/payment/refund-payment.dto";
 
 import { NotFoundError } from "../../errors/NotFoundError";
 import { ConflictError } from "../../errors/ConflictError";
+import { BadRequestError } from "../../errors/BadRequestError";
 import {
   getOrderById,
   getPaymentByRazorpayOrderId,
   verifyPaymentSignature,
 } from "./payment.utils";
 
+const markOrderPaid = async (payment: any) => {
+  const order = await Order.findById(payment.order);
 
+  if (!order) {
+    throw new NotFoundError(
+      "Order not found"
+    );
+  }
+
+  if (order.paymentStatus === "Paid") {
+    return order;
+  }
+
+  order.paymentStatus = "Paid";
+
+  await order.save();
+
+  if (order.paymentMethod === "RAZORPAY") {
+    for (const item of order.items) {
+      await Product.findByIdAndUpdate(item.product, {
+        $inc: { stock: -item.quantity },
+      });
+    }
+
+    if (order.coupon) {
+      await Coupon.findByIdAndUpdate(order.coupon, {
+        $inc: { usedCount: 1 },
+      });
+    }
+  }
+
+  return order;
+};
 
 export const createRazorpayOrder = async (
   userId: string,
@@ -168,34 +202,7 @@ if (!isValidSignature) {
     data.razorpaySignature;
 
   await payment.save();
-
-  const order = await Order.findById(
-    payment.order
-  );
-
-  if (!order) {
-    throw new NotFoundError(
-      "Order not found"
-    );
-  }
-
-  order.paymentStatus = "Paid";
-
-  await order.save();
-
-  if (order.paymentMethod === "RAZORPAY") {
-    for (const item of order.items) {
-      await Product.findByIdAndUpdate(item.product, {
-        $inc: { stock: -item.quantity },
-      });
-    }
-
-    if (order.coupon) {
-      await Coupon.findByIdAndUpdate(order.coupon, {
-        $inc: { usedCount: 1 },
-      });
-    }
-  }
+  await markOrderPaid(payment);
 
   return {
     message:
@@ -206,7 +213,11 @@ if (!isValidSignature) {
 };
 
 export const getPaymentById =
-  async (paymentId: string) => {
+  async (
+    paymentId: string,
+    userId?: string,
+    isAdmin = false
+  ) => {
     const payment =
       await Payment.findById(paymentId)
         .populate(
@@ -221,7 +232,135 @@ export const getPaymentById =
       );
     }
 
+    if (
+      userId &&
+      !isAdmin &&
+      payment.user._id.toString() !== userId
+    ) {
+      throw new ConflictError(
+        "You are not authorized to access this payment"
+      );
+    }
+
     return payment;
+  };
+
+export const refundPayment =
+  async (
+    paymentId: string,
+    data: RefundPaymentDto
+  ) => {
+    const payment =
+      await Payment.findById(paymentId);
+
+    if (!payment) {
+      throw new NotFoundError(
+        "Payment not found"
+      );
+    }
+
+    if (payment.status !== "Paid") {
+      throw new ConflictError(
+        "Only paid payments can be refunded"
+      );
+    }
+
+    if (!payment.razorpayPaymentId) {
+      throw new ConflictError(
+        "Razorpay payment ID is missing"
+      );
+    }
+
+    const refundAmount =
+      data.amount ?? payment.amount;
+
+    if (refundAmount > payment.amount) {
+      throw new BadRequestError(
+        "Refund amount cannot exceed payment amount"
+      );
+    }
+
+    const refund =
+      await razorpay.payments.refund(
+        payment.razorpayPaymentId,
+        {
+          amount: Math.round(refundAmount * 100),
+          notes: {
+            reason: data.reason || "Refund requested",
+          },
+        }
+      );
+
+    payment.status = "Refunded";
+    payment.refundId = refund.id;
+    payment.refundAmount = refundAmount;
+    payment.refundReason = data.reason || "";
+    payment.refundedAt = new Date();
+
+    await payment.save();
+
+    await Order.findByIdAndUpdate(payment.order, {
+      $set: {
+        paymentStatus: "Refunded",
+      },
+    });
+
+    return payment;
+  };
+
+export const handleRazorpayWebhook =
+  async (payload: any) => {
+    const event = payload.event as string;
+    const paymentEntity =
+      payload.payload?.payment?.entity;
+
+    if (!paymentEntity) {
+      return {
+        received: true,
+      };
+    }
+
+    const payment =
+      await Payment.findOne({
+        razorpayOrderId:
+          paymentEntity.order_id,
+      });
+
+    if (!payment) {
+      return {
+        received: true,
+      };
+    }
+
+    if (event === "payment.captured") {
+      if (payment.status !== "Paid") {
+        payment.status = "Paid";
+        payment.razorpayPaymentId =
+          paymentEntity.id;
+
+        await payment.save();
+        await markOrderPaid(payment);
+      }
+    }
+
+    if (event === "payment.failed") {
+      if (payment.status !== "Paid") {
+        payment.status = "Failed";
+        payment.razorpayPaymentId =
+          paymentEntity.id;
+
+        await payment.save();
+      }
+    }
+
+    if (event === "refund.processed") {
+      payment.status = "Refunded";
+      await payment.save();
+    }
+
+    return {
+      received: true,
+    };
   };
 
 export const getUserPayments =

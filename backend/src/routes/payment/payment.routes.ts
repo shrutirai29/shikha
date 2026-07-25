@@ -8,10 +8,16 @@ import { validate } from "../../middleware/validate.middleware";
 
 import {
   createPaymentSchema,
+  refundPaymentSchema,
   verifyPaymentSchema,
 } from "../../validators/payment/payment.validator";
 
 const router = Router();
+
+router.post(
+  "/webhook",
+  paymentController.handleWebhook
+);
 
 /* ---------------- User ---------------- */
 
@@ -55,6 +61,14 @@ router.patch(
   authenticate,
   authorize("admin"),
   paymentController.markPaymentFailed
+);
+
+router.post(
+  "/:paymentId/refund",
+  authenticate,
+  authorize("admin"),
+  validate(refundPaymentSchema),
+  paymentController.refundPayment
 );
 
 export default router;

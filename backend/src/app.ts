@@ -1,4 +1,5 @@
 import express from "express";
+import { Request } from "express";
 import cors from "cors";
 import helmet from "helmet";
 import morgan from "morgan";
@@ -30,7 +31,14 @@ const app = express();
 const config = env();
 
 // Body Parsers
-app.use(express.json({ limit: "10mb" }));
+app.use(
+  express.json({
+    limit: "10mb",
+    verify: (req, _res, buf) => {
+      (req as Request).rawBody = Buffer.from(buf);
+    },
+  })
+);
 app.use(express.urlencoded({ extended: true, limit: "10mb" }));
 
 // Global Middlewares

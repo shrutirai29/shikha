@@ -65,3 +65,22 @@ export const verifyPaymentSignature =
       razorpaySignature
     );
   };
+
+export const verifyWebhookSignature = (
+  rawBody: Buffer,
+  razorpaySignature: string
+) => {
+  const webhookSecret =
+    process.env.RAZORPAY_WEBHOOK_SECRET;
+
+  if (!webhookSecret) {
+    return false;
+  }
+
+  const generatedSignature = crypto
+    .createHmac("sha256", webhookSecret)
+    .update(rawBody)
+    .digest("hex");
+
+  return generatedSignature === razorpaySignature;
+};

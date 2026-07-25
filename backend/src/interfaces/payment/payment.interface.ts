@@ -15,12 +15,20 @@ export interface IPayment extends Document {
 
   razorpaySignature?: string;
 
-status:
-  | "Pending"
-  | "Authorized"
-  | "Paid"
-  | "Failed"
-  | "Refunded";
+  refundId?: string;
+
+  refundAmount?: number;
+
+  refundReason?: string;
+
+  refundedAt?: Date;
+
+  status:
+    | "Pending"
+    | "Authorized"
+    | "Paid"
+    | "Failed"
+    | "Refunded";
 
   createdAt: Date;
   updatedAt: Date;
