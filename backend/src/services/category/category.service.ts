@@ -16,6 +16,13 @@ interface GetCategoriesQuery {
   sort?: string;
 }
 
+const allowedSortFields = new Set([
+  "createdAt",
+  "-createdAt",
+  "name",
+  "-name",
+]);
+
 export const createCategory = async (
   data: Partial<ICategory>
 ): Promise<ICategory> => {
@@ -43,18 +50,25 @@ export const getAllCategories = async ({
   search = "",
   sort = "-createdAt",
 }: GetCategoriesQuery) => {
-  const filter = {
+  const filter: Record<string, unknown> = {
     isActive: true,
-    name: {
+  };
+
+  if (search) {
+    filter.name = {
       $regex: search,
       $options: "i",
-    },
-  };
+    };
+  }
+
+  const safeSort = allowedSortFields.has(sort)
+    ? sort
+    : "-createdAt";
 
   const total = await Category.countDocuments(filter);
 
   const categories = await Category.find(filter)
-    .sort(sort)
+    .sort(safeSort)
     .skip((page - 1) * limit)
     .limit(limit);
 

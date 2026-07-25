@@ -10,7 +10,11 @@ import {
   updateCategory,
 } from "../../services/category/category.service";
 
-import { createCategorySchema, updateCategorySchema } from "../../validators/category/category.validator";
+import {
+  categoryQuerySchema,
+  createCategorySchema,
+  updateCategorySchema,
+} from "../../validators/category/category.validator";
 
 export const create = asyncHandler(async (req: Request, res: Response) => {
   const validatedData = createCategorySchema.parse(req.body);
@@ -25,18 +29,9 @@ export const create = asyncHandler(async (req: Request, res: Response) => {
 });
 
 export const getAll = asyncHandler(async (req: Request, res: Response) => {
-  const page = Number(req.query.page) || 1;
-  const limit = Number(req.query.limit) || 10;
+  const query = categoryQuerySchema.parse(req.query);
 
-  const search = (req.query.search as string) || "";
-  const sort = (req.query.sort as string) || "-createdAt";
-
-  const result = await getAllCategories({
-    page,
-    limit,
-    search,
-    sort,
-  });
+  const result = await getAllCategories(query);
 
   res.status(200).json({
     success: true,

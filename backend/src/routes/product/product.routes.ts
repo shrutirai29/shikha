@@ -3,6 +3,7 @@ import { Router } from "express";
 import {
   create,
   getAll,
+  getBySlug,
   getOne,
   update,
   remove,
@@ -18,6 +19,8 @@ const router = Router();
 // =======================
 
 router.get("/", getAll);
+
+router.get("/slug/:slug", getBySlug);
 
 router.get("/:id", getOne);
 

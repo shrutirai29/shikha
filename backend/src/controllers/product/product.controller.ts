@@ -5,11 +5,16 @@ import {
   createProduct,
   getAllProducts,
   getProductById,
+  getProductBySlug,
   updateProduct,
   deleteProduct,
 } from "../../services/product/product.service";
 
-import { createProductSchema, updateProductSchema } from "../../validators/product/product.validator";
+import {
+  createProductSchema,
+  productQuerySchema,
+  updateProductSchema,
+} from "../../validators/product/product.validator";
 
 export const create = asyncHandler(async (req: Request, res: Response) => {
   const validatedData = createProductSchema.parse(req.body);
@@ -24,18 +29,9 @@ export const create = asyncHandler(async (req: Request, res: Response) => {
 });
 
 export const getAll = asyncHandler(async (req: Request, res: Response) => {
-  const page = Number(req.query.page) || 1;
-  const limit = Number(req.query.limit) || 10;
+  const query = productQuerySchema.parse(req.query);
 
-  const search = (req.query.search as string) || "";
-  const sort = (req.query.sort as string) || "-createdAt";
-
-  const result = await getAllProducts({
-    page,
-    limit,
-    search,
-    sort,
-  });
+  const result = await getAllProducts(query);
 
   res.status(200).json({
     success: true,
@@ -76,5 +72,16 @@ export const remove = asyncHandler(async (req: Request, res: Response) => {
   res.status(200).json({
     success: true,
     message: "Product deleted successfully",
+  });
+});
+
+export const getBySlug = asyncHandler(async (req: Request, res: Response) => {
+  const slug = req.params.slug as string;
+
+  const product = await getProductBySlug(slug);
+
+  res.status(200).json({
+    success: true,
+    data: product,
   });
 });

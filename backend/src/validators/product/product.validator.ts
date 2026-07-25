@@ -1,24 +1,26 @@
 import { z } from "zod";
 
-export const createProductSchema = z.object({
+const productBaseSchema = z.object({
   name: z
     .string()
+    .trim()
     .min(3, "Product name must be at least 3 characters"),
 
   description: z
     .string()
+    .trim()
     .min(10, "Description must be at least 10 characters"),
 
-  price: z
+  price: z.coerce
     .number()
     .positive("Price must be greater than 0"),
 
-  discountPrice: z
+  discountPrice: z.coerce
     .number()
     .nonnegative("Discount price cannot be negative")
     .optional(),
 
-  stock: z
+  stock: z.coerce
     .number()
     .int()
     .nonnegative("Stock cannot be negative"),
@@ -36,4 +38,36 @@ export const createProductSchema = z.object({
     .optional(),
 });
 
+export const createProductSchema = productBaseSchema.refine(
+  (data) =>
+    data.discountPrice === undefined ||
+    data.discountPrice < data.price,
+  {
+    path: ["discountPrice"],
+    message: "Discount price must be lower than price",
+  }
+);
+
 export const updateProductSchema = createProductSchema.partial();
+
+export const productQuerySchema = z.object({
+  page: z.coerce.number().int().min(1).default(1),
+  limit: z.coerce.number().int().min(1).max(100).default(10),
+  search: z.string().trim().optional().default(""),
+  sort: z
+    .enum([
+      "createdAt",
+      "-createdAt",
+      "price",
+      "-price",
+      "name",
+      "-name",
+      "averageRating",
+      "-averageRating",
+    ])
+    .default("-createdAt"),
+  category: z.string().trim().optional(),
+  minPrice: z.coerce.number().min(0).optional(),
+  maxPrice: z.coerce.number().min(0).optional(),
+  isFeatured: z.coerce.boolean().optional(),
+});

@@ -17,7 +17,22 @@ interface GetProductsQuery {
   limit?: number;
   search?: string;
   sort?: string;
+  category?: string;
+  minPrice?: number;
+  maxPrice?: number;
+  isFeatured?: boolean;
 }
+
+const allowedSortFields = new Set([
+  "createdAt",
+  "-createdAt",
+  "price",
+  "-price",
+  "name",
+  "-name",
+  "averageRating",
+  "-averageRating",
+]);
 
 export const createProduct = async (
   data: Partial<IProduct>
@@ -55,20 +70,64 @@ export const getAllProducts = async ({
   limit = 10,
   search = "",
   sort = "-createdAt",
+  category,
+  minPrice,
+  maxPrice,
+  isFeatured,
 }: GetProductsQuery) => {
-  const filter = {
+  const filter: Record<string, any> = {
     isActive: true,
-    name: {
-      $regex: search,
-      $options: "i",
-    },
   };
+
+  if (search) {
+    filter.$or = [
+      {
+        name: {
+          $regex: search,
+          $options: "i",
+        },
+      },
+      {
+        description: {
+          $regex: search,
+          $options: "i",
+        },
+      },
+    ];
+  }
+
+  if (category) {
+    filter.category = category;
+  }
+
+  if (
+    typeof minPrice === "number" ||
+    typeof maxPrice === "number"
+  ) {
+    filter.price = {};
+
+    if (typeof minPrice === "number") {
+      filter.price.$gte = minPrice;
+    }
+
+    if (typeof maxPrice === "number") {
+      filter.price.$lte = maxPrice;
+    }
+  }
+
+  if (typeof isFeatured === "boolean") {
+    filter.isFeatured = isFeatured;
+  }
+
+  const safeSort = allowedSortFields.has(sort)
+    ? sort
+    : "-createdAt";
 
   const total = await Product.countDocuments(filter);
 
   const products = await Product.find(filter)
     .populate("category")
-    .sort(sort)
+    .sort(safeSort)
     .skip((page - 1) * limit)
     .limit(limit);
 
@@ -157,4 +216,19 @@ export const deleteProduct = async (
   );
 
   return product!;
+};
+
+export const getProductBySlug = async (
+  slug: string
+): Promise<IProduct> => {
+  const product = await Product.findOne({
+    slug,
+    isActive: true,
+  }).populate("category");
+
+  if (!product) {
+    throw new NotFoundError("Product not found");
+  }
+
+  return product;
 };
