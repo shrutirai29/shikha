@@ -69,9 +69,12 @@ import {
   getReviews,
   editReview,
   removeReview,
+  listAllReviews,
+  removeReviewByAdmin,
 } from "../../controllers/review/review.controller";
 
 import { authenticate } from "../../middleware/auth.middleware";
+import { authorize } from "../../middleware/authorize.middleware";
 import { validateObjectId } from "../../middleware/validateObjectId.middleware";
 
 const router = Router();
@@ -81,7 +84,25 @@ POST    /api/reviews/:productId
 GET     /api/reviews/:productId
 PATCH   /api/reviews/:reviewId
 DELETE  /api/reviews/:reviewId
+GET     /api/reviews/admin/all        (admin)
+DELETE  /api/reviews/admin/:id        (admin)
 */
+
+// Admin routes must be registered before the :productId/:reviewId params
+router.get(
+  "/admin/all",
+  authenticate,
+  authorize("admin"),
+  listAllReviews
+);
+
+router.delete(
+  "/admin/:id",
+  authenticate,
+  authorize("admin"),
+  validateObjectId("id"),
+  removeReviewByAdmin
+);
 
 router.post(
   "/:productId",

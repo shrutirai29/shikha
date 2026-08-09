@@ -31,3 +31,13 @@ export const updateUserStatusSchema = z.object({
 export const updateUserRoleSchema = z.object({
   role: z.enum(["admin", "customer"]),
 });
+
+export const changePasswordSchema = z.object({
+  currentPassword: z
+    .string()
+    .min(1, "Current password is required"),
+  newPassword: z
+    .string()
+    .min(6, "New password must be at least 6 characters")
+    .max(100, "New password is too long"),
+});

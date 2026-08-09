@@ -1,8 +1,10 @@
+import bcrypt from "bcrypt";
 import User from "../../models/auth/auth.model";
 import { UpdateProfileDto } from "../../dtos/user/update-profile.dto";
 import { IUserListQuery } from "../../interfaces/user/user.interface";
 import { NotFoundError } from "../../errors/NotFoundError";
 import { ConflictError } from "../../errors/ConflictError";
+import { UnauthorizedError } from "../../errors/UnauthorizedError";
 
 const userSelect = "-password";
 
@@ -128,6 +130,39 @@ export const updateUserStatus = async (
   }
 
   return user;
+};
+
+export const changePassword = async (
+  userId: string,
+  currentPassword: string,
+  newPassword: string
+) => {
+  const user = await User.findById(userId);
+
+  if (!user) {
+    throw new NotFoundError("User not found");
+  }
+
+  const isMatch = await bcrypt.compare(
+    currentPassword,
+    user.password
+  );
+
+  if (!isMatch) {
+    throw new UnauthorizedError(
+      "Current password is incorrect"
+    );
+  }
+
+  const hashedPassword = await bcrypt.hash(newPassword, 10);
+
+  user.password = hashedPassword;
+
+  await user.save();
+
+  return {
+    message: "Password changed successfully",
+  };
 };
 
 export const updateUserRole = async (

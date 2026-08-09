@@ -159,6 +159,62 @@ export const updateReview = async (
   return review;
 };
 
+export const getAllReviews = async (
+  page = 1,
+  limit = 10,
+  rating?: number,
+  search = ""
+) => {
+  const filter: Record<string, unknown> = { isActive: true };
+
+  if (rating) {
+    filter.rating = rating;
+  }
+
+  if (search) {
+    filter.comment = { $regex: search, $options: "i" };
+  }
+
+  const total = await Review.countDocuments(filter);
+
+  const reviews = await Review.find(filter)
+    .populate("user", "name email")
+    .populate("product", "name images")
+    .sort({ createdAt: -1 })
+    .skip((page - 1) * limit)
+    .limit(limit);
+
+  return {
+    reviews,
+    pagination: {
+      total,
+      page,
+      limit,
+      totalPages: Math.ceil(total / limit),
+    },
+  };
+};
+
+export const adminDeleteReview = async (
+  reviewId: string
+) => {
+  const review = await Review.findById(reviewId);
+
+  if (!review || !review.isActive) {
+    throw new NotFoundError("Review not found");
+  }
+
+  review.isActive = false;
+
+  await review.save();
+
+  await updateProductRating(review.product.toString());
+
+  return {
+    message: "Review removed successfully",
+  };
+};
+
 export const deleteReview = async (
   userId: string,
   reviewId: string

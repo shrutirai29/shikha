@@ -6,6 +6,7 @@ import { CreateOrderDto } from "../../dtos/order/create-order.dto";
 
 import { NotFoundError } from "../../errors/NotFoundError";
 import { ConflictError } from "../../errors/ConflictError";
+import { ForbiddenError } from "../../errors/ForbiddenError";
 import Coupon from "../../models/coupon/coupon.model";
 
 export const createOrder = async (
@@ -193,7 +194,7 @@ export const getOrderById = async (
       : order.user.toString();
 
   if (ownerId !== userId) {
-    throw new ConflictError(
+    throw new ForbiddenError(
       "You are not authorized to access this order"
     );
   }
@@ -231,14 +232,42 @@ export const getAllOrders = async (
   };
 };
 
+type OrderStatus =
+  | "Pending"
+  | "Processing"
+  | "Shipped"
+  | "Delivered"
+  | "Cancelled";
+
+// Lifecycle: Pending -> Processing -> Shipped -> Delivered.
+// Cancellation is allowed from Pending/Processing only; Delivered
+// and Cancelled are terminal states.
+const VALID_TRANSITIONS: Record<OrderStatus, OrderStatus[]> = {
+  Pending: ["Processing", "Shipped", "Cancelled"],
+  Processing: ["Shipped", "Cancelled"],
+  Shipped: ["Delivered"],
+  Delivered: [],
+  Cancelled: [],
+};
+
+const restoreStockForOrder = async (order: any) => {
+  for (const item of order.items) {
+    await Product.findByIdAndUpdate(item.product, {
+      $inc: { stock: item.quantity },
+    });
+  }
+
+  if (order.coupon) {
+    await Coupon.updateOne(
+      { _id: order.coupon, usedCount: { $gt: 0 } },
+      { $inc: { usedCount: -1 } }
+    );
+  }
+};
+
 export const updateOrderStatus = async (
   orderId: string,
-  status:
-    | "Pending"
-    | "Processing"
-    | "Shipped"
-    | "Delivered"
-    | "Cancelled"
+  status: OrderStatus
 ) => {
   const order = await Order.findById(orderId);
 
@@ -246,15 +275,75 @@ export const updateOrderStatus = async (
     throw new NotFoundError("Order not found");
   }
 
+  if (order.orderStatus === status) {
+    return order;
+  }
+
+  const allowed = VALID_TRANSITIONS[order.orderStatus] ?? [];
+
+  if (!allowed.includes(status)) {
+    throw new ConflictError(
+      `Cannot change order status from ${order.orderStatus} to ${status}`
+    );
+  }
+
+  const wasStockDeducted =
+    order.paymentMethod === "COD" ||
+    order.paymentStatus === "Paid";
+
   order.orderStatus = status;
 
   if (status === "Delivered") {
     order.paymentStatus = "Paid";
   }
 
+  if (status === "Cancelled" && wasStockDeducted) {
+    await restoreStockForOrder(order);
+  }
+
   await order.save();
 
   return await Order.findById(orderId)
+    .populate("user", "name email")
+    .populate({
+      path: "items.product",
+      populate: {
+        path: "category",
+        select: "name slug",
+      },
+    });
+};
+
+export const cancelOrder = async (
+  userId: string,
+  orderId: string
+) => {
+  // Atomic: only the owner can cancel, only while Pending/Processing,
+  // and never once the order has been paid.
+  const order = await Order.findOneAndUpdate(
+    {
+      _id: orderId,
+      user: userId,
+      orderStatus: { $in: ["Pending", "Processing"] },
+      paymentStatus: { $ne: "Paid" },
+    },
+    { orderStatus: "Cancelled" },
+    { new: true }
+  );
+
+  if (!order) {
+    throw new ConflictError(
+      "Order cannot be cancelled at this stage"
+    );
+  }
+
+  // COD orders deducted stock at creation; Razorpay orders only
+  // deduct on successful payment, so nothing to restore there.
+  if (order.paymentMethod === "COD") {
+    await restoreStockForOrder(order);
+  }
+
+  return await Order.findById(order._id)
     .populate("user", "name email")
     .populate({
       path: "items.product",

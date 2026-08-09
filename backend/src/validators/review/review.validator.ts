@@ -19,6 +19,13 @@ export const reviewQuerySchema = z.object({
   limit: z.coerce.number().int().min(1).max(100).default(10),
 });
 
+export const reviewAdminQuerySchema = z.object({
+  page: z.coerce.number().int().min(1).default(1),
+  limit: z.coerce.number().int().min(1).max(100).default(10),
+  rating: z.coerce.number().int().min(1).max(5).optional(),
+  search: z.string().trim().optional().default(""),
+});
+
 export type CreateReviewInput = z.infer<
   typeof createReviewSchema
 >;

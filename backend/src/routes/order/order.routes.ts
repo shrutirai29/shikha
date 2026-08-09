@@ -105,6 +105,7 @@ import {
   getOrderById,
   getAllOrders,
   updateOrderStatus,
+  cancelOrder,
 } from "../../controllers/order/order.controller";
 
 import { authenticate } from "../../middleware/auth.middleware";
@@ -121,6 +122,13 @@ router.use(authenticate);
 router.post("/", createOrder);
 
 router.get("/", getMyOrders);
+
+// Cancel own order while Pending/Processing and unpaid
+router.post(
+  "/:id/cancel",
+  validateObjectId("id"),
+  cancelOrder
+);
 
 // ---------------- Admin ----------------
 

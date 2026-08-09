@@ -7,6 +7,7 @@ import {
   updateUserRoleSchema,
   updateUserStatusSchema,
   userListQuerySchema,
+  changePasswordSchema,
 } from "../../validators/user/user.validator";
 
 export const getMe = asyncHandler(
@@ -33,6 +34,24 @@ export const updateMe = asyncHandler(
       success: true,
       message: "Profile updated successfully",
       data: user,
+    });
+  }
+);
+
+export const changePassword = asyncHandler(
+  async (req: AuthRequest, res: Response) => {
+    const { currentPassword, newPassword } =
+      changePasswordSchema.parse(req.body);
+
+    const result = await userService.changePassword(
+      req.user!._id.toString(),
+      currentPassword,
+      newPassword
+    );
+
+    res.status(200).json({
+      success: true,
+      ...result,
     });
   }
 );

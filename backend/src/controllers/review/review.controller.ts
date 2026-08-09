@@ -5,11 +5,14 @@ import {
   getProductReviews,
   updateReview,
   deleteReview,
+  getAllReviews,
+  adminDeleteReview,
 } from "../../services/review/review.service";
 
 import {
   createReviewSchema,
   reviewQuerySchema,
+  reviewAdminQuerySchema,
 } from "../../validators/review/review.validator";
 import { AuthRequest } from "../../middleware/auth.middleware";
 import { asyncHandler } from "../../utils/asyncHandler";
@@ -74,6 +77,38 @@ export const removeReview = asyncHandler(
     const reviewId = req.params.reviewId as string;
 
     const result = await deleteReview(userId, reviewId);
+
+    res.status(200).json({
+      success: true,
+      ...result,
+    });
+  }
+);
+
+export const listAllReviews = asyncHandler(
+  async (req: AuthRequest, res: Response) => {
+    const { page, limit, rating, search } =
+      reviewAdminQuerySchema.parse(req.query);
+
+    const result = await getAllReviews(
+      page,
+      limit,
+      rating,
+      search
+    );
+
+    res.status(200).json({
+      success: true,
+      ...result,
+    });
+  }
+);
+
+export const removeReviewByAdmin = asyncHandler(
+  async (req: AuthRequest, res: Response) => {
+    const result = await adminDeleteReview(
+      req.params.id as string
+    );
 
     res.status(200).json({
       success: true,

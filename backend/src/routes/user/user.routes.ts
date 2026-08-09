@@ -112,6 +112,7 @@ import {
   updateMe,
   updateUserRole,
   updateUserStatus,
+  changePassword,
 } from "../../controllers/user/user.controller";
 import { authenticate } from "../../middleware/auth.middleware";
 import { authorize } from "../../middleware/authorize.middleware";
@@ -123,6 +124,7 @@ router.use(authenticate);
 
 router.get("/me", getMe);
 router.patch("/me", updateMe);
+router.patch("/me/password", changePassword);
 
 router.get(
   "/admin/all",

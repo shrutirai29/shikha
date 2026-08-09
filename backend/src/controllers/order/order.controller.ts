@@ -98,3 +98,18 @@ export const updateOrderStatus = asyncHandler(
     });
   }
 );
+
+export const cancelOrder = asyncHandler(
+  async (req: AuthRequest, res: Response) => {
+    const order = await orderService.cancelOrder(
+      req.user!._id.toString(),
+      req.params.id as string
+    );
+
+    res.status(200).json({
+      success: true,
+      message: "Order cancelled successfully",
+      data: order,
+    });
+  }
+);
