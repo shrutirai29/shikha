@@ -1,6 +1,6 @@
-import { useState } from "react";
+import { useMemo, useState } from "react";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
-import { Pencil, Plus, Search, Trash2 } from "lucide-react";
+import { ImagePlus, Pencil, Plus, Search, Trash2, X } from "lucide-react";
 import { api, getErrorMessage } from "@/lib/api";
 import { useAdminProducts, useCategories } from "@/hooks/useApi";
 import { useToast } from "@/context/ToastContext";
@@ -41,7 +41,6 @@ const productSchema = z
         (value) => value.trim() !== "" && Number.isInteger(Number(value)),
         { message: "Stock must be a whole number" }
       ),
-    images: z.string(),
     category: z.string().min(1, "Category is required"),
     isFeatured: z.boolean().optional(),
     isActive: z.boolean().optional(),
@@ -72,6 +71,21 @@ export const ProductsPage = () => {
   const [modalOpen, setModalOpen] = useState(false);
   const [editing, setEditing] = useState<Product | null>(null);
   const [deleting, setDeleting] = useState<Product | null>(null);
+  const [newImages, setNewImages] = useState<File[]>([]);
+  const [removedImages, setRemovedImages] = useState<string[]>([]);
+
+  const existingImages = useMemo(
+    () =>
+      (editing?.images ?? []).filter((url) => !removedImages.includes(url)),
+    [editing, removedImages]
+  );
+
+  const newImagePreviews = useMemo(
+    () => newImages.map((file) => URL.createObjectURL(file)),
+    [newImages]
+  );
+
+  const maxImagesReached = existingImages.length + newImages.length >= 5;
 
   const {
     register,
@@ -87,13 +101,14 @@ export const ProductsPage = () => {
 
   const openCreate = () => {
     setEditing(null);
+    setNewImages([]);
+    setRemovedImages([]);
     reset({
       name: "",
       description: "",
       price: "",
       discountPrice: "",
       stock: "0",
-      images: "",
       category: categories?.[0]?._id ?? "",
       isFeatured: false,
       isActive: true,
@@ -103,6 +118,8 @@ export const ProductsPage = () => {
 
   const openEdit = (product: Product) => {
     setEditing(product);
+    setNewImages([]);
+    setRemovedImages([]);
 
     reset({
       name: product.name,
@@ -110,7 +127,6 @@ export const ProductsPage = () => {
       price: String(product.price),
       discountPrice: product.discountPrice ? String(product.discountPrice) : "",
       stock: String(product.stock),
-      images: product.images.join("\n"),
       category: typeof product.category === "string" ? product.category : product.category._id,
       isFeatured: product.isFeatured,
       isActive: product.isActive,
@@ -131,27 +147,59 @@ export const ProductsPage = () => {
         category: values.category,
         isFeatured: values.isFeatured ?? false,
         isActive: values.isActive ?? true,
-        images: values.images
-          .split("\n")
-          .map((url) => url.trim())
-          .filter(Boolean),
       };
+
+      let product: Product;
 
       if (editing) {
         const { data } = await api.patch<{ data: Product }>(
           `/products/${editing._id}`,
           payload
         );
-        return data.data;
+        product = data.data;
+      } else {
+        const { data } = await api.post<{ data: Product }>("/products", payload);
+        product = data.data;
+        // Remember the created product so a retry after an image failure
+        // updates it instead of creating a duplicate.
+        setEditing(product);
       }
 
-      const { data } = await api.post<{ data: Product }>("/products", payload);
-      return data.data;
+      let imagesFailed = "";
+
+      try {
+        for (const url of removedImages) {
+          await api.delete(`/products/${product._id}/images`, { data: { url } });
+        }
+
+        if (newImages.length > 0) {
+          const formData = new FormData();
+          newImages.forEach((file) => formData.append("images", file));
+
+          const { data } = await api.post<{ data: Product }>(
+            `/products/${product._id}/images`,
+            formData
+          );
+          product = data.data;
+        }
+      } catch (uploadError) {
+        imagesFailed = getErrorMessage(uploadError);
+      }
+
+      return { product, imagesFailed };
     },
-    onSuccess: () => {
+    onSuccess: ({ imagesFailed }) => {
+      invalidate();
+
+      if (imagesFailed) {
+        toast.error(`Product saved, but image upload failed: ${imagesFailed}`);
+        return;
+      }
+
       toast.success(editing ? "Product updated" : "Product created");
       setModalOpen(false);
-      invalidate();
+      setNewImages([]);
+      setRemovedImages([]);
     },
     onError: (saveError) => {
       toast.error(getErrorMessage(saveError));
@@ -364,13 +412,76 @@ export const ProductsPage = () => {
               </label>
             </div>
           </div>
-          <Textarea
-            label="Image URLs (one per line)"
-            rows={3}
-            hint="Paste image URLs, one per line"
-            error={errors.images?.message}
-            {...register("images")}
-          />
+          <div>
+            <label className="mb-1.5 block text-sm font-medium text-slate-700 dark:text-slate-300">
+              Product images
+            </label>
+            <div className="flex flex-wrap gap-3">
+              {existingImages.map((url) => (
+                <div
+                  key={url}
+                  className="relative size-20 overflow-hidden rounded-lg border border-slate-200 bg-slate-100 dark:border-slate-700 dark:bg-slate-800"
+                >
+                  <img src={url} alt="" className="size-full object-cover" />
+                  <button
+                    type="button"
+                    onClick={() => setRemovedImages([...removedImages, url])}
+                    aria-label="Remove image"
+                    className="absolute -right-1.5 -top-1.5 grid size-5 place-items-center rounded-full bg-rose-500 text-white shadow hover:bg-rose-600"
+                  >
+                    <X className="size-3" />
+                  </button>
+                </div>
+              ))}
+              {newImages.map((file, index) => (
+                <div
+                  key={`${file.name}-${index}`}
+                  className="relative size-20 overflow-hidden rounded-lg border border-slate-200 bg-slate-100 dark:border-slate-700 dark:bg-slate-800"
+                >
+                  <img
+                    src={newImagePreviews[index]}
+                    alt={file.name}
+                    className="size-full object-cover"
+                  />
+                  <button
+                    type="button"
+                    onClick={() =>
+                      setNewImages(newImages.filter((_, i) => i !== index))
+                    }
+                    aria-label={`Remove ${file.name}`}
+                    className="absolute -right-1.5 -top-1.5 grid size-5 place-items-center rounded-full bg-rose-500 text-white shadow hover:bg-rose-600"
+                  >
+                    <X className="size-3" />
+                  </button>
+                </div>
+              ))}
+              {!maxImagesReached && (
+                <label className="grid size-20 cursor-pointer place-items-center rounded-lg border-2 border-dashed border-slate-300 text-slate-400 transition hover:border-rose-300 hover:text-rose-400 dark:border-slate-600 dark:hover:border-rose-400/60">
+                  <ImagePlus className="size-6" />
+                  <span className="sr-only">Upload images</span>
+                  <input
+                    type="file"
+                    accept="image/*"
+                    multiple
+                    className="hidden"
+                    onChange={(event) => {
+                      const files = Array.from(event.target.files ?? []);
+                      setNewImages(
+                        [...newImages, ...files].slice(
+                          0,
+                          5 - existingImages.length
+                        )
+                      );
+                      event.target.value = "";
+                    }}
+                  />
+                </label>
+              )}
+            </div>
+            <p className="mt-1.5 text-xs text-slate-400 dark:text-slate-500">
+              Up to 5 images — JPG, PNG, WebP, GIF or AVIF (max 5MB each).
+            </p>
+          </div>
 
           <div className="flex justify-end gap-3">
             <Button type="button" variant="outline" onClick={() => setModalOpen(false)}>

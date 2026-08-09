@@ -3,6 +3,11 @@ import { env } from "../../config/env";
 
 import { BadRequestError } from "../../errors/BadRequestError";
 
+export interface UploadSource {
+  buffer: Buffer;
+  mimetype: string;
+}
+
 export interface UploadResult {
   url: string;
   publicId: string;
@@ -11,10 +16,45 @@ export interface UploadResult {
 const CLOUDINARY_FOLDER =
   env().NODE_ENV === "production" ? "shikha" : "shikha-dev";
 
+const isCloudinaryConfigured = (): boolean => {
+  const config = env();
+
+  return Boolean(
+    config.CLOUDINARY_CLOUD_NAME &&
+      config.CLOUDINARY_API_KEY &&
+      config.CLOUDINARY_API_SECRET
+  );
+};
+
+/**
+ * Max size (bytes) for images stored directly in MongoDB as data URLs.
+ * Used only when Cloudinary is not configured, so product documents
+ * stay well under Mongo's 16MB document limit.
+ */
+const MAX_EMBEDDED_IMAGE_SIZE = 2 * 1024 * 1024;
+
 export const uploadImage = (
-  buffer: Buffer,
+  source: UploadSource,
   folder?: string
 ): Promise<UploadResult> => {
+  // No Cloudinary credentials: store the image inside MongoDB as a data URL.
+  // This keeps uploads working out of the box (survives redeploys) and
+  // switches to Cloudinary automatically once credentials are configured.
+  if (!isCloudinaryConfigured()) {
+    if (source.buffer.length > MAX_EMBEDDED_IMAGE_SIZE) {
+      return Promise.reject(
+        new BadRequestError(
+          "Image is too large (max 2MB). Add Cloudinary credentials to enable larger uploads."
+        )
+      );
+    }
+
+    return Promise.resolve({
+      url: `data:${source.mimetype};base64,${source.buffer.toString("base64")}`,
+      publicId: "",
+    });
+  }
+
   return new Promise((resolve, reject) => {
     const stream = cloudinary.uploader.upload_stream(
       {
@@ -46,16 +86,16 @@ export const uploadImage = (
       }
     );
 
-    stream.end(buffer);
+    stream.end(source.buffer);
   });
 };
 
 export const uploadImages = async (
-  buffers: Buffer[],
+  sources: UploadSource[],
   folder?: string
 ): Promise<UploadResult[]> => {
   return Promise.all(
-    buffers.map((buffer) => uploadImage(buffer, folder))
+    sources.map((source) => uploadImage(source, folder))
   );
 };
 

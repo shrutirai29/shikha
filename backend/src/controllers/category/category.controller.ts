@@ -103,7 +103,10 @@ export const uploadCategoryImage = asyncHandler(
       return;
     }
 
-    const uploaded = await uploadImage(file.buffer);
+    const uploaded = await uploadImage({
+      buffer: file.buffer,
+      mimetype: file.mimetype,
+    });
 
     const category = await setCategoryImage(id, uploaded.url);
 

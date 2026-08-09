@@ -249,6 +249,14 @@ export const addProductImages = async (
     throw new NotFoundError("Product not found");
   }
 
+  const MAX_PRODUCT_IMAGES = 5;
+
+  if (product.images.length + imageUrls.length > MAX_PRODUCT_IMAGES) {
+    throw new ConflictError(
+      `A product can have at most ${MAX_PRODUCT_IMAGES} images`
+    );
+  }
+
   product.images.push(...imageUrls);
 
   await product.save();

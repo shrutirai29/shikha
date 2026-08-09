@@ -125,7 +125,7 @@ export const uploadProductImages = asyncHandler(
     }
 
     const uploaded = await uploadToCloudinary(
-      files.map((file) => file.buffer)
+      files.map((file) => ({ buffer: file.buffer, mimetype: file.mimetype }))
     );
 
     const product = await addProductImages(

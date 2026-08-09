@@ -1,6 +1,6 @@
-import { useState } from "react";
+import { useMemo, useState } from "react";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
-import { Pencil, Plus, Trash2 } from "lucide-react";
+import { ImagePlus, Pencil, Plus, Trash2 } from "lucide-react";
 import { api, getErrorMessage } from "@/lib/api";
 import { useAdminCategories } from "@/hooks/useApi";
 import { useToast } from "@/context/ToastContext";
@@ -18,7 +18,6 @@ import type { Category } from "@/types";
 const categorySchema = z.object({
   name: z.string().min(2, "Name must be at least 2 characters").max(50),
   description: z.string().max(200).optional().or(z.literal("")),
-  image: z.string().url("Enter a valid image URL").optional().or(z.literal("")),
 });
 
 type CategoryForm = z.infer<typeof categorySchema>;
@@ -31,6 +30,12 @@ export const CategoriesPage = () => {
   const [modalOpen, setModalOpen] = useState(false);
   const [editing, setEditing] = useState<Category | null>(null);
   const [deleting, setDeleting] = useState<Category | null>(null);
+  const [imageFile, setImageFile] = useState<File | null>(null);
+
+  const imagePreview = useMemo(
+    () => (imageFile ? URL.createObjectURL(imageFile) : null),
+    [imageFile]
+  );
 
   const {
     register,
@@ -46,16 +51,17 @@ export const CategoriesPage = () => {
 
   const openCreate = () => {
     setEditing(null);
-    reset({ name: "", description: "", image: "" });
+    setImageFile(null);
+    reset({ name: "", description: "" });
     setModalOpen(true);
   };
 
   const openEdit = (category: Category) => {
     setEditing(category);
+    setImageFile(null);
     reset({
       name: category.name,
       description: category.description ?? "",
-      image: category.image ?? "",
     });
     setModalOpen(true);
   };
@@ -65,24 +71,54 @@ export const CategoriesPage = () => {
       const payload = {
         name: values.name,
         description: values.description || undefined,
-        image: values.image || undefined,
       };
+
+      let category: Category;
 
       if (editing) {
         const { data } = await api.patch<{ data: Category }>(
           `/categories/${editing._id}`,
           payload
         );
-        return data.data;
+        category = data.data;
+      } else {
+        const { data } = await api.post<{ data: Category }>("/categories", payload);
+        category = data.data;
+        // Remember the created category so a retry after an image failure
+        // updates it instead of creating a duplicate.
+        setEditing(category);
       }
 
-      const { data } = await api.post<{ data: Category }>("/categories", payload);
-      return data.data;
+      let imagesFailed = "";
+
+      try {
+        if (imageFile) {
+          const formData = new FormData();
+          formData.append("image", imageFile);
+
+          const { data } = await api.post<{ data: Category }>(
+            `/categories/${category._id}/image`,
+            formData
+          );
+          category = data.data;
+        }
+      } catch (uploadError) {
+        imagesFailed = getErrorMessage(uploadError);
+      }
+
+      return { category, imagesFailed };
     },
-    onSuccess: () => {
+    onSuccess: ({ imagesFailed }) => {
+      invalidate();
+
+      if (imagesFailed) {
+        toast.error(`Category saved, but image upload failed: ${imagesFailed}`);
+        return;
+      }
+
       toast.success(editing ? "Category updated" : "Category created");
       setModalOpen(false);
-      invalidate();
+      setImageFile(null);
     },
     onError: (saveError) => {
       toast.error(getErrorMessage(saveError));
@@ -196,12 +232,43 @@ export const CategoriesPage = () => {
         >
           <Input label="Name" error={errors.name?.message} {...register("name")} />
           <Textarea label="Description" rows={3} error={errors.description?.message} {...register("description")} />
-          <Input
-            label="Image URL (optional)"
-            placeholder="https://…"
-            error={errors.image?.message}
-            {...register("image")}
-          />
+          <div>
+            <label className="mb-1.5 block text-sm font-medium text-slate-700 dark:text-slate-300">
+              Category image
+            </label>
+            <div className="flex items-center gap-3">
+              {(imagePreview || (!imageFile && editing?.image)) && (
+                <div className="size-20 shrink-0 overflow-hidden rounded-lg border border-slate-200 bg-slate-100 dark:border-slate-700 dark:bg-slate-800">
+                  <img
+                    src={imagePreview ?? editing!.image!}
+                    alt=""
+                    className="size-full object-cover"
+                  />
+                </div>
+              )}
+              <label className="flex cursor-pointer items-center gap-2 rounded-lg border-2 border-dashed border-slate-300 px-4 py-3 text-sm font-medium text-slate-500 transition hover:border-rose-300 hover:text-rose-400 dark:border-slate-600 dark:text-slate-400 dark:hover:border-rose-400/60">
+                <ImagePlus className="size-4" />
+                {imageFile
+                  ? "Replace image"
+                  : editing?.image
+                    ? "Change image"
+                    : "Upload image"}
+                <input
+                  type="file"
+                  accept="image/*"
+                  className="hidden"
+                  onChange={(event) => {
+                    const file = event.target.files?.[0] ?? null;
+                    setImageFile(file);
+                    event.target.value = "";
+                  }}
+                />
+              </label>
+            </div>
+            <p className="mt-1.5 text-xs text-slate-400 dark:text-slate-500">
+              JPG, PNG, WebP, GIF or AVIF (max 5MB).
+            </p>
+          </div>
           <div className="flex justify-end gap-3">
             <Button type="button" variant="outline" onClick={() => setModalOpen(false)}>
               Cancel
