@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { Link, useLocation, useNavigate, useSearchParams } from "react-router-dom";
-import { BadgeCheck, Loader2, Mail, Phone, TriangleAlert } from "lucide-react";
+import { BadgeCheck, Eye, Loader2, Mail, Phone, TriangleAlert } from "lucide-react";
 import { api, getErrorMessage } from "@/lib/api";
 import { useAuth } from "@/context/AuthContext";
 import { useToast } from "@/context/ToastContext";
@@ -10,14 +10,21 @@ import { Logo } from "@/components/layout/Logo";
 
 type VerificationType = "email" | "phone";
 
+interface DevCodes {
+  email?: string;
+  phone?: string;
+}
+
 const OtpSection = ({
   type,
   email,
   onVerified,
+  onCodes,
 }: {
   type: VerificationType;
   email: string;
   onVerified: () => void;
+  onCodes?: (codes: DevCodes) => void;
 }) => {
   const toast = useToast();
   const [code, setCode] = useState("");
@@ -56,7 +63,15 @@ const OtpSection = ({
     setResending(true);
 
     try {
-      await api.post("/auth/resend-code", { email, type });
+      const { data } = await api.post<{
+        success: boolean;
+        devCodes?: DevCodes;
+      }>("/auth/resend-code", { email, type });
+
+      if (data.devCodes) {
+        onCodes?.(data.devCodes);
+      }
+
       toast.success("A new code has been sent");
       setCooldown(30);
     } catch (error) {
@@ -135,8 +150,15 @@ export const VerifyAccountPage = () => {
 
   const token = searchParams.get("token") ?? "";
 
+  const locationState = location.state as
+    | { email?: string; devCodes?: DevCodes }
+    | null;
+
   const [email, setEmail] = useState(
-    user?.email ?? (location.state as { email?: string } | null)?.email ?? ""
+    user?.email ?? locationState?.email ?? ""
+  );
+  const [devCodes, setDevCodes] = useState<DevCodes>(
+    locationState?.devCodes ?? {}
   );
   const [verified, setVerified] = useState<Record<string, boolean>>({
     email: Boolean(user?.isVerified),
@@ -246,6 +268,34 @@ export const VerifyAccountPage = () => {
         </div>
       )}
 
+      {(devCodes.email || devCodes.phone) && (
+        <div className="mb-4 rounded-2xl border border-amber-300/60 bg-amber-50/80 p-5 dark:border-amber-500/30 dark:bg-amber-500/10">
+          <div className="mb-2 flex items-center gap-2">
+            <Eye className="size-4 text-amber-600 dark:text-amber-400" />
+            <h2 className="text-sm font-semibold text-amber-800 dark:text-amber-300">
+              Development codes
+            </h2>
+          </div>
+          <p className="mb-3 text-xs leading-relaxed text-amber-700 dark:text-amber-400/90">
+            Email/SMS delivery isn&apos;t configured yet, so your verification
+            codes are shown here instead of being sent. They will be emailed
+            automatically once the store owner adds an email provider.
+          </p>
+          <div className="flex flex-wrap gap-3">
+            {devCodes.email && (
+              <span className="rounded-lg bg-white px-3 py-2 font-mono text-lg font-bold tracking-[0.3em] text-amber-700 shadow-sm dark:bg-amber-950/50 dark:text-amber-300">
+                Email: {devCodes.email}
+              </span>
+            )}
+            {devCodes.phone && (
+              <span className="rounded-lg bg-white px-3 py-2 font-mono text-lg font-bold tracking-[0.3em] text-amber-700 shadow-sm dark:bg-amber-950/50 dark:text-amber-300">
+                Phone: {devCodes.phone}
+              </span>
+            )}
+          </div>
+        </div>
+      )}
+
       {!email && !user && (
         <div className="mb-4 rounded-2xl border border-slate-200 bg-white p-5 dark:border-slate-700 dark:bg-slate-800/60">
           <p className="mb-3 text-sm text-slate-600 dark:text-slate-300">
@@ -281,6 +331,7 @@ export const VerifyAccountPage = () => {
           type="email"
           email={email}
           onVerified={() => handleVerified("email")}
+          onCodes={(codes) => setDevCodes((prev) => ({ ...prev, ...codes }))}
         />
       )}
 
@@ -290,6 +341,7 @@ export const VerifyAccountPage = () => {
             type="phone"
             email={email}
             onVerified={() => handleVerified("phone")}
+            onCodes={(codes) => setDevCodes((prev) => ({ ...prev, ...codes }))}
           />
         </div>
       )}

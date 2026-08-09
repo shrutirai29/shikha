@@ -22,6 +22,13 @@ interface RegisterInput {
   phone?: string;
 }
 
+export interface RegisterResult {
+  pending: boolean;
+  email: string;
+  verificationRequired: string[];
+  devCodes?: { email?: string; phone?: string };
+}
+
 interface AuthContextValue {
   user: User | null;
   isLoading: boolean;
@@ -29,7 +36,7 @@ interface AuthContextValue {
   isAdmin: boolean;
   verificationRequired: string[];
   login: (input: LoginInput) => Promise<string[]>;
-  register: (input: RegisterInput) => Promise<void>;
+  register: (input: RegisterInput) => Promise<RegisterResult>;
   logout: () => void;
   refreshProfile: () => Promise<void>;
   updateProfile: (data: Partial<Pick<User, "name" | "phone">>) => Promise<void>;
@@ -115,11 +122,16 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
   );
 
   const register = useCallback(
-    async (input: RegisterInput) => {
+    async (input: RegisterInput): Promise<RegisterResult> => {
       setIsLoading(true);
 
       try {
-        await api.post("/auth/register", input);
+        const { data } = await api.post<{
+          success: boolean;
+          data: RegisterResult;
+        }>("/auth/register", input);
+
+        return data.data;
       } finally {
         setIsLoading(false);
       }

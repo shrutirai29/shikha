@@ -106,16 +106,30 @@ export const register = async (data: RegisterDto) => {
   });
 
   // Verify both channels: email OTP by email, phone OTP by SMS (or email fallback).
-  await Promise.allSettled([
+  const [emailResult, smsResult] = await Promise.allSettled([
     sendOtpEmail(email, emailOtp),
     sendOtpSms(email, data.phone, phoneOtp),
   ]);
+
+  // Development fallback: when no email/SMS provider is configured, surface
+  // the codes in the response so the flow stays testable. Once SMTP/SMS are
+  // configured, delivery succeeds and the codes are never exposed.
+  const devCodes: { email?: string; phone?: string } = {};
+
+  if (emailResult.status === "fulfilled" && !emailResult.value.delivered) {
+    devCodes.email = emailOtp;
+  }
+
+  if (smsResult.status === "fulfilled" && !smsResult.value.delivered) {
+    devCodes.phone = phoneOtp;
+  }
 
   return {
     pending: true,
     id: pending._id,
     email,
     verificationRequired: getPendingVerificationRequired(pending),
+    ...(Object.keys(devCodes).length > 0 ? { devCodes } : {}),
   };
 };
 
@@ -375,21 +389,33 @@ export const resendCode = async (
     }
 
     const code = generateOtp();
+    const devCodes: { email?: string; phone?: string } = {};
 
     if (type === "email") {
       pending.emailOtpCode = code;
       pending.emailOtpExpires = new Date(Date.now() + OTP_TTL_MS);
       await pending.save();
-      await sendOtpEmail(pending.email, code);
+
+      const result = await sendOtpEmail(pending.email, code);
+
+      if (!result.delivered) {
+        devCodes.email = code;
+      }
     } else {
       pending.phoneOtpCode = code;
       pending.phoneOtpExpires = new Date(Date.now() + OTP_TTL_MS);
       await pending.save();
-      await sendOtpSms(pending.email, pending.phone, code);
+
+      const result = await sendOtpSms(pending.email, pending.phone, code);
+
+      if (!result.delivered) {
+        devCodes.phone = code;
+      }
     }
 
     return {
       message: "A new verification code has been sent",
+      ...(Object.keys(devCodes).length > 0 ? { devCodes } : {}),
     };
   }
 
@@ -413,21 +439,33 @@ export const resendCode = async (
   }
 
   const code = generateOtp();
+  const devCodes: { email?: string; phone?: string } = {};
 
   if (type === "email") {
     user.emailOtpCode = code;
     user.emailOtpExpires = new Date(Date.now() + OTP_TTL_MS);
     await user.save();
-    await sendOtpEmail(user.email, code);
+
+    const result = await sendOtpEmail(user.email, code);
+
+    if (!result.delivered) {
+      devCodes.email = code;
+    }
   } else {
     user.phoneOtpCode = code;
     user.phoneOtpExpires = new Date(Date.now() + OTP_TTL_MS);
     await user.save();
-    await sendOtpSms(user.email, user.phone ?? "", code);
+
+    const result = await sendOtpSms(user.email, user.phone ?? "", code);
+
+    if (!result.delivered) {
+      devCodes.phone = code;
+    }
   }
 
   return {
     message: "A new verification code has been sent",
+    ...(Object.keys(devCodes).length > 0 ? { devCodes } : {}),
   };
 };
 

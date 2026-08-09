@@ -78,7 +78,7 @@ export const sendOtpEmail = async (
   to: string,
   code: string,
   purpose: "email" | "phone" = "email"
-): Promise<void> => {
+): Promise<{ delivered: boolean }> => {
   const subject =
     purpose === "phone"
       ? "Your Shikha phone verification code"
@@ -86,7 +86,7 @@ export const sendOtpEmail = async (
   const label =
     purpose === "phone" ? "phone number" : "email address";
 
-  await sendEmail({
+  return sendEmail({
     to,
     subject,
     html: `

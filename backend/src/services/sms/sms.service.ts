@@ -45,7 +45,7 @@ export const sendOtpSms = async (
   }
 
   // Fallback channel so the flow always works in dev / without SMS credentials.
-  await sendOtpEmail(email, code, "phone");
+  const fallback = await sendOtpEmail(email, code, "phone");
 
-  return { delivered: false, channel: "email" };
+  return { delivered: fallback.delivered, channel: "email" };
 };
