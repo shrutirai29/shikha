@@ -27,6 +27,7 @@ export interface User {
   role: "admin" | "customer";
   phone?: string;
   isVerified: boolean;
+  phoneVerified?: boolean;
   isActive: boolean;
   createdAt?: string;
 }

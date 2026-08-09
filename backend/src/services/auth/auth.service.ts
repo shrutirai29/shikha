@@ -11,20 +11,27 @@ import { generateAccessToken } from "../../utils/jwt";
 
 import {
   sendVerificationEmail,
+  sendOtpEmail,
   sendPasswordResetEmail,
 } from "../email/email.service";
+import { sendOtpSms } from "../sms/sms.service";
 
 interface RegisterDto {
   name: string;
   email: string;
   password: string;
-  phone?: string;
+  phone: string;
 }
 
 interface LoginDto {
   email: string;
   password: string;
 }
+
+const OTP_TTL_MS = 10 * 60 * 1000; // 10 minutes
+
+export const generateOtp = (): string =>
+  String(crypto.randomInt(100000, 999999));
 
 export const register = async (data: RegisterDto) => {
   const existingUser = await User.findOne({
@@ -37,7 +44,8 @@ export const register = async (data: RegisterDto) => {
 
   const hashedPassword = await bcrypt.hash(data.password, 10);
 
-  const verificationToken = crypto.randomBytes(32).toString("hex");
+  const emailOtp = generateOtp();
+  const phoneOtp = generateOtp();
 
   const user = await User.create({
     name: data.name,
@@ -45,17 +53,43 @@ export const register = async (data: RegisterDto) => {
     password: hashedPassword,
     phone: data.phone,
     role: "customer",
-    verificationToken,
+    emailOtpCode: emailOtp,
+    emailOtpExpires: new Date(Date.now() + OTP_TTL_MS),
+    phoneOtpCode: phoneOtp,
+    phoneOtpExpires: new Date(Date.now() + OTP_TTL_MS),
   });
 
-  await sendVerificationEmail(user.email, verificationToken);
+  // Verify both channels: email OTP by email, phone OTP by SMS (or email fallback).
+  await Promise.allSettled([
+    sendOtpEmail(user.email, emailOtp),
+    sendOtpSms(user.email, user.phone ?? "", phoneOtp),
+  ]);
 
   return {
     id: user._id,
     name: user.name,
     email: user.email,
+    phone: user.phone,
     isVerified: user.isVerified,
+    phoneVerified: user.phoneVerified,
+    verificationRequired: getVerificationRequired(user),
   };
+};
+
+const getVerificationRequired = (user: any): string[] => {
+  const required: string[] = [];
+
+  if (!user.isVerified) {
+    required.push("email");
+  }
+
+  // Accounts created before phone verification existed have no phone;
+  // treat them as verified rather than locking legacy users out.
+  if (user.phone && !user.phoneVerified) {
+    required.push("phone");
+  }
+
+  return required;
 };
 
 export const login = async (data: LoginDto) => {
@@ -93,7 +127,130 @@ export const login = async (data: LoginDto) => {
       email: user.email,
       role: user.role,
       isVerified: user.isVerified,
+      phoneVerified: user.phoneVerified,
+      phone: user.phone,
     },
+    verificationRequired: getVerificationRequired(user),
+  };
+};
+
+export const verifyCode = async (
+  email: string,
+  type: "email" | "phone",
+  code: string
+) => {
+  const user = await User.findOne({
+    email: email.toLowerCase(),
+  });
+
+  if (!user) {
+    throw new NotFoundError("No account found with this email");
+  }
+
+  if (type === "email") {
+    if (user.isVerified) {
+      throw new ConflictError("Email is already verified");
+    }
+
+    if (
+      !user.emailOtpCode ||
+      !user.emailOtpExpires ||
+      user.emailOtpExpires < new Date()
+    ) {
+      throw new UnauthorizedError(
+        "Verification code has expired — request a new one"
+      );
+    }
+
+    if (user.emailOtpCode !== code) {
+      throw new UnauthorizedError("Incorrect verification code");
+    }
+
+    user.isVerified = true;
+    user.emailOtpCode = null;
+    user.emailOtpExpires = null;
+  } else {
+    if (user.phoneVerified) {
+      throw new ConflictError("Phone is already verified");
+    }
+
+    if (
+      !user.phoneOtpCode ||
+      !user.phoneOtpExpires ||
+      user.phoneOtpExpires < new Date()
+    ) {
+      throw new UnauthorizedError(
+        "Verification code has expired — request a new one"
+      );
+    }
+
+    if (user.phoneOtpCode !== code) {
+      throw new UnauthorizedError("Incorrect verification code");
+    }
+
+    user.phoneVerified = true;
+    user.phoneOtpCode = null;
+    user.phoneOtpExpires = null;
+  }
+
+  await user.save();
+
+  return {
+    message:
+      type === "email"
+        ? "Email verified successfully"
+        : "Phone verified successfully",
+    verificationRequired: getVerificationRequired(user),
+    user: {
+      id: user._id,
+      name: user.name,
+      email: user.email,
+      phone: user.phone,
+      isVerified: user.isVerified,
+      phoneVerified: user.phoneVerified,
+    },
+  };
+};
+
+export const resendCode = async (
+  email: string,
+  type: "email" | "phone"
+) => {
+  const user = await User.findOne({
+    email: email.toLowerCase(),
+  });
+
+  if (!user) {
+    // Do not reveal whether an account exists.
+    return {
+      message: "If the account exists, a new code has been sent",
+    };
+  }
+
+  if (type === "email" && user.isVerified) {
+    throw new ConflictError("Email is already verified");
+  }
+
+  if (type === "phone" && user.phoneVerified) {
+    throw new ConflictError("Phone is already verified");
+  }
+
+  const code = generateOtp();
+
+  if (type === "email") {
+    user.emailOtpCode = code;
+    user.emailOtpExpires = new Date(Date.now() + OTP_TTL_MS);
+    await user.save();
+    await sendOtpEmail(user.email, code);
+  } else {
+    user.phoneOtpCode = code;
+    user.phoneOtpExpires = new Date(Date.now() + OTP_TTL_MS);
+    await user.save();
+    await sendOtpSms(user.email, user.phone ?? "", code);
+  }
+
+  return {
+    message: "A new verification code has been sent",
   };
 };
 

@@ -15,7 +15,10 @@ export const registerSchema = z.object({
 
   phone: z
     .string()
-    .optional(),
+    .regex(
+      /^[0-9+\-\s]{10,15}$/,
+      "A valid phone number is required (10-15 digits)"
+    ),
 });
 
 export const loginSchema = z.object({
@@ -45,4 +48,17 @@ export const verifyEmailSchema = z.object({
 
 export const resendVerificationSchema = z.object({
   email: z.string().email("Invalid email address"),
+});
+
+export const verifyCodeSchema = z.object({
+  email: z.string().email("Invalid email address"),
+  type: z.enum(["email", "phone"]),
+  code: z
+    .string()
+    .regex(/^\d{6}$/, "Verification code must be 6 digits"),
+});
+
+export const resendCodeSchema = z.object({
+  email: z.string().email("Invalid email address"),
+  type: z.enum(["email", "phone"]),
 });

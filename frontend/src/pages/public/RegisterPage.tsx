@@ -17,9 +17,7 @@ const registerSchema = z
     email: z.string().email("Enter a valid email address"),
     phone: z
       .string()
-      .regex(/^[0-9+\-\s]{10,15}$/, "Enter a valid phone number")
-      .optional()
-      .or(z.literal("")),
+      .regex(/^[0-9+\-\s]{10,15}$/, "Enter a valid phone number (10-15 digits)"),
     password: z.string().min(6, "Password must be at least 6 characters"),
     confirmPassword: z.string(),
   })
@@ -51,11 +49,13 @@ export const RegisterPage = () => {
         name: values.name,
         email: values.email,
         password: values.password,
-        phone: values.phone || undefined,
+        phone: values.phone,
       });
 
-      toast.success("Account created! Please check your email to verify it.");
-      navigate("/login");
+      toast.success(
+        "Account created! Enter the verification codes sent to your email and phone."
+      );
+      navigate("/verify", { state: { email: values.email } });
     } catch (error) {
       toast.error(getErrorMessage(error));
     }
@@ -96,7 +96,7 @@ export const RegisterPage = () => {
         />
 
         <Input
-          label="Phone (optional)"
+          label="Phone"
           type="tel"
           autoComplete="tel"
           placeholder="+91 98765 43210"

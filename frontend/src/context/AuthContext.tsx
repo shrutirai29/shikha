@@ -27,7 +27,8 @@ interface AuthContextValue {
   isLoading: boolean;
   isAuthenticated: boolean;
   isAdmin: boolean;
-  login: (input: LoginInput) => Promise<void>;
+  verificationRequired: string[];
+  login: (input: LoginInput) => Promise<string[]>;
   register: (input: RegisterInput) => Promise<void>;
   logout: () => void;
   refreshProfile: () => Promise<void>;
@@ -89,17 +90,23 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
   }, [refreshProfile]);
 
   const login = useCallback(
-    async (input: LoginInput) => {
+    async (input: LoginInput): Promise<string[]> => {
       setIsLoading(true);
 
       try {
         const { data } = await api.post<{
           success: boolean;
-          data: { token: string; user: User };
+          data: {
+            token: string;
+            user: User;
+            verificationRequired?: string[];
+          };
         }>("/auth/login", input);
 
         localStorage.setItem(TOKEN_KEY, data.data.token);
         persistUser(data.data.user);
+
+        return data.data.verificationRequired ?? [];
       } finally {
         setIsLoading(false);
       }
@@ -137,19 +144,38 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     persistUser(null);
   }, [persistUser]);
 
+  const verificationRequired = useMemo(() => {
+    const required: string[] = [];
+
+    if (user && !user.isVerified) required.push("email");
+    if (user?.phone && !user.phoneVerified) required.push("phone");
+
+    return required;
+  }, [user]);
+
   const value = useMemo<AuthContextValue>(
     () => ({
       user,
       isLoading,
       isAuthenticated: Boolean(user),
       isAdmin: user?.role === "admin",
+      verificationRequired,
       login,
       register,
       logout,
       refreshProfile,
       updateProfile,
     }),
-    [user, isLoading, login, register, logout, refreshProfile, updateProfile]
+    [
+      user,
+      isLoading,
+      verificationRequired,
+      login,
+      register,
+      logout,
+      refreshProfile,
+      updateProfile,
+    ]
   );
 
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;

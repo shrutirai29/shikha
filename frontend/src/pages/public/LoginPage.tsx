@@ -38,7 +38,14 @@ export const LoginPage = () => {
 
   const onSubmit = async (values: LoginForm) => {
     try {
-      await login(values);
+      const verificationRequired = await login(values);
+
+      if (verificationRequired.length > 0) {
+        toast.info("Please verify your email and phone to continue");
+        navigate("/verify", { replace: true });
+        return;
+      }
+
       toast.success("Welcome back!");
       navigate(from, { replace: true });
     } catch (error) {

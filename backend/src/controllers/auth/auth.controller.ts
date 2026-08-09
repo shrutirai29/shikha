@@ -8,6 +8,8 @@ import {
   resendVerificationEmail,
   forgotPassword,
   resetPassword,
+  verifyCode,
+  resendCode,
 } from "../../services/auth/auth.service";
 
 import {
@@ -17,6 +19,8 @@ import {
   resetPasswordSchema,
   verifyEmailSchema,
   resendVerificationSchema,
+  verifyCodeSchema,
+  resendCodeSchema,
 } from "../../validators/auth/auth.validator";
 
 export const registerUser = asyncHandler(async (req: Request, res: Response) => {
@@ -87,6 +91,34 @@ export const resetPasswordRequest = asyncHandler(
     const { token, password } = resetPasswordSchema.parse(req.body);
 
     const result = await resetPassword(token, password);
+
+    res.status(200).json({
+      success: true,
+      ...result,
+    });
+  }
+);
+
+export const verifyCodeRequest = asyncHandler(
+  async (req: Request, res: Response) => {
+    const { email, type, code } = verifyCodeSchema.parse(
+      req.body
+    );
+
+    const result = await verifyCode(email, type, code);
+
+    res.status(200).json({
+      success: true,
+      ...result,
+    });
+  }
+);
+
+export const resendCodeRequest = asyncHandler(
+  async (req: Request, res: Response) => {
+    const { email, type } = resendCodeSchema.parse(req.body);
+
+    const result = await resendCode(email, type);
 
     res.status(200).json({
       success: true,

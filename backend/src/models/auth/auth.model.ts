@@ -39,9 +39,34 @@ const userSchema = new Schema<IUser>(
       default: false,
     },
 
+    phoneVerified: {
+      type: Boolean,
+      default: false,
+    },
+
     isActive: {
       type: Boolean,
       default: true,
+    },
+
+    emailOtpCode: {
+      type: String,
+      default: null,
+    },
+
+    emailOtpExpires: {
+      type: Date,
+      default: null,
+    },
+
+    phoneOtpCode: {
+      type: String,
+      default: null,
+    },
+
+    phoneOtpExpires: {
+      type: Date,
+      default: null,
     },
 
     resetPasswordToken: {

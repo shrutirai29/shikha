@@ -141,7 +141,11 @@ import {
   resendVerification,
   forgotPasswordRequest,
   resetPasswordRequest,
+  verifyCodeRequest,
+  resendCodeRequest,
 } from "../../controllers/auth/auth.controller";
+
+import { verifyCodeLimiter } from "../../middleware/rateLimit.middleware";
 
 const router = Router();
 
@@ -152,6 +156,10 @@ router.post("/login", loginUser);
 router.post("/verify-email", verifyEmailAddress);
 
 router.post("/resend-verification", resendVerification);
+
+router.post("/verify-code", verifyCodeLimiter, verifyCodeRequest);
+
+router.post("/resend-code", verifyCodeLimiter, resendCodeRequest);
 
 router.post("/forgot-password", forgotPasswordRequest);
 

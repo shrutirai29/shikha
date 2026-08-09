@@ -12,6 +12,14 @@ export interface IUser extends Document {
   isVerified: boolean;
   isActive: boolean;
 
+  phoneVerified: boolean;
+
+  emailOtpCode?: string | null;
+  emailOtpExpires?: Date | null;
+
+  phoneOtpCode?: string | null;
+  phoneOtpExpires?: Date | null;
+
   resetPasswordToken?: string | null;
   resetPasswordExpires?: Date | null;
   verificationToken?: string | null;

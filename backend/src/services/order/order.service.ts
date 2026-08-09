@@ -1,6 +1,7 @@
 import Order from "../../models/order/order.model";
 import Cart from "../../models/cart/cart.model";
 import Product from "../../models/product/product.model";
+import User from "../../models/auth/auth.model";
 
 import { CreateOrderDto } from "../../dtos/order/create-order.dto";
 
@@ -13,6 +14,25 @@ export const createOrder = async (
   userId: string,
   data: CreateOrderDto
 ) => {
+  const user = await User.findById(userId);
+
+  if (!user) {
+    throw new NotFoundError("User not found");
+  }
+
+  // Purchasing requires a verified account: email always, phone when provided.
+  if (!user.isVerified) {
+    throw new ForbiddenError(
+      "Please verify your email address before placing an order"
+    );
+  }
+
+  if (user.phone && !user.phoneVerified) {
+    throw new ForbiddenError(
+      "Please verify your phone number before placing an order"
+    );
+  }
+
   const cart = await Cart.findOne({ user: userId });
 
   if (!cart || cart.items.length === 0) {
