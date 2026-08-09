@@ -143,6 +143,7 @@ import {
   resetPasswordRequest,
   verifyCodeRequest,
   resendCodeRequest,
+  verifyStatusRequest,
 } from "../../controllers/auth/auth.controller";
 
 import { verifyCodeLimiter } from "../../middleware/rateLimit.middleware";
@@ -160,6 +161,8 @@ router.post("/resend-verification", resendVerification);
 router.post("/verify-code", verifyCodeLimiter, verifyCodeRequest);
 
 router.post("/resend-code", verifyCodeLimiter, resendCodeRequest);
+
+router.get("/verify-status", verifyStatusRequest);
 
 router.post("/forgot-password", forgotPasswordRequest);
 

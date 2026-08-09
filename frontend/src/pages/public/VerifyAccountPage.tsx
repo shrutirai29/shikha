@@ -164,6 +164,37 @@ export const VerifyAccountPage = () => {
     email: Boolean(user?.isVerified),
     phone: Boolean(user?.phone && user.phoneVerified),
   });
+
+  // Always fetch the current verification status: after a refresh or when the
+  // page was reached via a redirect (e.g. re-registering a pending email), the
+  // location state is gone — but codes still need to be shown when delivery
+  // isn't configured.
+  useEffect(() => {
+    if (!email || user) return;
+
+    let active = true;
+
+    const loadStatus = async () => {
+      try {
+        const { data } = await api.get<{
+          success: boolean;
+          devCodes?: DevCodes;
+        }>("/auth/verify-status", { params: { email } });
+
+        if (active && data.devCodes) {
+          setDevCodes((prev) => ({ ...prev, ...data.devCodes }));
+        }
+      } catch {
+        // Non-fatal: resend still works from the sections below.
+      }
+    };
+
+    void loadStatus();
+
+    return () => {
+      active = false;
+    };
+  }, [email, user]);
   const [tokenStatus, setTokenStatus] = useState<
     "idle" | "loading" | "success" | "error"
   >(token ? "loading" : "idle");

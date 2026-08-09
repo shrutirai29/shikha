@@ -16,6 +16,7 @@ import {
   sendPasswordResetEmail,
 } from "../email/email.service";
 import { sendOtpSms } from "../sms/sms.service";
+import { env } from "../../config/env";
 
 interface RegisterDto {
   name: string;
@@ -466,6 +467,82 @@ export const resendCode = async (
   return {
     message: "A new verification code has been sent",
     ...(Object.keys(devCodes).length > 0 ? { devCodes } : {}),
+  };
+};
+
+/**
+ * Return the current verification state for an email. When email/SMS delivery
+ * is not configured, the pending codes are included so the verify page can
+ * display them (dev fallback) even after a refresh or a redirect.
+ */
+/**
+ * Whether email delivery is configured. Phone codes fall back to email, so
+ * dev codes for both channels are only exposed when no provider is set.
+ */
+const isEmailDeliveryConfigured = (): boolean => {
+  const config = env();
+
+  return Boolean(
+    config.SMTP_HOST && config.SMTP_USER && config.SMTP_PASS
+  );
+};
+
+export const getVerifyStatus = async (email: string) => {
+  const normalizedEmail = email.toLowerCase();
+
+  const pending = await PendingRegistration.findOne({
+    email: normalizedEmail,
+  });
+
+  if (pending) {
+    const devCodes: { email?: string; phone?: string } = {};
+
+    if (!isEmailDeliveryConfigured()) {
+      if (!pending.emailVerified && pending.emailOtpCode) {
+        devCodes.email = pending.emailOtpCode;
+      }
+
+      if (!pending.phoneVerified && pending.phoneOtpCode) {
+        devCodes.phone = pending.phoneOtpCode;
+      }
+    }
+
+    return {
+      pending: true,
+      email: pending.email,
+      verificationRequired: getPendingVerificationRequired(pending),
+      ...(Object.keys(devCodes).length > 0 ? { devCodes } : {}),
+    };
+  }
+
+  const user = await User.findOne({ email: normalizedEmail });
+
+  if (user) {
+    const devCodes: { email?: string; phone?: string } = {};
+
+    if (!isEmailDeliveryConfigured()) {
+      if (!user.isVerified && user.emailOtpCode) {
+        devCodes.email = user.emailOtpCode;
+      }
+
+      if (!user.phoneVerified && user.phoneOtpCode) {
+        devCodes.phone = user.phoneOtpCode;
+      }
+    }
+
+    return {
+      pending: false,
+      email: user.email,
+      verificationRequired: getVerificationRequired(user),
+      ...(Object.keys(devCodes).length > 0 ? { devCodes } : {}),
+    };
+  }
+
+  return {
+    pending: false,
+    email: normalizedEmail,
+    verificationRequired: ["email", "phone"],
+    notFound: true,
   };
 };
 

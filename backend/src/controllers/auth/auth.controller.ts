@@ -10,6 +10,7 @@ import {
   resetPassword,
   verifyCode,
   resendCode,
+  getVerifyStatus,
 } from "../../services/auth/auth.service";
 
 import {
@@ -21,6 +22,7 @@ import {
   resendVerificationSchema,
   verifyCodeSchema,
   resendCodeSchema,
+  verifyStatusSchema,
 } from "../../validators/auth/auth.validator";
 
 export const registerUser = asyncHandler(async (req: Request, res: Response) => {
@@ -120,6 +122,19 @@ export const resendCodeRequest = asyncHandler(
     const { email, type } = resendCodeSchema.parse(req.body);
 
     const result = await resendCode(email, type);
+
+    res.status(200).json({
+      success: true,
+      ...result,
+    });
+  }
+);
+
+export const verifyStatusRequest = asyncHandler(
+  async (req: Request, res: Response) => {
+    const { email } = verifyStatusSchema.parse(req.query);
+
+    const result = await getVerifyStatus(email);
 
     res.status(200).json({
       success: true,

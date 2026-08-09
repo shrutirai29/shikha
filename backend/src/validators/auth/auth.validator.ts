@@ -62,3 +62,7 @@ export const resendCodeSchema = z.object({
   email: z.string().email("Invalid email address"),
   type: z.enum(["email", "phone"]),
 });
+
+export const verifyStatusSchema = z.object({
+  email: z.string().email("Invalid email address"),
+});
