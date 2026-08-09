@@ -5,7 +5,14 @@ export const TOKEN_KEY = "shikha_token";
 // In dev, requests go through the Vite proxy (/api -> localhost:5000).
 // In production builds, point VITE_API_URL at the deployed backend,
 // e.g. VITE_API_URL=https://shikha-backend.up.railway.app
-const API_URL = import.meta.env.VITE_API_URL || "/api";
+const rawApiUrl = import.meta.env.VITE_API_URL || "/api";
+
+// Ensure the base URL always points at the API root: if a full origin is
+// provided without the /api suffix, append it so requests hit the backend
+// routes (e.g. https://host/api/auth/login instead of https://host/auth/login).
+const API_URL = rawApiUrl.endsWith("/api")
+  ? rawApiUrl
+  : `${rawApiUrl.replace(/\/$/, "")}/api`;
 
 export const api = axios.create({
   baseURL: API_URL,
