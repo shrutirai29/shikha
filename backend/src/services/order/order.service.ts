@@ -239,12 +239,12 @@ type OrderStatus =
   | "Delivered"
   | "Cancelled";
 
-// Lifecycle: Pending -> Processing -> Shipped -> Delivered.
-// Cancellation is allowed from Pending/Processing only; Delivered
-// and Cancelled are terminal states.
+// Admins may move an order forward along the lifecycle and may skip
+// intermediate steps (e.g. a COD order delivered on the spot can go
+// straight Pending -> Delivered). Delivered and Cancelled are terminal.
 const VALID_TRANSITIONS: Record<OrderStatus, OrderStatus[]> = {
-  Pending: ["Processing", "Shipped", "Cancelled"],
-  Processing: ["Shipped", "Cancelled"],
+  Pending: ["Processing", "Shipped", "Delivered", "Cancelled"],
+  Processing: ["Shipped", "Delivered", "Cancelled"],
   Shipped: ["Delivered"],
   Delivered: [],
   Cancelled: [],

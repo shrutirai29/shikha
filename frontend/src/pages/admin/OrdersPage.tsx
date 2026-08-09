@@ -10,9 +10,18 @@ import { PageLoader } from "@/components/ui/Card";
 import { PaginationBar } from "@/components/ui/Pagination";
 import { Button } from "@/components/ui/Button";
 import { Modal } from "@/components/ui/Modal";
-import { formatCurrency, formatDateTime } from "@/lib/utils";
+import { cn, formatCurrency, formatDateTime } from "@/lib/utils";
 
 const statuses = ["Pending", "Processing", "Shipped", "Delivered", "Cancelled"] as const;
+
+// Legal next states per current status — mirrors the backend transition map.
+const NEXT_STATUS: Record<string, string[]> = {
+  Pending: ["Processing", "Shipped", "Delivered", "Cancelled"],
+  Processing: ["Shipped", "Delivered", "Cancelled"],
+  Shipped: ["Delivered"],
+  Delivered: [],
+  Cancelled: [],
+};
 
 const statusVariant = (status: string) => {
   switch (status) {
@@ -142,20 +151,22 @@ export const OrdersPage = () => {
                         </td>
                         <td className="px-5 py-3">
                           <div className="flex justify-end gap-2">
-                            <Button
-                              size="sm"
-                              variant="outline"
-                              onClick={() => {
-                                setStatusModal({
-                                  id: order._id,
-                                  current: order.orderStatus,
-                                  orderId: order._id,
-                                });
-                                setNewStatus(order.orderStatus);
-                              }}
-                            >
-                              Update status
-                            </Button>
+                            {(NEXT_STATUS[order.orderStatus] ?? []).length > 0 && (
+                              <Button
+                                size="sm"
+                                variant="outline"
+                                onClick={() => {
+                                  setStatusModal({
+                                    id: order._id,
+                                    current: order.orderStatus,
+                                    orderId: order._id,
+                                  });
+                                  setNewStatus(order.orderStatus);
+                                }}
+                              >
+                                Update status
+                              </Button>
+                            )}
                             <Link to={`/orders/${order._id}`}>
                               <Button size="sm" variant="ghost">
                                 View
@@ -194,25 +205,46 @@ export const OrdersPage = () => {
           </>
         }
       >
-        <div className="space-y-2">
-          {statuses.map((status) => (
-            <label
-              key={status}
-              className="flex cursor-pointer items-center gap-3 rounded-xl border border-slate-200 p-3 transition hover:bg-slate-50 dark:border-slate-600 dark:hover:bg-slate-700"
-            >
-              <input
-                type="radio"
-                name="status"
-                checked={newStatus === status}
-                onChange={() => setNewStatus(status)}
-                className="size-4 text-indigo-600"
-              />
-              <span className="text-sm font-medium text-slate-700 dark:text-slate-200">
-                {status}
-              </span>
-            </label>
-          ))}
-        </div>
+        {statusModal && (NEXT_STATUS[statusModal.current] ?? []).length === 0 ? (
+          <p className="text-sm text-slate-500 dark:text-slate-400">
+            This order is <span className="font-semibold">{statusModal.current}</span>,
+            which is a final state and cannot be changed.
+          </p>
+        ) : (
+          <div className="space-y-2">
+            {statusModal &&
+              statuses.map((status) => {
+                const allowed = (NEXT_STATUS[statusModal.current] ?? []).includes(status);
+
+                return (
+                  <label
+                    key={status}
+                    className={cn(
+                      "flex cursor-pointer items-center gap-3 rounded-xl border p-3 transition",
+                      allowed
+                        ? "border-slate-200 hover:bg-slate-50 dark:border-slate-600 dark:hover:bg-slate-700"
+                        : "cursor-not-allowed border-slate-200/60 opacity-50 dark:border-slate-700/60"
+                    )}
+                  >
+                    <input
+                      type="radio"
+                      name="status"
+                      checked={newStatus === status}
+                      disabled={!allowed}
+                      onChange={() => setNewStatus(status)}
+                      className="size-4 text-indigo-600"
+                    />
+                    <span className="text-sm font-medium text-slate-700 dark:text-slate-200">
+                      {status}
+                    </span>
+                    {status === statusModal.current && (
+                      <span className="ml-auto text-xs text-slate-400">current</span>
+                    )}
+                  </label>
+                );
+              })}
+          </div>
+        )}
       </Modal>
     </div>
   );
