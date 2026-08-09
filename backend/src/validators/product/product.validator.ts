@@ -36,6 +36,10 @@ const productBaseSchema = z.object({
   isFeatured: z
     .boolean()
     .optional(),
+
+  isActive: z
+    .boolean()
+    .optional(),
 });
 
 export const createProductSchema = productBaseSchema.refine(
