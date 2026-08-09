@@ -26,12 +26,13 @@ import {
 export const registerUser = asyncHandler(async (req: Request, res: Response) => {
   const validatedData = registerSchema.parse(req.body);
 
-  const user = await register(validatedData);
+  const result = await register(validatedData);
 
   res.status(201).json({
     success: true,
-    message: "User registered successfully",
-    data: user,
+    message:
+      "Registration started — verify your email and phone to create your account",
+    data: result,
   });
 });
 

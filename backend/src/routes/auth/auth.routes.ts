@@ -25,9 +25,9 @@
  *               phone: { type: string }
  *     responses:
  *       201:
- *         description: User registered
+ *         description: Registration started; account is created after email and phone are verified
  *       409:
- *         description: Email already registered
+ *         description: Email already registered, or registration already in progress
  */
 
 /**

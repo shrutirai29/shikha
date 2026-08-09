@@ -6,7 +6,7 @@ import { z } from "zod";
 import { Eye, EyeOff, UserPlus } from "lucide-react";
 import { useAuth } from "@/context/AuthContext";
 import { useToast } from "@/context/ToastContext";
-import { getErrorMessage } from "@/lib/api";
+import { getErrorMessage, isApiError } from "@/lib/api";
 import { Button } from "@/components/ui/Button";
 import { Input } from "@/components/ui/Input";
 import { Logo } from "@/components/layout/Logo";
@@ -53,10 +53,18 @@ export const RegisterPage = () => {
       });
 
       toast.success(
-        "Almost there! Enter the codes sent to your email and phone to activate your account."
+        "Almost there! Enter the codes sent to your email and phone to create your account."
       );
       navigate("/verify", { state: { email: values.email } });
     } catch (error) {
+      // A registration for this email is already waiting for verification —
+      // send them back to the verify page instead of showing an error.
+      if (isApiError(error) && error.response.data.code === "REGISTRATION_PENDING") {
+        toast.info("Finish verifying to create your account");
+        navigate("/verify", { state: { email: values.email } });
+        return;
+      }
+
       toast.error(getErrorMessage(error));
     }
   };

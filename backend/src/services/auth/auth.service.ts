@@ -1,6 +1,7 @@
 import bcrypt from "bcrypt";
 import crypto from "crypto";
 import User from "../../models/auth/auth.model";
+import PendingRegistration from "../../models/auth/pending-registration.model";
 
 import { ConflictError } from "../../errors/ConflictError";
 import { UnauthorizedError } from "../../errors/UnauthorizedError";
@@ -29,52 +30,10 @@ interface LoginDto {
 }
 
 const OTP_TTL_MS = 10 * 60 * 1000; // 10 minutes
+const PENDING_TTL_MS = 24 * 60 * 60 * 1000; // 24 hours
 
 export const generateOtp = (): string =>
   String(crypto.randomInt(100000, 999999));
-
-export const register = async (data: RegisterDto) => {
-  const existingUser = await User.findOne({
-    email: data.email.toLowerCase(),
-  });
-
-  if (existingUser) {
-    throw new ConflictError("Email already registered");
-  }
-
-  const hashedPassword = await bcrypt.hash(data.password, 10);
-
-  const emailOtp = generateOtp();
-  const phoneOtp = generateOtp();
-
-  const user = await User.create({
-    name: data.name,
-    email: data.email.toLowerCase(),
-    password: hashedPassword,
-    phone: data.phone,
-    role: "customer",
-    emailOtpCode: emailOtp,
-    emailOtpExpires: new Date(Date.now() + OTP_TTL_MS),
-    phoneOtpCode: phoneOtp,
-    phoneOtpExpires: new Date(Date.now() + OTP_TTL_MS),
-  });
-
-  // Verify both channels: email OTP by email, phone OTP by SMS (or email fallback).
-  await Promise.allSettled([
-    sendOtpEmail(user.email, emailOtp),
-    sendOtpSms(user.email, user.phone ?? "", phoneOtp),
-  ]);
-
-  return {
-    id: user._id,
-    name: user.name,
-    email: user.email,
-    phone: user.phone,
-    isVerified: user.isVerified,
-    phoneVerified: user.phoneVerified,
-    verificationRequired: getVerificationRequired(user),
-  };
-};
 
 const getVerificationRequired = (user: any): string[] => {
   const required: string[] = [];
@@ -90,6 +49,74 @@ const getVerificationRequired = (user: any): string[] => {
   }
 
   return required;
+};
+
+const getPendingVerificationRequired = (pending: any): string[] => {
+  const required: string[] = [];
+
+  if (!pending.emailVerified) {
+    required.push("email");
+  }
+
+  if (!pending.phoneVerified) {
+    required.push("phone");
+  }
+
+  return required;
+};
+
+/**
+ * Registering does NOT create an account. It creates a temporary pending
+ * registration that holds the OTP codes; the real User document is created
+ * only after BOTH the email and the phone number are verified.
+ */
+export const register = async (data: RegisterDto) => {
+  const email = data.email.toLowerCase();
+
+  const existingUser = await User.findOne({ email });
+
+  if (existingUser) {
+    throw new ConflictError("Email already registered");
+  }
+
+  const existingPending = await PendingRegistration.findOne({ email });
+
+  if (existingPending) {
+    throw new ConflictError(
+      "Registration already in progress — enter the codes we sent to verify your email and phone.",
+      "REGISTRATION_PENDING"
+    );
+  }
+
+  const hashedPassword = await bcrypt.hash(data.password, 10);
+
+  const emailOtp = generateOtp();
+  const phoneOtp = generateOtp();
+
+  const pending = await PendingRegistration.create({
+    name: data.name,
+    email,
+    passwordHash: hashedPassword,
+    phone: data.phone,
+    emailOtpCode: emailOtp,
+    emailOtpExpires: new Date(Date.now() + OTP_TTL_MS),
+    phoneOtpCode: phoneOtp,
+    phoneOtpExpires: new Date(Date.now() + OTP_TTL_MS),
+    expiresAt: new Date(Date.now() + PENDING_TTL_MS),
+  });
+
+  // Verify both channels: email OTP by email, phone OTP by SMS (or email fallback).
+  await Promise.allSettled([
+    sendOtpEmail(email, emailOtp),
+    sendOtpSms(email, data.phone, phoneOtp),
+  ]);
+
+  return {
+    pending: true,
+    id: pending._id,
+    email,
+    verificationRequired: getPendingVerificationRequired(pending),
+  };
 };
 
 export const login = async (data: LoginDto) => {
@@ -145,13 +172,118 @@ export const login = async (data: LoginDto) => {
   };
 };
 
+/**
+ * Verify a 6-digit code for the email or phone channel.
+ *
+ * For pending registrations (account not created yet), the real User document
+ * is created the moment the LAST channel verifies. For legacy accounts that
+ * already exist as Users (created before dual verification), it marks the
+ * channel verified in place.
+ */
 export const verifyCode = async (
   email: string,
   type: "email" | "phone",
   code: string
 ) => {
+  const normalizedEmail = email.toLowerCase();
+
+  const pending = await PendingRegistration.findOne({
+    email: normalizedEmail,
+  });
+
+  if (pending) {
+    if (type === "email") {
+      if (pending.emailVerified) {
+        throw new ConflictError("Email is already verified");
+      }
+
+      if (
+        !pending.emailOtpCode ||
+        !pending.emailOtpExpires ||
+        pending.emailOtpExpires < new Date()
+      ) {
+        throw new UnauthorizedError(
+          "Verification code has expired — request a new one"
+        );
+      }
+
+      if (pending.emailOtpCode !== code) {
+        throw new UnauthorizedError("Incorrect verification code");
+      }
+
+      pending.emailVerified = true;
+      pending.emailOtpCode = null;
+      pending.emailOtpExpires = null;
+    } else {
+      if (pending.phoneVerified) {
+        throw new ConflictError("Phone is already verified");
+      }
+
+      if (
+        !pending.phoneOtpCode ||
+        !pending.phoneOtpExpires ||
+        pending.phoneOtpExpires < new Date()
+      ) {
+        throw new UnauthorizedError(
+          "Verification code has expired — request a new one"
+        );
+      }
+
+      if (pending.phoneOtpCode !== code) {
+        throw new UnauthorizedError("Incorrect verification code");
+      }
+
+      pending.phoneVerified = true;
+      pending.phoneOtpCode = null;
+      pending.phoneOtpExpires = null;
+    }
+
+    const verificationRequired = getPendingVerificationRequired(pending);
+
+    if (verificationRequired.length === 0) {
+      // Both channels verified — NOW the account is created.
+      const user = await User.create({
+        name: pending.name,
+        email: pending.email,
+        password: pending.passwordHash,
+        phone: pending.phone,
+        role: "customer",
+        isVerified: true,
+        phoneVerified: true,
+        isActive: true,
+      });
+
+      await PendingRegistration.deleteOne({ _id: pending._id });
+
+      return {
+        message: "Account verified — welcome to Shikha!",
+        verificationRequired: [],
+        user: {
+          id: user._id,
+          name: user.name,
+          email: user.email,
+          phone: user.phone,
+          isVerified: user.isVerified,
+          phoneVerified: user.phoneVerified,
+        },
+      };
+    }
+
+    await pending.save();
+
+    return {
+      message:
+        type === "email"
+          ? "Email verified — now verify your phone"
+          : "Phone verified — now verify your email",
+      verificationRequired,
+      pending: true,
+    };
+  }
+
+  // Legacy path: the account already exists as a User (pre-dual-verification).
   const user = await User.findOne({
-    email: email.toLowerCase(),
+    email: normalizedEmail,
   });
 
   if (!user) {
@@ -227,8 +359,42 @@ export const resendCode = async (
   email: string,
   type: "email" | "phone"
 ) => {
+  const normalizedEmail = email.toLowerCase();
+
+  const pending = await PendingRegistration.findOne({
+    email: normalizedEmail,
+  });
+
+  if (pending) {
+    if (type === "email" && pending.emailVerified) {
+      throw new ConflictError("Email is already verified");
+    }
+
+    if (type === "phone" && pending.phoneVerified) {
+      throw new ConflictError("Phone is already verified");
+    }
+
+    const code = generateOtp();
+
+    if (type === "email") {
+      pending.emailOtpCode = code;
+      pending.emailOtpExpires = new Date(Date.now() + OTP_TTL_MS);
+      await pending.save();
+      await sendOtpEmail(pending.email, code);
+    } else {
+      pending.phoneOtpCode = code;
+      pending.phoneOtpExpires = new Date(Date.now() + OTP_TTL_MS);
+      await pending.save();
+      await sendOtpSms(pending.email, pending.phone, code);
+    }
+
+    return {
+      message: "A new verification code has been sent",
+    };
+  }
+
   const user = await User.findOne({
-    email: email.toLowerCase(),
+    email: normalizedEmail,
   });
 
   if (!user) {
