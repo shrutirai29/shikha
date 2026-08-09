@@ -76,14 +76,22 @@ export const sendVerificationEmail = async (
 
 export const sendOtpEmail = async (
   to: string,
-  code: string
+  code: string,
+  purpose: "email" | "phone" = "email"
 ): Promise<void> => {
+  const subject =
+    purpose === "phone"
+      ? "Your Shikha phone verification code"
+      : "Your Shikha verification code";
+  const label =
+    purpose === "phone" ? "phone number" : "email address";
+
   await sendEmail({
     to,
-    subject: "Your Shikha verification code",
+    subject,
     html: `
       <h2>Verify your Shikha account</h2>
-      <p>Use the code below to verify your email address:</p>
+      <p>Use the code below to verify your ${label}:</p>
       <p style="font-size:28px;letter-spacing:6px;font-weight:700">${code}</p>
       <p>This code expires in 10 minutes. If you did not create an account, you can safely ignore this email.</p>
     `,

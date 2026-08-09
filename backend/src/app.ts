@@ -35,6 +35,10 @@ import { swaggerSpec } from "./config/swagger";
 
 const app = express();
 
+// Behind a single proxy hop (Railway ingress) — needed so req.ip resolves
+// to the real client IP and express-rate-limit works correctly.
+app.set("trust proxy", 1);
+
 const config = env();
 
 // Body Parsers
