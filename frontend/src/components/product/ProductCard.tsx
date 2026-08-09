@@ -135,13 +135,9 @@ export const ProductCard = ({
 
         <div className="flex flex-1 flex-col gap-2 p-4">
           {category && (
-            <Link
-              to={`/categories/${category.slug}`}
-              onClick={(event) => event.stopPropagation()}
-              className="text-xs font-medium uppercase tracking-wide text-indigo-600 dark:text-indigo-400"
-            >
+            <span className="text-xs font-medium uppercase tracking-wide text-indigo-600 dark:text-indigo-400">
               {category.name}
-            </Link>
+            </span>
           )}
 
           <h3 className="line-clamp-2 text-sm font-semibold text-slate-900 transition group-hover:text-indigo-700 dark:text-slate-50 dark:group-hover:text-indigo-200">
