@@ -19,10 +19,64 @@ const getTransporter = (): Transporter | null => {
         user: config.SMTP_USER,
         pass: config.SMTP_PASS,
       },
+      // Fail fast: some hosts (e.g. Railway) block SMTP egress entirely.
+      connectionTimeout: 8000,
+      greetingTimeout: 8000,
+      socketTimeout: 20000,
     });
   }
 
   return transporter;
+};
+
+/**
+ * Send via an HTTPS email API (Brevo-style REST). This is the preferred path:
+ * it works from any host because it only needs outbound HTTPS (port 443), which
+ * is never blocked — unlike SMTP ports. Configure EMAIL_API_KEY + EMAIL_API_URL.
+ */
+const sendViaHttpApi = async ({
+  to,
+  subject,
+  html,
+}: SendEmailOptions): Promise<boolean> => {
+  if (!config.EMAIL_API_KEY) {
+    return false;
+  }
+
+  try {
+    const url =
+      config.EMAIL_API_URL ||
+      "https://api.brevo.com/v3/smtp/email";
+
+    const response = await fetch(url, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        "api-key": config.EMAIL_API_KEY,
+      },
+      body: JSON.stringify({
+        sender: {
+          name: "Shikha",
+          email: config.EMAIL_FROM || config.SMTP_USER || "no-reply@shikha.store",
+        },
+        to: [{ email: to }],
+        subject,
+        htmlContent: html,
+      }),
+    });
+
+    if (response.ok) {
+      return true;
+    }
+
+    console.error(
+      `[email-api] provider returned ${response.status}: ${(await response.text()).slice(0, 300)}`
+    );
+  } catch (error) {
+    console.error("[email-api] delivery failed:", error);
+  }
+
+  return false;
 };
 
 interface SendEmailOptions {
@@ -36,24 +90,33 @@ export const sendEmail = async ({
   subject,
   html,
 }: SendEmailOptions): Promise<{ delivered: boolean }> => {
-  const transport = getTransporter();
-
-  if (!transport) {
-    // SMTP not configured — log the email body so flows remain testable in dev.
-    console.log(
-      `[mail:dev] to=${to} subject="${subject}"\n${html.replace(/<[^>]+>/g, " ")}`
-    );
-    return { delivered: false };
+  // Preferred: HTTPS email API — works from any host, no SMTP port needed.
+  if (await sendViaHttpApi({ to, subject, html })) {
+    return { delivered: true };
   }
 
-  await transport.sendMail({
-    from: config.EMAIL_FROM || config.SMTP_USER,
-    to,
-    subject,
-    html,
-  });
+  const transport = getTransporter();
 
-  return { delivered: true };
+  if (transport) {
+    try {
+      await transport.sendMail({
+        from: config.EMAIL_FROM || config.SMTP_USER,
+        to,
+        subject,
+        html,
+      });
+
+      return { delivered: true };
+    } catch (error) {
+      console.error("[smtp] delivery failed:", error);
+    }
+  }
+
+  // Nothing configured/reachable — log the body so flows stay testable in dev.
+  console.log(
+    `[mail:dev] to=${to} subject="${subject}"\n${html.replace(/<[^>]+>/g, " ")}`
+  );
+  return { delivered: false };
 };
 
 export const sendVerificationEmail = async (
