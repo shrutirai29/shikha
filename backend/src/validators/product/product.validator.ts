@@ -26,8 +26,18 @@ const productBaseSchema = z.object({
     .nonnegative("Stock cannot be negative"),
 
   images: z
-    .array(z.string().url("Each image must be a valid URL"))
-    .min(1, "At least one image is required"),
+    .array(
+      z
+        .string()
+        .refine(
+          (value) =>
+            value.startsWith("data:image/") ||
+            /^https?:\/\//i.test(value),
+          "Each image must be an http(s) URL or a data image"
+        )
+    )
+    .optional()
+    .default([]),
 
   category: z
     .string()
