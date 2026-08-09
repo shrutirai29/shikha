@@ -279,8 +279,10 @@ export const removeProductImage = async (
 
   const index = product.images.indexOf(imageUrl);
 
+  // Idempotent: removing an already-removed image is a no-op, so
+  // client retries don't fail.
   if (index === -1) {
-    throw new NotFoundError("Image not found on this product");
+    return (await Product.findById(id).populate("category"))!;
   }
 
   product.images.splice(index, 1);

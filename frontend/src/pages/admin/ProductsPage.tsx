@@ -170,6 +170,9 @@ export const ProductsPage = () => {
       try {
         for (const url of removedImages) {
           await api.delete(`/products/${product._id}/images`, { data: { url } });
+          // Drop successfully removed URLs so a retry (e.g. after a
+          // failed upload) doesn't try to delete them a second time.
+          setRemovedImages((prev) => prev.filter((u) => u !== url));
         }
 
         if (newImages.length > 0) {
@@ -181,6 +184,7 @@ export const ProductsPage = () => {
             formData
           );
           product = data.data;
+          setNewImages([]);
         }
       } catch (uploadError) {
         imagesFailed = getErrorMessage(uploadError);
@@ -192,7 +196,9 @@ export const ProductsPage = () => {
       invalidate();
 
       if (imagesFailed) {
-        toast.error(`Product saved, but image upload failed: ${imagesFailed}`);
+        toast.error(
+          `Product saved, but image upload failed: ${imagesFailed}. Fix the issue and click Save again.`
+        );
         return;
       }
 

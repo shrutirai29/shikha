@@ -1,3 +1,4 @@
+import sharp from "sharp";
 import cloudinary from "../../config/cloudinary";
 import { env } from "../../config/env";
 
@@ -29,11 +30,58 @@ const isCloudinaryConfigured = (): boolean => {
 /**
  * Max size (bytes) for images stored directly in MongoDB as data URLs.
  * Used only when Cloudinary is not configured, so product documents
- * stay well under Mongo's 16MB document limit.
+ * stay well under Mongo's 16MB document limit. Images are compressed
+ * before storage, so phone photos typically end up a few hundred KB.
  */
 const MAX_EMBEDDED_IMAGE_SIZE = 2 * 1024 * 1024;
 
-export const uploadImage = (
+/**
+ * Compresses an image so it can be embedded in MongoDB without
+ * blowing up document sizes. Animated GIFs are kept as-is.
+ */
+const compressForEmbedding = async (
+  source: UploadSource
+): Promise<{ buffer: Buffer; mimetype: string }> => {
+  const format = source.mimetype.split("/")[1] ?? "jpeg";
+
+  if (format === "gif") {
+    return { buffer: source.buffer, mimetype: source.mimetype };
+  }
+
+  const pipeline = sharp(source.buffer)
+    .rotate()
+    .resize({
+      width: 1200,
+      height: 1200,
+      fit: "inside",
+      withoutEnlargement: true,
+    });
+
+  switch (format) {
+    case "png":
+      return {
+        buffer: await pipeline.png({ quality: 80, compressionLevel: 9 }).toBuffer(),
+        mimetype: "image/png",
+      };
+    case "webp":
+      return {
+        buffer: await pipeline.webp({ quality: 80 }).toBuffer(),
+        mimetype: "image/webp",
+      };
+    case "avif":
+      return {
+        buffer: await pipeline.avif({ quality: 70 }).toBuffer(),
+        mimetype: "image/avif",
+      };
+    default:
+      return {
+        buffer: await pipeline.jpeg({ quality: 80, mozjpeg: true }).toBuffer(),
+        mimetype: "image/jpeg",
+      };
+  }
+};
+
+export const uploadImage = async (
   source: UploadSource,
   folder?: string
 ): Promise<UploadResult> => {
@@ -41,18 +89,27 @@ export const uploadImage = (
   // This keeps uploads working out of the box (survives redeploys) and
   // switches to Cloudinary automatically once credentials are configured.
   if (!isCloudinaryConfigured()) {
-    if (source.buffer.length > MAX_EMBEDDED_IMAGE_SIZE) {
-      return Promise.reject(
-        new BadRequestError(
-          "Image is too large (max 2MB). Add Cloudinary credentials to enable larger uploads."
-        )
+    let buffer = source.buffer;
+    let mimetype = source.mimetype;
+
+    try {
+      const compressed = await compressForEmbedding(source);
+      buffer = compressed.buffer;
+      mimetype = compressed.mimetype;
+    } catch {
+      // Fall back to the original buffer if compression fails
+    }
+
+    if (buffer.length > MAX_EMBEDDED_IMAGE_SIZE) {
+      throw new BadRequestError(
+        "Image is too large (max 2MB even after compression). Add Cloudinary credentials to enable larger uploads."
       );
     }
 
-    return Promise.resolve({
-      url: `data:${source.mimetype};base64,${source.buffer.toString("base64")}`,
+    return {
+      url: `data:${mimetype};base64,${buffer.toString("base64")}`,
       publicId: "",
-    });
+    };
   }
 
   return new Promise((resolve, reject) => {
