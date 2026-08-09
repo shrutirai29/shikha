@@ -13,6 +13,7 @@ import {
 } from "lucide-react";
 import { useProductBySlug, useAddToCart, useAddToWishlist, useRemoveFromWishlist, useWishlist, useReviews, useAddReview } from "@/hooks/useApi";
 import { formatCurrency, getProductPrice, discountPercent, formatDate } from "@/lib/utils";
+import { TiltCard } from "@/components/ui/TiltCard";
 import { Rating, StarInput } from "@/components/ui/Rating";
 import { Button } from "@/components/ui/Button";
 import { Badge, Skeleton } from "@/components/ui/Card";
@@ -158,7 +159,8 @@ export const ProductDetailsPage = () => {
       <div className="grid gap-10 lg:grid-cols-2">
         {/* Gallery */}
         <div>
-          <div className="relative aspect-square overflow-hidden rounded-2xl border border-slate-200 bg-slate-100 dark:border-slate-700 dark:bg-slate-800">
+          <TiltCard className="relative">
+          <div className="relative aspect-square overflow-hidden rounded-[2rem] border border-slate-200 bg-slate-100 shadow-soft dark:border-slate-700 dark:bg-slate-800">
             {product.images[activeImage] ? (
               <img
                 src={product.images[activeImage]}
@@ -183,6 +185,7 @@ export const ProductDetailsPage = () => {
               </span>
             )}
           </div>
+          </TiltCard>
 
           {product.images.length > 1 && (
             <div className="mt-4 flex gap-3">
@@ -217,7 +220,7 @@ export const ProductDetailsPage = () => {
             </Link>
           )}
 
-          <h1 className="text-3xl font-bold tracking-tight text-slate-900 dark:text-white">
+          <h1 className="font-display text-4xl font-semibold leading-tight tracking-tight text-slate-950 dark:text-slate-50">
             {product.name}
           </h1>
 
@@ -306,7 +309,7 @@ export const ProductDetailsPage = () => {
 
       {/* Reviews */}
       <section className="mt-16">
-        <h2 className="mb-6 text-2xl font-bold tracking-tight text-slate-900 dark:text-white">
+        <h2 className="font-display mb-6 text-3xl font-semibold tracking-tight text-slate-950 dark:text-slate-50">
           Reviews
           {product.totalReviews > 0 && (
             <span className="ml-2 text-base font-normal text-slate-400">
@@ -365,7 +368,7 @@ export const ProductDetailsPage = () => {
                   >
                     <div className="mb-2 flex items-center justify-between">
                       <div className="flex items-center gap-3">
-                        <span className="flex size-9 items-center justify-center rounded-full bg-gradient-to-br from-indigo-500 to-violet-600 text-xs font-bold text-white">
+                        <span className="flex size-9 items-center justify-center rounded-full bg-gradient-to-br from-indigo-600 to-indigo-300 text-xs font-bold text-white">
                           {(author?.name ?? "U").charAt(0).toUpperCase()}
                         </span>
                         <div>

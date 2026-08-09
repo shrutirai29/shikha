@@ -44,12 +44,12 @@ export const DashboardPage = () => {
   const stats = [
     { label: "Revenue", value: formatCurrency(data.totals.revenue), icon: IndianRupee, color: "bg-emerald-500/10 text-emerald-600 dark:text-emerald-400" },
     { label: "Orders", value: String(data.totals.orders), icon: ShoppingBag, color: "bg-indigo-500/10 text-indigo-600 dark:text-indigo-400" },
-    { label: "Products", value: String(data.totals.products), icon: Package, color: "bg-violet-500/10 text-violet-600 dark:text-violet-400" },
+    { label: "Products", value: String(data.totals.products), icon: Package, color: "bg-indigo-500/10 text-indigo-600 dark:text-indigo-300" },
     { label: "Customers", value: String(data.totals.users), icon: Users, color: "bg-sky-500/10 text-sky-600 dark:text-sky-400" },
     { label: "Pending orders", value: String(data.totals.pendingOrders), icon: ShoppingBag, color: "bg-amber-500/10 text-amber-600 dark:text-amber-400" },
     { label: "Reviews", value: String(data.totals.reviews), icon: Banknote, color: "bg-rose-500/10 text-rose-600 dark:text-rose-400" },
     { label: "Active coupons", value: String(data.totals.activeCoupons), icon: TicketPercent, color: "bg-teal-500/10 text-teal-600 dark:text-teal-400" },
-    { label: "Categories", value: String(data.totals.categories), icon: Package, color: "bg-fuchsia-500/10 text-fuchsia-600 dark:text-fuchsia-400" },
+    { label: "Categories", value: String(data.totals.categories), icon: Package, color: "bg-slate-500/10 text-slate-600 dark:text-slate-300" },
   ];
 
   return (

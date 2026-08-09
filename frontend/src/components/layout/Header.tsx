@@ -162,7 +162,7 @@ export const Header = () => {
           >
             <Heart className="size-5" />
             {isAuthenticated && (wishlist?.length ?? 0) > 0 && (
-              <span className="absolute -right-0.5 -top-0.5 flex size-4 items-center justify-center rounded-full bg-rose-500 text-[10px] font-bold text-white">
+              <span className="absolute -right-0.5 -top-0.5 flex size-4 items-center justify-center rounded-full bg-indigo-600 text-[10px] font-bold text-white">
                 {wishlist?.length}
               </span>
             )}
@@ -186,7 +186,7 @@ export const Header = () => {
               <button
                 type="button"
                 onClick={() => setUserMenuOpen((open) => !open)}
-                className="ml-1 flex size-9 items-center justify-center rounded-full bg-gradient-to-br from-indigo-500 to-violet-600 text-sm font-bold text-white shadow-sm"
+                className="ml-1 flex size-9 items-center justify-center rounded-full bg-gradient-to-br from-indigo-600 to-indigo-300 text-sm font-bold text-white shadow-soft transition hover:shadow-lift"
                 aria-label="Open user menu"
               >
                 {initials(user?.name ?? "U")}

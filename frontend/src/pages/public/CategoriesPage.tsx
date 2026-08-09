@@ -41,7 +41,7 @@ export const CategoriesPage = () => {
                     className="size-full object-cover transition-transform duration-300 group-hover:scale-105"
                   />
                 ) : (
-                  <div className="flex size-full items-center justify-center bg-gradient-to-br from-indigo-100 to-violet-100 text-5xl font-bold text-indigo-300 dark:from-indigo-950 dark:to-violet-950 dark:text-indigo-700">
+                  <div className="flex size-full items-center justify-center bg-gradient-to-br from-indigo-100 to-indigo-200 text-5xl font-bold text-indigo-300 dark:from-indigo-950 dark:to-slate-800 dark:text-indigo-500">
                     {category.name.charAt(0)}
                   </div>
                 )}

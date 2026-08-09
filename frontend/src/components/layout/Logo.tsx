@@ -5,13 +5,13 @@ import { cn } from "@/lib/utils";
 export const Logo = ({ className }: { className?: string }) => (
   <Link
     to="/"
-    className={cn("inline-flex items-center gap-2", className)}
+    className={cn("inline-flex items-center gap-2.5", className)}
     aria-label="Shikha home"
   >
-    <span className="flex size-8 items-center justify-center rounded-xl bg-gradient-to-br from-indigo-500 to-violet-600 text-white shadow-sm">
-      <Sparkles className="size-4" />
+    <span className="flex size-9 items-center justify-center rounded-xl bg-gradient-to-br from-indigo-600 to-indigo-300 text-white shadow-soft">
+      <Sparkles className="size-4.5" />
     </span>
-    <span className="text-lg font-bold tracking-tight text-slate-900 dark:text-white">
+    <span className="font-display text-xl font-semibold tracking-tight text-slate-950 dark:text-slate-50">
       Shikha
     </span>
   </Link>

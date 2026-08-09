@@ -2,9 +2,46 @@
 
 @custom-variant dark (&:is(.dark *));
 
+/* ============================================================
+   SHIKHA DESIGN SYSTEM
+   Palette:  #22223B (ink) · #4A4E69 (slate) · #F2E9E4 (cream)
+             #C9ADA7 (rose) · #9A8C98 (mauve)
+   ============================================================ */
+
 @theme {
-  --font-sans: "Inter", ui-sans-serif, system-ui, -apple-system, "Segoe UI",
-    Roboto, "Helvetica Neue", Arial, sans-serif;
+  --font-sans: "Manrope", ui-sans-serif, system-ui, -apple-system,
+    "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  --font-display: "Fraunces", ui-serif, Georgia, "Times New Roman", serif;
+
+  /* Neutral scale — anchored on ink / cream / mauve */
+  --color-slate-50: #faf6f1;
+  --color-slate-100: #f2e9e4;
+  --color-slate-200: #e6dbd3;
+  --color-slate-300: #c9ada7;
+  --color-slate-400: #b0a3a8;
+  --color-slate-500: #9a8c98;
+  --color-slate-600: #746a76;
+  --color-slate-700: #4a4e69;
+  --color-slate-800: #38384f;
+  --color-slate-900: #2a2a42;
+  --color-slate-950: #22223b;
+
+  /* Brand accent — anchored on rose */
+  --color-indigo-50: #faf3f0;
+  --color-indigo-100: #f4e5df;
+  --color-indigo-200: #e9d2c9;
+  --color-indigo-300: #c9ada7;
+  --color-indigo-400: #b7958b;
+  --color-indigo-500: #a37d72;
+  --color-indigo-600: #8f645c;
+  --color-indigo-700: #7a524c;
+  --color-indigo-800: #63423d;
+  --color-indigo-900: #4a322e;
+  --color-indigo-950: #2f201d;
+
+  --shadow-soft: 0 4px 24px -6px rgb(34 34 59 / 0.12);
+  --shadow-lift: 0 16px 40px -12px rgb(34 34 59 / 0.22);
+  --shadow-glow: 0 8px 40px -8px rgb(201 173 167 / 0.5);
 }
 
 html {
@@ -15,8 +52,15 @@ body {
   @apply bg-slate-50 font-sans text-slate-900 antialiased dark:bg-slate-950 dark:text-slate-100;
 }
 
+/* Elegant serif display headings */
+.font-display {
+  font-family: var(--font-display);
+  font-optical-sizing: auto;
+  letter-spacing: -0.015em;
+}
+
 ::selection {
-  @apply bg-indigo-500/20;
+  @apply bg-indigo-300/40 text-slate-950 dark:bg-indigo-600/50 dark:text-white;
 }
 
 /* Thin scrollbars for panels */
@@ -27,4 +71,30 @@ body {
 
 .dark * {
   scrollbar-color: theme(--color-slate-600) transparent;
+}
+
+/* Subtle texture for dark hero surfaces */
+.bg-ink-grain {
+  background-image: radial-gradient(
+      circle at 15% 20%,
+      rgb(201 173 167 / 0.14),
+      transparent 42%
+    ),
+    radial-gradient(
+      circle at 85% 80%,
+      rgb(74 78 105 / 0.28),
+      transparent 46%
+    );
+}
+
+/* Respect reduced-motion preferences */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
 }

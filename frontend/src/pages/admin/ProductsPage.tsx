@@ -44,6 +44,7 @@ const productSchema = z
     images: z.string(),
     category: z.string().min(1, "Category is required"),
     isFeatured: z.boolean().optional(),
+    isActive: z.boolean().optional(),
   })
   .refine(
     (data) =>
@@ -95,6 +96,7 @@ export const ProductsPage = () => {
       images: "",
       category: categories?.[0]?._id ?? "",
       isFeatured: false,
+      isActive: true,
     });
     setModalOpen(true);
   };
@@ -111,6 +113,7 @@ export const ProductsPage = () => {
       images: product.images.join("\n"),
       category: typeof product.category === "string" ? product.category : product.category._id,
       isFeatured: product.isFeatured,
+      isActive: product.isActive,
     });
     setModalOpen(true);
   };
@@ -127,6 +130,7 @@ export const ProductsPage = () => {
         stock: Number(values.stock),
         category: values.category,
         isFeatured: values.isFeatured ?? false,
+        isActive: values.isActive ?? true,
         images: values.images
           .split("\n")
           .map((url) => url.trim())
@@ -341,14 +345,24 @@ export const ProductsPage = () => {
                 <p className="mt-1 text-xs font-medium text-rose-600">{errors.category.message}</p>
               )}
             </div>
-            <label className="flex items-end gap-2 pb-2">
-              <input
-                type="checkbox"
-                className="size-4 rounded border-slate-300 text-indigo-600 focus:ring-indigo-500"
-                {...register("isFeatured")}
-              />
-              <span className="text-sm text-slate-600 dark:text-slate-300">Featured product</span>
-            </label>
+            <div className="flex flex-wrap items-end gap-4">
+              <label className="flex items-end gap-2 pb-2">
+                <input
+                  type="checkbox"
+                  className="size-4 rounded border-slate-300 text-indigo-600 focus:ring-indigo-500"
+                  {...register("isFeatured")}
+                />
+                <span className="text-sm text-slate-600 dark:text-slate-300">Featured product</span>
+              </label>
+              <label className="flex items-end gap-2 pb-2">
+                <input
+                  type="checkbox"
+                  className="size-4 rounded border-slate-300 text-indigo-600 focus:ring-indigo-500"
+                  {...register("isActive")}
+                />
+                <span className="text-sm text-slate-600 dark:text-slate-300">Active (visible in store)</span>
+              </label>
+            </div>
           </div>
           <Textarea
             label="Image URLs (one per line)"

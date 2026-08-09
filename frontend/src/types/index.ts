@@ -150,7 +150,13 @@ export interface Coupon {
 export interface Review {
   _id: string;
   user: User | string;
-  product: string;
+  product:
+    | string
+    | {
+        _id: string;
+        name: string;
+        images?: string[];
+      };
   rating: number;
   comment: string;
   verifiedPurchase: boolean;

@@ -7,6 +7,7 @@ import {
   Menu,
   Package,
   ShoppingBag,
+  Star,
   Tag,
   TicketPercent,
   Users,
@@ -25,6 +26,7 @@ const adminLinks = [
   { to: "/admin/orders", label: "Orders", icon: ShoppingBag },
   { to: "/admin/coupons", label: "Coupons", icon: TicketPercent },
   { to: "/admin/payments", label: "Payments", icon: CreditCard },
+  { to: "/admin/reviews", label: "Reviews", icon: Star },
 ];
 
 const linkClass = ({ isActive }: { isActive: boolean }) =>

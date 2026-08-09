@@ -19,7 +19,7 @@ export const PageLayout = ({
       <div className="mb-8 flex flex-wrap items-end justify-between gap-4">
         <div>
           {title && (
-            <h1 className="text-2xl font-bold tracking-tight text-slate-900 sm:text-3xl dark:text-white">
+            <h1 className="font-display text-3xl font-semibold tracking-tight text-slate-950 sm:text-4xl dark:text-slate-50">
               {title}
             </h1>
           )}

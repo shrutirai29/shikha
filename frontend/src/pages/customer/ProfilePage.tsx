@@ -64,7 +64,7 @@ export const ProfilePage = () => {
       <div className="grid gap-8 lg:grid-cols-[1fr_2fr]">
         <div className="space-y-6">
           <Card className="p-6 text-center">
-            <div className="mx-auto flex size-20 items-center justify-center rounded-full bg-gradient-to-br from-indigo-500 to-violet-600 text-2xl font-bold text-white">
+            <div className="mx-auto flex size-20 items-center justify-center rounded-full bg-gradient-to-br from-indigo-600 to-indigo-300 text-2xl font-bold text-white">
               {initials(user?.name ?? "U")}
             </div>
             <h2 className="mt-4 text-lg font-bold text-slate-900 dark:text-white">

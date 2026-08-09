@@ -13,11 +13,11 @@ export interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
 
 const variants: Record<Variant, string> = {
   primary:
-    "bg-indigo-600 text-white shadow-sm hover:bg-indigo-500 focus-visible:outline-indigo-600 disabled:bg-indigo-400",
+    "bg-slate-950 text-slate-50 shadow-soft hover:bg-slate-800 focus-visible:outline-slate-950 disabled:bg-slate-400 dark:bg-slate-100 dark:text-slate-950 dark:hover:bg-white dark:focus-visible:outline-slate-100 dark:disabled:bg-slate-600",
   secondary:
-    "bg-slate-800 text-white shadow-sm hover:bg-slate-700 dark:bg-slate-200 dark:text-slate-900 dark:hover:bg-white dark:disabled:bg-slate-400",
+    "bg-indigo-600 text-white shadow-soft hover:bg-indigo-500 focus-visible:outline-indigo-600 disabled:bg-indigo-400 dark:bg-indigo-500/20 dark:text-indigo-100 dark:hover:bg-indigo-500/30",
   outline:
-    "border border-slate-300 bg-white text-slate-700 shadow-sm hover:bg-slate-50 dark:border-slate-600 dark:bg-slate-800 dark:text-slate-200 dark:hover:bg-slate-700",
+    "border border-slate-300 bg-white text-slate-700 shadow-sm hover:bg-slate-100 hover:border-slate-400 dark:border-slate-600 dark:bg-slate-900 dark:text-slate-200 dark:hover:bg-slate-800",
   ghost:
     "text-slate-600 hover:bg-slate-100 hover:text-slate-900 dark:text-slate-300 dark:hover:bg-slate-800 dark:hover:text-white",
   danger:

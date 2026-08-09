@@ -139,7 +139,7 @@ export const UsersPage = () => {
                     >
                       <td className="px-5 py-3">
                         <div className="flex items-center gap-3">
-                          <span className="flex size-9 shrink-0 items-center justify-center rounded-full bg-gradient-to-br from-indigo-500 to-violet-600 text-xs font-bold text-white">
+                          <span className="flex size-9 shrink-0 items-center justify-center rounded-full bg-gradient-to-br from-indigo-600 to-indigo-300 text-xs font-bold text-white">
                             {initials(target.name)}
                           </span>
                           <div className="min-w-0">

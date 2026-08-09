@@ -322,6 +322,73 @@ export const useReviews = (productId: string | undefined) =>
     enabled: Boolean(productId),
   });
 
+export const useAdminReviews = (query: {
+  page?: number;
+  limit?: number;
+  rating?: number;
+  search?: string;
+}) =>
+  useQuery({
+    queryKey: ["admin-reviews", query],
+    queryFn: async () => {
+      const { data } = await api.get<{
+        reviews: Review[];
+        pagination: Pagination;
+      }>("/reviews/admin/all", { params: query });
+
+      return { reviews: data.reviews ?? [], pagination: data.pagination };
+    },
+    placeholderData: keepPreviousData,
+  });
+
+export const useDeleteReviewAdmin = () => {
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationFn: async (reviewId: string) => {
+      await api.delete(`/reviews/admin/${reviewId}`);
+    },
+    onSuccess: () => {
+      void queryClient.invalidateQueries({ queryKey: ["admin-reviews"] });
+      void queryClient.invalidateQueries({ queryKey: ["reviews"] });
+      void queryClient.invalidateQueries({ queryKey: ["products"] });
+    },
+  });
+};
+
+export const useCancelOrder = () => {
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationFn: async (orderId: string) => {
+      const { data } = await api.post<{ data: Order }>(
+        `/orders/${orderId}/cancel`
+      );
+
+      return data.data;
+    },
+    onSuccess: (order) => {
+      queryClient.setQueryData(["order", order._id], order);
+      void queryClient.invalidateQueries({ queryKey: ["my-orders"] });
+    },
+  });
+};
+
+export const useChangePassword = () =>
+  useMutation({
+    mutationFn: async (payload: {
+      currentPassword: string;
+      newPassword: string;
+    }) => {
+      const { data } = await api.patch<{ message: string }>(
+        "/users/me/password",
+        payload
+      );
+
+      return data.message;
+    },
+  });
+
 export const useAddReview = () => {
   const queryClient = useQueryClient();
 
@@ -404,9 +471,12 @@ export const useAdminProducts = (query: ProductQuery) =>
   useQuery({
     queryKey: ["admin-products", query],
     queryFn: async () => {
-      const { data } = await api.get<{ products: Product[] }>("/products", {
-        params: { ...query, limit: 100 },
-      });
+      const { data } = await api.get<{ products: Product[] }>(
+        "/products/admin/all",
+        {
+          params: { ...query, limit: 100, includeInactive: true },
+        }
+      );
 
       return data.products ?? [];
     },

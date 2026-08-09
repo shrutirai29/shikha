@@ -13,7 +13,7 @@ const barColors: Record<string, string> = {
   Refunded: "bg-sky-500",
   Delivered: "bg-emerald-500",
   Processing: "bg-indigo-500",
-  Shipped: "bg-violet-500",
+  Shipped: "bg-indigo-400",
   Cancelled: "bg-rose-500",
 };
 

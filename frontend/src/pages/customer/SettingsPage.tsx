@@ -7,10 +7,12 @@ import { api, getErrorMessage } from "@/lib/api";
 import { useState } from "react";
 import { Button } from "@/components/ui/Button";
 import { Input } from "@/components/ui/Input";
+import { useChangePassword } from "@/hooks/useApi";
 
 export const SettingsPage = () => {
   const { user } = useAuth();
   const toast = useToast();
+  const changePassword = useChangePassword();
   const [email, setEmail] = useState("");
   const [sending, setSending] = useState(false);
 
@@ -61,6 +63,55 @@ export const SettingsPage = () => {
               </Button>
             </div>
           )}
+        </Card>
+
+        <Card className="p-6">
+          <h3 className="mb-1 text-base font-semibold text-slate-900 dark:text-white">
+            Change password
+          </h3>
+          <p className="mb-4 text-sm text-slate-500 dark:text-slate-400">
+            Keep your account secure with a strong, unique password.
+          </p>
+
+          <form
+            onSubmit={(event) => {
+              event.preventDefault();
+
+              const form = new FormData(event.currentTarget);
+
+              changePassword
+                .mutateAsync({
+                  currentPassword: String(form.get("currentPassword") ?? ""),
+                  newPassword: String(form.get("newPassword") ?? ""),
+                })
+                .then(() => {
+                  toast.success("Password changed successfully");
+                  event.currentTarget.reset();
+                })
+                .catch((error) => toast.error(getErrorMessage(error)));
+            }}
+            className="space-y-4"
+          >
+            <Input
+              name="currentPassword"
+              label="Current password"
+              type="password"
+              placeholder="Enter your current password"
+              required
+              minLength={6}
+            />
+            <Input
+              name="newPassword"
+              label="New password"
+              type="password"
+              placeholder="At least 6 characters"
+              required
+              minLength={6}
+            />
+            <Button type="submit" loading={changePassword.isPending}>
+              Update password
+            </Button>
+          </form>
         </Card>
 
         <Card className="p-6">

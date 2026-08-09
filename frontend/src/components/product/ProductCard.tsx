@@ -90,7 +90,7 @@ export const ProductCard = ({
     >
       <Link
         to={`/products/${product.slug}`}
-        className="group relative flex h-full flex-col overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-sm transition-shadow hover:shadow-lg dark:border-slate-700/60 dark:bg-slate-800/60"
+        className="group relative flex h-full flex-col overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-soft transition duration-300 hover:-translate-y-1 hover:shadow-lift dark:border-slate-700/60 dark:bg-slate-900/70"
       >
         <div className="relative aspect-square overflow-hidden bg-slate-100 dark:bg-slate-700/40">
           {image ? (
@@ -144,7 +144,7 @@ export const ProductCard = ({
             </Link>
           )}
 
-          <h3 className="line-clamp-2 text-sm font-semibold text-slate-900 dark:text-white">
+          <h3 className="line-clamp-2 text-sm font-semibold text-slate-900 transition group-hover:text-indigo-700 dark:text-slate-50 dark:group-hover:text-indigo-200">
             {truncate(product.name, 60)}
           </h3>
 
