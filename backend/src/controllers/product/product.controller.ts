@@ -8,7 +8,15 @@ import {
   getProductBySlug,
   updateProduct,
   deleteProduct,
+  addProductImages,
+  removeProductImage,
 } from "../../services/product/product.service";
+
+import {
+  uploadImages as uploadToCloudinary,
+  deleteImage,
+  getPublicIdFromUrl,
+} from "../../services/upload/upload.service";
 
 import {
   createProductSchema,
@@ -85,3 +93,65 @@ export const getBySlug = asyncHandler(async (req: Request, res: Response) => {
     data: product,
   });
 });
+
+export const uploadProductImages = asyncHandler(
+  async (req: Request, res: Response) => {
+    const id = req.params.id as string;
+
+    const files = (req.files as Express.Multer.File[] | undefined) ?? [];
+
+    if (files.length === 0) {
+      res.status(400).json({
+        success: false,
+        message: "No images provided",
+      });
+      return;
+    }
+
+    const uploaded = await uploadToCloudinary(
+      files.map((file) => file.buffer)
+    );
+
+    const product = await addProductImages(
+      id,
+      uploaded.map((image) => image.url)
+    );
+
+    res.status(200).json({
+      success: true,
+      message: "Images uploaded successfully",
+      data: product,
+    });
+  }
+);
+
+export const deleteProductImage = asyncHandler(
+  async (req: Request, res: Response) => {
+    const id = req.params.id as string;
+    const { url } = req.body as { url?: string };
+
+    if (!url) {
+      res.status(400).json({
+        success: false,
+        message: "Image URL is required",
+      });
+      return;
+    }
+
+    const publicId = getPublicIdFromUrl(url);
+
+    if (publicId) {
+      await deleteImage(publicId).catch(() => {
+        // Cloudinary deletion failure should not block removing the reference
+      });
+    }
+
+    const product = await removeProductImage(id, url);
+
+    res.status(200).json({
+      success: true,
+      message: "Image removed successfully",
+      data: product,
+    });
+  }
+);

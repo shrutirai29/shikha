@@ -94,21 +94,42 @@ export const addReview = async (
   return await review.populate("user", "name");
 };
 
-export const getProductReviews = async (productId: string) => {
+export const getProductReviews = async (
+  productId: string,
+  page = 1,
+  limit = 10
+) => {
   const product = await Product.findById(productId);
 
   if (!product) {
     throw new NotFoundError("Product not found");
   }
 
-  return await Review.find({
+  const total = await Review.countDocuments({
+    product: productId,
+    isActive: true,
+  });
+
+  const reviews = await Review.find({
     product: productId,
     isActive: true,
   })
     .populate("user", "name")
     .sort({
       createdAt: -1,
-    });
+    })
+    .skip((page - 1) * limit)
+    .limit(limit);
+
+  return {
+    reviews,
+    pagination: {
+      total,
+      page,
+      limit,
+      totalPages: Math.ceil(total / limit),
+    },
+  };
 };
 
 export const updateReview = async (

@@ -232,3 +232,49 @@ export const getProductBySlug = async (
 
   return product;
 };
+
+export const addProductImages = async (
+  id: string,
+  imageUrls: string[]
+): Promise<IProduct> => {
+  const product = await Product.findOne({
+    _id: id,
+    isActive: true,
+  });
+
+  if (!product) {
+    throw new NotFoundError("Product not found");
+  }
+
+  product.images.push(...imageUrls);
+
+  await product.save();
+
+  return (await Product.findById(id).populate("category"))!;
+};
+
+export const removeProductImage = async (
+  id: string,
+  imageUrl: string
+): Promise<IProduct> => {
+  const product = await Product.findOne({
+    _id: id,
+    isActive: true,
+  });
+
+  if (!product) {
+    throw new NotFoundError("Product not found");
+  }
+
+  const index = product.images.indexOf(imageUrl);
+
+  if (index === -1) {
+    throw new NotFoundError("Image not found on this product");
+  }
+
+  product.images.splice(index, 1);
+
+  await product.save();
+
+  return (await Product.findById(id).populate("category"))!;
+};

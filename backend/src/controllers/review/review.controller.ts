@@ -1,4 +1,4 @@
-import { Response } from "express";
+import { Request, Response } from "express";
 
 import {
   addReview,
@@ -7,7 +7,10 @@ import {
   deleteReview,
 } from "../../services/review/review.service";
 
-import { createReviewSchema } from "../../validators/review/review.validator";
+import {
+  createReviewSchema,
+  reviewQuerySchema,
+} from "../../validators/review/review.validator";
 import { AuthRequest } from "../../middleware/auth.middleware";
 import { asyncHandler } from "../../utils/asyncHandler";
 
@@ -31,13 +34,19 @@ export const createReview = asyncHandler(
 export const getReviews = asyncHandler(
   async (req: AuthRequest, res: Response) => {
     const productId = req.params.productId as string;
+    const { page, limit } = reviewQuerySchema.parse(
+      req.query
+    );
 
-    const reviews = await getProductReviews(productId);
+    const result = await getProductReviews(
+      productId,
+      page,
+      limit
+    );
 
     res.status(200).json({
       success: true,
-      count: reviews.length,
-      data: reviews,
+      ...result,
     });
   }
 );

@@ -80,4 +80,25 @@ totalReviews: {
   }
 );
 
+// Search optimization
+productSchema.index({
+  name: "text",
+  description: "text",
+});
+
+// Catalog listing/filtering
+productSchema.index({
+  category: 1,
+  isActive: 1,
+});
+
+productSchema.index({
+  price: 1,
+});
+
+productSchema.index({
+  isActive: 1,
+  isFeatured: 1,
+});
+
 export default model<IProduct>("Product", productSchema);

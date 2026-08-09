@@ -159,3 +159,23 @@ export const getCategoryBySlug = async (
 
   return category;
 };
+
+export const setCategoryImage = async (
+  id: string,
+  imageUrl: string
+): Promise<ICategory> => {
+  const category = await Category.findOne({
+    _id: id,
+    isActive: true,
+  });
+
+  if (!category) {
+    throw new NotFoundError("Category not found");
+  }
+
+  category.image = imageUrl;
+
+  await category.save();
+
+  return category;
+};

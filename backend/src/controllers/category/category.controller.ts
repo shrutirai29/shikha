@@ -8,7 +8,10 @@ import {
   getCategoryById,
   getCategoryBySlug,
   updateCategory,
+  setCategoryImage,
 } from "../../services/category/category.service";
+
+import { uploadImage } from "../../services/upload/upload.service";
 
 import {
   categoryQuerySchema,
@@ -85,3 +88,29 @@ export const getBySlug = asyncHandler(async (req: Request, res: Response) => {
     data: category,
   });
 });
+
+export const uploadCategoryImage = asyncHandler(
+  async (req: Request, res: Response) => {
+    const id = req.params.id as string;
+
+    const file = (req.file as Express.Multer.File | undefined);
+
+    if (!file) {
+      res.status(400).json({
+        success: false,
+        message: "No image provided",
+      });
+      return;
+    }
+
+    const uploaded = await uploadImage(file.buffer);
+
+    const category = await setCategoryImage(id, uploaded.url);
+
+    res.status(200).json({
+      success: true,
+      message: "Category image updated successfully",
+      data: category,
+    });
+  }
+);

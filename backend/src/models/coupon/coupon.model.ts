@@ -67,4 +67,9 @@ const couponSchema = new Schema<ICoupon>(
   }
 );
 
+couponSchema.index({
+  isActive: 1,
+  expiresAt: 1,
+});
+
 export default model<ICoupon>("Coupon", couponSchema);

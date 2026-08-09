@@ -7,6 +7,7 @@ import { CreatePaymentDto } from "../../dtos/payment/create-payment.dto";
 import { VerifyPaymentDto } from "../../dtos/payment/verify-payment.dto";
 import { RefundPaymentDto } from "../../dtos/payment/refund-payment.dto";
 import { ConflictError } from "../../errors/ConflictError";
+import { paymentQuerySchema } from "../../validators/payment/payment.validator";
 
 export const createRazorpayOrder = async (
   req: Request,
@@ -86,14 +87,20 @@ export const getMyPayments = async (
   next: NextFunction
 ) => {
   try {
-    const payments =
+    const { page, limit } = paymentQuerySchema.parse(
+      req.query
+    );
+
+    const result =
       await paymentService.getUserPayments(
-        req.user!._id.toString()
+        req.user!._id.toString(),
+        page,
+        limit
       );
 
     res.status(200).json({
       success: true,
-      data: payments,
+      ...result,
     });
   } catch (error) {
     next(error);
@@ -106,12 +113,19 @@ export const getAllPayments = async (
   next: NextFunction
 ) => {
   try {
-    const payments =
-      await paymentService.getAllPayments();
+    const { page, limit } = paymentQuerySchema.parse(
+      req.query
+    );
+
+    const result =
+      await paymentService.getAllPayments(
+        page,
+        limit
+      );
 
     res.status(200).json({
       success: true,
-      data: payments,
+      ...result,
     });
   } catch (error) {
     next(error);

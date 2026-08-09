@@ -55,3 +55,8 @@ export const addressSchema = z.object({
 export const createAddressSchema = addressSchema;
 
 export const updateAddressSchema = addressSchema.partial();
+
+export const addressQuerySchema = z.object({
+  page: z.coerce.number().int().min(1).default(1),
+  limit: z.coerce.number().int().min(1).max(100).default(10),
+});

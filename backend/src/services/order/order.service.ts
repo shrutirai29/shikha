@@ -136,8 +136,16 @@ $set: {
     });
 };
 
-export const getMyOrders = async (userId: string) => {
-  return await Order.find({ user: userId })
+export const getMyOrders = async (
+  userId: string,
+  page = 1,
+  limit = 10
+) => {
+  const total = await Order.countDocuments({
+    user: userId,
+  });
+
+  const orders = await Order.find({ user: userId })
     .populate("user", "name email")
     .populate({
       path: "items.product",
@@ -146,7 +154,19 @@ export const getMyOrders = async (userId: string) => {
         select: "name slug",
       },
     })
-    .sort({ createdAt: -1 });
+    .sort({ createdAt: -1 })
+    .skip((page - 1) * limit)
+    .limit(limit);
+
+  return {
+    orders,
+    pagination: {
+      total,
+      page,
+      limit,
+      totalPages: Math.ceil(total / limit),
+    },
+  };
 };
 
 export const getOrderById = async (
@@ -176,8 +196,13 @@ export const getOrderById = async (
   return order;
 };
 
-export const getAllOrders = async () => {
-  return await Order.find()
+export const getAllOrders = async (
+  page = 1,
+  limit = 10
+) => {
+  const total = await Order.countDocuments();
+
+  const orders = await Order.find()
     .populate("user", "name email")
     .populate({
       path: "items.product",
@@ -186,7 +211,19 @@ export const getAllOrders = async () => {
         select: "name slug",
       },
     })
-    .sort({ createdAt: -1 });
+    .sort({ createdAt: -1 })
+    .skip((page - 1) * limit)
+    .limit(limit);
+
+  return {
+    orders,
+    pagination: {
+      total,
+      page,
+      limit,
+      totalPages: Math.ceil(total / limit),
+    },
+  };
 };
 
 export const updateOrderStatus = async (

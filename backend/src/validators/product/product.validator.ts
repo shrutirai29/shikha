@@ -48,7 +48,18 @@ export const createProductSchema = productBaseSchema.refine(
   }
 );
 
-export const updateProductSchema = createProductSchema.partial();
+export const updateProductSchema = productBaseSchema
+  .partial()
+  .refine(
+    (data) =>
+      data.discountPrice === undefined ||
+      data.price === undefined ||
+      data.discountPrice < data.price,
+    {
+      path: ["discountPrice"],
+      message: "Discount price must be lower than price",
+    }
+  );
 
 export const productQuerySchema = z.object({
   page: z.coerce.number().int().min(1).default(1),

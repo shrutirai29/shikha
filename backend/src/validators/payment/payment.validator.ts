@@ -24,3 +24,8 @@ export const refundPaymentSchema = z.object({
     .max(200, "Refund reason cannot exceed 200 characters")
     .optional(),
 });
+
+export const paymentQuerySchema = z.object({
+  page: z.coerce.number().int().min(1).default(1),
+  limit: z.coerce.number().int().min(1).max(100).default(10),
+});

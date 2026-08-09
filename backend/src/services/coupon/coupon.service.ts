@@ -51,10 +51,26 @@ export const createCoupon = async (
   });
 };
 
-export const getAllCoupons = async () => {
-  return await Coupon.find().sort({
-    createdAt: -1,
-  });
+export const getAllCoupons = async (
+  page = 1,
+  limit = 10
+) => {
+  const total = await Coupon.countDocuments();
+
+  const coupons = await Coupon.find()
+    .sort({ createdAt: -1 })
+    .skip((page - 1) * limit)
+    .limit(limit);
+
+  return {
+    coupons,
+    pagination: {
+      total,
+      page,
+      limit,
+      totalPages: Math.ceil(total / limit),
+    },
+  };
 };
 
 export const getCouponById = async (

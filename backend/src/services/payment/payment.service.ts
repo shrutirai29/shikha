@@ -5,7 +5,7 @@ import Order from "../../models/order/order.model";
 import Product from "../../models/product/product.model";
 import Coupon from "../../models/coupon/coupon.model";
 
-import razorpay from "../../config/razorpay";
+import getRazorpay from "../../config/razorpay";
 
 import { CreatePaymentDto } from "../../dtos/payment/create-payment.dto";
 import { VerifyPaymentDto } from "../../dtos/payment/verify-payment.dto";
@@ -108,6 +108,8 @@ export const createRazorpayOrder = async (
         existingPayment.currency,
     };
   }
+
+  const razorpay = getRazorpay();
 
   const razorpayOrder =
     await razorpay.orders.create({
@@ -280,6 +282,8 @@ export const refundPayment =
       );
     }
 
+    const razorpay = getRazorpay();
+
     const refund =
       await razorpay.payments.refund(
         payment.razorpayPaymentId,
@@ -364,19 +368,44 @@ export const handleRazorpayWebhook =
   };
 
 export const getUserPayments =
-  async (userId: string) => {
-    return await Payment.find({
+  async (
+    userId: string,
+    page = 1,
+    limit = 10
+  ) => {
+    const total = await Payment.countDocuments({
+      user: userId,
+    });
+
+    const payments = await Payment.find({
       user: userId,
     })
       .populate("order")
       .sort({
         createdAt: -1,
-      });
+      })
+      .skip((page - 1) * limit)
+      .limit(limit);
+
+    return {
+      payments,
+      pagination: {
+        total,
+        page,
+        limit,
+        totalPages: Math.ceil(total / limit),
+      },
+    };
   };
 
 export const getAllPayments =
-  async () => {
-    return await Payment.find()
+  async (
+    page = 1,
+    limit = 10
+  ) => {
+    const total = await Payment.countDocuments();
+
+    const payments = await Payment.find()
       .populate(
         "user",
         "name email"
@@ -384,7 +413,19 @@ export const getAllPayments =
       .populate("order")
       .sort({
         createdAt: -1,
-      });
+      })
+      .skip((page - 1) * limit)
+      .limit(limit);
+
+    return {
+      payments,
+      pagination: {
+        total,
+        page,
+        limit,
+        totalPages: Math.ceil(total / limit),
+      },
+    };
   };
 
 export const markPaymentFailed =

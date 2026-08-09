@@ -1,11 +1,12 @@
-import { Response } from "express";
-import { AuthRequest } from "../../middleware/auth.middleware";
+import { Request, Response } from "express";
 import { asyncHandler } from "../../utils/asyncHandler";
 import * as addressService from "../../services/address/address.service";
 import {
   createAddressSchema,
   updateAddressSchema,
+  addressQuerySchema,
 } from "../../validators/address/address.validator";
+import { AuthRequest } from "../../middleware/auth.middleware";
 
 export const createAddress = asyncHandler(
   async (req: AuthRequest, res: Response) => {
@@ -26,13 +27,19 @@ export const createAddress = asyncHandler(
 
 export const getMyAddresses = asyncHandler(
   async (req: AuthRequest, res: Response) => {
-    const addresses = await addressService.getMyAddresses(
-      req.user!._id.toString()
+    const { page, limit } = addressQuerySchema.parse(
+      req.query
+    );
+
+    const result = await addressService.getMyAddresses(
+      req.user!._id.toString(),
+      page,
+      limit
     );
 
     res.status(200).json({
       success: true,
-      data: addresses,
+      ...result,
     });
   }
 );

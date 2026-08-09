@@ -28,6 +28,10 @@ import {
   paymentRateLimiter,
 } from "./middleware/rateLimit.middleware";
 import { env } from "./config/env";
+import { requestIdMiddleware } from "./middleware/requestId.middleware";
+import { notFoundHandler } from "./middleware/notFound.middleware";
+import swaggerUi from "swagger-ui-express";
+import { swaggerSpec } from "./config/swagger";
 
 const app = express();
 
@@ -44,6 +48,9 @@ app.use(
 );
 app.use(express.urlencoded({ extended: true, limit: "10mb" }));
 
+// Request ID / correlation ID
+app.use(requestIdMiddleware);
+
 // Global Middlewares
 app.use(compression());
 app.use(
@@ -54,7 +61,22 @@ app.use(
 );
 app.use(helmet());
 app.use(cookieParser());
-app.use(morgan(config.NODE_ENV === "production" ? "combined" : "dev"));
+app.use(
+  morgan(
+    config.NODE_ENV === "production" ? "combined" : "dev",
+    {
+      skip: (req, res) => res.statusCode >= 400,
+    }
+  )
+);
+app.use((req, res, next) => {
+  morgan(
+    ":method :url :status :response-time ms - :res[x-request-id]",
+    {
+      skip: (_, r) => r.statusCode < 400,
+    }
+  )(req, res, next);
+});
 app.use(globalRateLimiter);
 
 // Health Check
@@ -65,6 +87,15 @@ app.get("/", (req, res) => {
     version: "1.0.0",
   });
 });
+
+// API Documentation
+app.use(
+  "/api/docs",
+  swaggerUi.serve,
+  swaggerUi.setup(swaggerSpec, {
+    customSiteTitle: "Shikha API Docs",
+  })
+);
 
 // Routes
 app.use("/api/auth", authRateLimiter, authRoutes);
@@ -82,6 +113,9 @@ app.use("/api/wishlist", wishlistRoutes);
 app.use("/api/reviews", reviewRoutes);
 app.use("/api/payments", paymentRateLimiter, paymentRoutes);
 app.use("/api/coupons", couponRoutes);
+
+// 404 Handler
+app.use(notFoundHandler);
 
 // Error Handler (Always Last)
 app.use(errorHandler);

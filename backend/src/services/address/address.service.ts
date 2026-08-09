@@ -38,14 +38,36 @@ export const createAddress = async (
   });
 };
 
-export const getMyAddresses = async (userId: string) => {
-  return await Address.find({
+export const getMyAddresses = async (
+  userId: string,
+  page = 1,
+  limit = 10
+) => {
+  const total = await Address.countDocuments({
     user: userId,
     isActive: true,
-  }).sort({
-    isDefault: -1,
-    createdAt: -1,
   });
+
+  const addresses = await Address.find({
+    user: userId,
+    isActive: true,
+  })
+    .sort({
+      isDefault: -1,
+      createdAt: -1,
+    })
+    .skip((page - 1) * limit)
+    .limit(limit);
+
+  return {
+    addresses,
+    pagination: {
+      total,
+      page,
+      limit,
+      totalPages: Math.ceil(total / limit),
+    },
+  };
 };
 
 export const getAddressById = async (

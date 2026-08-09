@@ -1,4 +1,4 @@
-import { Response } from "express";
+import { Request, Response } from "express";
 
 import { AuthRequest } from "../../middleware/auth.middleware";
 
@@ -6,7 +6,11 @@ import * as orderService from "../../services/order/order.service";
 
 import { asyncHandler } from "../../utils/asyncHandler";
 
-import { createOrderSchema, updateOrderStatusSchema } from "../../validators/order/order.validator";
+import {
+  createOrderSchema,
+  updateOrderStatusSchema,
+  orderQuerySchema,
+} from "../../validators/order/order.validator";
 
 export const createOrder = asyncHandler(
   async (req: AuthRequest, res: Response) => {
@@ -27,13 +31,19 @@ export const createOrder = asyncHandler(
 
 export const getMyOrders = asyncHandler(
   async (req: AuthRequest, res: Response) => {
-    const orders = await orderService.getMyOrders(
-      req.user!._id.toString()
+    const { page, limit } = orderQuerySchema.parse(
+      req.query
+    );
+
+    const result = await orderService.getMyOrders(
+      req.user!._id.toString(),
+      page,
+      limit
     );
 
     res.status(200).json({
       success: true,
-      data: orders,
+      ...result,
     });
   }
 );
@@ -54,18 +64,27 @@ export const getOrderById = asyncHandler(
 
 export const getAllOrders = asyncHandler(
   async (_req: AuthRequest, res: Response) => {
-    const orders = await orderService.getAllOrders();
+    const { page, limit } = orderQuerySchema.parse(
+      _req.query
+    );
+
+    const result = await orderService.getAllOrders(
+      page,
+      limit
+    );
 
     res.status(200).json({
       success: true,
-      data: orders,
+      ...result,
     });
   }
 );
 
 export const updateOrderStatus = asyncHandler(
   async (req: AuthRequest, res: Response) => {
-    const { status } = updateOrderStatusSchema.parse(req.body);
+    const { status } = updateOrderStatusSchema.parse(
+      req.body
+    );
 
     const order = await orderService.updateOrderStatus(
       req.params.id as string,

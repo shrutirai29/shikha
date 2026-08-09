@@ -42,6 +42,11 @@ export const createCouponSchema = z.object({
 export const updateCouponSchema =
   createCouponSchema.partial();
 
+export const couponQuerySchema = z.object({
+  page: z.coerce.number().int().min(1).default(1),
+  limit: z.coerce.number().int().min(1).max(100).default(10),
+});
+
 export const applyCouponSchema = z.object({
   code: z
     .string()

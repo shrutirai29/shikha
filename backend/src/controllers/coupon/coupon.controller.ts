@@ -4,6 +4,8 @@ import * as couponService from "../../services/coupon/coupon.service";
 
 import { asyncHandler } from "../../utils/asyncHandler";
 
+import { couponQuerySchema } from "../../validators/coupon/coupon.validator";
+
 export const createCoupon = asyncHandler(
   async (req: Request, res: Response) => {
     const coupon = await couponService.createCoupon(req.body);
@@ -17,12 +19,19 @@ export const createCoupon = asyncHandler(
 );
 
 export const getAllCoupons = asyncHandler(
-  async (_req: Request, res: Response) => {
-    const coupons = await couponService.getAllCoupons();
+  async (req: Request, res: Response) => {
+    const { page, limit } = couponQuerySchema.parse(
+      req.query
+    );
+
+    const result = await couponService.getAllCoupons(
+      page,
+      limit
+    );
 
     res.status(200).json({
       success: true,
-      data: coupons,
+      ...result,
     });
   }
 );

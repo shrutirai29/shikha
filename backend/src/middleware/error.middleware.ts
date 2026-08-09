@@ -8,10 +8,17 @@ export const errorHandler = (
   res: Response,
   next: NextFunction
 ): void => {
+  const requestId = res.locals.requestId as string | undefined;
+
+  const common = {
+    requestId,
+  };
+
   if (err instanceof ZodError) {
     res.status(400).json({
       success: false,
       message: "Validation failed",
+      ...common,
       errors: err.issues.map((issue) => ({
         field: issue.path.join("."),
         message: issue.message,
@@ -24,15 +31,17 @@ export const errorHandler = (
     res.status(err.statusCode).json({
       success: false,
       message: err.message,
+      ...common,
     });
     return;
   }
 
-  console.error(err);
+  console.error(`[${requestId ?? "-"}]`, err);
 
   res.status(500).json({
     success: false,
-    message: err.message,
+    message: "Internal server error",
+    ...common,
     stack: process.env.NODE_ENV === "development" ? err.stack : undefined,
   });
 };

@@ -45,7 +45,11 @@ export const addToWishlist = async (
   });
 };
 
-export const getWishlist = async (userId: string) => {
+export const getWishlist = async (
+  userId: string,
+  page = 1,
+  limit = 10
+) => {
   const wishlist = await Wishlist.findOne({
     user: userId,
   }).populate({
@@ -56,13 +60,23 @@ export const getWishlist = async (userId: string) => {
     },
   });
 
-  if (!wishlist) {
-    return {
-      products: [],
-    };
-  }
+  const products = wishlist?.products || [];
+  const total = products.length;
 
-  return wishlist;
+  const paginatedProducts = products.slice(
+    (page - 1) * limit,
+    page * limit
+  );
+
+  return {
+    products: paginatedProducts,
+    pagination: {
+      total,
+      page,
+      limit,
+      totalPages: Math.ceil(total / limit),
+    },
+  };
 };
 
 export const removeFromWishlist = async (

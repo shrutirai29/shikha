@@ -2,6 +2,8 @@ import { Request, Response, NextFunction } from "express";
 
 import * as wishlistService from "../../services/wishlist/wishlist.service";
 
+import { wishlistQuerySchema } from "../../validators/wishlist/wishlist.validator";
+
 export const addToWishlist = async (
   req: Request,
   res: Response,
@@ -32,13 +34,20 @@ export const getWishlist = async (
 ) => {
   try {
     const userId = req.user!._id.toString();
+    const { page, limit } = wishlistQuerySchema.parse(
+      req.query
+    );
 
-    const wishlist = await wishlistService.getWishlist(userId);
+    const result = await wishlistService.getWishlist(
+      userId,
+      page,
+      limit
+    );
 
     res.status(200).json({
       success: true,
       message: "Wishlist fetched successfully",
-      data: wishlist,
+      ...result,
     });
   } catch (error) {
     next(error);
