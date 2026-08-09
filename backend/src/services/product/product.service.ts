@@ -21,6 +21,7 @@ interface GetProductsQuery {
   minPrice?: number;
   maxPrice?: number;
   isFeatured?: boolean;
+  includeInactive?: boolean;
 }
 
 const allowedSortFields = new Set([
@@ -74,10 +75,13 @@ export const getAllProducts = async ({
   minPrice,
   maxPrice,
   isFeatured,
+  includeInactive = false,
 }: GetProductsQuery) => {
-  const filter: Record<string, any> = {
-    isActive: true,
-  };
+  const filter: Record<string, any> = {};
+
+  if (!includeInactive) {
+    filter.isActive = true;
+  }
 
   if (search) {
     filter.$or = [
@@ -161,10 +165,9 @@ export const updateProduct = async (
   id: string,
   data: Partial<IProduct>
 ): Promise<IProduct> => {
-  const existingProduct = await Product.findOne({
-    _id: id,
-    isActive: true,
-  });
+  // Admins may update any product, including soft-deleted ones, so they
+  // can reactivate items that were previously deactivated.
+  const existingProduct = await Product.findById(id);
 
   if (!existingProduct) {
     throw new NotFoundError("Product not found");

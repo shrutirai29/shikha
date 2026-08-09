@@ -149,6 +149,7 @@ import { Router } from "express";
 import {
   create,
   getAll,
+  getAllAdmin,
   getBySlug,
   getOne,
   update,
@@ -173,11 +174,19 @@ router.get("/", getAll);
 
 router.get("/slug/:slug", getBySlug);
 
-router.get("/:id", validateObjectId("id"), getOne);
-
 // =======================
 // Admin Routes
 // =======================
+
+// Admin-only list that includes soft-deleted products (registered before :id)
+router.get(
+  "/admin/all",
+  authenticate,
+  authorize("admin"),
+  getAllAdmin
+);
+
+router.get("/:id", validateObjectId("id"), getOne);
 
 router.post(
   "/",

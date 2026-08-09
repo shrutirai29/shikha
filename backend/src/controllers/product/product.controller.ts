@@ -47,6 +47,22 @@ export const getAll = asyncHandler(async (req: Request, res: Response) => {
   });
 });
 
+export const getAllAdmin = asyncHandler(
+  async (req: Request, res: Response) => {
+    const query = productQuerySchema.parse(req.query);
+
+    const result = await getAllProducts({
+      ...query,
+      includeInactive: true,
+    });
+
+    res.status(200).json({
+      success: true,
+      ...result,
+    });
+  }
+);
+
 export const getOne = asyncHandler(async (req: Request, res: Response) => {
   const id = req.params.id as string;
 
