@@ -2,8 +2,13 @@ import axios from "axios";
 
 export const TOKEN_KEY = "shikha_token";
 
+// In dev, requests go through the Vite proxy (/api -> localhost:5000).
+// In production builds, point VITE_API_URL at the deployed backend,
+// e.g. VITE_API_URL=https://shikha-backend.up.railway.app
+const API_URL = import.meta.env.VITE_API_URL || "/api";
+
 export const api = axios.create({
-  baseURL: "/api",
+  baseURL: API_URL,
   headers: {
     "Content-Type": "application/json",
   },
