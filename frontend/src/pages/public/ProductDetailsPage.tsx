@@ -239,7 +239,7 @@ export const ProductDetailsPage = () => {
 
           <div className="flex items-center gap-2">
             {product.stock > 0 ? (
-              <Badge variant="success">In stock — {product.stock} available</Badge>
+              <Badge variant="success">In stock</Badge>
             ) : (
               <Badge variant="danger">Out of stock</Badge>
             )}

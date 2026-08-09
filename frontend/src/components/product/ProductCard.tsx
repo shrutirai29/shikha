@@ -159,7 +159,7 @@ export const ProductCard = ({
                 )}
               </div>
               <p className="text-xs text-slate-400">
-                {product.stock > 0 ? `${product.stock} in stock` : "Sold out"}
+                {product.stock > 0 ? "In stock" : "Sold out"}
               </p>
             </div>
 
