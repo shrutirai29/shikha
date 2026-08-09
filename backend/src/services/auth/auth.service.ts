@@ -101,10 +101,6 @@ export const login = async (data: LoginDto) => {
     throw new UnauthorizedError("Invalid email or password");
   }
 
-  if (!user.isActive) {
-    throw new ForbiddenError("Account is inactive");
-  }
-
   const isMatch = await bcrypt.compare(
     data.password,
     user.password
@@ -112,6 +108,21 @@ export const login = async (data: LoginDto) => {
 
   if (!isMatch) {
     throw new UnauthorizedError("Invalid email or password");
+  }
+
+  const verificationRequired = getVerificationRequired(user);
+
+  // Accounts are not usable until BOTH the email and phone are verified.
+  // Do not issue a token — the user must verify first via /verify.
+  if (verificationRequired.length > 0) {
+    throw new ForbiddenError(
+      "Please verify your email and phone number before logging in. We sent codes to your email and phone.",
+      "ACCOUNT_NOT_VERIFIED"
+    );
+  }
+
+  if (!user.isActive) {
+    throw new ForbiddenError("Account is inactive");
   }
 
   const token = generateAccessToken(

@@ -53,7 +53,7 @@ export const RegisterPage = () => {
       });
 
       toast.success(
-        "Account created! Enter the verification codes sent to your email and phone."
+        "Almost there! Enter the codes sent to your email and phone to activate your account."
       );
       navigate("/verify", { state: { email: values.email } });
     } catch (error) {

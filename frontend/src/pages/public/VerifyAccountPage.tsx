@@ -135,8 +135,9 @@ export const VerifyAccountPage = () => {
 
   const token = searchParams.get("token") ?? "";
 
-  const email =
-    user?.email ?? (location.state as { email?: string } | null)?.email ?? "";
+  const [email, setEmail] = useState(
+    user?.email ?? (location.state as { email?: string } | null)?.email ?? ""
+  );
   const [verified, setVerified] = useState<Record<string, boolean>>({
     email: Boolean(user?.isVerified),
     phone: Boolean(user?.phone && user.phoneVerified),
@@ -180,10 +181,15 @@ export const VerifyAccountPage = () => {
   const handleVerified = (type: VerificationType) => {
     const next = { ...verified, [type]: true };
     setVerified(next);
-    void refreshProfile();
+
+    // Only refresh the profile when there is an active session; pending
+    // accounts (just registered, no token yet) have nothing to refresh.
+    if (user) {
+      void refreshProfile();
+    }
 
     if (next.email && next.phone) {
-      toast.success("Account verified — happy shopping!");
+      toast.success("Account verified! Log in to start shopping.");
     }
   };
 
@@ -196,11 +202,14 @@ export const VerifyAccountPage = () => {
             Account verified
           </h1>
           <p className="text-sm text-slate-500 dark:text-slate-400">
-            Your email and phone are verified. You can now shop, order and track
-            deliveries.
+            Your email and phone are verified. Your account is now active — log
+            in to shop, order and track deliveries.
           </p>
-          <Button onClick={() => navigate("/")} className="mt-2">
-            Start shopping
+          <Button
+            onClick={() => navigate(user ? "/" : "/login")}
+            className="mt-2"
+          >
+            {user ? "Start shopping" : "Log in to your account"}
           </Button>
         </div>
       </div>
@@ -237,7 +246,37 @@ export const VerifyAccountPage = () => {
         </div>
       )}
 
-      {!verified.email && (
+      {!email && !user && (
+        <div className="mb-4 rounded-2xl border border-slate-200 bg-white p-5 dark:border-slate-700 dark:bg-slate-800/60">
+          <p className="mb-3 text-sm text-slate-600 dark:text-slate-300">
+            Enter the email you signed up with to receive your verification
+            codes.
+          </p>
+          <div className="flex items-end gap-2">
+            <Input
+              label="Email"
+              type="email"
+              placeholder="you@example.com"
+              value={email}
+              onChange={(event) => setEmail(event.target.value.trim())}
+            />
+            <Button
+              onClick={() => {
+                if (!email.includes("@")) {
+                  toast.error("Enter a valid email address");
+                  return;
+                }
+                toast.success("Enter the codes sent to your email and phone");
+              }}
+              className="mb-0.5"
+            >
+              Continue
+            </Button>
+          </div>
+        </div>
+      )}
+
+      {!verified.email && email && (
         <OtpSection
           type="email"
           email={email}
@@ -245,7 +284,7 @@ export const VerifyAccountPage = () => {
         />
       )}
 
-      {!verified.phone && user?.phone && (
+      {!verified.phone && (user?.phone || (!user && email)) && (
         <div className="mt-4">
           <OtpSection
             type="phone"
@@ -255,7 +294,7 @@ export const VerifyAccountPage = () => {
         </div>
       )}
 
-      {!verified.phone && !user?.phone && (
+      {!verified.phone && user && !user.phone && (
         <div className="mt-4 rounded-2xl border border-slate-200 bg-white p-5 dark:border-slate-700 dark:bg-slate-800/60">
           <p className="text-sm text-slate-600 dark:text-slate-300">
             No phone number on this account. Add one in{" "}

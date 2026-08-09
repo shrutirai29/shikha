@@ -46,6 +46,7 @@ api.interceptors.response.use(
 export interface ApiErrorShape {
   success: boolean;
   message: string;
+  code?: string;
   errors?: { field: string; message: string }[];
   requestId?: string;
 }
