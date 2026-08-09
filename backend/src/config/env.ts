@@ -1,4 +1,8 @@
+import dotenv from "dotenv";
 import { z } from "zod";
+
+// Load .env before any validation so import order never matters.
+dotenv.config();
 
 const envSchema = z.object({
   NODE_ENV: z

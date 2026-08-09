@@ -187,7 +187,12 @@ export const getOrderById = async (
     throw new NotFoundError("Order not found");
   }
 
-  if (order.user.toString() !== userId) {
+  const ownerId =
+    typeof order.user === "object" && "_id" in order.user
+      ? order.user._id.toString()
+      : order.user.toString();
+
+  if (ownerId !== userId) {
     throw new ConflictError(
       "You are not authorized to access this order"
     );
