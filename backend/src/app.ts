@@ -22,7 +22,6 @@ import addressRoutes from "./routes/address/address.routes";
 import dashboardRoutes from "./routes/dashboard/dashboard.routes";
 import analyticsRoutes from "./routes/analytics/analytics.routes";
 import searchRoutes from "./routes/search/search.routes";
-import deliveryRoutes from "./routes/delivery/delivery.routes";
 import {
   globalRateLimiter,
   authRateLimiter,
@@ -114,7 +113,6 @@ app.use("/api/categories", categoryRoutes);
 app.use("/api/products", productRoutes);
 app.use("/api/cart", cartRoutes);
 app.use("/api/orders", orderRoutes);
-app.use("/api/delivery", deliveryRoutes);
 app.use("/api/wishlist", wishlistRoutes);
 app.use("/api/reviews", reviewRoutes);
 app.use("/api/payments", paymentRateLimiter, paymentRoutes);

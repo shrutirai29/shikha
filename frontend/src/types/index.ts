@@ -24,7 +24,7 @@ export interface User {
   _id: string;
   name: string;
   email: string;
-  role: "admin" | "customer" | "delivery_agent";
+  role: "admin" | "customer";
   phone?: string;
   isVerified: boolean;
   phoneVerified?: boolean;
@@ -100,27 +100,6 @@ export interface OrderItem {
   price: number;
 }
 
-export type OrderStatus =
-  | "Pending"
-  | "Processing"
-  | "Shipped"
-  | "OutForDelivery"
-  | "Delivered"
-  | "Cancelled"
-  | "RTO";
-
-export interface OrderDelivery {
-  assignedTo?: User | string | null;
-  assignedAt?: string | null;
-  attempts: number;
-  lastAttemptAt?: string | null;
-  lastAttemptNote?: string;
-  codCollected: boolean;
-  codCollectedAt?: string | null;
-  deliveredAt?: string | null;
-  rtoReason?: string;
-}
-
 export interface Order {
   _id: string;
   user: User | string;
@@ -128,8 +107,7 @@ export interface Order {
   shippingAddress: ShippingAddress;
   paymentMethod: "COD" | "RAZORPAY";
   paymentStatus: "Pending" | "Paid" | "Failed" | "Refunded";
-  orderStatus: OrderStatus;
-  delivery?: OrderDelivery;
+  orderStatus: "Pending" | "Processing" | "Shipped" | "Delivered" | "Cancelled";
   subtotal: number;
   discount: number;
   shippingCharge: number;
@@ -252,18 +230,17 @@ export interface UserListQuery {
   page?: number;
   limit?: number;
   search?: string;
-  role?: "admin" | "customer" | "delivery_agent";
+  role?: "admin" | "customer";
   isActive?: boolean;
 }
 
 export interface OrderQuery {
   page?: number;
   limit?: number;
-  status?: OrderStatus;
+  status?: "Pending" | "Processing" | "Shipped" | "Delivered" | "Cancelled";
   paymentStatus?: string;
   paymentMethod?: "COD" | "RAZORPAY";
   q?: string;
   from?: string;
   to?: string;
-  collected?: "true" | "false";
 }

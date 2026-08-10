@@ -93,73 +93,6 @@ export const getAllUsers = async ({
   };
 };
 
-export const createDeliveryAgent = async (data: {
-  name: string;
-  email: string;
-  phone: string;
-  password: string;
-}) => {
-  const existing = await User.findOne({
-    email: data.email.toLowerCase(),
-  });
-
-  if (existing) {
-    throw new ConflictError("A user with this email already exists");
-  }
-
-  const hashedPassword = await bcrypt.hash(data.password, 10);
-
-  const agent = await User.create({
-    name: data.name,
-    email: data.email.toLowerCase(),
-    phone: data.phone,
-    password: hashedPassword,
-    role: "delivery_agent",
-    isVerified: true,
-    phoneVerified: true,
-    isActive: true,
-  });
-
-  return User.findById(agent._id).select(userSelect);
-};
-
-export const getDeliveryAgents = async ({
-  page = 1,
-  limit = 50,
-  search = "",
-}: {
-  page?: number;
-  limit?: number;
-  search?: string;
-}) => {
-  const filter: Record<string, unknown> = { role: "delivery_agent" };
-
-  if (search) {
-    filter.$or = [
-      { name: { $regex: search, $options: "i" } },
-      { email: { $regex: search, $options: "i" } },
-    ];
-  }
-
-  const total = await User.countDocuments(filter);
-
-  const agents = await User.find(filter)
-    .select(userSelect)
-    .sort({ createdAt: -1 })
-    .skip((page - 1) * limit)
-    .limit(limit);
-
-  return {
-    agents,
-    pagination: {
-      total,
-      page,
-      limit,
-      totalPages: Math.ceil(total / limit),
-    },
-  };
-};
-
 export const getUserById = async (userId: string) => {
   const user = await User.findById(userId).select(userSelect);
 
@@ -235,7 +168,7 @@ export const changePassword = async (
 export const updateUserRole = async (
   currentUserId: string,
   userId: string,
-  role: "admin" | "customer" | "delivery_agent"
+  role: "admin" | "customer"
 ) => {
   if (currentUserId === userId && role !== "admin") {
     throw new ConflictError("You cannot remove your own admin role");

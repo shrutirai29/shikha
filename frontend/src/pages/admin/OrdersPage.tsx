@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { Search } from "lucide-react";
 import { api, getErrorMessage } from "@/lib/api";
-import { useAllOrders, useDeliveryAgents, useAssignAgent } from "@/hooks/useApi";
+import { useAllOrders } from "@/hooks/useApi";
 import { useToast } from "@/context/ToastContext";
 import { Badge, Card } from "@/components/ui/Card";
 import { ErrorState, EmptyState } from "@/components/ui/States";
@@ -13,25 +13,15 @@ import { Button } from "@/components/ui/Button";
 import { Modal } from "@/components/ui/Modal";
 import { cn, formatCurrency, formatDateTime } from "@/lib/utils";
 
-const statuses = [
-  "Pending",
-  "Processing",
-  "Shipped",
-  "OutForDelivery",
-  "Delivered",
-  "Cancelled",
-  "RTO",
-] as const;
+const statuses = ["Pending", "Processing", "Shipped", "Delivered", "Cancelled"] as const;
 
 // Legal next states per current status — mirrors the backend transition map.
 const NEXT_STATUS: Record<string, string[]> = {
-  Pending: ["Processing", "Shipped", "OutForDelivery", "Delivered", "Cancelled"],
-  Processing: ["Shipped", "OutForDelivery", "Delivered", "Cancelled"],
-  Shipped: ["OutForDelivery", "Delivered"],
-  OutForDelivery: ["Delivered", "RTO", "Cancelled"],
+  Pending: ["Processing", "Shipped", "Delivered", "Cancelled"],
+  Processing: ["Shipped", "Delivered", "Cancelled"],
+  Shipped: ["Delivered"],
   Delivered: [],
   Cancelled: [],
-  RTO: [],
 };
 
 const statusVariant = (status: string) => {
@@ -39,10 +29,8 @@ const statusVariant = (status: string) => {
     case "Delivered":
       return "success" as const;
     case "Cancelled":
-    case "RTO":
       return "danger" as const;
     case "Shipped":
-    case "OutForDelivery":
       return "info" as const;
     case "Processing":
       return "warning" as const;
@@ -59,7 +47,7 @@ export const OrdersPage = () => {
   const queryClient = useQueryClient();
 
   const [filters, setFilters] = useState<{
-    status?: "Pending" | "Processing" | "Shipped" | "OutForDelivery" | "Delivered" | "Cancelled" | "RTO";
+    status?: "Pending" | "Processing" | "Shipped" | "Delivered" | "Cancelled";
     paymentMethod?: "COD" | "RAZORPAY";
     q?: string;
   }>({});
@@ -70,9 +58,6 @@ export const OrdersPage = () => {
     page,
   });
 
-  const { data: agents } = useDeliveryAgents();
-  const assignAgent = useAssignAgent();
-
   const [statusModal, setStatusModal] = useState<{
     id: string;
     current: string;
@@ -80,12 +65,8 @@ export const OrdersPage = () => {
   } | null>(null);
   const [newStatus, setNewStatus] = useState<string>("");
 
-  const [assignAgentId, setAssignAgentId] = useState<Record<string, string>>({});
-
-  const invalidate = () => {
+  const invalidate = () =>
     void queryClient.invalidateQueries({ queryKey: ["admin-orders"] });
-    void queryClient.invalidateQueries({ queryKey: ["admin-cod"] });
-  };
 
   const updateStatus = useMutation({
     mutationFn: async () => {
@@ -106,22 +87,6 @@ export const OrdersPage = () => {
     },
   });
 
-  const handleAssign = async (orderId: string) => {
-    const agentId = assignAgentId[orderId];
-
-    if (!agentId) {
-      toast.error("Select a delivery agent first");
-      return;
-    }
-
-    try {
-      await assignAgent.mutateAsync({ orderId, agentId });
-      toast.success("Delivery agent assigned");
-    } catch (assignError) {
-      toast.error(getErrorMessage(assignError));
-    }
-  };
-
   if (isLoading) {
     return <PageLoader />;
   }
@@ -133,7 +98,7 @@ export const OrdersPage = () => {
           Orders
         </h1>
         <p className="mt-1 text-sm text-slate-500 dark:text-slate-400">
-          Manage all customer orders, assignments, and COD collections
+          Manage all customer orders
         </p>
       </div>
 
@@ -161,10 +126,8 @@ export const OrdersPage = () => {
                 | "Pending"
                 | "Processing"
                 | "Shipped"
-                | "OutForDelivery"
                 | "Delivered"
                 | "Cancelled"
-                | "RTO"
                 | "";
               setFilters((f) => ({ ...f, status: value || undefined }));
             }}
@@ -211,10 +174,10 @@ export const OrdersPage = () => {
                   <tr className="border-b border-slate-200 text-xs uppercase tracking-wide text-slate-400 dark:border-slate-700">
                     <th className="px-5 py-3 font-semibold">Order</th>
                     <th className="px-5 py-3 font-semibold">Customer</th>
+                    <th className="px-5 py-3 font-semibold">Items</th>
                     <th className="px-5 py-3 font-semibold">Total</th>
                     <th className="px-5 py-3 font-semibold">Status</th>
                     <th className="px-5 py-3 font-semibold">Payment</th>
-                    <th className="px-5 py-3 font-semibold">Delivery agent</th>
                     <th className="px-5 py-3 text-right font-semibold">Actions</th>
                   </tr>
                 </thead>
@@ -222,14 +185,6 @@ export const OrdersPage = () => {
                   {data.orders.map((order) => {
                     const customer =
                       typeof order.user === "string" ? null : order.user;
-                    const assigned =
-                      order.delivery &&
-                      typeof order.delivery.assignedTo === "object" &&
-                      order.delivery.assignedTo
-                        ? order.delivery.assignedTo
-                        : null;
-                    const assignable =
-                      !["Delivered", "Cancelled", "RTO"].includes(order.orderStatus);
 
                     return (
                       <tr
@@ -250,6 +205,9 @@ export const OrdersPage = () => {
                           </p>
                           <p className="text-xs text-slate-400">{customer?.email ?? "—"}</p>
                         </td>
+                        <td className="px-5 py-3 text-slate-600 dark:text-slate-300">
+                          {order.items.reduce((sum, item) => sum + item.quantity, 0)}
+                        </td>
                         <td className="px-5 py-3 font-semibold text-slate-900 dark:text-white">
                           {formatCurrency(order.totalAmount)}
                         </td>
@@ -257,65 +215,12 @@ export const OrdersPage = () => {
                           <Badge variant={statusVariant(order.orderStatus)}>
                             {order.orderStatus}
                           </Badge>
-                          {order.paymentMethod === "COD" &&
-                            order.delivery &&
-                            (order.delivery.codCollected ? (
-                              <p className="mt-0.5 text-[11px] font-medium text-emerald-600 dark:text-emerald-400">
-                                COD collected
-                              </p>
-                            ) : (
-                              order.orderStatus === "Delivered" && (
-                                <p className="mt-0.5 text-[11px] font-medium text-amber-600 dark:text-amber-400">
-                                  COD pending
-                                </p>
-                              )
-                            ))}
                         </td>
                         <td className="px-5 py-3">
                           <Badge variant={order.paymentStatus === "Paid" ? "success" : "warning"}>
                             {order.paymentStatus}
                           </Badge>
                           <p className="mt-0.5 text-xs text-slate-400">{order.paymentMethod}</p>
-                        </td>
-                        <td className="px-5 py-3">
-                          {assigned ? (
-                            <div>
-                              <p className="font-medium text-slate-900 dark:text-white">
-                                {assigned.name}
-                              </p>
-                              <p className="text-xs text-slate-400">{assigned.phone}</p>
-                            </div>
-                          ) : assignable ? (
-                            <div className="flex items-center gap-1.5">
-                              <select
-                                className="rounded-lg border border-slate-200 bg-white px-2 py-1 text-xs text-slate-700 dark:border-slate-600 dark:bg-slate-800 dark:text-slate-200"
-                                value={assignAgentId[order._id] ?? ""}
-                                onChange={(e) =>
-                                  setAssignAgentId((m) => ({
-                                    ...m,
-                                    [order._id]: e.target.value,
-                                  }))
-                                }
-                              >
-                                <option value="">Assign…</option>
-                                {(agents ?? []).map((agent) => (
-                                  <option key={agent._id} value={agent._id}>
-                                    {agent.name}
-                                  </option>
-                                ))}
-                              </select>
-                              <Button
-                                size="sm"
-                                variant="ghost"
-                                onClick={() => void handleAssign(order._id)}
-                                loading={assignAgent.isPending}
-                              >
-                                Go
-                              </Button>
-                            </div>
-                          ) : (
-                            <span className="text-xs text-slate-400">—</span>
-                          )}
                         </td>
                         <td className="px-5 py-3">
                           <div className="flex justify-end gap-2">

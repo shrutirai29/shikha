@@ -10,7 +10,6 @@ import {
   createOrderSchema,
   updateOrderStatusSchema,
   orderQuerySchema,
-  assignDeliveryAgentSchema,
 } from "../../validators/order/order.validator";
 
 export const createOrder = asyncHandler(
@@ -73,40 +72,6 @@ export const getAllOrders = asyncHandler(
     res.status(200).json({
       success: true,
       ...result,
-    });
-  }
-);
-
-export const getCodOrders = asyncHandler(
-  async (req: AuthRequest, res: Response) => {
-    const { page, limit, collected } = orderQuerySchema.parse(req.query);
-
-    const result = await orderService.getCodSummary(
-      page,
-      limit,
-      collected as string | undefined
-    );
-
-    res.status(200).json({
-      success: true,
-      ...result,
-    });
-  }
-);
-
-export const assignAgent = asyncHandler(
-  async (req: AuthRequest, res: Response) => {
-    const { agentId } = assignDeliveryAgentSchema.parse(req.body);
-
-    const order = await orderService.assignDeliveryAgent(
-      req.params.id as string,
-      agentId
-    );
-
-    res.status(200).json({
-      success: true,
-      message: "Delivery agent assigned to order",
-      data: order,
     });
   }
 );

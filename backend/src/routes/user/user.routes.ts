@@ -113,8 +113,6 @@ import {
   updateUserRole,
   updateUserStatus,
   changePassword,
-  createAgent,
-  listAgents,
 } from "../../controllers/user/user.controller";
 import { authenticate } from "../../middleware/auth.middleware";
 import { authorize } from "../../middleware/authorize.middleware";
@@ -132,20 +130,6 @@ router.get(
   "/admin/all",
   authorize("admin"),
   getAllUsers
-);
-
-// Delivery agent management — keep before /admin/:id so "agents" is not
-// swallowed by the :id parameter route.
-router.get(
-  "/admin/agents",
-  authorize("admin"),
-  listAgents
-);
-
-router.post(
-  "/admin/agents",
-  authorize("admin"),
-  createAgent
 );
 
 router.get(

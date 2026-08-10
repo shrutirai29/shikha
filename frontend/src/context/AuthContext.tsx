@@ -32,7 +32,6 @@ interface AuthContextValue {
   isLoading: boolean;
   isAuthenticated: boolean;
   isAdmin: boolean;
-  isDeliveryAgent: boolean;
   verificationRequired: string[];
   login: (input: LoginInput) => Promise<{ verificationRequired: string[]; user: User }>;
   register: (input: RegisterInput) => Promise<RegisterResult>;
@@ -179,7 +178,6 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
       isLoading,
       isAuthenticated: Boolean(user),
       isAdmin: user?.role === "admin",
-      isDeliveryAgent: user?.role === "delivery_agent",
       verificationRequired,
       login,
       register,

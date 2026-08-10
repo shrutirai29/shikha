@@ -4,10 +4,8 @@ export const ORDER_STATUSES = [
   "Pending",
   "Processing",
   "Shipped",
-  "OutForDelivery",
   "Delivered",
   "Cancelled",
-  "RTO",
 ] as const;
 
 export const createOrderSchema = z.object({
@@ -74,29 +72,6 @@ export const orderQuerySchema = z.object({
 
   q: z.string().trim().max(100).optional(),
 
-  collected: z.enum(["true", "false"]).optional(),
-
   from: z.string().optional(),
   to: z.string().optional(),
-});
-
-export const assignDeliveryAgentSchema = z.object({
-  agentId: z.string().min(1, "Agent is required"),
-});
-
-export const deliveryAttemptSchema = z.object({
-  note: z.string().trim().max(300).optional(),
-  refused: z.boolean().optional(),
-});
-
-export const completeDeliverySchema = z.object({
-  otp: z
-    .string()
-    .trim()
-    .regex(/^\d{6}$/, "Delivery code must be 6 digits"),
-  codCollected: z.boolean().optional(),
-});
-
-export const markRtoSchema = z.object({
-  note: z.string().trim().max(300).optional(),
 });

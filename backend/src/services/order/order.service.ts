@@ -13,7 +13,6 @@ import Coupon from "../../models/coupon/coupon.model";
 const populateOrderQuery = (query: any) =>
   query
     .populate("user", "name email phone")
-    .populate("delivery.assignedTo", "name email phone")
     .populate({
       path: "items.product",
       populate: {
@@ -299,134 +298,22 @@ export const getAllOrders = async (filters: OrderFilters = {}) => {
   };
 };
 
-/**
- * COD reconciliation for admin: every COD order with collection status and
- * outstanding amounts.
- */
-export const getCodSummary = async (page = 1, limit = 10, collected?: string) => {
-  const filter: any = { paymentMethod: "COD" };
-
-  if (collected === "true") {
-    filter["delivery.codCollected"] = true;
-  } else if (collected === "false") {
-    filter["delivery.codCollected"] = false;
-  }
-
-  const [total, pendingCollection, collectedCount, pendingAmount, collectedAmount] =
-    await Promise.all([
-      Order.countDocuments(filter),
-      Order.countDocuments({
-        paymentMethod: "COD",
-        "delivery.codCollected": false,
-        orderStatus: { $in: ["Delivered", "OutForDelivery", "Shipped"] },
-      }),
-      Order.countDocuments({
-        paymentMethod: "COD",
-        "delivery.codCollected": true,
-      }),
-      Order.aggregate([
-        {
-          $match: {
-            paymentMethod: "COD",
-            "delivery.codCollected": false,
-          },
-        },
-        { $group: { _id: null, total: { $sum: "$totalAmount" } } },
-      ]),
-      Order.aggregate([
-        {
-          $match: {
-            paymentMethod: "COD",
-            "delivery.codCollected": true,
-          },
-        },
-        { $group: { _id: null, total: { $sum: "$totalAmount" } } },
-      ]),
-    ]);
-
-  const orders = await populateOrderQuery(Order.find(filter))
-    .sort({ createdAt: -1 })
-    .skip((page - 1) * limit)
-    .limit(limit);
-
-  return {
-    summary: {
-      totalCodOrders: total,
-      pendingCollection,
-      collectedCount,
-      pendingAmount: pendingAmount[0]?.total ?? 0,
-      collectedAmount: collectedAmount[0]?.total ?? 0,
-    },
-    orders,
-    pagination: {
-      total,
-      page,
-      limit,
-      totalPages: Math.ceil(total / limit),
-    },
-  };
-};
-
-/** Admin: assign a delivery agent to an order. */
-export const assignDeliveryAgent = async (
-  orderId: string,
-  agentId: string
-) => {
-  const agent = await User.findOne({
-    _id: agentId,
-    role: "delivery_agent",
-  });
-
-  if (!agent) {
-    throw new NotFoundError("Delivery agent not found");
-  }
-
-  const order = await Order.findById(orderId);
-
-  if (!order) {
-    throw new NotFoundError("Order not found");
-  }
-
-  if (["Delivered", "Cancelled", "RTO"].includes(order.orderStatus)) {
-    throw new ConflictError(
-      "Order is already final — it cannot be assigned"
-    );
-  }
-
-  if (order.paymentMethod === "RAZORPAY" && order.paymentStatus !== "Paid") {
-    throw new ConflictError(
-      "Assign Razorpay orders only after payment is confirmed"
-    );
-  }
-
-  order.delivery.assignedTo = agentId;
-  order.delivery.assignedAt = new Date();
-
-  await order.save();
-
-  return await populateOrderQuery(Order.findById(orderId));
-};
-
 type OrderStatus =
   | "Pending"
   | "Processing"
   | "Shipped"
-  | "OutForDelivery"
   | "Delivered"
-  | "Cancelled"
-  | "RTO";
+  | "Cancelled";
 
 // Admins may move an order forward along the lifecycle and may skip
 // intermediate steps (e.g. a COD order delivered on the spot can go
-// straight Pending -> Delivered). Delivered, Cancelled and RTO are terminal.
+// straight Pending -> Delivered). Delivered and Cancelled are terminal.
 const VALID_TRANSITIONS: Record<OrderStatus, OrderStatus[]> = {
-  Pending: ["Processing", "Shipped", "OutForDelivery", "Delivered", "Cancelled"],
-  Processing: ["Shipped", "OutForDelivery", "Delivered", "Cancelled"],
-  Shipped: ["OutForDelivery", "Delivered"],
-  OutForDelivery: ["Delivered", "RTO", "Cancelled"],
+  Pending: ["Processing", "Shipped", "Delivered", "Cancelled"],
+  Processing: ["Shipped", "Delivered", "Cancelled"],
+  Shipped: ["Delivered"],
   Delivered: [],
   Cancelled: [],
-  RTO: [],
 };
 
 const restoreStockForOrder = async (order: any) => {
@@ -476,25 +363,9 @@ export const updateOrderStatus = async (
   // never marked paid without a real delivery confirmation.
   if (status === "Delivered") {
     order.paymentStatus = "Paid";
-    order.delivery.deliveredAt = new Date();
-
-    if (order.paymentMethod === "COD") {
-      order.delivery.codCollected = true;
-      order.delivery.codCollectedAt = new Date();
-    }
   }
 
-  // RTO is terminal: the goods are coming back, so stock and coupon usage
-  // are restored exactly like a cancellation.
-  if (status === "RTO") {
-    order.delivery.rtoReason =
-      order.delivery.rtoReason || "Return to origin";
-  }
-
-  if (
-    (status === "Cancelled" || status === "RTO") &&
-    wasStockDeducted
-  ) {
+  if (status === "Cancelled" && wasStockDeducted) {
     await restoreStockForOrder(order);
   }
 

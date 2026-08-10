@@ -1,4 +1,4 @@
-export type UserRole = "admin" | "customer" | "delivery_agent";
+export type UserRole = "admin" | "customer";
 
 export interface IUserListQuery {
   page?: number;
