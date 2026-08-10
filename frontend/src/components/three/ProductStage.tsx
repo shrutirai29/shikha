@@ -81,11 +81,11 @@ function StageContent({ imageUrl }: { imageUrl?: string }) {
         <mesh ref={ring} rotation={[Math.PI / 2.05, 0.15, 0]} position={[0, 0.05, -0.35]}>
           <torusGeometry args={[MEDALLION_RADIUS + 0.32, 0.022, 16, 120]} />
           <meshStandardMaterial
-            color="#C9ADA7"
+            color="#E6B6B6"
             metalness={0.75}
             roughness={0.22}
-            emissive="#4A4E69"
-            emissiveIntensity={0.12}
+            emissive="#3B3957"
+            emissiveIntensity={0.18}
           />
         </mesh>
 
@@ -167,7 +167,7 @@ export const ProductStage = ({
       className="pointer-events-none absolute inset-0"
       style={{
         background:
-          "radial-gradient(circle at 50% 42%, rgb(201 173 167 / 0.22), transparent 58%)",
+          "radial-gradient(circle at 50% 42%, rgb(230 182 182 / 0.22), transparent 58%)",
       }}
     />
     <Canvas

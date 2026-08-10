@@ -38,11 +38,18 @@ export const LoginPage = () => {
 
   const onSubmit = async (values: LoginForm) => {
     try {
-      const verificationRequired = await login(values);
+      const { verificationRequired, user } = await login(values);
 
       if (verificationRequired.length > 0) {
         toast.info("Please verify your email and phone to continue");
         navigate("/verify", { replace: true, state: { email: values.email } });
+        return;
+      }
+
+      // Admins go straight to the admin dashboard — never the storefront.
+      if (user.role === "admin") {
+        toast.success("Welcome back, admin!");
+        navigate("/admin", { replace: true });
         return;
       }
 

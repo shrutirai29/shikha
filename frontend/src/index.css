@@ -4,44 +4,105 @@
 
 /* ============================================================
    SHIKHA DESIGN SYSTEM
-   Palette:  #22223B (ink) · #4A4E69 (slate) · #F2E9E4 (cream)
-             #C9ADA7 (rose) · #9A8C98 (mauve)
+   Light palette: #22223B (ink) · #4A4E69 (slate) · #F2E9E4 (cream)
+                  #C9ADA7 (rose) · #9A8C98 (mauve)
+   Dark palette:  #1A1B2E (deep navy) · #2A2B45 (soft purple)
+                  #3B3957 (muted violet) · #4A4866 (lavender grey)
+                  #E6B6B6 (dusty rose) · #F7E3D2 (beige)
    ============================================================ */
 
-@theme {
+@theme inline {
   --font-sans: "Manrope", ui-sans-serif, system-ui, -apple-system,
     "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
   --font-display: "Fraunces", ui-serif, Georgia, "Times New Roman", serif;
 
-  /* Neutral scale — anchored on ink / cream / mauve */
-  --color-slate-50: #faf6f1;
-  --color-slate-100: #f2e9e4;
-  --color-slate-200: #e6dbd3;
-  --color-slate-300: #c9ada7;
-  --color-slate-400: #b0a3a8;
-  --color-slate-500: #9a8c98;
-  --color-slate-600: #746a76;
-  --color-slate-700: #4a4e69;
-  --color-slate-800: #38384f;
-  --color-slate-900: #2a2a42;
-  --color-slate-950: #22223b;
+  /* Neutral scale — flips per theme via CSS variables */
+  --color-slate-50: var(--shikha-slate-50);
+  --color-slate-100: var(--shikha-slate-100);
+  --color-slate-200: var(--shikha-slate-200);
+  --color-slate-300: var(--shikha-slate-300);
+  --color-slate-400: var(--shikha-slate-400);
+  --color-slate-500: var(--shikha-slate-500);
+  --color-slate-600: var(--shikha-slate-600);
+  --color-slate-700: var(--shikha-slate-700);
+  --color-slate-800: var(--shikha-slate-800);
+  --color-slate-900: var(--shikha-slate-900);
+  --color-slate-950: var(--shikha-slate-950);
 
-  /* Brand accent — anchored on rose */
-  --color-indigo-50: #faf3f0;
-  --color-indigo-100: #f4e5df;
-  --color-indigo-200: #e9d2c9;
-  --color-indigo-300: #c9ada7;
-  --color-indigo-400: #b7958b;
-  --color-indigo-500: #a37d72;
-  --color-indigo-600: #8f645c;
-  --color-indigo-700: #7a524c;
-  --color-indigo-800: #63423d;
-  --color-indigo-900: #4a322e;
-  --color-indigo-950: #2f201d;
+  /* Brand accent — flips per theme */
+  --color-indigo-50: var(--shikha-indigo-50);
+  --color-indigo-100: var(--shikha-indigo-100);
+  --color-indigo-200: var(--shikha-indigo-200);
+  --color-indigo-300: var(--shikha-indigo-300);
+  --color-indigo-400: var(--shikha-indigo-400);
+  --color-indigo-500: var(--shikha-indigo-500);
+  --color-indigo-600: var(--shikha-indigo-600);
+  --color-indigo-700: var(--shikha-indigo-700);
+  --color-indigo-800: var(--shikha-indigo-800);
+  --color-indigo-900: var(--shikha-indigo-900);
+  --color-indigo-950: var(--shikha-indigo-950);
 
-  --shadow-soft: 0 4px 24px -6px rgb(34 34 59 / 0.12);
-  --shadow-lift: 0 16px 40px -12px rgb(34 34 59 / 0.22);
-  --shadow-glow: 0 8px 40px -8px rgb(201 173 167 / 0.5);
+  --shadow-soft: 0 4px 24px -6px rgb(26 27 46 / 0.14);
+  --shadow-lift: 0 16px 40px -12px rgb(26 27 46 / 0.28);
+  --shadow-glow: 0 8px 40px -8px rgb(230 182 182 / 0.45);
+}
+
+/* ---------- Light theme (unchanged — anchored on ink / cream) ---------- */
+:root {
+  --shikha-slate-50: #faf6f1;
+  --shikha-slate-100: #f2e9e4;
+  --shikha-slate-200: #e6dbd3;
+  --shikha-slate-300: #c9ada7;
+  --shikha-slate-400: #b0a3a8;
+  --shikha-slate-500: #9a8c98;
+  --shikha-slate-600: #746a76;
+  --shikha-slate-700: #4a4e69;
+  --shikha-slate-800: #38384f;
+  --shikha-slate-900: #2a2a42;
+  --shikha-slate-950: #22223b;
+
+  --shikha-indigo-50: #faf3f0;
+  --shikha-indigo-100: #f4e5df;
+  --shikha-indigo-200: #e9d2c9;
+  --shikha-indigo-300: #c9ada7;
+  --shikha-indigo-400: #b7958b;
+  --shikha-indigo-500: #a37d72;
+  --shikha-indigo-600: #8f645c;
+  --shikha-indigo-700: #7a524c;
+  --shikha-indigo-800: #63423d;
+  --shikha-indigo-900: #4a322e;
+  --shikha-indigo-950: #2f201d;
+}
+
+/* ---------- Dark theme — warm, premium navy / rose ---------- */
+.dark {
+  /* Background → #1A1B2E · Surface → #2A2B45 · Elevated → #3B3957 */
+  --shikha-slate-950: #1a1b2e;
+  --shikha-slate-900: #1a1b2e;
+  --shikha-slate-800: #2a2b45;
+  --shikha-slate-700: #3b3957;
+  --shikha-slate-600: #4a4866;
+
+  /* Text — soft white for primary, muted grey for secondary */
+  --shikha-slate-50: #f8f8fb;
+  --shikha-slate-100: #f8f8fb;
+  --shikha-slate-200: #f8f8fb;
+  --shikha-slate-300: #b8b9c9;
+  --shikha-slate-400: #b8b9c9;
+  --shikha-slate-500: #b8b9c9;
+
+  /* Accent — dusty rose, warm beige highlights */
+  --shikha-indigo-50: #3b3957;
+  --shikha-indigo-100: #f7e3d2;
+  --shikha-indigo-200: #f7e3d2;
+  --shikha-indigo-300: #e6b6b6;
+  --shikha-indigo-400: #e6b6b6;
+  --shikha-indigo-500: #d9a5a5;
+  --shikha-indigo-600: #e6b6b6;
+  --shikha-indigo-700: #b98b8b;
+  --shikha-indigo-800: #8f6a6a;
+  --shikha-indigo-900: #6b4f4f;
+  --shikha-indigo-950: #1a1b2e;
 }
 
 html {
@@ -60,7 +121,7 @@ body {
 }
 
 ::selection {
-  @apply bg-indigo-300/40 text-slate-950 dark:bg-indigo-600/50 dark:text-white;
+  @apply bg-indigo-300/40 text-slate-950 dark:bg-indigo-400/40 dark:text-slate-950;
 }
 
 /* Thin scrollbars for panels */
@@ -73,16 +134,49 @@ body {
   scrollbar-color: theme(--color-slate-600) transparent;
 }
 
+/* ---------- Subtle gradient surfaces (used sparingly) ---------- */
+.bg-navy-gradient {
+  background-image: linear-gradient(
+    135deg,
+    #1a1b2e 0%,
+    #2a2b45 100%
+  );
+}
+
+.bg-surface-gradient {
+  background-image: linear-gradient(
+    135deg,
+    #2a2b45 0%,
+    #3b3957 100%
+  );
+}
+
+.bg-rose-gradient {
+  background-image: linear-gradient(
+    135deg,
+    #e6b6b6 0%,
+    #c98f8f 100%
+  );
+}
+
+.bg-beige-gradient {
+  background-image: linear-gradient(
+    135deg,
+    #f7e3d2 0%,
+    #e6c7b3 100%
+  );
+}
+
 /* Subtle texture for dark hero surfaces */
 .bg-ink-grain {
   background-image: radial-gradient(
       circle at 15% 20%,
-      rgb(201 173 167 / 0.14),
+      rgb(230 182 182 / 0.12),
       transparent 42%
     ),
     radial-gradient(
       circle at 85% 80%,
-      rgb(74 78 105 / 0.28),
+      rgb(59 57 87 / 0.55),
       transparent 46%
     );
 }

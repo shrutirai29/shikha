@@ -35,7 +35,7 @@ interface AuthContextValue {
   isAuthenticated: boolean;
   isAdmin: boolean;
   verificationRequired: string[];
-  login: (input: LoginInput) => Promise<string[]>;
+  login: (input: LoginInput) => Promise<{ verificationRequired: string[]; user: User }>;
   register: (input: RegisterInput) => Promise<RegisterResult>;
   logout: () => void;
   refreshProfile: () => Promise<void>;
@@ -97,7 +97,10 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
   }, [refreshProfile]);
 
   const login = useCallback(
-    async (input: LoginInput): Promise<string[]> => {
+    async (input: LoginInput): Promise<{
+      verificationRequired: string[];
+      user: User;
+    }> => {
       setIsLoading(true);
 
       try {
@@ -113,7 +116,10 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
         localStorage.setItem(TOKEN_KEY, data.data.token);
         persistUser(data.data.user);
 
-        return data.data.verificationRequired ?? [];
+        return {
+          verificationRequired: data.data.verificationRequired ?? [],
+          user: data.data.user,
+        };
       } finally {
         setIsLoading(false);
       }

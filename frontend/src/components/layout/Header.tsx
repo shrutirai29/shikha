@@ -25,7 +25,7 @@ const navLinkClass = ({ isActive }: { isActive: boolean }) =>
   cn(
     "rounded-lg px-3 py-2 text-sm font-medium transition-colors",
     isActive
-      ? "bg-slate-100 text-slate-900 dark:bg-slate-700/60 dark:text-white"
+      ? "bg-slate-100 text-slate-900 dark:bg-slate-700/60 dark:text-white dark:shadow-inner"
       : "text-slate-600 hover:text-slate-900 dark:text-slate-300 dark:hover:text-white"
   );
 
@@ -162,7 +162,7 @@ export const Header = () => {
           >
             <Heart className="size-5" />
             {isAuthenticated && (wishlist?.length ?? 0) > 0 && (
-              <span className="absolute -right-0.5 -top-0.5 flex size-4 items-center justify-center rounded-full bg-indigo-600 text-[10px] font-bold text-white">
+              <span className="absolute -right-0.5 -top-0.5 flex size-4 items-center justify-center rounded-full bg-indigo-600 text-[10px] font-bold text-white dark:bg-indigo-600 dark:text-slate-950">
                 {wishlist?.length}
               </span>
             )}
@@ -175,7 +175,7 @@ export const Header = () => {
           >
             <ShoppingBag className="size-5" />
             {isAuthenticated && cartCount > 0 && (
-              <span className="absolute -right-0.5 -top-0.5 flex size-4 items-center justify-center rounded-full bg-indigo-600 text-[10px] font-bold text-white">
+              <span className="absolute -right-0.5 -top-0.5 flex size-4 items-center justify-center rounded-full bg-indigo-600 text-[10px] font-bold text-white dark:bg-indigo-600 dark:text-slate-950">
                 {cartCount}
               </span>
             )}
@@ -186,7 +186,7 @@ export const Header = () => {
               <button
                 type="button"
                 onClick={() => setUserMenuOpen((open) => !open)}
-                className="ml-1 flex size-9 items-center justify-center rounded-full bg-gradient-to-br from-indigo-600 to-indigo-300 text-sm font-bold text-white shadow-soft transition hover:shadow-lift"
+                className="ml-1 flex size-9 items-center justify-center rounded-full bg-gradient-to-br from-indigo-600 to-indigo-300 text-sm font-bold text-white shadow-soft transition hover:shadow-lift dark:from-indigo-400 dark:to-indigo-200 dark:text-slate-950"
                 aria-label="Open user menu"
               >
                 {initials(user?.name ?? "U")}
@@ -244,7 +244,7 @@ export const Header = () => {
               </Link>
               <Link
                 to="/register"
-                className="rounded-lg bg-indigo-600 px-4 py-2 text-sm font-semibold text-white shadow-sm transition hover:bg-indigo-500"
+                className="rounded-lg bg-indigo-600 px-4 py-2 text-sm font-semibold text-white shadow-sm transition hover:bg-indigo-500 dark:bg-indigo-600 dark:text-slate-950 dark:hover:bg-indigo-500"
               >
                 Sign up
               </Link>
@@ -291,7 +291,7 @@ export const Header = () => {
                 <Link
                   to="/register"
                   onClick={() => setMobileOpen(false)}
-                  className="flex-1 rounded-lg bg-indigo-600 px-4 py-2 text-center text-sm font-semibold text-white"
+                  className="flex-1 rounded-lg bg-indigo-600 px-4 py-2 text-center text-sm font-semibold text-white dark:bg-indigo-600 dark:text-slate-950"
                 >
                   Sign up
                 </Link>

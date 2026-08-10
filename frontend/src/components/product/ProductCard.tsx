@@ -90,7 +90,7 @@ export const ProductCard = ({
     >
       <Link
         to={`/products/${product.slug}`}
-        className="group relative flex h-full flex-col overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-soft transition duration-300 hover:-translate-y-1 hover:shadow-lift dark:border-slate-700/60 dark:bg-slate-900/70"
+        className="group relative flex h-full flex-col overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-soft transition duration-300 hover:-translate-y-1 hover:shadow-lift dark:border-slate-700/60 dark:bg-slate-800/80"
       >
         <div className="relative aspect-square overflow-hidden bg-slate-100 dark:bg-slate-700/40">
           {image ? (

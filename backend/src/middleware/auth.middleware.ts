@@ -41,6 +41,18 @@ export const authenticate = async (
 
     next();
   } catch (error) {
+    // Expired sessions should be a clean 401, not a 500 — the frontend
+    // relies on this to log the user out and send them to /login.
+    if (error instanceof jwt.TokenExpiredError) {
+      next(new AppError("Session expired. Please log in again.", 401, "TOKEN_EXPIRED"));
+      return;
+    }
+
+    if (error instanceof jwt.JsonWebTokenError) {
+      next(new AppError("Invalid token. Please log in again.", 401));
+      return;
+    }
+
     next(error);
   }
 };

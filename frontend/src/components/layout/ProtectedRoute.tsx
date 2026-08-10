@@ -28,10 +28,11 @@ export const ProtectedRoute = ({
 };
 
 export const GuestRoute = () => {
-  const { user } = useAuth();
+  const { user, isAdmin } = useAuth();
 
   if (user) {
-    return <Navigate to="/" replace />;
+    // Admins always land on the admin dashboard, never the storefront.
+    return <Navigate to={isAdmin ? "/admin" : "/"} replace />;
   }
 
   return <Outlet />;
