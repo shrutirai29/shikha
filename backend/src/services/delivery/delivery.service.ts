@@ -68,6 +68,27 @@ const issueOtp = async (order: any) => {
   return otp;
 };
 
+/** Single assigned order for the logged-in delivery agent. */
+export const getAgentOrder = async (
+  agentId: string,
+  orderId: string
+) => {
+  const order = await populateOrderQuery(
+    Order.findOne({
+      _id: orderId,
+      "delivery.assignedTo": agentId,
+    })
+  );
+
+  if (!order) {
+    throw new NotFoundError(
+      "Order not found or not assigned to you"
+    );
+  }
+
+  return order;
+};
+
 /** Assigned orders for the logged-in delivery agent. */
 export const getAgentOrders = async (
   agentId: string,

@@ -31,6 +31,20 @@ export const getMyDeliveryOrders = asyncHandler(
   }
 );
 
+export const getMyDeliveryOrder = asyncHandler(
+  async (req: AuthRequest, res: Response) => {
+    const order = await deliveryService.getAgentOrder(
+      req.user!._id.toString(),
+      req.params.id as string
+    );
+
+    res.status(200).json({
+      success: true,
+      data: order,
+    });
+  }
+);
+
 export const startDelivery = asyncHandler(
   async (req: AuthRequest, res: Response) => {
     const order = await deliveryService.markOutForDelivery(

@@ -12,6 +12,7 @@ import type {
   Coupon,
   DashboardStats,
   Order,
+  OrderQuery,
   Pagination,
   Payment,
   Product,
@@ -415,18 +416,153 @@ export const useAddReview = () => {
 
 /* ------------------------------- Admin ------------------------------- */
 
-export const useAllOrders = (page = 1) =>
+export const useAllOrders = (query: OrderQuery = {}) =>
   useQuery({
-    queryKey: ["admin-orders", page],
+    queryKey: ["admin-orders", query],
     queryFn: async () => {
       const { data } = await api.get<{
         orders: Order[];
         pagination: Pagination;
-      }>("/orders/admin/all", { params: { page, limit: 10 } });
+      }>("/orders/admin/all", { params: { page: 1, limit: 10, ...query } });
 
       return { orders: data.orders ?? [], pagination: data.pagination };
     },
+    placeholderData: keepPreviousData,
   });
+
+export const useCodOrders = (query: { page?: number; collected?: "true" | "false" }) =>
+  useQuery({
+    queryKey: ["admin-cod", query],
+    queryFn: async () => {
+      const { data } = await api.get<{
+        summary: {
+          totalCodOrders: number;
+          pendingCollection: number;
+          collectedCount: number;
+          pendingAmount: number;
+          collectedAmount: number;
+        };
+        orders: Order[];
+        pagination: Pagination;
+      }>("/orders/admin/cod", { params: { page: 1, limit: 10, ...query } });
+
+      return {
+        summary: data.summary,
+        orders: data.orders ?? [],
+        pagination: data.pagination,
+      };
+    },
+    placeholderData: keepPreviousData,
+  });
+
+export const useDeliveryAgents = () =>
+  useQuery({
+    queryKey: ["delivery-agents"],
+    queryFn: async () => {
+      const { data } = await api.get<{ agents: User[] }>("/users/admin/agents", {
+        params: { limit: 100 },
+      });
+
+      return data.agents ?? [];
+    },
+  });
+
+export const useCreateDeliveryAgent = () => {
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationFn: async (payload: {
+      name: string;
+      email: string;
+      phone: string;
+      password: string;
+    }) => {
+      const { data } = await api.post<{ data: User }>(
+        "/users/admin/agents",
+        payload
+      );
+
+      return data.data;
+    },
+    onSuccess: () => {
+      void queryClient.invalidateQueries({ queryKey: ["delivery-agents"] });
+    },
+  });
+};
+
+export const useAssignAgent = () => {
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationFn: async (payload: { orderId: string; agentId: string }) => {
+      const { data } = await api.put<{ data: Order }>(
+        `/orders/admin/${payload.orderId}/assign`,
+        { agentId: payload.agentId }
+      );
+
+      return data.data;
+    },
+    onSuccess: () => {
+      void queryClient.invalidateQueries({ queryKey: ["admin-orders"] });
+      void queryClient.invalidateQueries({ queryKey: ["admin-cod"] });
+    },
+  });
+};
+
+/* ------------------------------ Delivery ------------------------------ */
+
+export const useDeliveryOrders = (query: {
+  page?: number;
+  status?: string;
+}) =>
+  useQuery({
+    queryKey: ["delivery-orders", query],
+    queryFn: async () => {
+      const { data } = await api.get<{
+        orders: Order[];
+        pagination: Pagination;
+      }>("/delivery/orders", { params: { page: 1, limit: 10, ...query } });
+
+      return { orders: data.orders ?? [], pagination: data.pagination };
+    },
+    placeholderData: keepPreviousData,
+  });
+
+export const useDeliveryOrder = (id: string | undefined) =>
+  useQuery({
+    queryKey: ["delivery-order", id],
+    queryFn: async () => {
+      const { data } = await api.get<{ data: Order }>(`/delivery/orders/${id}`);
+
+      return data.data;
+    },
+    enabled: Boolean(id),
+  });
+
+export const useDeliveryAction = () => {
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationFn: async (payload: {
+      orderId: string;
+      action: "out-for-delivery" | "otp" | "attempt" | "complete" | "rto";
+      body?: Record<string, unknown>;
+    }) => {
+      const { data } = await api.post<{ data: Order }>(
+        `/delivery/orders/${payload.orderId}/${payload.action}`,
+        payload.body ?? {}
+      );
+
+      return data.data;
+    },
+    onSuccess: (order) => {
+      queryClient.setQueryData(["delivery-order", order._id], order);
+      void queryClient.invalidateQueries({ queryKey: ["delivery-orders"] });
+      void queryClient.invalidateQueries({ queryKey: ["admin-orders"] });
+      void queryClient.invalidateQueries({ queryKey: ["admin-cod"] });
+    },
+  });
+};
 
 export const useAllPayments = (page = 1) =>
   useQuery({

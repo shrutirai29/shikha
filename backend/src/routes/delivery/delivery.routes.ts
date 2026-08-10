@@ -9,6 +9,7 @@ import { Router } from "express";
 
 import {
   getMyDeliveryOrders,
+  getMyDeliveryOrder,
   startDelivery,
   resendDeliveryOtp,
   recordDeliveryAttempt,
@@ -26,6 +27,12 @@ const router = Router();
 router.use(authenticate, authorize("delivery_agent"));
 
 router.get("/orders", getMyDeliveryOrders);
+
+router.get(
+  "/orders/:id",
+  validateObjectId("id"),
+  getMyDeliveryOrder
+);
 
 router.post(
   "/orders/:id/out-for-delivery",

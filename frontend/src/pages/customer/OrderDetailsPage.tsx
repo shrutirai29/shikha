@@ -1,12 +1,14 @@
 import { useState } from "react";
 import { Link, useParams } from "react-router-dom";
 import {
+  Banknote,
   Check,
   ChevronLeft,
   CreditCard,
   MapPin,
   Package,
   ShoppingBag,
+  Truck,
   X,
 } from "lucide-react";
 import { useCancelOrder, useOrder } from "@/hooks/useApi";
@@ -24,8 +26,10 @@ const orderStatusVariant = (status: string) => {
     case "Delivered":
       return "success" as const;
     case "Cancelled":
+    case "RTO":
       return "danger" as const;
     case "Shipped":
+    case "OutForDelivery":
       return "info" as const;
     case "Processing":
       return "warning" as const;
@@ -46,10 +50,24 @@ const paymentStatusVariant = (status: string) => {
   }
 };
 
-const LIFECYCLE = ["Pending", "Processing", "Shipped", "Delivered"] as const;
+const LIFECYCLE = [
+  "Pending",
+  "Processing",
+  "Shipped",
+  "OutForDelivery",
+  "Delivered",
+] as const;
+
+const STEP_LABELS: Record<string, string> = {
+  Pending: "Order placed",
+  Processing: "Confirmed",
+  Shipped: "Shipped",
+  OutForDelivery: "Out for delivery",
+  Delivered: "Delivered",
+};
 
 const StatusTimeline = ({ status }: { status: string }) => {
-  if (status === "Cancelled") {
+  if (status === "Cancelled" || status === "RTO") {
     return (
       <div className="flex items-center gap-3 rounded-2xl border border-rose-200 bg-rose-50/70 px-5 py-4 dark:border-rose-500/25 dark:bg-rose-500/10">
         <span className="flex size-10 shrink-0 items-center justify-center rounded-full bg-rose-600 text-white">
@@ -57,10 +75,12 @@ const StatusTimeline = ({ status }: { status: string }) => {
         </span>
         <div>
           <p className="text-sm font-semibold text-rose-800 dark:text-rose-200">
-            Order cancelled
+            {status === "Cancelled" ? "Order cancelled" : "Return to origin"}
           </p>
           <p className="text-xs text-rose-600/80 dark:text-rose-300/70">
-            Any reserved stock has been returned to inventory.
+            {status === "Cancelled"
+              ? "Any reserved stock has been returned to inventory."
+              : "Delivery could not be completed — the package is coming back."}
           </p>
         </div>
       </div>
@@ -95,13 +115,13 @@ const StatusTimeline = ({ status }: { status: string }) => {
               </span>
               <span
                 className={cn(
-                  "text-xs font-medium",
+                  "whitespace-nowrap text-xs font-medium",
                   complete
                     ? "text-slate-900 dark:text-slate-100"
                     : "text-slate-400 dark:text-slate-500"
                 )}
               >
-                {step}
+                {STEP_LABELS[step] ?? step}
               </span>
             </div>
             {index < LIFECYCLE.length - 1 && (
@@ -146,8 +166,15 @@ export const OrderDetailsPage = () => {
   }
 
   const shippingAddress = order.shippingAddress;
+  const delivery = order.delivery;
+  const agent =
+    delivery && typeof delivery.assignedTo === "object" && delivery.assignedTo
+      ? delivery.assignedTo
+      : null;
   const isRazorpayPending =
     order.paymentMethod === "RAZORPAY" && order.paymentStatus === "Pending";
+  const isCodPending =
+    order.paymentMethod === "COD" && order.paymentStatus !== "Paid";
 
   const canCancel =
     (order.orderStatus === "Pending" || order.orderStatus === "Processing") &&
@@ -252,6 +279,44 @@ export const OrderDetailsPage = () => {
               <p>{shippingAddress.country}</p>
             </div>
           </Card>
+
+          {delivery && (delivery.attempts > 0 || agent) && (
+            <Card className="p-5">
+              <h2 className="mb-3 flex items-center gap-2 text-base font-semibold text-slate-900 dark:text-white">
+                <Truck className="size-4.5 text-indigo-600 dark:text-indigo-400" />
+                Delivery updates
+              </h2>
+              <div className="space-y-2 text-sm text-slate-600 dark:text-slate-300">
+                {agent && (
+                  <p>
+                    <span className="font-medium text-slate-900 dark:text-white">
+                      Assigned to:
+                    </span>{" "}
+                    {agent.name}
+                  </p>
+                )}
+                {delivery.deliveredAt && (
+                  <p>
+                    <span className="font-medium text-slate-900 dark:text-white">
+                      Delivered on:
+                    </span>{" "}
+                    {formatDateTime(delivery.deliveredAt)}
+                  </p>
+                )}
+                {delivery.lastAttemptNote && (
+                  <p>
+                    <span className="font-medium text-slate-900 dark:text-white">
+                      Last attempt:
+                    </span>{" "}
+                    {delivery.lastAttemptNote}
+                    {delivery.lastAttemptAt
+                      ? ` (${formatDateTime(delivery.lastAttemptAt)})`
+                      : ""}
+                  </p>
+                )}
+              </div>
+            </Card>
+          )}
         </div>
 
         <div className="h-fit space-y-4">
@@ -295,6 +360,23 @@ export const OrderDetailsPage = () => {
                 Status: {order.paymentStatus}
               </p>
             </div>
+
+            {isCodPending && order.orderStatus !== "Cancelled" && order.orderStatus !== "RTO" && (
+              <div className="mt-3 flex items-center gap-2 rounded-xl border border-emerald-200 bg-emerald-50 px-3 py-2.5 text-sm dark:border-emerald-500/25 dark:bg-emerald-500/10">
+                <Banknote className="size-4 shrink-0 text-emerald-600 dark:text-emerald-400" />
+                <p className="text-emerald-800 dark:text-emerald-200">
+                  Pay <span className="font-bold">{formatCurrency(order.totalAmount)}</span> cash
+                  to the delivery agent on arrival.
+                </p>
+              </div>
+            )}
+
+            {delivery?.codCollected && (
+              <div className="mt-3 flex items-center gap-2 rounded-xl border border-emerald-200 bg-emerald-50 px-3 py-2.5 text-sm dark:border-emerald-500/25 dark:bg-emerald-500/10">
+                <Check className="size-4 shrink-0 text-emerald-600 dark:text-emerald-400" />
+                <p className="text-emerald-800 dark:text-emerald-200">COD amount collected.</p>
+              </div>
+            )}
 
             {isRazorpayPending && (
               <Link to={`/payment/${order._id}`} className="mt-4 block">

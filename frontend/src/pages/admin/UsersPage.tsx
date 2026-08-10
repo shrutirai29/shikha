@@ -23,7 +23,7 @@ export const UsersPage = () => {
   const [search, setSearch] = useState("");
   const [roleFilter, setRoleFilter] = useState("");
   const [roleModal, setRoleModal] = useState<User | null>(null);
-  const [newRole, setNewRole] = useState<"admin" | "customer">("customer");
+  const [newRole, setNewRole] = useState<"admin" | "customer" | "delivery_agent">("customer");
 
   const { data, isLoading, isError, error, refetch } = useAllUsers({
     page,
@@ -220,7 +220,7 @@ export const UsersPage = () => {
         }
       >
         <div className="space-y-2">
-          {(["customer", "admin"] as const).map((role) => (
+          {(["customer", "admin", "delivery_agent"] as const).map((role) => (
             <label
               key={role}
               className="flex cursor-pointer items-center gap-3 rounded-xl border border-slate-200 p-3 transition hover:bg-slate-50 dark:border-slate-600 dark:hover:bg-slate-700"

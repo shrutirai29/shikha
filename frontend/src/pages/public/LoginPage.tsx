@@ -40,10 +40,16 @@ export const LoginPage = () => {
     try {
       const { user } = await login(values);
 
-      // Admins go straight to the admin dashboard — never the storefront.
+      // Role-based landing: admins and delivery agents never see the storefront.
       if (user.role === "admin") {
         toast.success("Welcome back, admin!");
         navigate("/admin", { replace: true });
+        return;
+      }
+
+      if (user.role === "delivery_agent") {
+        toast.success("Welcome back!");
+        navigate("/delivery", { replace: true });
         return;
       }
 

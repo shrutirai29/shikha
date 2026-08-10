@@ -10,6 +10,7 @@ import {
   Star,
   Tag,
   TicketPercent,
+  Truck,
   Users,
   X,
 } from "lucide-react";
@@ -24,6 +25,7 @@ const adminLinks = [
   { to: "/admin/products", label: "Products", icon: Package },
   { to: "/admin/categories", label: "Categories", icon: Tag },
   { to: "/admin/orders", label: "Orders", icon: ShoppingBag },
+  { to: "/admin/agents", label: "Delivery agents", icon: Truck },
   { to: "/admin/coupons", label: "Coupons", icon: TicketPercent },
   { to: "/admin/payments", label: "Payments", icon: CreditCard },
   { to: "/admin/reviews", label: "Reviews", icon: Star },

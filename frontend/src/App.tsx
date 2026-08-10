@@ -2,8 +2,13 @@ import { lazy, Suspense } from "react";
 import { Routes, Route } from "react-router-dom";
 import { Header } from "@/components/layout/Header";
 import { Footer } from "@/components/layout/Footer";
-import { ProtectedRoute, GuestRoute } from "@/components/layout/ProtectedRoute";
+import {
+  ProtectedRoute,
+  GuestRoute,
+  DeliveryAgentRoute,
+} from "@/components/layout/ProtectedRoute";
 import { AdminLayout } from "@/components/layout/AdminLayout";
+import { DeliveryLayout } from "@/components/layout/DeliveryLayout";
 import { PageLoader } from "@/components/ui/Card";
 
 const LandingPage = lazy(() => import("@/pages/public/LandingPage"));
@@ -38,6 +43,10 @@ const AdminOrdersPage = lazy(() => import("@/pages/admin/OrdersPage"));
 const AdminCouponsPage = lazy(() => import("@/pages/admin/CouponsPage"));
 const AdminPaymentsPage = lazy(() => import("@/pages/admin/PaymentsPage"));
 const AdminReviewsPage = lazy(() => import("@/pages/admin/AdminReviewsPage"));
+const AdminAgentsPage = lazy(() => import("@/pages/admin/AgentsPage"));
+
+const DeliveryOrdersPage = lazy(() => import("@/pages/delivery/DeliveryOrdersPage"));
+const DeliveryOrderDetailPage = lazy(() => import("@/pages/delivery/DeliveryOrderDetailPage"));
 
 const withSuspense = (element: React.ReactNode) => (
   <Suspense fallback={<PageLoader />}>{element}</Suspense>
@@ -90,6 +99,12 @@ const AdminRoute = () => (
   </ProtectedRoute>
 );
 
+const DeliveryRoute = () => (
+  <DeliveryAgentRoute>
+    <DeliveryLayout />
+  </DeliveryAgentRoute>
+);
+
 const App = () => (
   <Routes>
     <Route path="/*" element={<SiteLayout />} />
@@ -100,9 +115,14 @@ const App = () => (
       <Route path="products" element={withSuspense(<AdminProductsPage />)} />
       <Route path="categories" element={withSuspense(<AdminCategoriesPage />)} />
       <Route path="orders" element={withSuspense(<AdminOrdersPage />)} />
+      <Route path="agents" element={withSuspense(<AdminAgentsPage />)} />
       <Route path="coupons" element={withSuspense(<AdminCouponsPage />)} />
       <Route path="payments" element={withSuspense(<AdminPaymentsPage />)} />
       <Route path="reviews" element={withSuspense(<AdminReviewsPage />)} />
+    </Route>
+    <Route path="/delivery" element={<DeliveryRoute />}>
+      <Route index element={withSuspense(<DeliveryOrdersPage />)} />
+      <Route path="orders/:id" element={withSuspense(<DeliveryOrderDetailPage />)} />
     </Route>
   </Routes>
 );
