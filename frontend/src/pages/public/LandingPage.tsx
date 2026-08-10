@@ -1,4 +1,4 @@
-import { Suspense, lazy } from "react";
+import { Suspense, lazy, useMemo } from "react";
 import { Link } from "react-router-dom";
 import {
   ArrowRight,
@@ -9,9 +9,10 @@ import {
   Truck,
 } from "lucide-react";
 import { motion } from "framer-motion";
-import { useFeaturedProducts, useCategories } from "@/hooks/useApi";
+import { useFeaturedProducts } from "@/hooks/useApi";
 import { ProductGrid } from "@/components/product/ProductGrid";
 import { Skeleton } from "@/components/ui/Card";
+import type { Category, Product } from "@/types";
 
 const ProductStage = lazy(() => import("@/components/three/ProductStage"));
 
@@ -23,19 +24,132 @@ const perks = [
 ];
 
 export const LandingPage = () => {
-  const { data: featured, isLoading: productsLoading } = useFeaturedProducts(8);
-  const { data: categories, isLoading: categoriesLoading } = useCategories();
+  const { data: featured, isLoading: productsLoading } = useFeaturedProducts(24);
 
+  // The first featured product becomes the hero's 3D presentation.
   const heroImage = featured?.[0]?.images?.[0];
+
+  // Group the featured picks by their category so shoppers can browse
+  // "Featured — Fashion", "Featured — Electronics", etc.
+  const categoryGroups = useMemo(() => {
+    const map = new Map<string, { category: Category; products: Product[] }>();
+
+    for (const product of featured ?? []) {
+      const category =
+        typeof product.category === "string" ? null : product.category;
+
+      if (!category) continue;
+
+      const entry = map.get(category._id) ?? { category, products: [] };
+      entry.products.push(product);
+      map.set(category._id, entry);
+    }
+
+    return Array.from(map.values());
+  }, [featured]);
+
+  const showGrouped = categoryGroups.length > 0;
 
   return (
     <div>
-      {/* ============ Hero ============ */}
+      {/* ============ 1. Featured products, by category ============ */}
+      <section className="mx-auto max-w-7xl px-4 pb-4 pt-10 sm:px-6 sm:pt-14">
+        <motion.div
+          initial={{ opacity: 0, y: 18 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.5 }}
+          className="mb-10 text-center"
+        >
+          <p className="inline-flex items-center gap-2 rounded-full border border-indigo-300/40 bg-indigo-50 px-4 py-1.5 text-xs font-semibold uppercase tracking-[0.2em] text-indigo-600 dark:border-indigo-500/25 dark:bg-indigo-500/10 dark:text-indigo-300">
+            <Sparkles className="size-3.5" />
+            Curated for you
+          </p>
+          <h1 className="font-display mt-4 text-3xl font-semibold tracking-tight text-slate-950 sm:text-5xl dark:text-slate-50">
+            Featured by category
+          </h1>
+          <p className="mx-auto mt-3 max-w-xl text-sm text-slate-500 sm:text-base dark:text-slate-400">
+            Hand-picked pieces from across our collections — find something
+            beautiful in every category.
+          </p>
+        </motion.div>
+
+        {productsLoading ? (
+          <div className="grid grid-cols-2 gap-4 sm:grid-cols-3 lg:grid-cols-4">
+            {Array.from({ length: 8 }).map((_, index) => (
+              <Skeleton key={index} className="aspect-square rounded-2xl" />
+            ))}
+          </div>
+        ) : showGrouped ? (
+          <div className="space-y-14">
+            {categoryGroups.map((group, groupIndex) => (
+              <motion.section
+                key={group.category._id}
+                initial={{ opacity: 0, y: 18 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true, margin: "-60px" }}
+                transition={{ duration: 0.5, delay: Math.min(groupIndex * 0.05, 0.2) }}
+                aria-label={`Featured ${group.category.name}`}
+              >
+                <div className="mb-6 flex flex-wrap items-end justify-between gap-3">
+                  <div>
+                    <p className="text-xs font-semibold uppercase tracking-[0.2em] text-indigo-600 dark:text-indigo-300">
+                      Featured
+                    </p>
+                    <h2 className="font-display mt-1 text-2xl font-semibold tracking-tight text-slate-950 sm:text-3xl dark:text-slate-50">
+                      {group.category.name}
+                    </h2>
+                  </div>
+                  <Link
+                    to={`/categories/${group.category.slug}`}
+                    className="group inline-flex items-center gap-1.5 text-sm font-semibold text-indigo-600 transition hover:text-indigo-500 dark:text-indigo-300 dark:hover:text-indigo-200"
+                  >
+                    View all {group.category.name}
+                    <ArrowRight className="size-4 transition-transform group-hover:translate-x-0.5" />
+                  </Link>
+                </div>
+
+                <ProductGrid products={group.products.slice(0, 4)} loading={false} />
+              </motion.section>
+            ))}
+          </div>
+        ) : (
+          <ProductGrid products={featured ?? []} loading={false} />
+        )}
+
+        {/* Trust strip */}
+        <div className="mt-14 grid grid-cols-2 gap-6 border-t border-slate-200 pt-10 dark:border-slate-700/60 lg:grid-cols-4">
+          {perks.map((perk, index) => (
+            <motion.div
+              key={perk.title}
+              initial={{ opacity: 0, y: 16 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true, margin: "-40px" }}
+              transition={{ duration: 0.45, delay: index * 0.06 }}
+              className="group flex items-start gap-3"
+            >
+              <span className="flex size-11 shrink-0 items-center justify-center rounded-2xl border border-indigo-200 bg-indigo-50 text-indigo-600 transition group-hover:border-indigo-300 dark:border-indigo-500/20 dark:bg-indigo-500/10 dark:text-indigo-300">
+                <perk.icon className="size-5" />
+              </span>
+              <div>
+                <h3 className="text-sm font-semibold text-slate-900 dark:text-slate-50">
+                  {perk.title}
+                </h3>
+                <p className="mt-0.5 text-xs leading-relaxed text-slate-500 dark:text-slate-400">
+                  {perk.description}
+                </p>
+              </div>
+            </motion.div>
+          ))}
+        </div>
+      </section>
+
+      {/* ============ 2. Hero ============ */}
       <section className="relative overflow-hidden bg-slate-950 bg-ink-grain">
         <div className="mx-auto grid max-w-7xl items-center gap-10 px-4 pb-20 pt-14 sm:px-6 lg:grid-cols-2 lg:gap-8 lg:pb-28 lg:pt-24">
           <motion.div
             initial={{ opacity: 0, y: 28 }}
-            animate={{ opacity: 1, y: 0 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true, margin: "-80px" }}
             transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
             className="max-w-xl"
           >
@@ -44,10 +158,10 @@ export const LandingPage = () => {
               New season collection is live
             </span>
 
-            <h1 className="font-display mt-6 text-5xl font-semibold leading-[1.05] tracking-tight text-slate-50 sm:text-6xl lg:text-7xl">
+            <h2 className="font-display mt-6 text-5xl font-semibold leading-[1.05] tracking-tight text-slate-50 sm:text-6xl lg:text-7xl">
               Everyday essentials,
               <span className="block italic text-indigo-300">beautifully made.</span>
-            </h1>
+            </h2>
 
             <p className="mt-6 max-w-md text-lg leading-relaxed text-slate-300">
               Shop premium fashion, electronics and lifestyle pieces curated
@@ -97,7 +211,8 @@ export const LandingPage = () => {
           {/* 3D product presentation */}
           <motion.div
             initial={{ opacity: 0, scale: 0.96 }}
-            animate={{ opacity: 1, scale: 1 }}
+            whileInView={{ opacity: 1, scale: 1 }}
+            viewport={{ once: true, margin: "-80px" }}
             transition={{ duration: 0.7, delay: 0.15, ease: [0.22, 1, 0.36, 1] }}
             className="relative mx-auto w-full max-w-md lg:max-w-none"
           >
@@ -124,146 +239,7 @@ export const LandingPage = () => {
         />
       </section>
 
-      {/* ============ Perks ============ */}
-      <section className="border-b border-slate-200 bg-white dark:border-slate-700/60 dark:bg-slate-900">
-        <div className="mx-auto grid max-w-7xl grid-cols-2 gap-6 px-4 py-12 sm:px-6 lg:grid-cols-4">
-          {perks.map((perk, index) => (
-            <motion.div
-              key={perk.title}
-              initial={{ opacity: 0, y: 16 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true, margin: "-60px" }}
-              transition={{ duration: 0.45, delay: index * 0.06 }}
-              className="group flex items-start gap-3"
-            >
-              <span className="flex size-11 shrink-0 items-center justify-center rounded-2xl border border-indigo-200 bg-indigo-50 text-indigo-600 transition group-hover:border-indigo-300 dark:border-indigo-500/20 dark:bg-indigo-500/10 dark:text-indigo-300">
-                <perk.icon className="size-5" />
-              </span>
-              <div>
-                <h3 className="text-sm font-semibold text-slate-900 dark:text-slate-50">
-                  {perk.title}
-                </h3>
-                <p className="mt-0.5 text-xs leading-relaxed text-slate-500 dark:text-slate-400">
-                  {perk.description}
-                </p>
-              </div>
-            </motion.div>
-          ))}
-        </div>
-      </section>
-
-      {/* ============ Featured products ============ */}
-      <section className="mx-auto max-w-7xl px-4 py-16 sm:px-6 sm:py-20">
-        <motion.div
-          initial={{ opacity: 0, y: 18 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true, margin: "-60px" }}
-          transition={{ duration: 0.5 }}
-          className="mb-10 flex flex-wrap items-end justify-between gap-4"
-        >
-          <div>
-            <p className="text-xs font-semibold uppercase tracking-[0.2em] text-indigo-600 dark:text-indigo-300">
-              Curated for you
-            </p>
-            <h2 className="font-display mt-2 text-3xl font-semibold tracking-tight text-slate-950 sm:text-4xl dark:text-slate-50">
-              Featured products
-            </h2>
-            <p className="mt-2 text-sm text-slate-500 dark:text-slate-400">
-              Hand-picked pieces our customers love
-            </p>
-          </div>
-          <Link
-            to="/products"
-            className="group inline-flex items-center gap-1.5 text-sm font-semibold text-indigo-600 transition hover:text-indigo-500 dark:text-indigo-300 dark:hover:text-indigo-200"
-          >
-            View all
-            <ArrowRight className="size-4 transition-transform group-hover:translate-x-0.5" />
-          </Link>
-        </motion.div>
-
-        <ProductGrid products={featured} loading={productsLoading} />
-      </section>
-
-      {/* ============ Categories ============ */}
-      <section className="border-y border-slate-200 bg-white py-16 dark:border-slate-700/60 dark:bg-slate-900">
-        <div className="mx-auto max-w-7xl px-4 sm:px-6">
-          <motion.div
-            initial={{ opacity: 0, y: 18 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true, margin: "-60px" }}
-            transition={{ duration: 0.5 }}
-            className="mb-10 flex flex-wrap items-end justify-between gap-4"
-          >
-            <div>
-              <p className="text-xs font-semibold uppercase tracking-[0.2em] text-indigo-600 dark:text-indigo-300">
-                Explore
-              </p>
-              <h2 className="font-display mt-2 text-3xl font-semibold tracking-tight text-slate-950 sm:text-4xl dark:text-slate-50">
-                Shop by category
-              </h2>
-              <p className="mt-2 text-sm text-slate-500 dark:text-slate-400">
-                Find exactly what you&apos;re looking for
-              </p>
-            </div>
-            <Link
-              to="/categories"
-              className="group inline-flex items-center gap-1.5 text-sm font-semibold text-indigo-600 transition hover:text-indigo-500 dark:text-indigo-300 dark:hover:text-indigo-200"
-            >
-              All categories
-              <ArrowRight className="size-4 transition-transform group-hover:translate-x-0.5" />
-            </Link>
-          </motion.div>
-
-          {categoriesLoading ? (
-            <div className="grid grid-cols-2 gap-4 sm:grid-cols-3 lg:grid-cols-6">
-              {Array.from({ length: 6 }).map((_, index) => (
-                <Skeleton key={index} className="aspect-square rounded-2xl" />
-              ))}
-            </div>
-          ) : (
-            <div className="grid grid-cols-2 gap-4 sm:grid-cols-3 lg:grid-cols-6">
-              {(categories ?? []).slice(0, 6).map((category, index) => (
-                <motion.div
-                  key={category._id}
-                  initial={{ opacity: 0, y: 16 }}
-                  whileInView={{ opacity: 1, y: 0 }}
-                  viewport={{ once: true, margin: "-40px" }}
-                  transition={{ duration: 0.4, delay: index * 0.05 }}
-                >
-                  <Link
-                    to={`/categories/${category.slug}`}
-                    className="group block overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-soft transition duration-300 hover:-translate-y-1 hover:shadow-lift dark:border-slate-700 dark:bg-slate-800"
-                  >
-                    <div className="relative aspect-square overflow-hidden bg-slate-100 dark:bg-slate-700/40">
-                      {category.image ? (
-                        <img
-                          src={category.image}
-                          alt={category.name}
-                          loading="lazy"
-                          className="size-full object-cover transition-transform duration-500 group-hover:scale-105"
-                        />
-                      ) : (
-                        <div className="flex size-full items-center justify-center">
-                          <span className="font-display text-5xl font-semibold text-indigo-200 dark:text-indigo-400/60">
-                            {category.name.charAt(0)}
-                          </span>
-                        </div>
-                      )}
-                    </div>
-                    <div className="p-4">
-                      <h3 className="text-sm font-semibold text-slate-900 transition group-hover:text-indigo-600 dark:text-slate-50 dark:group-hover:text-indigo-300">
-                        {category.name}
-                      </h3>
-                    </div>
-                  </Link>
-                </motion.div>
-              ))}
-            </div>
-          )}
-        </div>
-      </section>
-
-      {/* ============ CTA ============ */}
+      {/* ============ 3. CTA ============ */}
       <section className="mx-auto max-w-7xl px-4 py-16 sm:px-6 sm:py-20">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
