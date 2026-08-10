@@ -152,6 +152,25 @@ const deliverySchema = new Schema(
   },
   {
     _id: false,
+    // Never expose the OTP hash (or its timestamps) in API responses.
+    toJSON: {
+      transform: (_doc, ret: Record<string, unknown>) => {
+        delete ret.otpHash;
+        delete ret.otpExpiresAt;
+        delete ret.otpAttempts;
+        delete ret.otpDeliveredAt;
+        return ret;
+      },
+    },
+    toObject: {
+      transform: (_doc, ret: Record<string, unknown>) => {
+        delete ret.otpHash;
+        delete ret.otpExpiresAt;
+        delete ret.otpAttempts;
+        delete ret.otpDeliveredAt;
+        return ret;
+      },
+    },
   }
 );
 
