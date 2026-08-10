@@ -82,6 +82,79 @@ const orderItemSchema = new Schema(
   }
 );
 
+const deliverySchema = new Schema(
+  {
+    assignedTo: {
+      type: Schema.Types.ObjectId,
+      ref: "User",
+      default: null,
+    },
+
+    assignedAt: {
+      type: Date,
+      default: null,
+    },
+
+    attempts: {
+      type: Number,
+      default: 0,
+    },
+
+    lastAttemptAt: {
+      type: Date,
+      default: null,
+    },
+
+    lastAttemptNote: {
+      type: String,
+      default: "",
+    },
+
+    codCollected: {
+      type: Boolean,
+      default: false,
+    },
+
+    codCollectedAt: {
+      type: Date,
+      default: null,
+    },
+
+    deliveredAt: {
+      type: Date,
+      default: null,
+    },
+
+    otpHash: {
+      type: String,
+      default: null,
+    },
+
+    otpExpiresAt: {
+      type: Date,
+      default: null,
+    },
+
+    otpAttempts: {
+      type: Number,
+      default: 0,
+    },
+
+    otpDeliveredAt: {
+      type: Date,
+      default: null,
+    },
+
+    rtoReason: {
+      type: String,
+      default: "",
+    },
+  },
+  {
+    _id: false,
+  }
+);
+
 const orderSchema = new Schema<IOrder>(
   {
     user: {
@@ -123,10 +196,17 @@ const orderSchema = new Schema<IOrder>(
         "Pending",
         "Processing",
         "Shipped",
+        "OutForDelivery",
         "Delivered",
         "Cancelled",
+        "RTO",
       ],
       default: "Pending",
+    },
+
+    delivery: {
+      type: deliverySchema,
+      default: () => ({}),
     },
 
     subtotal: {
@@ -175,6 +255,16 @@ orderSchema.index({
 
 orderSchema.index({
   paymentStatus: 1,
+});
+
+orderSchema.index({
+  "delivery.assignedTo": 1,
+  orderStatus: 1,
+});
+
+orderSchema.index({
+  paymentMethod: 1,
+  "delivery.codCollected": 1,
 });
 
 export default model<IOrder>("Order", orderSchema);

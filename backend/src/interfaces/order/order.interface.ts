@@ -24,6 +24,39 @@ export interface IOrderItem {
   price: number;
 }
 
+export type OrderStatus =
+  | "Pending"
+  | "Processing"
+  | "Shipped"
+  | "OutForDelivery"
+  | "Delivered"
+  | "Cancelled"
+  | "RTO";
+
+export interface IDelivery {
+  /** Delivery agent assigned to this order. */
+  assignedTo?: Types.ObjectId | string | null;
+  assignedAt?: Date | null;
+
+  /** Number of physical delivery attempts made. */
+  attempts: number;
+  lastAttemptAt?: Date | null;
+  lastAttemptNote?: string;
+
+  /** COD collection tracking. */
+  codCollected: boolean;
+  codCollectedAt?: Date | null;
+  deliveredAt?: Date | null;
+
+  /** Delivery-confirmation OTP (stored hashed, never plain text). */
+  otpHash?: string | null;
+  otpExpiresAt?: Date | null;
+  otpAttempts: number;
+  otpDeliveredAt?: Date | null;
+
+  rtoReason?: string;
+}
+
 export interface IOrder extends Document {
   user: Types.ObjectId | string;
 
@@ -33,18 +66,11 @@ export interface IOrder extends Document {
 
   paymentMethod: "COD" | "RAZORPAY";
 
-  paymentStatus:
-    | "Pending"
-    | "Paid"
-    | "Failed"
-    | "Refunded";
+  paymentStatus: "Pending" | "Paid" | "Failed" | "Refunded";
 
-  orderStatus:
-    | "Pending"
-    | "Processing"
-    | "Shipped"
-    | "Delivered"
-    | "Cancelled";
+  orderStatus: OrderStatus;
+
+  delivery: IDelivery;
 
   subtotal: number;
 

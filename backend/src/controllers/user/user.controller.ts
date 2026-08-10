@@ -8,6 +8,7 @@ import {
   updateUserStatusSchema,
   userListQuerySchema,
   changePasswordSchema,
+  createDeliveryAgentSchema,
 } from "../../validators/user/user.validator";
 
 export const getMe = asyncHandler(
@@ -112,6 +113,33 @@ export const updateUserRole = asyncHandler(
       success: true,
       message: "User role updated successfully",
       data: user,
+    });
+  }
+);
+
+export const createAgent = asyncHandler(
+  async (req: AuthRequest, res: Response) => {
+    const data = createDeliveryAgentSchema.parse(req.body);
+
+    const agent = await userService.createDeliveryAgent(data);
+
+    res.status(201).json({
+      success: true,
+      message: "Delivery agent created successfully",
+      data: agent,
+    });
+  }
+);
+
+export const listAgents = asyncHandler(
+  async (req: AuthRequest, res: Response) => {
+    const query = userListQuerySchema.parse(req.query);
+
+    const result = await userService.getDeliveryAgents(query);
+
+    res.status(200).json({
+      success: true,
+      ...result,
     });
   }
 );

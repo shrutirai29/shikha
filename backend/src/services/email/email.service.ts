@@ -180,6 +180,24 @@ export const sendOtpEmail = async (
   });
 };
 
+export const sendDeliveryOtpEmail = async (
+  to: string,
+  code: string,
+  orderId: string
+): Promise<{ delivered: boolean }> => {
+  return sendEmail({
+    to,
+    subject: "Your Shikha delivery code",
+    html: `
+      <h2>Your order is on its way! 🛍️</h2>
+      <p>Your Shikha order is out for delivery. Share this code with the delivery agent to confirm your order:</p>
+      <p style="font-size:28px;letter-spacing:6px;font-weight:700">${code}</p>
+      <p>Order: ${orderId}</p>
+      <p>This code expires in 15 minutes and can only be used once. Do not share it with anyone except your delivery agent.</p>
+    `,
+  });
+};
+
 export const sendPasswordResetEmail = async (
   to: string,
   token: string

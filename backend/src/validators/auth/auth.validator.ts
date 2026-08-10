@@ -41,28 +41,3 @@ export const resetPasswordSchema = z.object({
     .string()
     .min(6, "Password must be at least 6 characters"),
 });
-
-export const verifyEmailSchema = z.object({
-  token: z.string().min(1, "Token is required"),
-});
-
-export const resendVerificationSchema = z.object({
-  email: z.string().email("Invalid email address"),
-});
-
-export const verifyCodeSchema = z.object({
-  email: z.string().email("Invalid email address"),
-  type: z.enum(["email", "phone"]),
-  code: z
-    .string()
-    .regex(/^\d{6}$/, "Verification code must be 6 digits"),
-});
-
-export const resendCodeSchema = z.object({
-  email: z.string().email("Invalid email address"),
-  type: z.enum(["email", "phone"]),
-});
-
-export const verifyStatusSchema = z.object({
-  email: z.string().email("Invalid email address"),
-});

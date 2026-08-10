@@ -31,16 +31,6 @@ export const authRateLimiter = rateLimit({
   },
 });
 
-export const verifyCodeLimiter = rateLimit({
-  ...rateLimitOptions,
-  windowMs: 15 * 60 * 1000,
-  max: 10,
-  message: {
-    success: false,
-    message: "Too many verification attempts, please try again later.",
-  },
-});
-
 export const paymentRateLimiter = rateLimit({
   ...rateLimitOptions,
   windowMs: 15 * 60 * 1000,

@@ -10,6 +10,7 @@ import {
   createOrderSchema,
   updateOrderStatusSchema,
   orderQuerySchema,
+  assignDeliveryAgentSchema,
 } from "../../validators/order/order.validator";
 
 export const createOrder = asyncHandler(
@@ -31,14 +32,15 @@ export const createOrder = asyncHandler(
 
 export const getMyOrders = asyncHandler(
   async (req: AuthRequest, res: Response) => {
-    const { page, limit } = orderQuerySchema.parse(
+    const { page, limit, status } = orderQuerySchema.parse(
       req.query
     );
 
     const result = await orderService.getMyOrders(
       req.user!._id.toString(),
       page,
-      limit
+      limit,
+      status
     );
 
     res.status(200).json({
@@ -63,19 +65,48 @@ export const getOrderById = asyncHandler(
 );
 
 export const getAllOrders = asyncHandler(
-  async (_req: AuthRequest, res: Response) => {
-    const { page, limit } = orderQuerySchema.parse(
-      _req.query
-    );
+  async (req: AuthRequest, res: Response) => {
+    const query = orderQuerySchema.parse(req.query);
 
-    const result = await orderService.getAllOrders(
+    const result = await orderService.getAllOrders(query);
+
+    res.status(200).json({
+      success: true,
+      ...result,
+    });
+  }
+);
+
+export const getCodOrders = asyncHandler(
+  async (req: AuthRequest, res: Response) => {
+    const { page, limit, collected } = orderQuerySchema.parse(req.query);
+
+    const result = await orderService.getCodSummary(
       page,
-      limit
+      limit,
+      collected as string | undefined
     );
 
     res.status(200).json({
       success: true,
       ...result,
+    });
+  }
+);
+
+export const assignAgent = asyncHandler(
+  async (req: AuthRequest, res: Response) => {
+    const { agentId } = assignDeliveryAgentSchema.parse(req.body);
+
+    const order = await orderService.assignDeliveryAgent(
+      req.params.id as string,
+      agentId
+    );
+
+    res.status(200).json({
+      success: true,
+      message: "Delivery agent assigned to order",
+      data: order,
     });
   }
 );

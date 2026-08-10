@@ -10,6 +10,18 @@ import { ConflictError } from "../../errors/ConflictError";
 import { ForbiddenError } from "../../errors/ForbiddenError";
 import Coupon from "../../models/coupon/coupon.model";
 
+const populateOrderQuery = (query: any) =>
+  query
+    .populate("user", "name email phone")
+    .populate("delivery.assignedTo", "name email phone")
+    .populate({
+      path: "items.product",
+      populate: {
+        path: "category",
+        select: "name slug",
+      },
+    });
+
 export const createOrder = async (
   userId: string,
   data: CreateOrderDto
@@ -18,19 +30,6 @@ export const createOrder = async (
 
   if (!user) {
     throw new NotFoundError("User not found");
-  }
-
-  // Purchasing requires a verified account: email always, phone when provided.
-  if (!user.isVerified) {
-    throw new ForbiddenError(
-      "Please verify your email address before placing an order"
-    );
-  }
-
-  if (user.phone && !user.phoneVerified) {
-    throw new ForbiddenError(
-      "Please verify your phone number before placing an order"
-    );
   }
 
   const cart = await Cart.findOne({ user: userId });
@@ -76,22 +75,22 @@ export const createOrder = async (
     });
   }
 
-const discountedSubtotal =
-  cart.finalAmount > 0
-    ? cart.finalAmount
-    : subtotal;
+  const discountedSubtotal =
+    cart.finalAmount > 0
+      ? cart.finalAmount
+      : subtotal;
 
-const shippingCharge =
-  discountedSubtotal >= 500 ? 0 : 50;
+  const shippingCharge =
+    discountedSubtotal >= 500 ? 0 : 50;
 
-const tax = Number(
-  (discountedSubtotal * 0.18).toFixed(2)
-);
+  const tax = Number(
+    (discountedSubtotal * 0.18).toFixed(2)
+  );
 
-const totalAmount =
-  discountedSubtotal +
-  shippingCharge +
-  tax;
+  const totalAmount =
+    discountedSubtotal +
+    shippingCharge +
+    tax;
 
   const order = await Order.create({
     user: userId,
@@ -100,17 +99,17 @@ const totalAmount =
     paymentMethod: data.paymentMethod,
     paymentStatus: "Pending",
     orderStatus: "Pending",
-subtotal,
+    subtotal,
 
-discount: cart.discount,
+    discount: cart.discount,
 
-coupon: cart.coupon,
+    coupon: cart.coupon,
 
-shippingCharge,
+    shippingCharge,
 
-tax,
+    tax,
 
-totalAmount,
+    totalAmount,
   });
 
   // Reduce stock immediately for COD; Razorpay orders deduct on payment verify
@@ -125,56 +124,48 @@ totalAmount,
   }
 
   if (cart.coupon && data.paymentMethod === "COD") {
-  await Coupon.findByIdAndUpdate(cart.coupon, {
-    $inc: {
-      usedCount: 1,
-    },
-  });
-}
+    await Coupon.findByIdAndUpdate(cart.coupon, {
+      $inc: {
+        usedCount: 1,
+      },
+    });
+  }
+
   // Clear Cart (DB update)
   await Cart.findOneAndUpdate(
     { user: userId },
     {
-$set: {
-  items: [],
-  totalAmount: 0,
-  discount: 0,
-  finalAmount: 0,
-  coupon: null,
-},
+      $set: {
+        items: [],
+        totalAmount: 0,
+        discount: 0,
+        finalAmount: 0,
+        coupon: null,
+      },
     },
     { new: true }
   );
 
-  return await Order.findById(order._id)
-    .populate("user", "name email")
-    .populate({
-      path: "items.product",
-      populate: {
-        path: "category",
-        select: "name slug",
-      },
-    });
+  return await populateOrderQuery(Order.findById(order._id));
 };
 
 export const getMyOrders = async (
   userId: string,
   page = 1,
-  limit = 10
+  limit = 10,
+  status?: string
 ) => {
-  const total = await Order.countDocuments({
-    user: userId,
-  });
+  const filter: any = { user: userId };
 
-  const orders = await Order.find({ user: userId })
-    .populate("user", "name email")
-    .populate({
-      path: "items.product",
-      populate: {
-        path: "category",
-        select: "name slug",
-      },
-    })
+  if (status) {
+    filter.orderStatus = status;
+  }
+
+  const total = await Order.countDocuments(filter);
+
+  const orders = await populateOrderQuery(
+    Order.find(filter)
+  )
     .sort({ createdAt: -1 })
     .skip((page - 1) * limit)
     .limit(limit);
@@ -194,15 +185,7 @@ export const getOrderById = async (
   userId: string,
   orderId: string
 ) => {
-  const order = await Order.findById(orderId)
-    .populate("user", "name email")
-    .populate({
-      path: "items.product",
-      populate: {
-        path: "category",
-        select: "name slug",
-      },
-    });
+  const order = await populateOrderQuery(Order.findById(orderId));
 
   if (!order) {
     throw new NotFoundError("Order not found");
@@ -222,21 +205,85 @@ export const getOrderById = async (
   return order;
 };
 
-export const getAllOrders = async (
-  page = 1,
-  limit = 10
-) => {
-  const total = await Order.countDocuments();
+interface OrderFilters {
+  page?: number;
+  limit?: number;
+  status?: string;
+  paymentStatus?: string;
+  paymentMethod?: string;
+  q?: string;
+  from?: string;
+  to?: string;
+}
 
-  const orders = await Order.find()
-    .populate("user", "name email")
-    .populate({
-      path: "items.product",
-      populate: {
-        path: "category",
-        select: "name slug",
-      },
-    })
+export const getAllOrders = async (filters: OrderFilters = {}) => {
+  const {
+    page = 1,
+    limit = 10,
+    status,
+    paymentStatus,
+    paymentMethod,
+    q,
+    from,
+    to,
+  } = filters;
+
+  const filter: any = {};
+
+  if (status) {
+    filter.orderStatus = status;
+  }
+
+  if (paymentStatus) {
+    filter.paymentStatus = paymentStatus;
+  }
+
+  if (paymentMethod) {
+    filter.paymentMethod = paymentMethod;
+  }
+
+  if (from || to) {
+    filter.createdAt = {};
+
+    if (from) {
+      const fromDate = new Date(from);
+
+      if (!isNaN(fromDate.getTime())) {
+        filter.createdAt.$gte = fromDate;
+      }
+    }
+
+    if (to) {
+      const toDate = new Date(to);
+
+      if (!isNaN(toDate.getTime())) {
+        filter.createdAt.$lte = toDate;
+      }
+    }
+  }
+
+  // Search by order id, or the customer's name/email.
+  if (q) {
+    const isObjectId = /^[a-fA-F0-9]{24}$/.test(q);
+
+    const userMatches = await User.find({
+      $or: [
+        { name: { $regex: q, $options: "i" } },
+        { email: { $regex: q, $options: "i" } },
+      ],
+    }).select("_id");
+
+    const userIds = userMatches.map((u) => u._id);
+
+    filter.$or = [
+      ...(isObjectId ? [{ _id: q }] : []),
+      { user: { $in: userIds } },
+    ];
+  }
+
+  const total = await Order.countDocuments(filter);
+
+  const orders = await populateOrderQuery(Order.find(filter))
     .sort({ createdAt: -1 })
     .skip((page - 1) * limit)
     .limit(limit);
@@ -252,22 +299,134 @@ export const getAllOrders = async (
   };
 };
 
+/**
+ * COD reconciliation for admin: every COD order with collection status and
+ * outstanding amounts.
+ */
+export const getCodSummary = async (page = 1, limit = 10, collected?: string) => {
+  const filter: any = { paymentMethod: "COD" };
+
+  if (collected === "true") {
+    filter["delivery.codCollected"] = true;
+  } else if (collected === "false") {
+    filter["delivery.codCollected"] = false;
+  }
+
+  const [total, pendingCollection, collectedCount, pendingAmount, collectedAmount] =
+    await Promise.all([
+      Order.countDocuments(filter),
+      Order.countDocuments({
+        paymentMethod: "COD",
+        "delivery.codCollected": false,
+        orderStatus: { $in: ["Delivered", "OutForDelivery", "Shipped"] },
+      }),
+      Order.countDocuments({
+        paymentMethod: "COD",
+        "delivery.codCollected": true,
+      }),
+      Order.aggregate([
+        {
+          $match: {
+            paymentMethod: "COD",
+            "delivery.codCollected": false,
+          },
+        },
+        { $group: { _id: null, total: { $sum: "$totalAmount" } } },
+      ]),
+      Order.aggregate([
+        {
+          $match: {
+            paymentMethod: "COD",
+            "delivery.codCollected": true,
+          },
+        },
+        { $group: { _id: null, total: { $sum: "$totalAmount" } } },
+      ]),
+    ]);
+
+  const orders = await populateOrderQuery(Order.find(filter))
+    .sort({ createdAt: -1 })
+    .skip((page - 1) * limit)
+    .limit(limit);
+
+  return {
+    summary: {
+      totalCodOrders: total,
+      pendingCollection,
+      collectedCount,
+      pendingAmount: pendingAmount[0]?.total ?? 0,
+      collectedAmount: collectedAmount[0]?.total ?? 0,
+    },
+    orders,
+    pagination: {
+      total,
+      page,
+      limit,
+      totalPages: Math.ceil(total / limit),
+    },
+  };
+};
+
+/** Admin: assign a delivery agent to an order. */
+export const assignDeliveryAgent = async (
+  orderId: string,
+  agentId: string
+) => {
+  const agent = await User.findOne({
+    _id: agentId,
+    role: "delivery_agent",
+  });
+
+  if (!agent) {
+    throw new NotFoundError("Delivery agent not found");
+  }
+
+  const order = await Order.findById(orderId);
+
+  if (!order) {
+    throw new NotFoundError("Order not found");
+  }
+
+  if (["Delivered", "Cancelled", "RTO"].includes(order.orderStatus)) {
+    throw new ConflictError(
+      "Order is already final — it cannot be assigned"
+    );
+  }
+
+  if (order.paymentMethod === "RAZORPAY" && order.paymentStatus !== "Paid") {
+    throw new ConflictError(
+      "Assign Razorpay orders only after payment is confirmed"
+    );
+  }
+
+  order.delivery.assignedTo = agentId;
+  order.delivery.assignedAt = new Date();
+
+  await order.save();
+
+  return await populateOrderQuery(Order.findById(orderId));
+};
+
 type OrderStatus =
   | "Pending"
   | "Processing"
   | "Shipped"
+  | "OutForDelivery"
   | "Delivered"
-  | "Cancelled";
+  | "Cancelled"
+  | "RTO";
 
 // Admins may move an order forward along the lifecycle and may skip
 // intermediate steps (e.g. a COD order delivered on the spot can go
-// straight Pending -> Delivered). Delivered and Cancelled are terminal.
+// straight Pending -> Delivered). Delivered, Cancelled and RTO are terminal.
 const VALID_TRANSITIONS: Record<OrderStatus, OrderStatus[]> = {
-  Pending: ["Processing", "Shipped", "Delivered", "Cancelled"],
-  Processing: ["Shipped", "Delivered", "Cancelled"],
-  Shipped: ["Delivered"],
+  Pending: ["Processing", "Shipped", "OutForDelivery", "Delivered", "Cancelled"],
+  Processing: ["Shipped", "OutForDelivery", "Delivered", "Cancelled"],
+  Shipped: ["OutForDelivery", "Delivered"],
+  OutForDelivery: ["Delivered", "RTO", "Cancelled"],
   Delivered: [],
   Cancelled: [],
+  RTO: [],
 };
 
 const restoreStockForOrder = async (order: any) => {
@@ -313,25 +472,35 @@ export const updateOrderStatus = async (
 
   order.orderStatus = status;
 
+  // Delivered is the only valid payment confirmation for COD — the order is
+  // never marked paid without a real delivery confirmation.
   if (status === "Delivered") {
     order.paymentStatus = "Paid";
+    order.delivery.deliveredAt = new Date();
+
+    if (order.paymentMethod === "COD") {
+      order.delivery.codCollected = true;
+      order.delivery.codCollectedAt = new Date();
+    }
   }
 
-  if (status === "Cancelled" && wasStockDeducted) {
+  // RTO is terminal: the goods are coming back, so stock and coupon usage
+  // are restored exactly like a cancellation.
+  if (status === "RTO") {
+    order.delivery.rtoReason =
+      order.delivery.rtoReason || "Return to origin";
+  }
+
+  if (
+    (status === "Cancelled" || status === "RTO") &&
+    wasStockDeducted
+  ) {
     await restoreStockForOrder(order);
   }
 
   await order.save();
 
-  return await Order.findById(orderId)
-    .populate("user", "name email")
-    .populate({
-      path: "items.product",
-      populate: {
-        path: "category",
-        select: "name slug",
-      },
-    });
+  return await populateOrderQuery(Order.findById(orderId));
 };
 
 export const cancelOrder = async (
@@ -363,13 +532,5 @@ export const cancelOrder = async (
     await restoreStockForOrder(order);
   }
 
-  return await Order.findById(order._id)
-    .populate("user", "name email")
-    .populate({
-      path: "items.product",
-      populate: {
-        path: "category",
-        select: "name slug",
-      },
-    });
+  return await populateOrderQuery(Order.findById(order._id));
 };

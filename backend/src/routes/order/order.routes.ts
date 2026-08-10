@@ -104,6 +104,8 @@ import {
   getMyOrders,
   getOrderById,
   getAllOrders,
+  getCodOrders,
+  assignAgent,
   updateOrderStatus,
   cancelOrder,
 } from "../../controllers/order/order.controller";
@@ -143,6 +145,21 @@ router.patch(
   authorize("admin"),
   validateObjectId("id"),
   updateOrderStatus
+);
+
+router.put(
+  "/admin/:id/assign",
+  authorize("admin"),
+  validateObjectId("id"),
+  assignAgent
+);
+
+// COD reconciliation — must come before the generic /admin/all? It is a
+// distinct path so ordering is safe, but keep it above nothing else needed.
+router.get(
+  "/admin/cod",
+  authorize("admin"),
+  getCodOrders
 );
 
 // Keep this LAST

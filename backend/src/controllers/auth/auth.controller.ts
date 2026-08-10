@@ -4,13 +4,8 @@ import { asyncHandler } from "../../utils/asyncHandler";
 import {
   register,
   login,
-  verifyEmail,
-  resendVerificationEmail,
   forgotPassword,
   resetPassword,
-  verifyCode,
-  resendCode,
-  getVerifyStatus,
 } from "../../services/auth/auth.service";
 
 import {
@@ -18,11 +13,6 @@ import {
   loginSchema,
   forgotPasswordSchema,
   resetPasswordSchema,
-  verifyEmailSchema,
-  resendVerificationSchema,
-  verifyCodeSchema,
-  resendCodeSchema,
-  verifyStatusSchema,
 } from "../../validators/auth/auth.validator";
 
 export const registerUser = asyncHandler(async (req: Request, res: Response) => {
@@ -49,32 +39,6 @@ export const loginUser = asyncHandler(async (req: Request, res: Response) => {
   });
 });
 
-export const verifyEmailAddress = asyncHandler(
-  async (req: Request, res: Response) => {
-    const { token } = verifyEmailSchema.parse(req.body);
-
-    const result = await verifyEmail(token);
-
-    res.status(200).json({
-      success: true,
-      ...result,
-    });
-  }
-);
-
-export const resendVerification = asyncHandler(
-  async (req: Request, res: Response) => {
-    const { email } = resendVerificationSchema.parse(req.body);
-
-    const result = await resendVerificationEmail(email);
-
-    res.status(200).json({
-      success: true,
-      ...result,
-    });
-  }
-);
-
 export const forgotPasswordRequest = asyncHandler(
   async (req: Request, res: Response) => {
     const { email } = forgotPasswordSchema.parse(req.body);
@@ -93,47 +57,6 @@ export const resetPasswordRequest = asyncHandler(
     const { token, password } = resetPasswordSchema.parse(req.body);
 
     const result = await resetPassword(token, password);
-
-    res.status(200).json({
-      success: true,
-      ...result,
-    });
-  }
-);
-
-export const verifyCodeRequest = asyncHandler(
-  async (req: Request, res: Response) => {
-    const { email, type, code } = verifyCodeSchema.parse(
-      req.body
-    );
-
-    const result = await verifyCode(email, type, code);
-
-    res.status(200).json({
-      success: true,
-      ...result,
-    });
-  }
-);
-
-export const resendCodeRequest = asyncHandler(
-  async (req: Request, res: Response) => {
-    const { email, type } = resendCodeSchema.parse(req.body);
-
-    const result = await resendCode(email, type);
-
-    res.status(200).json({
-      success: true,
-      ...result,
-    });
-  }
-);
-
-export const verifyStatusRequest = asyncHandler(
-  async (req: Request, res: Response) => {
-    const { email } = verifyStatusSchema.parse(req.query);
-
-    const result = await getVerifyStatus(email);
 
     res.status(200).json({
       success: true,
