@@ -30,6 +30,26 @@ const getTransporter = (): Transporter | null => {
 };
 
 /**
+ * Split a "Name <email>" sender string into its parts so providers receive a
+ * clean email address (some reject the combined form with "valid sender email
+ * required").
+ */
+const parseSender = (
+  value: string | undefined
+): { name: string; email: string } => {
+  const match = /^(.*?)\s*<([^>]+)>$/.exec(value ?? "");
+
+  if (match) {
+    return { name: match[1].trim() || "Shikha", email: match[2].trim() };
+  }
+
+  return {
+    name: "Shikha",
+    email: (value ?? "no-reply@shikha.store").trim(),
+  };
+};
+
+/**
  * Send via an HTTPS email API (Brevo-style REST). This is the preferred path:
  * it works from any host because it only needs outbound HTTPS (port 443), which
  * is never blocked — unlike SMTP ports. Configure EMAIL_API_KEY + EMAIL_API_URL.
@@ -48,6 +68,8 @@ const sendViaHttpApi = async ({
       config.EMAIL_API_URL ||
       "https://api.brevo.com/v3/smtp/email";
 
+    const sender = parseSender(config.EMAIL_FROM || config.SMTP_USER);
+
     const response = await fetch(url, {
       method: "POST",
       headers: {
@@ -55,10 +77,7 @@ const sendViaHttpApi = async ({
         "api-key": config.EMAIL_API_KEY,
       },
       body: JSON.stringify({
-        sender: {
-          name: "Shikha",
-          email: config.EMAIL_FROM || config.SMTP_USER || "no-reply@shikha.store",
-        },
+        sender,
         to: [{ email: to }],
         subject,
         htmlContent: html,
