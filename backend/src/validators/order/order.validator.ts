@@ -60,6 +60,13 @@ export const updateOrderStatusSchema = z.object({
   status: z.enum(ORDER_STATUSES),
 });
 
+export const updateShippingSchema = z.object({
+  provider: z.string().trim().max(50).optional(),
+  trackingId: z.string().trim().max(100).optional(),
+  trackingUrl: z.string().trim().url("Tracking URL must be a valid URL").max(500).optional(),
+  shippedAt: z.coerce.date().optional(),
+});
+
 export const orderQuerySchema = z.object({
   page: z.coerce.number().int().min(1).default(1),
   limit: z.coerce.number().int().min(1).max(100).default(10),

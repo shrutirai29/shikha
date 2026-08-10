@@ -82,6 +82,33 @@ const orderItemSchema = new Schema(
   }
 );
 
+const shippingInfoSchema = new Schema(
+  {
+    provider: {
+      type: String,
+      default: "",
+    },
+
+    trackingId: {
+      type: String,
+      default: "",
+    },
+
+    trackingUrl: {
+      type: String,
+      default: "",
+    },
+
+    shippedAt: {
+      type: Date,
+      default: null,
+    },
+  },
+  {
+    _id: false,
+  }
+);
+
 const orderSchema = new Schema<IOrder>(
   {
     user: {
@@ -127,6 +154,11 @@ const orderSchema = new Schema<IOrder>(
         "Cancelled",
       ],
       default: "Pending",
+    },
+
+    shipping: {
+      type: shippingInfoSchema,
+      default: null,
     },
 
     subtotal: {

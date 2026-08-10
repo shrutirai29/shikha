@@ -53,46 +53,6 @@
 
 /**
  * @swagger
- * /auth/verify-email:
- *   post:
- *     summary: Verify email address with a token
- *     tags: [Auth]
- *     requestBody:
- *       required: true
- *       content:
- *         application/json:
- *           schema:
- *             type: object
- *             required: [token]
- *             properties:
- *               token: { type: string }
- *     responses:
- *       200:
- *         description: Email verified
- */
-
-/**
- * @swagger
- * /auth/resend-verification:
- *   post:
- *     summary: Resend the email verification link
- *     tags: [Auth]
- *     requestBody:
- *       required: true
- *       content:
- *         application/json:
- *           schema:
- *             type: object
- *             required: [email]
- *             properties:
- *               email: { type: string, format: email }
- *     responses:
- *       200:
- *         description: Verification email sent
- */
-
-/**
- * @swagger
  * /auth/forgot-password:
  *   post:
  *     summary: Request a password reset link

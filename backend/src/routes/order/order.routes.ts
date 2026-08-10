@@ -105,6 +105,7 @@ import {
   getOrderById,
   getAllOrders,
   updateOrderStatus,
+  updateShipping,
   cancelOrder,
 } from "../../controllers/order/order.controller";
 
@@ -143,6 +144,13 @@ router.patch(
   authorize("admin"),
   validateObjectId("id"),
   updateOrderStatus
+);
+
+router.patch(
+  "/admin/:id/shipping",
+  authorize("admin"),
+  validateObjectId("id"),
+  updateShipping
 );
 
 // Keep this LAST

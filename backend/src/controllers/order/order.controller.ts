@@ -9,6 +9,7 @@ import { asyncHandler } from "../../utils/asyncHandler";
 import {
   createOrderSchema,
   updateOrderStatusSchema,
+  updateShippingSchema,
   orderQuerySchema,
 } from "../../validators/order/order.validator";
 
@@ -72,6 +73,23 @@ export const getAllOrders = asyncHandler(
     res.status(200).json({
       success: true,
       ...result,
+    });
+  }
+);
+
+export const updateShipping = asyncHandler(
+  async (req: AuthRequest, res: Response) => {
+    const data = updateShippingSchema.parse(req.body);
+
+    const order = await orderService.updateOrderShipping(
+      req.params.id as string,
+      data
+    );
+
+    res.status(200).json({
+      success: true,
+      message: "Shipping tracking updated",
+      data: order,
     });
   }
 );

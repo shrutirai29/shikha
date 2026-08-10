@@ -24,6 +24,17 @@ export interface IOrderItem {
   price: number;
 }
 
+/**
+ * Optional external-shipping tracking info. Left empty until a logistics
+ * provider (e.g. Shiprocket/Delhivery/FedEx) is connected via API/webhook.
+ */
+export interface IShippingInfo {
+  provider?: string;
+  trackingId?: string;
+  trackingUrl?: string;
+  shippedAt?: Date | null;
+}
+
 export interface IOrder extends Document {
   user: Types.ObjectId | string;
 
@@ -45,6 +56,8 @@ export interface IOrder extends Document {
     | "Shipped"
     | "Delivered"
     | "Cancelled";
+
+  shipping?: IShippingInfo | null;
 
   subtotal: number;
 

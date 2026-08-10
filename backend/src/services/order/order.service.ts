@@ -298,6 +298,35 @@ export const getAllOrders = async (filters: OrderFilters = {}) => {
   };
 };
 
+export const updateOrderShipping = async (
+  orderId: string,
+  data: {
+    provider?: string;
+    trackingId?: string;
+    trackingUrl?: string;
+    shippedAt?: Date;
+  }
+) => {
+  const order = await Order.findById(orderId);
+
+  if (!order) {
+    throw new NotFoundError("Order not found");
+  }
+
+  const existing = order.shipping ?? ({} as any);
+
+  order.shipping = {
+    provider: data.provider ?? existing.provider ?? "",
+    trackingId: data.trackingId ?? existing.trackingId ?? "",
+    trackingUrl: data.trackingUrl ?? existing.trackingUrl ?? "",
+    shippedAt: data.shippedAt ?? existing.shippedAt ?? null,
+  };
+
+  await order.save();
+
+  return await populateOrderQuery(Order.findById(orderId));
+};
+
 type OrderStatus =
   | "Pending"
   | "Processing"

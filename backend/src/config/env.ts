@@ -28,9 +28,6 @@ const envSchema = z.object({
   EMAIL_FROM: z.string().optional(),
   EMAIL_API_URL: z.string().optional(),
   EMAIL_API_KEY: z.string().optional(),
-  SMS_API_URL: z.string().optional(),
-  SMS_API_KEY: z.string().optional(),
-  SMS_SENDER_ID: z.string().optional(),
 });
 
 export type Env = z.infer<typeof envSchema>;
