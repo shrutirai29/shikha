@@ -476,14 +476,16 @@ export const resendCode = async (
  * display them (dev fallback) even after a refresh or a redirect.
  */
 /**
- * Whether email delivery is configured. Phone codes fall back to email, so
+ * Whether email delivery is configured. Email can be sent via an HTTPS email
+ * API (EMAIL_API_KEY, e.g. Brevo) or SMTP. Phone codes fall back to email, so
  * dev codes for both channels are only exposed when no provider is set.
  */
 const isEmailDeliveryConfigured = (): boolean => {
   const config = env();
 
   return Boolean(
-    config.SMTP_HOST && config.SMTP_USER && config.SMTP_PASS
+    config.EMAIL_API_KEY ||
+      (config.SMTP_HOST && config.SMTP_USER && config.SMTP_PASS)
   );
 };
 
