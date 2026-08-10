@@ -1,14 +1,19 @@
 import bcrypt from "bcrypt";
 import crypto from "crypto";
 import User from "../../models/auth/auth.model";
+import PendingRegistration from "../../models/auth/pending-registration.model";
 
 import { ConflictError } from "../../errors/ConflictError";
 import { UnauthorizedError } from "../../errors/UnauthorizedError";
 import { ForbiddenError } from "../../errors/ForbiddenError";
+import { BadRequestError } from "../../errors/BadRequestError";
 
 import { generateAccessToken } from "../../utils/jwt";
 
-import { sendPasswordResetEmail } from "../email/email.service";
+import {
+  sendPasswordResetEmail,
+  sendVerificationOtpEmail,
+} from "../email/email.service";
 
 interface RegisterDto {
   name: string;
@@ -22,9 +27,17 @@ interface LoginDto {
   password: string;
 }
 
+const OTP_TTL_MS = 10 * 60 * 1000; // 10 minutes
+const MAX_OTP_ATTEMPTS = 5;
+const RESEND_COOLDOWN_MS = 60 * 1000; // 1 minute
+
+const generateOtp = (): string =>
+  crypto.randomInt(100000, 1000000).toString();
+
 /**
- * Register a new customer account. The account is created immediately and is
- * fully usable — no email/phone verification required.
+ * Register a new customer. No account is created yet — a 6-digit OTP is sent
+ * to the email, and the account is only created once it is verified via
+ * verifyOtp(). A pending registration is stored (auto-expires after 30 min).
  */
 export const register = async (data: RegisterDto) => {
   const email = data.email.toLowerCase();
@@ -35,18 +48,88 @@ export const register = async (data: RegisterDto) => {
     throw new ConflictError("Email already registered");
   }
 
-  const hashedPassword = await bcrypt.hash(data.password, 10);
+  // Allow re-registering after the previous OTP expired, but reject an active
+  // pending registration to avoid OTP spam.
+  const existingPending = await PendingRegistration.findOne({ email });
 
-  const user = await User.create({
+  if (existingPending && existingPending.otpExpiresAt > new Date()) {
+    throw new ConflictError(
+      "An OTP was already sent to this email. Check your inbox or wait for it to expire."
+    );
+  }
+
+  if (existingPending) {
+    await PendingRegistration.deleteOne({ email });
+  }
+
+  const hashedPassword = await bcrypt.hash(data.password, 10);
+  const otp = generateOtp();
+  const now = new Date();
+
+  await PendingRegistration.create({
     name: data.name,
     email,
-    password: hashedPassword,
     phone: data.phone,
+    password: hashedPassword,
+    otp,
+    otpExpiresAt: new Date(now.getTime() + OTP_TTL_MS),
+    otpAttempts: 0,
+    lastOtpSentAt: now,
+  });
+
+  const { delivered } = await sendVerificationOtpEmail(email, otp);
+
+  return {
+    message: "OTP sent to your email — verify it to create your account",
+    email,
+    delivered,
+  };
+};
+
+export const verifyOtp = async (email: string, code: string) => {
+  const normalizedEmail = email.toLowerCase();
+
+  const pending = await PendingRegistration.findOne({
+    email: normalizedEmail,
+  });
+
+  if (!pending) {
+    throw new UnauthorizedError(
+      "No pending registration found for this email"
+    );
+  }
+
+  if (pending.otpExpiresAt < new Date()) {
+    await PendingRegistration.deleteOne({ email: normalizedEmail });
+    throw new UnauthorizedError(
+      "This code has expired. Please register again to receive a new one."
+    );
+  }
+
+  if (pending.otpAttempts >= MAX_OTP_ATTEMPTS) {
+    throw new BadRequestError(
+      "Too many incorrect attempts. Please request a new code."
+    );
+  }
+
+  if (pending.otp !== code) {
+    pending.otpAttempts += 1;
+    await pending.save();
+    throw new BadRequestError("Invalid verification code");
+  }
+
+  const user = await User.create({
+    name: pending.name,
+    email: pending.email,
+    password: pending.password,
+    phone: pending.phone,
     role: "customer",
     isVerified: true,
     phoneVerified: true,
     isActive: true,
   });
+
+  await PendingRegistration.deleteOne({ email: normalizedEmail });
 
   const token = generateAccessToken(user._id.toString(), user.role);
 
@@ -61,7 +144,50 @@ export const register = async (data: RegisterDto) => {
       phoneVerified: user.phoneVerified,
       phone: user.phone,
     },
-    verificationRequired: [],
+  };
+};
+
+export const resendOtp = async (email: string) => {
+  const normalizedEmail = email.toLowerCase();
+
+  const pending = await PendingRegistration.findOne({
+    email: normalizedEmail,
+  });
+
+  if (!pending) {
+    throw new UnauthorizedError(
+      "No pending registration found for this email"
+    );
+  }
+
+  const waitMs =
+    RESEND_COOLDOWN_MS -
+    (Date.now() - new Date(pending.lastOtpSentAt).getTime());
+
+  if (waitMs > 0) {
+    throw new ConflictError(
+      `Please wait ${Math.ceil(waitMs / 1000)} seconds before requesting a new code`
+    );
+  }
+
+  const otp = generateOtp();
+
+  pending.otp = otp;
+  pending.otpAttempts = 0;
+  pending.otpExpiresAt = new Date(Date.now() + OTP_TTL_MS);
+  pending.lastOtpSentAt = new Date();
+
+  await pending.save();
+
+  const { delivered } = await sendVerificationOtpEmail(
+    normalizedEmail,
+    otp
+  );
+
+  return {
+    message: "A new code has been sent to your email",
+    email: normalizedEmail,
+    delivered,
   };
 };
 

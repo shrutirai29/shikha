@@ -4,6 +4,8 @@ import { asyncHandler } from "../../utils/asyncHandler";
 import {
   register,
   login,
+  verifyOtp,
+  resendOtp,
   forgotPassword,
   resetPassword,
 } from "../../services/auth/auth.service";
@@ -11,6 +13,8 @@ import {
 import {
   registerSchema,
   loginSchema,
+  verifyOtpSchema,
+  resendOtpSchema,
   forgotPasswordSchema,
   resetPasswordSchema,
 } from "../../validators/auth/auth.validator";
@@ -22,10 +26,38 @@ export const registerUser = asyncHandler(async (req: Request, res: Response) => 
 
   res.status(201).json({
     success: true,
-    message: "Registration successful — welcome to Shikha!",
+    message: "OTP sent — verify your email to create your account",
     data: result,
   });
 });
+
+export const verifyOtpRequest = asyncHandler(
+  async (req: Request, res: Response) => {
+    const { email, code } = verifyOtpSchema.parse(req.body);
+
+    const result = await verifyOtp(email, code);
+
+    res.status(200).json({
+      success: true,
+      message: "Email verified — your account is ready",
+      data: result,
+    });
+  }
+);
+
+export const resendOtpRequest = asyncHandler(
+  async (req: Request, res: Response) => {
+    const { email } = resendOtpSchema.parse(req.body);
+
+    const result = await resendOtp(email);
+
+    res.status(200).json({
+      success: true,
+      message: "A new code has been sent to your email",
+      data: result,
+    });
+  }
+);
 
 export const loginUser = asyncHandler(async (req: Request, res: Response) => {
   const validatedData = loginSchema.parse(req.body);

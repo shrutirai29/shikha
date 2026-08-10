@@ -1,9 +1,9 @@
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
-import { Eye, EyeOff, UserPlus } from "lucide-react";
+import { Eye, EyeOff, KeyRound, MailCheck, UserPlus } from "lucide-react";
 import { usePageTitle } from "@/hooks/usePageTitle";
 import { useAuth } from "@/context/AuthContext";
 import { useToast } from "@/context/ToastContext";
@@ -27,14 +27,26 @@ const registerSchema = z
     message: "Passwords do not match",
   });
 
+const otpSchema = z.object({
+  code: z.string().regex(/^\d{6}$/, "Enter the 6-digit code from your email"),
+});
+
 type RegisterForm = z.infer<typeof registerSchema>;
+type OtpForm = z.infer<typeof otpSchema>;
+
+const RESEND_COOLDOWN_SECONDS = 60;
 
 export const RegisterPage = () => {
   usePageTitle("Create account");
-  const { register: registerUser } = useAuth();
+  const { register: registerUser, verifyOtp, resendOtp } = useAuth();
   const toast = useToast();
   const navigate = useNavigate();
   const [showPassword, setShowPassword] = useState(false);
+  const [pendingEmail, setPendingEmail] = useState<string | null>(null);
+  const [countdown, setCountdown] = useState(0);
+  const [resending, setResending] = useState(false);
+  const [verifying, setVerifying] = useState(false);
+  const timerRef = useRef<ReturnType<typeof setInterval> | null>(null);
 
   const {
     register,
@@ -45,21 +57,181 @@ export const RegisterPage = () => {
     defaultValues: { name: "", email: "", phone: "", password: "", confirmPassword: "" },
   });
 
+  const {
+    register: registerOtp,
+    handleSubmit: handleOtpSubmit,
+    formState: { errors: otpErrors },
+  } = useForm<OtpForm>({
+    resolver: zodResolver(otpSchema),
+    defaultValues: { code: "" },
+  });
+
+  useEffect(() => {
+    if (countdown <= 0) {
+      if (timerRef.current) {
+        clearInterval(timerRef.current);
+        timerRef.current = null;
+      }
+      return;
+    }
+
+    timerRef.current = setInterval(() => {
+      setCountdown((c) => (c > 0 ? c - 1 : 0));
+    }, 1000);
+
+    return () => {
+      if (timerRef.current) clearInterval(timerRef.current);
+    };
+  }, [countdown > 0]); // eslint-disable-line react-hooks/exhaustive-deps
+
+  const startCountdown = () => setCountdown(RESEND_COOLDOWN_SECONDS);
+
   const onSubmit = async (values: RegisterForm) => {
     try {
-      await registerUser({
+      const result = await registerUser({
         name: values.name,
         email: values.email,
         password: values.password,
         phone: values.phone,
       });
 
-      toast.success("Welcome to Shikha! Your account is ready.");
-      navigate("/", { replace: true });
+      setPendingEmail(result.email);
+      startCountdown();
+
+      if (!result.delivered) {
+        toast.error(
+          "We couldn't deliver the code to your email right now. Please try resending in a moment."
+        );
+      } else {
+        toast.success("We've emailed you a 6-digit verification code.");
+      }
     } catch (error) {
       toast.error(getErrorMessage(error));
     }
   };
+
+  const onVerify = async (values: OtpForm) => {
+    if (!pendingEmail) return;
+
+    setVerifying(true);
+
+    try {
+      await verifyOtp(pendingEmail, values.code);
+      toast.success("Email verified — welcome to Shikha!");
+      navigate("/", { replace: true });
+    } catch (error) {
+      toast.error(getErrorMessage(error));
+    } finally {
+      setVerifying(false);
+    }
+  };
+
+  const onResend = async () => {
+    if (!pendingEmail || countdown > 0) return;
+
+    setResending(true);
+
+    try {
+      const result = await resendOtp(pendingEmail);
+      startCountdown();
+
+      if (!result.delivered) {
+        toast.error(
+          "We couldn't deliver the code right now. Please try again shortly."
+        );
+      } else {
+        toast.success("A new code has been sent to your email.");
+      }
+    } catch (error) {
+      toast.error(getErrorMessage(error));
+    } finally {
+      setResending(false);
+    }
+  };
+
+  if (pendingEmail) {
+    return (
+      <div className="mx-auto flex min-h-[70vh] w-full max-w-md flex-col justify-center px-4 py-12">
+        <div className="mb-8 text-center">
+          <Logo className="mb-4 justify-center" />
+          <h1 className="text-2xl font-bold tracking-tight text-slate-900 dark:text-white">
+            Verify your email
+          </h1>
+          <p className="mt-1 text-sm text-slate-500 dark:text-slate-400">
+            Enter the 6-digit code we emailed to{" "}
+            <span className="font-semibold text-slate-700 dark:text-slate-200">
+              {pendingEmail}
+            </span>
+          </p>
+        </div>
+
+        <form
+          onSubmit={handleOtpSubmit(onVerify)}
+          className="space-y-4 rounded-2xl border border-slate-200 bg-white p-6 shadow-sm dark:border-slate-700 dark:bg-slate-800/60"
+          noValidate
+        >
+          <div className="rounded-xl bg-rose-50 p-4 text-sm text-rose-700 dark:bg-rose-500/10 dark:text-rose-300">
+            <p className="flex items-start gap-2">
+              <MailCheck className="mt-0.5 size-4 shrink-0" />
+              <span>
+                Your account is created only after the code is verified. The
+                code expires in 10 minutes.
+              </span>
+            </p>
+          </div>
+
+          <Input
+            label="Verification code"
+            inputMode="numeric"
+            autoComplete="one-time-code"
+            placeholder="123456"
+            maxLength={6}
+            error={otpErrors.code?.message}
+            {...registerOtp("code")}
+          />
+
+          <Button
+            type="submit"
+            className="w-full"
+            size="lg"
+            loading={verifying}
+          >
+            <KeyRound className="size-5" />
+            Verify & create account
+          </Button>
+
+          <div className="flex items-center justify-between text-sm">
+            <span className="text-slate-500 dark:text-slate-400">
+              Didn't get it?
+            </span>
+            <button
+              type="button"
+              onClick={onResend}
+              disabled={countdown > 0 || resending}
+              className="font-semibold text-indigo-600 transition hover:text-indigo-500 disabled:cursor-not-allowed disabled:text-slate-400 dark:text-indigo-400 dark:disabled:text-slate-600"
+            >
+              {countdown > 0
+                ? `Resend in ${countdown}s`
+                : resending
+                  ? "Sending…"
+                  : "Resend code"}
+            </button>
+          </div>
+
+          <button
+            type="button"
+            onClick={() => {
+              setPendingEmail(null);
+              setCountdown(0);
+            }}
+            className="w-full text-center text-sm text-slate-500 transition hover:text-slate-700 dark:text-slate-400 dark:hover:text-slate-200"
+          >
+            Use a different email
+          </button>
+        </form>
+      </div>
+    );
+  }
 
   return (
     <div className="mx-auto flex min-h-[70vh] w-full max-w-md flex-col justify-center px-4 py-12">
@@ -135,7 +307,7 @@ export const RegisterPage = () => {
 
         <Button type="submit" className="w-full" loading={isSubmitting} size="lg">
           <UserPlus className="size-5" />
-          Create account
+          Send verification code
         </Button>
       </form>
 

@@ -27,6 +27,12 @@ export interface RegisterResult {
   token: string;
 }
 
+export interface RegisterResponse {
+  email: string;
+  delivered: boolean;
+  message: string;
+}
+
 interface AuthContextValue {
   user: User | null;
   isLoading: boolean;
@@ -34,7 +40,9 @@ interface AuthContextValue {
   isAdmin: boolean;
   verificationRequired: string[];
   login: (input: LoginInput) => Promise<{ verificationRequired: string[]; user: User }>;
-  register: (input: RegisterInput) => Promise<RegisterResult>;
+  register: (input: RegisterInput) => Promise<RegisterResponse>;
+  verifyOtp: (email: string, code: string) => Promise<RegisterResult>;
+  resendOtp: (email: string) => Promise<{ delivered: boolean; message: string }>;
   logout: () => void;
   refreshProfile: () => Promise<void>;
   updateProfile: (data: Partial<Pick<User, "name" | "phone">>) => Promise<void>;
@@ -126,14 +134,33 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
   );
 
   const register = useCallback(
-    async (input: RegisterInput): Promise<RegisterResult> => {
+    async (input: RegisterInput): Promise<RegisterResponse> => {
+      setIsLoading(true);
+
+      try {
+        const { data } = await api.post<{
+          success: boolean;
+          data: RegisterResponse;
+        }>("/auth/register", input);
+
+        // No account is created yet — the OTP must be verified first.
+        return data.data;
+      } finally {
+        setIsLoading(false);
+      }
+    },
+    []
+  );
+
+  const verifyOtp = useCallback(
+    async (email: string, code: string): Promise<RegisterResult> => {
       setIsLoading(true);
 
       try {
         const { data } = await api.post<{
           success: boolean;
           data: RegisterResult;
-        }>("/auth/register", input);
+        }>("/auth/verify-otp", { email, code });
 
         localStorage.setItem(TOKEN_KEY, data.data.token);
         persistUser(data.data.user);
@@ -145,6 +172,15 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     },
     [persistUser]
   );
+
+  const resendOtp = useCallback(async (email: string) => {
+    const { data } = await api.post<{
+      success: boolean;
+      data: { delivered: boolean; message: string };
+    }>("/auth/resend-otp", { email });
+
+    return data.data;
+  }, []);
 
   const updateProfile = useCallback(
     async (data: Partial<Pick<User, "name" | "phone">>) => {
@@ -181,6 +217,8 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
       verificationRequired,
       login,
       register,
+      verifyOtp,
+      resendOtp,
       logout,
       refreshProfile,
       updateProfile,
@@ -191,6 +229,8 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
       verificationRequired,
       login,
       register,
+      verifyOtp,
+      resendOtp,
       logout,
       refreshProfile,
       updateProfile,

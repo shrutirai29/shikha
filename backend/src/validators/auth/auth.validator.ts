@@ -31,6 +31,17 @@ export const loginSchema = z.object({
     .min(6, "Password must be at least 6 characters"),
 });
 
+export const verifyOtpSchema = z.object({
+  email: z.string().email("Invalid email address"),
+  code: z
+    .string()
+    .regex(/^\d{6}$/, "Verification code must be 6 digits"),
+});
+
+export const resendOtpSchema = z.object({
+  email: z.string().email("Invalid email address"),
+});
+
 export const forgotPasswordSchema = z.object({
   email: z.string().email("Invalid email address"),
 });

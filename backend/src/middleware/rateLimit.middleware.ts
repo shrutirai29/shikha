@@ -24,10 +24,30 @@ export const globalRateLimiter = rateLimit({
 export const authRateLimiter = rateLimit({
   ...rateLimitOptions,
   windowMs: 15 * 60 * 1000,
-  max: 20,
+  max: 50,
   message: {
     success: false,
     message: "Too many authentication attempts, please try again later.",
+  },
+});
+
+export const otpVerifyLimiter = rateLimit({
+  ...rateLimitOptions,
+  windowMs: 15 * 60 * 1000,
+  max: 25,
+  message: {
+    success: false,
+    message: "Too many verification attempts, please try again later.",
+  },
+});
+
+export const otpResendLimiter = rateLimit({
+  ...rateLimitOptions,
+  windowMs: 15 * 60 * 1000,
+  max: 10,
+  message: {
+    success: false,
+    message: "Too many code requests, please try again later.",
   },
 });
 

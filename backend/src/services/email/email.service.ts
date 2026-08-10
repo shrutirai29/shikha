@@ -138,6 +138,31 @@ export const sendEmail = async ({
   return { delivered: false };
 };
 
+export const sendVerificationOtpEmail = async (
+  to: string,
+  otp: string
+): Promise<{ delivered: boolean }> => {
+  return sendEmail({
+    to,
+    subject: "Your Shikha verification code",
+    html: `
+      <div style="font-family: Arial, sans-serif; max-width: 480px; margin: 0 auto; padding: 24px; color: #22223B;">
+        <h2 style="color: #22223B; margin: 0 0 8px;">Welcome to Shikha ✨</h2>
+        <p style="font-size: 15px; line-height: 1.6; color: #4A4E69;">
+          Use the code below to verify your email address and finish creating your account.
+          The code expires in <strong>10 minutes</strong>.
+        </p>
+        <div style="background: #F2E9E4; border-radius: 12px; padding: 20px; text-align: center; margin: 16px 0;">
+          <span style="font-size: 34px; font-weight: 700; letter-spacing: 8px; color: #22223B;">${otp}</span>
+        </div>
+        <p style="font-size: 13px; color: #9A8C98;">
+          If you did not request this, you can safely ignore this email. No account will be created without verification.
+        </p>
+      </div>
+    `,
+  });
+};
+
 export const sendPasswordResetEmail = async (
   to: string,
   token: string
