@@ -6,7 +6,7 @@ import { z } from "zod";
 import { Eye, EyeOff, UserPlus } from "lucide-react";
 import { useAuth } from "@/context/AuthContext";
 import { useToast } from "@/context/ToastContext";
-import { getErrorMessage, isApiError } from "@/lib/api";
+import { getErrorMessage } from "@/lib/api";
 import { Button } from "@/components/ui/Button";
 import { Input } from "@/components/ui/Input";
 import { Logo } from "@/components/layout/Logo";
@@ -45,33 +45,16 @@ export const RegisterPage = () => {
 
   const onSubmit = async (values: RegisterForm) => {
     try {
-      const result = await registerUser({
+      await registerUser({
         name: values.name,
         email: values.email,
         password: values.password,
         phone: values.phone,
       });
 
-      const devCodes = result.devCodes;
-
-      toast.success(
-        "Almost there! Enter the codes sent to your email and phone to create your account."
-      );
-
-      // If email/SMS delivery isn't configured yet, the API returns the codes
-      // so the flow stays testable — hand them to the verify page.
-      navigate("/verify", {
-        state: { email: values.email, devCodes },
-      });
+      toast.success("Welcome to Shikha! Your account is ready.");
+      navigate("/", { replace: true });
     } catch (error) {
-      // A registration for this email is already waiting for verification —
-      // send them back to the verify page instead of showing an error.
-      if (isApiError(error) && error.response.data.code === "REGISTRATION_PENDING") {
-        toast.info("Finish verifying to create your account");
-        navigate("/verify", { state: { email: values.email } });
-        return;
-      }
-
       toast.error(getErrorMessage(error));
     }
   };

@@ -32,8 +32,7 @@ export const registerUser = asyncHandler(async (req: Request, res: Response) => 
 
   res.status(201).json({
     success: true,
-    message:
-      "Registration started — verify your email and phone to create your account",
+    message: "Registration successful — welcome to Shikha!",
     data: result,
   });
 });

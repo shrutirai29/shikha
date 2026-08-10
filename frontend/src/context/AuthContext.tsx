@@ -23,10 +23,8 @@ interface RegisterInput {
 }
 
 export interface RegisterResult {
-  pending: boolean;
-  email: string;
-  verificationRequired: string[];
-  devCodes?: { email?: string; phone?: string };
+  user: User;
+  token: string;
 }
 
 interface AuthContextValue {
@@ -137,12 +135,15 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
           data: RegisterResult;
         }>("/auth/register", input);
 
+        localStorage.setItem(TOKEN_KEY, data.data.token);
+        persistUser(data.data.user);
+
         return data.data;
       } finally {
         setIsLoading(false);
       }
     },
-    []
+    [persistUser]
   );
 
   const updateProfile = useCallback(

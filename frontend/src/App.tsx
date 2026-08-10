@@ -17,8 +17,6 @@ const LoginPage = lazy(() => import("@/pages/public/LoginPage"));
 const RegisterPage = lazy(() => import("@/pages/public/RegisterPage"));
 const ForgotPasswordPage = lazy(() => import("@/pages/public/ForgotPasswordPage"));
 const ResetPasswordPage = lazy(() => import("@/pages/public/ResetPasswordPage"));
-const VerifyEmailPage = lazy(() => import("@/pages/public/VerifyEmailPage"));
-const VerifyAccountPage = lazy(() => import("@/pages/public/VerifyAccountPage"));
 const NotFoundPage = lazy(() => import("@/pages/public/NotFoundPage"));
 
 const ProfilePage = lazy(() => import("@/pages/customer/ProfilePage"));
@@ -58,8 +56,6 @@ const SiteLayout = () => (
           <Route path="/categories/:slug" element={<CategoryProductsPage />} />
           <Route path="/products/:slug" element={<ProductDetailsPage />} />
           <Route path="/search" element={<SearchPage />} />
-          <Route path="/verify" element={<VerifyAccountPage />} />
-          <Route path="/verify-email" element={<VerifyEmailPage />} />
 
           <Route element={<GuestRoute />}>
             <Route path="/login" element={<LoginPage />} />

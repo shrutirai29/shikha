@@ -30,11 +30,7 @@ interface LoginDto {
   password: string;
 }
 
-const OTP_TTL_MS = 10 * 60 * 1000; // 10 minutes
-const PENDING_TTL_MS = 24 * 60 * 60 * 1000; // 24 hours
-
-export const generateOtp = (): string =>
-  String(crypto.randomInt(100000, 999999));
+const OTP_TTL_MS = 10 * 60 * 1000;
 
 const getVerificationRequired = (user: any): string[] => {
   const required: string[] = [];
@@ -43,8 +39,6 @@ const getVerificationRequired = (user: any): string[] => {
     required.push("email");
   }
 
-  // Accounts created before phone verification existed have no phone;
-  // treat them as verified rather than locking legacy users out.
   if (user.phone && !user.phoneVerified) {
     required.push("phone");
   }
@@ -52,24 +46,9 @@ const getVerificationRequired = (user: any): string[] => {
   return required;
 };
 
-const getPendingVerificationRequired = (pending: any): string[] => {
-  const required: string[] = [];
-
-  if (!pending.emailVerified) {
-    required.push("email");
-  }
-
-  if (!pending.phoneVerified) {
-    required.push("phone");
-  }
-
-  return required;
-};
-
 /**
- * Registering does NOT create an account. It creates a temporary pending
- * registration that holds the OTP codes; the real User document is created
- * only after BOTH the email and the phone number are verified.
+ * Register a new customer account. The account is created immediately and is
+ * fully usable — no email/phone verification required.
  */
 export const register = async (data: RegisterDto) => {
   const email = data.email.toLowerCase();
@@ -80,57 +59,33 @@ export const register = async (data: RegisterDto) => {
     throw new ConflictError("Email already registered");
   }
 
-  const existingPending = await PendingRegistration.findOne({ email });
-
-  if (existingPending) {
-    throw new ConflictError(
-      "Registration already in progress — enter the codes we sent to verify your email and phone.",
-      "REGISTRATION_PENDING"
-    );
-  }
-
   const hashedPassword = await bcrypt.hash(data.password, 10);
 
-  const emailOtp = generateOtp();
-  const phoneOtp = generateOtp();
-
-  const pending = await PendingRegistration.create({
+  const user = await User.create({
     name: data.name,
     email,
-    passwordHash: hashedPassword,
+    password: hashedPassword,
     phone: data.phone,
-    emailOtpCode: emailOtp,
-    emailOtpExpires: new Date(Date.now() + OTP_TTL_MS),
-    phoneOtpCode: phoneOtp,
-    phoneOtpExpires: new Date(Date.now() + OTP_TTL_MS),
-    expiresAt: new Date(Date.now() + PENDING_TTL_MS),
+    role: "customer",
+    isVerified: true,
+    phoneVerified: true,
+    isActive: true,
   });
 
-  // Verify both channels: email OTP by email, phone OTP by SMS (or email fallback).
-  const [emailResult, smsResult] = await Promise.allSettled([
-    sendOtpEmail(email, emailOtp),
-    sendOtpSms(email, data.phone, phoneOtp),
-  ]);
-
-  // Development fallback: when no email/SMS provider is configured, surface
-  // the codes in the response so the flow stays testable. Once SMTP/SMS are
-  // configured, delivery succeeds and the codes are never exposed.
-  const devCodes: { email?: string; phone?: string } = {};
-
-  if (emailResult.status === "fulfilled" && !emailResult.value.delivered) {
-    devCodes.email = emailOtp;
-  }
-
-  if (smsResult.status === "fulfilled" && !smsResult.value.delivered) {
-    devCodes.phone = phoneOtp;
-  }
+  const token = generateAccessToken(user._id.toString(), user.role);
 
   return {
-    pending: true,
-    id: pending._id,
-    email,
-    verificationRequired: getPendingVerificationRequired(pending),
-    ...(Object.keys(devCodes).length > 0 ? { devCodes } : {}),
+    token,
+    user: {
+      id: user._id,
+      name: user.name,
+      email: user.email,
+      role: user.role,
+      isVerified: user.isVerified,
+      phoneVerified: user.phoneVerified,
+      phone: user.phone,
+    },
+    verificationRequired: [],
   };
 };
 
@@ -143,34 +98,17 @@ export const login = async (data: LoginDto) => {
     throw new UnauthorizedError("Invalid email or password");
   }
 
-  const isMatch = await bcrypt.compare(
-    data.password,
-    user.password
-  );
+  const isMatch = await bcrypt.compare(data.password, user.password);
 
   if (!isMatch) {
     throw new UnauthorizedError("Invalid email or password");
-  }
-
-  const verificationRequired = getVerificationRequired(user);
-
-  // Accounts are not usable until BOTH the email and phone are verified.
-  // Do not issue a token — the user must verify first via /verify.
-  if (verificationRequired.length > 0) {
-    throw new ForbiddenError(
-      "Please verify your email and phone number before logging in. We sent codes to your email and phone.",
-      "ACCOUNT_NOT_VERIFIED"
-    );
   }
 
   if (!user.isActive) {
     throw new ForbiddenError("Account is inactive");
   }
 
-  const token = generateAccessToken(
-    user._id.toString(),
-    user.role
-  );
+  const token = generateAccessToken(user._id.toString(), user.role);
 
   return {
     token,
@@ -187,13 +125,26 @@ export const login = async (data: LoginDto) => {
   };
 };
 
+export const generateOtp = (): string =>
+  String(crypto.randomInt(100000, 999999));
+
+const getPendingVerificationRequired = (pending: any): string[] => {
+  const required: string[] = [];
+
+  if (!pending.emailVerified) {
+    required.push("email");
+  }
+
+  if (!pending.phoneVerified) {
+    required.push("phone");
+  }
+
+  return required;
+};
+
 /**
- * Verify a 6-digit code for the email or phone channel.
- *
- * For pending registrations (account not created yet), the real User document
- * is created the moment the LAST channel verifies. For legacy accounts that
- * already exist as Users (created before dual verification), it marks the
- * channel verified in place.
+ * Verify a 6-digit code for the email or phone channel. Kept for legacy
+ * pending registrations / accounts created before verification was removed.
  */
 export const verifyCode = async (
   email: string,
@@ -256,7 +207,6 @@ export const verifyCode = async (
     const verificationRequired = getPendingVerificationRequired(pending);
 
     if (verificationRequired.length === 0) {
-      // Both channels verified — NOW the account is created.
       const user = await User.create({
         name: pending.name,
         email: pending.email,
@@ -296,7 +246,7 @@ export const verifyCode = async (
     };
   }
 
-  // Legacy path: the account already exists as a User (pre-dual-verification).
+  // Legacy path: the account already exists as a User.
   const user = await User.findOne({
     email: normalizedEmail,
   });
@@ -425,7 +375,6 @@ export const resendCode = async (
   });
 
   if (!user) {
-    // Do not reveal whether an account exists.
     return {
       message: "If the account exists, a new code has been sent",
     };
@@ -470,11 +419,6 @@ export const resendCode = async (
   };
 };
 
-/**
- * Return the current verification state for an email. When email/SMS delivery
- * is not configured, the pending codes are included so the verify page can
- * display them (dev fallback) even after a refresh or a redirect.
- */
 /**
  * Whether email delivery is configured. Email can be sent via an HTTPS email
  * API (EMAIL_API_KEY, e.g. Brevo) or SMTP. Phone codes fall back to email, so
@@ -599,25 +543,22 @@ export const forgotPassword = async (email: string) => {
   });
 
   if (!user) {
-    // Do not reveal whether an account exists
     return {
-      message:
-        "If an account exists for this email, a reset link has been sent",
+      message: "If an account exists for this email, a reset link has been sent",
     };
   }
 
   const resetToken = crypto.randomBytes(32).toString("hex");
 
   user.resetPasswordToken = resetToken;
-  user.resetPasswordExpires = new Date(Date.now() + 60 * 60 * 1000); // 1 hour
+  user.resetPasswordExpires = new Date(Date.now() + 60 * 60 * 1000);
 
   await user.save();
 
   await sendPasswordResetEmail(user.email, resetToken);
 
   return {
-    message:
-      "If an account exists for this email, a reset link has been sent",
+    message: "If an account exists for this email, a reset link has been sent",
   };
 };
 

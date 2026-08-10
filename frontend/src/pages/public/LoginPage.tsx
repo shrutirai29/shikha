@@ -6,7 +6,7 @@ import { z } from "zod";
 import { Eye, EyeOff, LogIn } from "lucide-react";
 import { useAuth } from "@/context/AuthContext";
 import { useToast } from "@/context/ToastContext";
-import { getErrorMessage, isApiError } from "@/lib/api";
+import { getErrorMessage } from "@/lib/api";
 import { Button } from "@/components/ui/Button";
 import { Input } from "@/components/ui/Input";
 import { Logo } from "@/components/layout/Logo";
@@ -38,13 +38,7 @@ export const LoginPage = () => {
 
   const onSubmit = async (values: LoginForm) => {
     try {
-      const { verificationRequired, user } = await login(values);
-
-      if (verificationRequired.length > 0) {
-        toast.info("Please verify your email and phone to continue");
-        navigate("/verify", { replace: true, state: { email: values.email } });
-        return;
-      }
+      const { user } = await login(values);
 
       // Admins go straight to the admin dashboard — never the storefront.
       if (user.role === "admin") {
@@ -56,13 +50,6 @@ export const LoginPage = () => {
       toast.success("Welcome back!");
       navigate(from, { replace: true });
     } catch (error) {
-      // Unverified accounts can't log in yet — send them to verify first.
-      if (isApiError(error) && error.response.data.code === "ACCOUNT_NOT_VERIFIED") {
-        toast.info("Verify your email and phone to activate your account");
-        navigate("/verify", { replace: true, state: { email: values.email } });
-        return;
-      }
-
       toast.error(getErrorMessage(error));
     }
   };
