@@ -1,5 +1,6 @@
 import { Suspense, lazy, useMemo } from "react";
 import { Link } from "react-router-dom";
+import { usePageTitle } from "@/hooks/usePageTitle";
 import {
   ArrowRight,
   BadgeCheck,
@@ -24,6 +25,7 @@ const perks = [
 ];
 
 export const LandingPage = () => {
+  usePageTitle("Home");
   const { data: featured, isLoading: productsLoading } = useFeaturedProducts(24);
 
   // The first featured product becomes the hero's 3D presentation.

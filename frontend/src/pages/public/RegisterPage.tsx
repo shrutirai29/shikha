@@ -4,6 +4,7 @@ import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
 import { Eye, EyeOff, UserPlus } from "lucide-react";
+import { usePageTitle } from "@/hooks/usePageTitle";
 import { useAuth } from "@/context/AuthContext";
 import { useToast } from "@/context/ToastContext";
 import { getErrorMessage } from "@/lib/api";
@@ -29,6 +30,7 @@ const registerSchema = z
 type RegisterForm = z.infer<typeof registerSchema>;
 
 export const RegisterPage = () => {
+  usePageTitle("Create account");
   const { register: registerUser } = useAuth();
   const toast = useToast();
   const navigate = useNavigate();

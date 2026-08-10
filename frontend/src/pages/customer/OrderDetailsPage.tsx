@@ -8,8 +8,10 @@ import {
   MapPin,
   Package,
   ShoppingBag,
+  Truck,
   X,
 } from "lucide-react";
+import { useAuth } from "@/context/AuthContext";
 import { useCancelOrder, useOrder } from "@/hooks/useApi";
 import { PageLayout } from "@/components/layout/PageLayout";
 import { Badge, Card, PageLoader } from "@/components/ui/Card";
@@ -133,9 +135,14 @@ const StatusTimeline = ({ status }: { status: string }) => {
 export const OrderDetailsPage = () => {
   const { id } = useParams<{ id: string }>();
   const { data: order, isLoading, isError, error, refetch } = useOrder(id);
+  const { user } = useAuth();
   const cancelOrder = useCancelOrder();
   const toast = useToast();
   const [cancelOpen, setCancelOpen] = useState(false);
+
+  // Admins can open any order from the admin panel, but must not be able to
+  // cancel or pay on the customer's behalf from this view.
+  const isAdminViewer = user?.role === "admin";
 
   if (isLoading) {
     return <PageLoader />;
@@ -316,13 +323,32 @@ export const OrderDetailsPage = () => {
               </div>
             )}
 
-            {isRazorpayPending && (
+            {order.shipping?.trackingUrl && (
+              <a
+                href={order.shipping.trackingUrl}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="mt-3 flex items-center gap-2 rounded-xl border border-indigo-200 bg-indigo-50 px-3 py-2.5 text-sm text-indigo-800 transition hover:bg-indigo-100 dark:border-indigo-500/25 dark:bg-indigo-500/10 dark:text-indigo-200 dark:hover:bg-indigo-500/20"
+              >
+                <Truck className="size-4 shrink-0" />
+                <span>
+                  Track shipment
+                  {order.shipping.trackingId
+                    ? ` (${[order.shipping.provider, order.shipping.trackingId]
+                        .filter(Boolean)
+                        .join(" ")})`
+                    : ""}
+                </span>
+              </a>
+            )}
+
+            {isRazorpayPending && !isAdminViewer && (
               <Link to={`/payment/${order._id}`} className="mt-4 block">
                 <Button className="w-full">Complete payment</Button>
               </Link>
             )}
 
-            {canCancel && (
+            {canCancel && !isAdminViewer && (
               <Button
                 variant="outline"
                 className="mt-3 w-full border-rose-300 text-rose-700 hover:bg-rose-50 hover:border-rose-400 dark:border-rose-500/40 dark:text-rose-300 dark:hover:bg-rose-500/10"

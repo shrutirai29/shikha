@@ -1,5 +1,6 @@
 import { useState } from "react";
-import { NavLink, Outlet, Link } from "react-router-dom";
+import { NavLink, Outlet, Link, useLocation } from "react-router-dom";
+import { usePageTitle } from "@/hooks/usePageTitle";
 import {
   BarChart3,
   CreditCard,
@@ -37,9 +38,27 @@ const linkClass = ({ isActive }: { isActive: boolean }) =>
       : "text-slate-600 hover:bg-slate-100 hover:text-slate-900 dark:text-slate-300 dark:hover:bg-slate-800 dark:hover:text-white"
   );
 
+const ADMIN_TITLES: Record<string, string> = {
+  "/admin": "Admin Dashboard",
+  "/admin/analytics": "Analytics",
+  "/admin/users": "Users",
+  "/admin/products": "Products",
+  "/admin/categories": "Categories",
+  "/admin/orders": "Orders",
+  "/admin/coupons": "Coupons",
+  "/admin/payments": "Payments",
+  "/admin/reviews": "Reviews",
+};
+
 export const AdminLayout = () => {
   const { user } = useAuth();
   const [sidebarOpen, setSidebarOpen] = useState(false);
+  const location = useLocation();
+
+  usePageTitle(
+    ADMIN_TITLES[location.pathname] ??
+      (location.pathname.startsWith("/admin") ? "Admin" : undefined)
+  );
 
   const sidebar = (
     <div className="flex h-full flex-col">

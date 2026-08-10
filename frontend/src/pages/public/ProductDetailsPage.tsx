@@ -24,6 +24,7 @@ import { useAuth } from "@/context/AuthContext";
 import { useToast } from "@/context/ToastContext";
 import { getErrorMessage } from "@/lib/api";
 import { cn } from "@/lib/utils";
+import { usePageTitle } from "@/hooks/usePageTitle";
 
 export const ProductDetailsPage = () => {
   const { slug } = useParams<{ slug: string }>();
@@ -44,6 +45,8 @@ export const ProductDetailsPage = () => {
   const [rating, setRating] = useState(0);
   const [comment, setComment] = useState("");
   const [adding, setAdding] = useState(false);
+
+  usePageTitle(product?.name);
 
   if (isLoading) {
     return (

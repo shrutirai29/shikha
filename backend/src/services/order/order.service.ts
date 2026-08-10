@@ -182,7 +182,8 @@ export const getMyOrders = async (
 
 export const getOrderById = async (
   userId: string,
-  orderId: string
+  orderId: string,
+  isAdmin = false
 ) => {
   const order = await populateOrderQuery(Order.findById(orderId));
 
@@ -195,7 +196,8 @@ export const getOrderById = async (
       ? order.user._id.toString()
       : order.user.toString();
 
-  if (ownerId !== userId) {
+  // Admins may inspect any order; customers only their own.
+  if (!isAdmin && ownerId !== userId) {
     throw new ForbiddenError(
       "You are not authorized to access this order"
     );

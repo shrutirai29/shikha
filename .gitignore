@@ -28,6 +28,9 @@ coverage/
 *.swp
 *.swo
 
+# TypeScript incremental build info
+*.tsbuildinfo
+
 # OS
 .DS_Store
 Thumbs.db

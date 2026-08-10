@@ -1,7 +1,11 @@
 import { Link } from "react-router-dom";
 import { Home, PackageSearch } from "lucide-react";
+import { usePageTitle } from "@/hooks/usePageTitle";
 
-export const NotFoundPage = () => (
+export const NotFoundPage = () => {
+  usePageTitle("Page not found");
+
+  return (
   <div className="mx-auto flex min-h-[70vh] w-full max-w-lg flex-col items-center justify-center px-4 py-16 text-center">
     <PackageSearch className="size-16 text-slate-300 dark:text-slate-600" />
     <h1 className="mt-6 text-6xl font-extrabold tracking-tight text-slate-900 dark:text-white">
@@ -21,6 +25,7 @@ export const NotFoundPage = () => (
       Back to home
     </Link>
   </div>
-);
+  );
+};
 
 export default NotFoundPage;

@@ -54,7 +54,8 @@ export const getOrderById = asyncHandler(
   async (req: AuthRequest, res: Response) => {
     const order = await orderService.getOrderById(
       req.user!._id.toString(),
-      req.params.id as string
+      req.params.id as string,
+      req.user!.role === "admin"
     );
 
     res.status(200).json({

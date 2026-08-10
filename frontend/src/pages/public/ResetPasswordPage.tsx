@@ -4,6 +4,7 @@ import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
 import { Eye, EyeOff, KeyRound } from "lucide-react";
+import { usePageTitle } from "@/hooks/usePageTitle";
 import { api, getErrorMessage } from "@/lib/api";
 import { useToast } from "@/context/ToastContext";
 import { Button } from "@/components/ui/Button";
@@ -23,6 +24,7 @@ const resetSchema = z
 type ResetForm = z.infer<typeof resetSchema>;
 
 export const ResetPasswordPage = () => {
+  usePageTitle("Reset password");
   const [searchParams] = useSearchParams();
   const token = searchParams.get("token") ?? "";
   const navigate = useNavigate();

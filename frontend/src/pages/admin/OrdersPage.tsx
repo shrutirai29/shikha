@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { Link } from "react-router-dom";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
-import { Search } from "lucide-react";
+import { Search, Truck } from "lucide-react";
 import { api, getErrorMessage } from "@/lib/api";
 import { useAllOrders } from "@/hooks/useApi";
 import { useToast } from "@/context/ToastContext";
@@ -64,6 +64,36 @@ export const OrdersPage = () => {
     orderId: string;
   } | null>(null);
   const [newStatus, setNewStatus] = useState<string>("");
+
+  const [shippingModal, setShippingModal] = useState<{
+    id: string;
+    provider: string;
+    trackingId: string;
+    trackingUrl: string;
+  } | null>(null);
+
+  const updateShipping = useMutation({
+    mutationFn: async () => {
+      if (!shippingModal) return;
+      const { data: response } = await api.patch<{ data: unknown }>(
+        `/orders/admin/${shippingModal.id}/shipping`,
+        {
+          provider: shippingModal.provider || undefined,
+          trackingId: shippingModal.trackingId || undefined,
+          trackingUrl: shippingModal.trackingUrl || undefined,
+        }
+      );
+      return response.data;
+    },
+    onSuccess: () => {
+      toast.success("Tracking updated");
+      setShippingModal(null);
+      invalidate();
+    },
+    onError: (shippingError) => {
+      toast.error(getErrorMessage(shippingError));
+    },
+  });
 
   const invalidate = () =>
     void queryClient.invalidateQueries({ queryKey: ["admin-orders"] });
@@ -215,6 +245,12 @@ export const OrdersPage = () => {
                           <Badge variant={statusVariant(order.orderStatus)}>
                             {order.orderStatus}
                           </Badge>
+                          {order.shipping?.trackingId && (
+                            <p className="mt-0.5 flex items-center gap-1 text-[11px] font-medium text-indigo-600 dark:text-indigo-400">
+                              <Truck className="size-3" />
+                              {order.shipping.trackingId}
+                            </p>
+                          )}
                         </td>
                         <td className="px-5 py-3">
                           <Badge variant={order.paymentStatus === "Paid" ? "success" : "warning"}>
@@ -240,6 +276,20 @@ export const OrdersPage = () => {
                                 Update status
                               </Button>
                             )}
+                            <Button
+                              size="sm"
+                              variant="outline"
+                              onClick={() =>
+                                setShippingModal({
+                                  id: order._id,
+                                  provider: order.shipping?.provider ?? "",
+                                  trackingId: order.shipping?.trackingId ?? "",
+                                  trackingUrl: order.shipping?.trackingUrl ?? "",
+                                })
+                              }
+                            >
+                              Tracking
+                            </Button>
                             <Link to={`/orders/${order._id}`}>
                               <Button size="sm" variant="ghost">
                                 View
@@ -258,6 +308,65 @@ export const OrdersPage = () => {
           <PaginationBar pagination={data.pagination} onPageChange={setPage} />
         </>
       )}
+
+      <Modal
+        open={Boolean(shippingModal)}
+        onClose={() => setShippingModal(null)}
+        title="Shipping tracking"
+        footer={
+          <>
+            <Button variant="outline" onClick={() => setShippingModal(null)}>
+              Cancel
+            </Button>
+            <Button
+              onClick={() => updateShipping.mutate()}
+              loading={updateShipping.isPending}
+            >
+              Save tracking
+            </Button>
+          </>
+        }
+      >
+        <div className="space-y-3">
+          <p className="text-sm text-slate-500 dark:text-slate-400">
+            Optional fields for an external shipping provider (e.g. Shiprocket,
+            Delhivery, FedEx). Customers see the tracking link on their order.
+          </p>
+          <label className="block space-y-1.5">
+            <span className="text-sm font-medium text-slate-700 dark:text-slate-300">Provider</span>
+            <input
+              className="w-full rounded-lg border border-slate-300 bg-white px-3 py-2 text-sm text-slate-900 focus:border-indigo-500 focus:outline-none focus:ring-2 focus:ring-indigo-500/20 dark:border-slate-600 dark:bg-slate-800 dark:text-white"
+              placeholder="e.g. Shiprocket"
+              value={shippingModal?.provider ?? ""}
+              onChange={(e) =>
+                setShippingModal((m) => (m ? { ...m, provider: e.target.value } : m))
+              }
+            />
+          </label>
+          <label className="block space-y-1.5">
+            <span className="text-sm font-medium text-slate-700 dark:text-slate-300">Tracking ID</span>
+            <input
+              className="w-full rounded-lg border border-slate-300 bg-white px-3 py-2 text-sm text-slate-900 focus:border-indigo-500 focus:outline-none focus:ring-2 focus:ring-indigo-500/20 dark:border-slate-600 dark:bg-slate-800 dark:text-white"
+              placeholder="e.g. SHK-123456789"
+              value={shippingModal?.trackingId ?? ""}
+              onChange={(e) =>
+                setShippingModal((m) => (m ? { ...m, trackingId: e.target.value } : m))
+              }
+            />
+          </label>
+          <label className="block space-y-1.5">
+            <span className="text-sm font-medium text-slate-700 dark:text-slate-300">Tracking URL</span>
+            <input
+              className="w-full rounded-lg border border-slate-300 bg-white px-3 py-2 text-sm text-slate-900 focus:border-indigo-500 focus:outline-none focus:ring-2 focus:ring-indigo-500/20 dark:border-slate-600 dark:bg-slate-800 dark:text-white"
+              placeholder="https://…"
+              value={shippingModal?.trackingUrl ?? ""}
+              onChange={(e) =>
+                setShippingModal((m) => (m ? { ...m, trackingUrl: e.target.value } : m))
+              }
+            />
+          </label>
+        </div>
+      </Modal>
 
       <Modal
         open={Boolean(statusModal)}

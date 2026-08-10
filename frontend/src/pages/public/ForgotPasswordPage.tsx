@@ -4,6 +4,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
 import { MailCheck, Send } from "lucide-react";
 import { api, getErrorMessage } from "@/lib/api";
+import { usePageTitle } from "@/hooks/usePageTitle";
 import { useToast } from "@/context/ToastContext";
 import { Button } from "@/components/ui/Button";
 import { Input } from "@/components/ui/Input";
@@ -17,6 +18,7 @@ const forgotSchema = z.object({
 type ForgotForm = z.infer<typeof forgotSchema>;
 
 export const ForgotPasswordPage = () => {
+  usePageTitle("Forgot password");
   const toast = useToast();
   const [sent, setSent] = useState(false);
 

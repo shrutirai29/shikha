@@ -100,6 +100,13 @@ export interface OrderItem {
   price: number;
 }
 
+export interface OrderShipping {
+  provider?: string;
+  trackingId?: string;
+  trackingUrl?: string;
+  shippedAt?: string | null;
+}
+
 export interface Order {
   _id: string;
   user: User | string;
@@ -108,6 +115,7 @@ export interface Order {
   paymentMethod: "COD" | "RAZORPAY";
   paymentStatus: "Pending" | "Paid" | "Failed" | "Refunded";
   orderStatus: "Pending" | "Processing" | "Shipped" | "Delivered" | "Cancelled";
+  shipping?: OrderShipping | null;
   subtotal: number;
   discount: number;
   shippingCharge: number;

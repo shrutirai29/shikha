@@ -1,5 +1,6 @@
 import type { ReactNode } from "react";
 import { cn } from "@/lib/utils";
+import { usePageTitle } from "@/hooks/usePageTitle";
 
 export const PageLayout = ({
   title,
@@ -13,8 +14,11 @@ export const PageLayout = ({
   actions?: ReactNode;
   children: ReactNode;
   className?: string;
-}) => (
-  <div className={cn("mx-auto w-full max-w-7xl px-4 py-8 sm:px-6", className)}>
+}) => {
+  usePageTitle(title);
+
+  return (
+    <div className={cn("mx-auto w-full max-w-7xl px-4 py-8 sm:px-6", className)}>
     {(title || actions) && (
       <div className="mb-8 flex flex-wrap items-end justify-between gap-4">
         <div>
@@ -32,4 +36,5 @@ export const PageLayout = ({
     )}
     {children}
   </div>
-);
+  );
+};
