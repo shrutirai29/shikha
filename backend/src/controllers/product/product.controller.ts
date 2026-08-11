@@ -91,11 +91,13 @@ export const update = asyncHandler(async (req: Request, res: Response) => {
 export const remove = asyncHandler(async (req: Request, res: Response) => {
   const id = req.params.id as string;
 
-  await deleteProduct(id);
+  const { permanent } = await deleteProduct(id);
 
   res.status(200).json({
     success: true,
-    message: "Product deleted successfully",
+    message: permanent
+      ? "Product permanently deleted"
+      : "Product deactivated. Delete again to permanently remove it.",
   });
 });
 

@@ -94,14 +94,14 @@
  *       200:
  *         description: Product updated
  *   delete:
- *     summary: Soft-delete a product (admin)
+ *     summary: Delete a product (admin) - first call deactivates it, second call permanently deletes it
  *     tags: [Products]
  *     security: [{ bearerAuth: [] }]
  *     parameters:
  *       - { name: id, in: path, required: true, schema: { type: string } }
  *     responses:
  *       200:
- *         description: Product deleted
+ *         description: Product deactivated or permanently deleted
  */
 
 /**

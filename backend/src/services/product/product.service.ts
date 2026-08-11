@@ -198,27 +198,32 @@ export const updateProduct = async (
 
 export const deleteProduct = async (
   id: string
-): Promise<IProduct> => {
-  const existingProduct = await Product.findOne({
-    _id: id,
-    isActive: true,
-  });
+): Promise<{ product: IProduct | null; permanent: boolean }> => {
+  const existingProduct = await Product.findById(id);
 
   if (!existingProduct) {
     throw new NotFoundError("Product not found");
   }
 
-  const product = await Product.findByIdAndUpdate(
-    id,
-    {
-      isActive: false,
-    },
-    {
-      new: true,
-    }
-  );
+  // First delete = soft delete (hide from the store, reversible).
+  if (existingProduct.isActive) {
+    const product = await Product.findByIdAndUpdate(
+      id,
+      {
+        isActive: false,
+      },
+      {
+        new: true,
+      }
+    );
 
-  return product!;
+    return { product: product!, permanent: false };
+  }
+
+  // Second delete = permanent removal from the database.
+  const product = await Product.findByIdAndDelete(id);
+
+  return { product, permanent: true };
 };
 
 export const getProductBySlug = async (

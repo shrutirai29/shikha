@@ -214,10 +214,11 @@ export const ProductsPage = () => {
 
   const deleteMutation = useMutation({
     mutationFn: async (productId: string) => {
-      await api.delete(`/products/${productId}`);
+      const res = await api.delete<{ message?: string }>(`/products/${productId}`);
+      return res.data.message;
     },
-    onSuccess: () => {
-      toast.success("Product deleted");
+    onSuccess: (message) => {
+      toast.success(message ?? "Product deleted");
       setDeleting(null);
       invalidate();
     },
@@ -507,10 +508,12 @@ export const ProductsPage = () => {
         title="Delete product?"
         description={
           deleting
-            ? `"${deleting.name}" will be hidden from the store. This can be reverted by an admin.`
+            ? deleting.isActive
+              ? `"${deleting.name}" will be deactivated and hidden from the store. Delete it again later to remove it permanently.`
+              : `"${deleting.name}" is already inactive and will be permanently deleted. This cannot be undone.`
             : undefined
         }
-        confirmLabel="Delete"
+        confirmLabel={deleting?.isActive ? "Deactivate" : "Delete permanently"}
         danger
         loading={deleteMutation.isPending}
       />
