@@ -5,19 +5,19 @@ import * as THREE from "three";
 import { cn } from "@/lib/utils";
 
 /**
- * YarnStage — the brand centerpiece of the landing hero: a soft, hand-wound
- * ball of wool yarn with a loose strand draped around it. The ball is built
- * from a procedural canvas texture (warm cream/rose strands + woolly fuzz),
- * so it needs no external assets. The whole stage tilts gently toward the
- * pointer and floats with a soft contact shadow.
+ * YarnStage — the brand centerpiece of the landing hero: a soft periwinkle
+ * ball of wool yarn with three wooden knitting needles passing through it.
+ * The ball is built from a procedural canvas texture (wrapped strands +
+ * woolly fuzz) so it needs no external assets. The whole stage tilts gently
+ * toward the pointer and floats with a soft contact shadow.
  */
 
 const YARN_RADIUS = 1.12;
 
 /**
- * Builds a warm, tangle-free "wrapped yarn" texture: layered arcs in cream,
- * beige, rose and muted mauve over a wool base, plus fine flecks that read
- * as fibre. Used both as the color map and the bump map for strand ridges.
+ * Builds a wrapped-yarn texture in soft periwinkle blues: layered arcs over
+ * a muted blue base, plus fine fibre flecks. Used as both the color map and
+ * the bump map for strand ridges.
  */
 function createYarnTexture(): THREE.CanvasTexture {
   const size = 1024;
@@ -30,21 +30,21 @@ function createYarnTexture(): THREE.CanvasTexture {
     return new THREE.CanvasTexture(canvas);
   }
 
-  // Warm wool base
+  // Soft periwinkle wool base
   const base = ctx.createLinearGradient(0, 0, size, size);
-  base.addColorStop(0, "#EADFD2");
-  base.addColorStop(1, "#D9C9B6");
+  base.addColorStop(0, "#8A99B5");
+  base.addColorStop(1, "#64748F");
   ctx.fillStyle = base;
   ctx.fillRect(0, 0, size, size);
 
   // Wrapped strands — soft arcs in every direction
   const yarnColors = [
-    "#C9ADA7",
-    "#E6B6B6",
-    "#B7A290",
-    "#D8C4AE",
-    "#EFE4D8",
-    "#9A8C98",
+    "#7B8BA5",
+    "#5B6C8A",
+    "#9AA8C0",
+    "#6E7FA0",
+    "#B4BEDA",
+    "#8392AC",
   ];
 
   ctx.lineCap = "round";
@@ -66,7 +66,7 @@ function createYarnTexture(): THREE.CanvasTexture {
   // Woolly fuzz + fibre flecks
   for (let i = 0; i < 5000; i++) {
     ctx.globalAlpha = 0.04 + Math.random() * 0.09;
-    ctx.fillStyle = Math.random() > 0.5 ? "#FFFDF9" : "#7E6E5F";
+    ctx.fillStyle = Math.random() > 0.5 ? "#E6EAF2" : "#3E4A63";
     ctx.beginPath();
     ctx.arc(
       Math.random() * size,
@@ -89,15 +89,50 @@ function createYarnTexture(): THREE.CanvasTexture {
   return texture;
 }
 
+const NEEDLE_LENGTH = 3.6;
+const NEEDLE_RADIUS = 0.05;
+
+/** A single wooden knitting needle: shaft, tapered point, round knob. */
+function KnittingNeedle({
+  rotation,
+}: {
+  rotation: [number, number, number];
+}) {
+  const wood = { roughness: 0.55, metalness: 0.02 };
+
+  return (
+    <group rotation={rotation}>
+      {/* Shaft */}
+      <mesh>
+        <cylinderGeometry
+          args={[NEEDLE_RADIUS, NEEDLE_RADIUS, NEEDLE_LENGTH, 20]}
+        />
+        <meshStandardMaterial color="#D4BC9B" {...wood} />
+      </mesh>
+
+      {/* Tapered point */}
+      <mesh position={[0, NEEDLE_LENGTH / 2 + 0.13, 0]}>
+        <coneGeometry args={[NEEDLE_RADIUS, 0.26, 20]} />
+        <meshStandardMaterial color="#C9A97F" {...wood} />
+      </mesh>
+
+      {/* Round knob */}
+      <mesh position={[0, -NEEDLE_LENGTH / 2 - 0.18, 0]}>
+        <sphereGeometry args={[0.13, 24, 24]} />
+        <meshStandardMaterial color="#C9A97F" {...wood} />
+      </mesh>
+    </group>
+  );
+}
+
 function StageContent() {
   const group = useRef<THREE.Group>(null);
   const ball = useRef<THREE.Mesh>(null);
-  const strand = useRef<THREE.Mesh>(null);
 
   const yarnTexture = useMemo(() => createYarnTexture(), []);
 
   useFrame((state, delta) => {
-    const { pointer, clock } = state;
+    const { pointer } = state;
 
     if (group.current) {
       group.current.rotation.y = THREE.MathUtils.damp(
@@ -114,30 +149,19 @@ function StageContent() {
       );
     }
 
-    // Slow unwind of the ball + lazy drift of the loose strand
+    // Slow unwind of the ball while the needles stay put
     if (ball.current) {
-      ball.current.rotation.y += delta * 0.22;
-    }
-
-    if (strand.current) {
-      strand.current.rotation.z = clock.getElapsedTime() * 0.1;
+      ball.current.rotation.y += delta * 0.15;
     }
   });
 
   return (
     <group ref={group}>
       <Float speed={1.5} rotationIntensity={0.18} floatIntensity={0.7}>
-        {/* Loose strand of yarn draped around the ball (open arc, not a ring) */}
-        <mesh
-          ref={strand}
-          rotation={[Math.PI / 2.15, 0.12, 0]}
-          position={[0, 0.08, -0.25]}
-        >
-          <torusGeometry
-            args={[YARN_RADIUS + 0.3, 0.05, 16, 120, Math.PI * 1.5]}
-          />
-          <meshStandardMaterial color="#E6B6B6" roughness={0.85} metalness={0} />
-        </mesh>
+        {/* Three knitting needles through the ball */}
+        <KnittingNeedle rotation={[0, 0, Math.PI / 2]} />
+        <KnittingNeedle rotation={[0.55, 0.35, Math.PI / 2 + 0.3]} />
+        <KnittingNeedle rotation={[-0.55, -0.35, Math.PI / 2 - 0.3]} />
 
         {/* The ball of wool */}
         <mesh ref={ball}>
@@ -190,7 +214,7 @@ export const ProductStage = ({
       className
     )}
     role="img"
-    aria-label={label ?? "Hand-wound ball of wool yarn"}
+    aria-label={label ?? "Periwinkle ball of wool yarn with knitting needles"}
   >
     {/* Spotlight glow */}
     <div
