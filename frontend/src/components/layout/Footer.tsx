@@ -8,8 +8,8 @@ export const Footer = () => (
       <div className="space-y-3">
         <Logo />
         <p className="text-sm text-slate-500 dark:text-slate-400">
-          Premium online store for fashion, electronics and lifestyle products.
-          Quality you can trust, delivered to your door.
+          Handmade crochet treasures, stitched with love and delivered to your
+          door. Every piece is made slowly, with care.
         </p>
       </div>
 

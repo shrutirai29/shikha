@@ -21,7 +21,7 @@ const perks = [
   { icon: Truck, title: "Fast Delivery", description: "Free shipping on orders over ₹500" },
   { icon: ShieldCheck, title: "Secure Payments", description: "Razorpay-powered encrypted checkout" },
   { icon: RefreshCcw, title: "Easy Returns", description: "7-day hassle-free return policy" },
-  { icon: BadgeCheck, title: "Verified Quality", description: "100% authentic products, every time" },
+  { icon: BadgeCheck, title: "Handmade with Love", description: "Every piece crafted slowly, stitch by stitch" },
 ];
 
 export const LandingPage = () => {
@@ -157,17 +157,18 @@ export const LandingPage = () => {
           >
             <span className="inline-flex items-center gap-2 rounded-full border border-indigo-300/30 bg-white/5 px-4 py-1.5 text-sm font-medium text-indigo-200 backdrop-blur">
               <Sparkles className="size-3.5" />
-              New season collection is live
+              New handmade collection is live
             </span>
 
             <h2 className="font-display mt-6 text-5xl font-semibold leading-[1.05] tracking-tight text-slate-50 sm:text-6xl lg:text-7xl">
-              Everyday essentials,
-              <span className="block italic text-indigo-300">beautifully made.</span>
+              Handmade with love,
+              <span className="block italic text-indigo-300">one stitch at a time.</span>
             </h2>
 
             <p className="mt-6 max-w-md text-lg leading-relaxed text-slate-300">
-              Shop premium fashion, electronics and lifestyle pieces curated
-              for the way you live — delivered across India.
+              Cozy crochet creations — soft toys, warm throws and everyday
+              little treasures — made slowly, with care, and delivered
+              across India.
             </p>
 
             <div className="mt-9 flex flex-wrap gap-3">
@@ -192,7 +193,7 @@ export const LandingPage = () => {
                   {featured?.length ? `${featured.length}+` : "4.9"}
                 </dt>
                 <dd className="mt-1 text-xs uppercase tracking-widest text-slate-400">
-                  Featured picks
+                  Loved by shoppers
                 </dd>
               </div>
               <div>
@@ -204,7 +205,7 @@ export const LandingPage = () => {
               <div>
                 <dt className="font-display text-3xl font-semibold text-slate-50">100%</dt>
                 <dd className="mt-1 text-xs uppercase tracking-widest text-slate-400">
-                  Secure checkout
+                  Handmade with love
                 </dd>
               </div>
             </dl>
@@ -259,11 +260,11 @@ export const LandingPage = () => {
             }}
           />
           <h2 className="font-display relative text-4xl font-semibold tracking-tight text-slate-50 sm:text-5xl">
-            Ready to upgrade your everyday?
+            Bring a little handmade warmth home?
           </h2>
           <p className="relative mx-auto mt-4 max-w-xl text-slate-300">
-            Create an account to unlock faster checkout, order tracking, and
-            exclusive offers.
+            Create an account for faster checkout, order tracking, and early
+            access to new handmade drops.
           </p>
           <Link
             to="/register"
