@@ -127,7 +127,7 @@ function KnittingNeedle({
 
 function StageContent() {
   const group = useRef<THREE.Group>(null);
-  const ball = useRef<THREE.Mesh>(null);
+  const turntable = useRef<THREE.Group>(null);
 
   const yarnTexture = useMemo(() => createYarnTexture(), []);
 
@@ -149,31 +149,33 @@ function StageContent() {
       );
     }
 
-    // Slow unwind of the ball while the needles stay put
-    if (ball.current) {
-      ball.current.rotation.y += delta * 0.15;
+    // Turntable spin: the yarn ball AND the knitting needles turn together
+    if (turntable.current) {
+      turntable.current.rotation.y += delta * 0.35;
     }
   });
 
   return (
     <group ref={group}>
       <Float speed={1.5} rotationIntensity={0.18} floatIntensity={0.7}>
-        {/* Three knitting needles through the ball */}
-        <KnittingNeedle rotation={[0, 0, Math.PI / 2]} />
-        <KnittingNeedle rotation={[0.55, 0.35, Math.PI / 2 + 0.3]} />
-        <KnittingNeedle rotation={[-0.55, -0.35, Math.PI / 2 - 0.3]} />
+        <group ref={turntable}>
+          {/* Three knitting needles through the ball */}
+          <KnittingNeedle rotation={[0, 0, Math.PI / 2]} />
+          <KnittingNeedle rotation={[0.55, 0.35, Math.PI / 2 + 0.3]} />
+          <KnittingNeedle rotation={[-0.55, -0.35, Math.PI / 2 - 0.3]} />
 
-        {/* The ball of wool */}
-        <mesh ref={ball}>
-          <sphereGeometry args={[YARN_RADIUS, 96, 96]} />
-          <meshStandardMaterial
-            map={yarnTexture}
-            bumpMap={yarnTexture}
-            bumpScale={0.55}
-            roughness={0.92}
-            metalness={0}
-          />
-        </mesh>
+          {/* The ball of wool */}
+          <mesh>
+            <sphereGeometry args={[YARN_RADIUS, 96, 96]} />
+            <meshStandardMaterial
+              map={yarnTexture}
+              bumpMap={yarnTexture}
+              bumpScale={0.55}
+              roughness={0.92}
+              metalness={0}
+            />
+          </mesh>
+        </group>
       </Float>
 
       <ContactShadows
