@@ -6,9 +6,11 @@ import {
   CreditCard,
   LayoutDashboard,
   Menu,
+  Moon,
   Package,
   ShoppingBag,
   Star,
+  Sun,
   Tag,
   TicketPercent,
   Users,
@@ -17,6 +19,7 @@ import {
 import { cn } from "@/lib/utils";
 import { Logo } from "./Logo";
 import { useAuth } from "@/context/AuthContext";
+import { useTheme } from "@/context/ThemeContext";
 
 const adminLinks = [
   { to: "/admin", label: "Dashboard", icon: LayoutDashboard, end: true },
@@ -52,6 +55,7 @@ const ADMIN_TITLES: Record<string, string> = {
 
 export const AdminLayout = () => {
   const { user } = useAuth();
+  const { theme, toggleTheme } = useTheme();
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const location = useLocation();
 
@@ -63,7 +67,7 @@ export const AdminLayout = () => {
   const sidebar = (
     <div className="flex h-full flex-col">
       <div className="flex h-16 items-center justify-between border-b border-slate-200 px-5 dark:border-slate-700">
-        <Logo />
+        <Logo to="/admin" />
         <button
           type="button"
           onClick={() => setSidebarOpen(false)}
@@ -137,6 +141,17 @@ export const AdminLayout = () => {
           <h1 className="text-sm font-semibold uppercase tracking-wide text-slate-400">
             Admin Panel
           </h1>
+
+          <div className="ml-auto">
+            <button
+              type="button"
+              onClick={toggleTheme}
+              className="rounded-lg p-2 text-slate-600 hover:bg-slate-100 dark:text-slate-300 dark:hover:bg-slate-800"
+              aria-label={`Switch to ${theme === "dark" ? "light" : "dark"} mode`}
+            >
+              {theme === "dark" ? <Sun className="size-5" /> : <Moon className="size-5" />}
+            </button>
+          </div>
         </header>
 
         <main className="flex-1 p-4 sm:p-6 lg:p-8">

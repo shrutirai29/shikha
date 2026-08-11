@@ -2,11 +2,17 @@ import { Link } from "react-router-dom";
 import { Sparkles } from "lucide-react";
 import { cn } from "@/lib/utils";
 
-export const Logo = ({ className }: { className?: string }) => (
+export const Logo = ({
+  className,
+  to = "/",
+}: {
+  className?: string;
+  to?: string;
+}) => (
   <Link
-    to="/"
+    to={to}
     className={cn("inline-flex items-center gap-2.5", className)}
-    aria-label="Shikha home"
+    aria-label={to === "/admin" ? "Shikha admin panel" : "Shikha home"}
   >
     <span className="flex size-9 items-center justify-center rounded-xl bg-gradient-to-br from-indigo-600 to-indigo-300 text-white shadow-soft">
       <Sparkles className="size-4.5" />
