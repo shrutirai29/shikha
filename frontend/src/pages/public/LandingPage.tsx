@@ -28,9 +28,6 @@ export const LandingPage = () => {
   usePageTitle("Home");
   const { data: featured, isLoading: productsLoading } = useFeaturedProducts(24);
 
-  // The first featured product becomes the hero's 3D presentation.
-  const heroImage = featured?.[0]?.images?.[0];
-
   // Group the featured picks by their category so shoppers can browse
   // "Featured — Fashion", "Featured — Electronics", etc.
   const categoryGroups = useMemo(() => {
@@ -227,8 +224,7 @@ export const LandingPage = () => {
               }
             >
               <ProductStage
-                imageUrl={heroImage}
-                label="Featured product presentation"
+                label="Hand-wound ball of wool yarn"
                 className="aspect-square w-full"
               />
             </Suspense>

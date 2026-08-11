@@ -1,55 +1,100 @@
-import { useEffect, useRef, useState } from "react";
+import { useMemo, useRef } from "react";
 import { Canvas, useFrame } from "@react-three/fiber";
 import { ContactShadows, Float } from "@react-three/drei";
 import * as THREE from "three";
 import { cn } from "@/lib/utils";
 
 /**
- * ProductStage — an intentional 3D product presentation used in the
- * landing hero. The featured product's image floats on a lit "medallion"
- * with a rose halo ring and soft contact shadow; the whole stage tilts
- * gently toward the pointer. If the image can't be loaded (or WebGL is
- * unavailable) it falls back to a calm cream medallion so the layout
- * never breaks.
+ * YarnStage — the brand centerpiece of the landing hero: a soft, hand-wound
+ * ball of wool yarn with a loose strand draped around it. The ball is built
+ * from a procedural canvas texture (warm cream/rose strands + woolly fuzz),
+ * so it needs no external assets. The whole stage tilts gently toward the
+ * pointer and floats with a soft contact shadow.
  */
 
-const MEDALLION_RADIUS = 1.12;
+const YARN_RADIUS = 1.12;
 
-function StageContent({ imageUrl }: { imageUrl?: string }) {
-  const group = useRef<THREE.Group>(null);
-  const ring = useRef<THREE.Mesh>(null);
-  const [texture, setTexture] = useState<THREE.Texture | null>(null);
+/**
+ * Builds a warm, tangle-free "wrapped yarn" texture: layered arcs in cream,
+ * beige, rose and muted mauve over a wool base, plus fine flecks that read
+ * as fibre. Used both as the color map and the bump map for strand ridges.
+ */
+function createYarnTexture(): THREE.CanvasTexture {
+  const size = 1024;
+  const canvas = document.createElement("canvas");
+  canvas.width = size;
+  canvas.height = size;
+  const ctx = canvas.getContext("2d");
 
-  useEffect(() => {
-    if (!imageUrl) {
-      setTexture(null);
-      return;
-    }
+  if (!ctx) {
+    return new THREE.CanvasTexture(canvas);
+  }
 
-    let disposed = false;
+  // Warm wool base
+  const base = ctx.createLinearGradient(0, 0, size, size);
+  base.addColorStop(0, "#EADFD2");
+  base.addColorStop(1, "#D9C9B6");
+  ctx.fillStyle = base;
+  ctx.fillRect(0, 0, size, size);
 
-    const loader = new THREE.TextureLoader();
+  // Wrapped strands — soft arcs in every direction
+  const yarnColors = [
+    "#C9ADA7",
+    "#E6B6B6",
+    "#B7A290",
+    "#D8C4AE",
+    "#EFE4D8",
+    "#9A8C98",
+  ];
 
-    loader.load(
-      imageUrl,
-      (loaded) => {
-        if (disposed) return;
+  ctx.lineCap = "round";
 
-        loaded.colorSpace = THREE.SRGBColorSpace;
-        loaded.anisotropy = 8;
+  for (let i = 0; i < 320; i++) {
+    ctx.strokeStyle = yarnColors[i % yarnColors.length];
+    ctx.globalAlpha = 0.35 + Math.random() * 0.45;
+    ctx.lineWidth = 2.5 + Math.random() * 5;
+    ctx.beginPath();
+    const x = Math.random() * size;
+    const y = Math.random() * size;
+    const r = 40 + Math.random() * 300;
+    const start = Math.random() * Math.PI * 2;
+    const sweep = Math.PI * (0.5 + Math.random() * 1.6);
+    ctx.arc(x, y, r, start, start + sweep, Math.random() > 0.5);
+    ctx.stroke();
+  }
 
-        setTexture(loaded);
-      },
-      undefined,
-      () => {
-        if (!disposed) setTexture(null);
-      }
+  // Woolly fuzz + fibre flecks
+  for (let i = 0; i < 5000; i++) {
+    ctx.globalAlpha = 0.04 + Math.random() * 0.09;
+    ctx.fillStyle = Math.random() > 0.5 ? "#FFFDF9" : "#7E6E5F";
+    ctx.beginPath();
+    ctx.arc(
+      Math.random() * size,
+      Math.random() * size,
+      0.6 + Math.random() * 1.7,
+      0,
+      Math.PI * 2
     );
+    ctx.fill();
+  }
 
-    return () => {
-      disposed = true;
-    };
-  }, [imageUrl]);
+  ctx.globalAlpha = 1;
+
+  const texture = new THREE.CanvasTexture(canvas);
+  texture.colorSpace = THREE.SRGBColorSpace;
+  texture.wrapS = THREE.RepeatWrapping;
+  texture.wrapT = THREE.RepeatWrapping;
+  texture.anisotropy = 8;
+
+  return texture;
+}
+
+function StageContent() {
+  const group = useRef<THREE.Group>(null);
+  const ball = useRef<THREE.Mesh>(null);
+  const strand = useRef<THREE.Mesh>(null);
+
+  const yarnTexture = useMemo(() => createYarnTexture(), []);
 
   useFrame((state, delta) => {
     const { pointer, clock } = state;
@@ -69,52 +114,40 @@ function StageContent({ imageUrl }: { imageUrl?: string }) {
       );
     }
 
-    if (ring.current) {
-      ring.current.rotation.z = clock.getElapsedTime() * 0.12;
+    // Slow unwind of the ball + lazy drift of the loose strand
+    if (ball.current) {
+      ball.current.rotation.y += delta * 0.22;
+    }
+
+    if (strand.current) {
+      strand.current.rotation.z = clock.getElapsedTime() * 0.1;
     }
   });
 
   return (
     <group ref={group}>
       <Float speed={1.5} rotationIntensity={0.18} floatIntensity={0.7}>
-        {/* Halo ring */}
-        <mesh ref={ring} rotation={[Math.PI / 2.05, 0.15, 0]} position={[0, 0.05, -0.35]}>
-          <torusGeometry args={[MEDALLION_RADIUS + 0.32, 0.022, 16, 120]} />
-          <meshStandardMaterial
-            color="#E6B6B6"
-            metalness={0.75}
-            roughness={0.22}
-            emissive="#3B3957"
-            emissiveIntensity={0.18}
+        {/* Loose strand of yarn draped around the ball (open arc, not a ring) */}
+        <mesh
+          ref={strand}
+          rotation={[Math.PI / 2.15, 0.12, 0]}
+          position={[0, 0.08, -0.25]}
+        >
+          <torusGeometry
+            args={[YARN_RADIUS + 0.3, 0.05, 16, 120, Math.PI * 1.5]}
           />
+          <meshStandardMaterial color="#E6B6B6" roughness={0.85} metalness={0} />
         </mesh>
 
-        {/* Product medallion */}
-        <mesh>
-          <circleGeometry args={[MEDALLION_RADIUS, 96]} />
-          {texture ? (
-            <meshStandardMaterial
-              map={texture}
-              roughness={0.3}
-              metalness={0.06}
-            />
-          ) : (
-            <meshStandardMaterial
-              color="#F2E9E4"
-              roughness={0.55}
-              metalness={0.02}
-            />
-          )}
-        </mesh>
-
-        {/* Soft rim behind the medallion for depth */}
-        <mesh position={[0, 0, -0.18]}>
-          <circleGeometry args={[MEDALLION_RADIUS + 0.05, 64]} />
-          <meshBasicMaterial
-            color="#C9ADA7"
-            transparent
-            opacity={0.14}
-            side={THREE.DoubleSide}
+        {/* The ball of wool */}
+        <mesh ref={ball}>
+          <sphereGeometry args={[YARN_RADIUS, 96, 96]} />
+          <meshStandardMaterial
+            map={yarnTexture}
+            bumpMap={yarnTexture}
+            bumpScale={0.55}
+            roughness={0.92}
+            metalness={0}
           />
         </mesh>
       </Float>
@@ -144,11 +177,9 @@ function StageContent({ imageUrl }: { imageUrl?: string }) {
 }
 
 export const ProductStage = ({
-  imageUrl,
   className,
   label,
 }: {
-  imageUrl?: string;
   className?: string;
   label?: string;
 }) => (
@@ -159,7 +190,7 @@ export const ProductStage = ({
       className
     )}
     role="img"
-    aria-label={label ?? "Featured product presentation"}
+    aria-label={label ?? "Hand-wound ball of wool yarn"}
   >
     {/* Spotlight glow */}
     <div
@@ -176,7 +207,7 @@ export const ProductStage = ({
       gl={{ antialias: true, alpha: true, powerPreference: "high-performance" }}
       style={{ position: "absolute", inset: 0 }}
     >
-      <StageContent imageUrl={imageUrl} />
+      <StageContent />
     </Canvas>
   </div>
 );
