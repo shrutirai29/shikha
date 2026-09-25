@@ -1,6 +1,6 @@
 services:
   - type: web
-    name: shikha-backend
+    name: knottiingale-backend
     runtime: docker
     repo: https://github.com/shrutirai29/shikha
     dockerfilePath: ./backend/Dockerfile
