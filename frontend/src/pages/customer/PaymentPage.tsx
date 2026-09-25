@@ -78,8 +78,8 @@ export const PaymentPage = () => {
       key: paymentOrder.key,
       amount: paymentOrder.amount,
       currency: paymentOrder.currency,
-      name: "Shikha",
-      description: `Order #${order._id.slice(-6).toUpperCase()}`,
+      name: "Knottiingale",
+      description: `Knottiingale Order #${order._id.slice(-6).toUpperCase()}`,
       order_id: paymentOrder.razorpayOrderId,
       prefill: {
         name: user?.name,

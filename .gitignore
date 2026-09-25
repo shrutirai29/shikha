@@ -38,3 +38,4 @@ Thumbs.db
 # Aider / agent caches
 .aider*
 .freebuff/
+a.py

@@ -40,12 +40,12 @@ const parseSender = (
   const match = /^(.*?)\s*<([^>]+)>$/.exec(value ?? "");
 
   if (match) {
-    return { name: match[1].trim() || "Shikha", email: match[2].trim() };
+    return { name: match[1].trim() || "Knottiingale", email: match[2].trim() };
   }
 
   return {
-    name: "Shikha",
-    email: (value ?? "no-reply@shikha.store").trim(),
+    name: "Knottiingale",
+    email: (value ?? "no-reply@knottiingale.store").trim(),
   };
 };
 
@@ -144,10 +144,10 @@ export const sendVerificationOtpEmail = async (
 ): Promise<{ delivered: boolean }> => {
   return sendEmail({
     to,
-    subject: "Your Shikha verification code",
+    subject: "Your Knottiingale verification code",
     html: `
       <div style="font-family: Arial, sans-serif; max-width: 480px; margin: 0 auto; padding: 24px; color: #22223B;">
-        <h2 style="color: #22223B; margin: 0 0 8px;">Welcome to Shikha ✨</h2>
+        <h2 style="color: #22223B; margin: 0 0 8px;">Welcome to Knottiingale ✨</h2>
         <p style="font-size: 15px; line-height: 1.6; color: #4A4E69;">
           Use the code below to verify your email address and finish creating your account.
           The code expires in <strong>10 minutes</strong>.
@@ -171,7 +171,7 @@ export const sendPasswordResetEmail = async (
 
   await sendEmail({
     to,
-    subject: "Reset your Shikha password",
+    subject: "Reset your Knottiingale password",
     html: `
       <h2>Reset your password</h2>
       <p>We received a request to reset your password. Click the link below to choose a new one:</p>

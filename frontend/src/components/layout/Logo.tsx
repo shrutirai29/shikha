@@ -12,13 +12,13 @@ export const Logo = ({
   <Link
     to={to}
     className={cn("inline-flex items-center gap-2.5", className)}
-    aria-label={to === "/admin" ? "Shikha admin panel" : "Shikha home"}
+    aria-label={to === "/admin" ? "Knottiingale admin panel" : "Knottiingale home"}
   >
     <span className="flex size-9 items-center justify-center rounded-xl bg-gradient-to-br from-indigo-600 to-indigo-300 text-white shadow-soft">
       <Sparkles className="size-4.5" />
     </span>
     <span className="font-display text-xl font-semibold tracking-tight text-slate-950 dark:text-slate-50">
-      Shikha
+      Knottiingale
     </span>
   </Link>
 );

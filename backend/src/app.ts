@@ -87,7 +87,7 @@ app.use(globalRateLimiter);
 app.get("/", (req, res) => {
   res.status(200).json({
     success: true,
-    message: "🚀 Shikha Backend API is running successfully",
+    message: "🚀 Knottiingale Backend API is running successfully",
     version: "1.0.0",
   });
 });
@@ -97,7 +97,7 @@ app.use(
   "/api/docs",
   swaggerUi.serve,
   swaggerUi.setup(swaggerSpec, {
-    customSiteTitle: "Shikha API Docs",
+    customSiteTitle: "Knottiingale API Docs",
   })
 );
 

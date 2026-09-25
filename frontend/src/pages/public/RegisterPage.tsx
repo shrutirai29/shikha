@@ -117,7 +117,7 @@ export const RegisterPage = () => {
 
     try {
       await verifyOtp(pendingEmail, values.code);
-      toast.success("Email verified — welcome to Shikha!");
+      toast.success("Email verified — welcome to Knottiingale!");
       navigate("/", { replace: true });
     } catch (error) {
       toast.error(getErrorMessage(error));
@@ -241,7 +241,7 @@ export const RegisterPage = () => {
           Create your account
         </h1>
         <p className="mt-1 text-sm text-slate-500 dark:text-slate-400">
-          Join Shikha for faster checkout and exclusive offers
+          Join Knottiingale for faster checkout and exclusive offers
         </p>
       </div>
 

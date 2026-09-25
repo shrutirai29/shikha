@@ -32,7 +32,7 @@ const seedAdmin = async (): Promise<void> => {
     // Create admin
     const admin = await User.create({
       name: "Admin",
-      email: "admin@shikha.com",
+      email: "admin@knottiingale.com",
       password: hashedPassword,
       role: "admin",
       isVerified: true,

@@ -1,6 +1,6 @@
 import { useEffect } from "react";
 
-const SITE = "Shikha";
+const SITE = "Knottiingale";
 
 /**
  * Sets the browser tab title for the current page and restores a sensible

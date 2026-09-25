@@ -116,6 +116,9 @@ export const Header = () => {
           <NavLink to="/categories" className={navLinkClass}>
             Categories
           </NavLink>
+          <NavLink to="/contact" className={navLinkClass}>
+            Contact
+          </NavLink>
           {isAdmin && (
             <NavLink to="/admin" className={navLinkClass}>
               Admin
@@ -273,6 +276,9 @@ export const Header = () => {
             </Link>
             <Link to="/categories" onClick={() => setMobileOpen(false)} className={cn(navLinkClass({ isActive: false }), "text-base")}>
               Categories
+            </Link>
+            <Link to="/contact" onClick={() => setMobileOpen(false)} className={cn(navLinkClass({ isActive: false }), "text-base")}>
+              Contact & Custom Orders
             </Link>
             {isAdmin && (
               <Link to="/admin" onClick={() => setMobileOpen(false)} className={cn(navLinkClass({ isActive: false }), "text-base")}>

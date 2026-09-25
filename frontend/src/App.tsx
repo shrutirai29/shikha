@@ -18,6 +18,11 @@ const RegisterPage = lazy(() => import("@/pages/public/RegisterPage"));
 const ForgotPasswordPage = lazy(() => import("@/pages/public/ForgotPasswordPage"));
 const ResetPasswordPage = lazy(() => import("@/pages/public/ResetPasswordPage"));
 const NotFoundPage = lazy(() => import("@/pages/public/NotFoundPage"));
+const ContactPage = lazy(() => import("@/pages/public/ContactPage"));
+const TermsPage = lazy(() => import("@/pages/public/TermsPage"));
+const PrivacyPage = lazy(() => import("@/pages/public/PrivacyPage"));
+const ShippingPolicyPage = lazy(() => import("@/pages/public/ShippingPolicyPage"));
+const RefundPolicyPage = lazy(() => import("@/pages/public/RefundPolicyPage"));
 
 const ProfilePage = lazy(() => import("@/pages/customer/ProfilePage"));
 const SettingsPage = lazy(() => import("@/pages/customer/SettingsPage"));
@@ -56,6 +61,11 @@ const SiteLayout = () => (
           <Route path="/categories/:slug" element={<CategoryProductsPage />} />
           <Route path="/products/:slug" element={<ProductDetailsPage />} />
           <Route path="/search" element={<SearchPage />} />
+          <Route path="/contact" element={<ContactPage />} />
+          <Route path="/terms" element={<TermsPage />} />
+          <Route path="/privacy" element={<PrivacyPage />} />
+          <Route path="/shipping-policy" element={<ShippingPolicyPage />} />
+          <Route path="/refund-policy" element={<RefundPolicyPage />} />
 
           <Route element={<GuestRoute />}>
             <Route path="/login" element={<LoginPage />} />

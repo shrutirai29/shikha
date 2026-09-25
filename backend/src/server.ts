@@ -20,7 +20,7 @@ const startServer = async (): Promise<void> => {
 
     app.listen(PORT, () => {
       console.log("====================================");
-      console.log("🚀 Shikha Backend Started");
+      console.log("🚀 Knottiingale Backend Started");
       console.log(`🌐 Server: http://localhost:${PORT}`);
       console.log(`🌎 Environment: ${process.env.NODE_ENV || "development"}`);
       console.log("====================================");

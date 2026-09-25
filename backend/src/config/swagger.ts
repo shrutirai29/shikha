@@ -6,10 +6,10 @@ const config = env();
 const swaggerDefinition = {
   openapi: "3.0.0",
   info: {
-    title: "Shikha Ecommerce API",
+    title: "Knottiingale Ecommerce API",
     version: "1.0.0",
     description:
-      "Backend API for the Shikha ecommerce platform. Includes auth, catalog, cart, orders, payments (Razorpay), coupons, wishlist, reviews, addresses, dashboard and analytics.",
+      "Backend API for the Knottiingale handmade ecommerce platform. Includes auth, catalog, cart, orders, payments (Razorpay), coupons, wishlist, reviews, addresses, dashboard and analytics.",
   },
   servers: [
     {

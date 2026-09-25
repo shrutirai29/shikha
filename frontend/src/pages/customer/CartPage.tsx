@@ -112,7 +112,10 @@ export const CartPage = () => {
     }
   };
 
-  const shipping = cart.finalAmount >= 500 ? 0 : 50;
+  const discountedSubtotal = cart.finalAmount;
+  const shipping = discountedSubtotal >= 500 ? 0 : 50;
+  const tax = Number((discountedSubtotal * 0.18).toFixed(2));
+  const totalAmount = discountedSubtotal + shipping + tax;
 
   return (
     <PageLayout
@@ -246,9 +249,13 @@ export const CartPage = () => {
                   )}
                 </dd>
               </div>
+              <div className="flex justify-between text-slate-600 dark:text-slate-300">
+                <dt>Estimated GST / Tax (18%)</dt>
+                <dd className="font-medium">{formatCurrency(tax)}</dd>
+              </div>
               <div className="flex justify-between border-t border-slate-200 pt-2.5 text-base font-bold text-slate-900 dark:border-slate-700 dark:text-white">
                 <dt>Total</dt>
-                <dd>{formatCurrency(cart.finalAmount + shipping)}</dd>
+                <dd>{formatCurrency(totalAmount)}</dd>
               </div>
             </dl>
 
