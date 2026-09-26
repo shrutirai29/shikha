@@ -68,3 +68,4 @@ Button.displayName = "Button";
 
 export { AddToCartButton } from "./AddToCartButton";
 export type { AddToCartButtonProps } from "./AddToCartButton";
+export { ProductShareButton } from "./ProductShareButton";

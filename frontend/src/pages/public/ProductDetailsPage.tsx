@@ -17,6 +17,7 @@ import { TiltCard } from "@/components/ui/TiltCard";
 import { Rating, StarInput } from "@/components/ui/Rating";
 import { Button } from "@/components/ui/Button";
 import { AddToCartButton } from "@/components/ui/AddToCartButton";
+import { ProductShareButton } from "@/components/ui/ProductShareButton";
 import { Badge, Skeleton } from "@/components/ui/Card";
 import { PageLayout } from "@/components/layout/PageLayout";
 import { EmptyState, ErrorState } from "@/components/ui/States";
@@ -296,6 +297,8 @@ export const ProductDetailsPage = () => {
             >
               <Heart className={cn("size-5", isInWishlist && "fill-current")} />
             </Button>
+
+            <ProductShareButton title={product.name} />
           </div>
 
           <div className="grid gap-3 rounded-2xl border border-slate-200 bg-slate-50 p-4 text-sm dark:border-slate-700 dark:bg-slate-800/50 sm:grid-cols-3">
