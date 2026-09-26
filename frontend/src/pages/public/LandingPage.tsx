@@ -1,4 +1,4 @@
-import { Suspense, lazy, useMemo } from "react";
+import { useMemo } from "react";
 import { Link } from "react-router-dom";
 import { usePageTitle } from "@/hooks/usePageTitle";
 import {
@@ -17,8 +17,7 @@ import { useFeaturedProducts } from "@/hooks/useApi";
 import { ProductGrid } from "@/components/product/ProductGrid";
 import { Skeleton } from "@/components/ui/Card";
 import type { Category, Product } from "@/types";
-
-const ProductStage = lazy(() => import("@/components/three/ProductStage"));
+import { formatCurrency } from "@/lib/utils";
 
 const perks = [
   {
@@ -70,6 +69,7 @@ const testimonials = [
 export const LandingPage = () => {
   usePageTitle("Handmade Crochet Treasures");
   const { data: featured, isLoading: productsLoading } = useFeaturedProducts(24);
+  const heroProduct = featured?.[0];
 
   // Group the featured picks by their category
   const categoryGroups = useMemo(() => {
@@ -177,33 +177,96 @@ export const LandingPage = () => {
             </dl>
           </motion.div>
 
-          {/* 3D product presentation */}
+          {/* Featured Artisan Showcase (Replacing 3D sphere) */}
           <motion.div
             initial={{ opacity: 0, scale: 0.95 }}
             animate={{ opacity: 1, scale: 1 }}
             transition={{ duration: 0.7, delay: 0.15, ease: [0.22, 1, 0.36, 1] }}
             className="relative mx-auto w-full max-w-md lg:max-w-none"
           >
-            <div className="relative overflow-hidden rounded-[2.5rem] border border-white/10 bg-slate-900/60 p-4 shadow-2xl backdrop-blur-xl">
-              <Suspense
-                fallback={
-                  <div className="flex aspect-square w-full items-center justify-center rounded-[2rem] bg-slate-900">
-                    <div className="size-44 animate-pulse rounded-full bg-slate-800" />
-                  </div>
-                }
-              >
-                <ProductStage
-                  label="Hand-wound ball of wool yarn"
-                  className="aspect-square w-full"
-                />
-              </Suspense>
+            {/* Soft Ambient Glow */}
+            <div
+              aria-hidden="true"
+              className="absolute -inset-1 rounded-[3rem] bg-gradient-to-r from-rose-500/20 via-indigo-500/25 to-purple-500/20 blur-2xl opacity-75"
+            />
 
-              <div className="absolute bottom-6 left-6 right-6 flex items-center justify-between rounded-xl bg-slate-950/70 p-3 backdrop-blur-md border border-white/10 text-xs text-slate-300">
+            <div className="relative overflow-hidden rounded-[2.5rem] border border-white/15 bg-gradient-to-b from-slate-900/90 to-slate-950/95 p-6 shadow-2xl backdrop-blur-xl">
+              {heroProduct?.images?.[0] ? (
+                <div className="group relative aspect-square overflow-hidden rounded-[2rem] bg-slate-900 ring-1 ring-white/10">
+                  <img
+                    src={heroProduct.images[0]}
+                    alt={heroProduct.name}
+                    className="size-full object-cover transition-transform duration-700 ease-out group-hover:scale-105"
+                  />
+                  <div className="absolute inset-0 bg-gradient-to-t from-slate-950/90 via-slate-950/30 to-transparent" />
+
+                  {/* Top Bestseller Badge */}
+                  <div className="absolute left-4 top-4 flex items-center gap-2 rounded-full border border-white/20 bg-slate-950/75 px-3.5 py-1 text-xs font-semibold text-rose-300 backdrop-blur-md">
+                    <Sparkles className="size-3.5 text-amber-300" />
+                    Bestseller of the Week
+                  </div>
+
+                  {/* Bottom Info Overlay */}
+                  <div className="absolute bottom-5 left-5 right-5 space-y-2">
+                    <p className="text-xs font-semibold uppercase tracking-wider text-indigo-300">
+                      Featured Handcraft
+                    </p>
+                    <div className="flex items-end justify-between gap-3">
+                      <div>
+                        <h3 className="font-display text-xl font-bold text-white line-clamp-1">
+                          {heroProduct.name}
+                        </h3>
+                        <p className="text-base font-semibold text-slate-200">
+                          {formatCurrency(heroProduct.price)}
+                        </p>
+                      </div>
+                      <Link
+                        to={`/products/${heroProduct.slug}`}
+                        className="inline-flex items-center gap-1.5 rounded-xl bg-white px-3.5 py-2 text-xs font-bold text-slate-950 shadow-md transition hover:bg-slate-100 active:scale-95"
+                      >
+                        View Piece
+                        <ArrowRight className="size-3.5" />
+                      </Link>
+                    </div>
+                  </div>
+                </div>
+              ) : (
+                <div className="flex aspect-square flex-col justify-between rounded-[2rem] bg-gradient-to-br from-indigo-950/40 via-slate-900/80 to-purple-950/40 p-8 border border-white/10">
+                  <div className="inline-flex w-fit items-center gap-2 rounded-full border border-rose-400/30 bg-rose-500/10 px-3.5 py-1 text-xs font-semibold text-rose-300">
+                    <Sparkles className="size-3.5 text-amber-300" />
+                    Artisan Spotlight
+                  </div>
+
+                  <div className="space-y-3">
+                    <span className="text-4xl">🧶</span>
+                    <h3 className="font-display text-2xl font-bold text-white">
+                      Every Stitch Woven with Love
+                    </h3>
+                    <p className="text-sm leading-relaxed text-slate-300">
+                      Explore slow-made crochet plushies, winter wearables, and home accessories hand-crocheted by Shikha Rai in India.
+                    </p>
+                  </div>
+
+                  <Link
+                    to="/products"
+                    className="inline-flex w-fit items-center gap-2 rounded-xl bg-gradient-to-r from-rose-500 to-indigo-600 px-5 py-2.5 text-xs font-bold text-white shadow-lift transition hover:scale-102"
+                  >
+                    Browse All Handcrafted Pieces
+                    <ArrowRight className="size-3.5" />
+                  </Link>
+                </div>
+              )}
+
+              {/* Trust badges footer */}
+              <div className="mt-4 flex flex-wrap items-center justify-between gap-2 pt-2 text-xs text-slate-300">
                 <span className="flex items-center gap-1.5 font-medium">
-                  <Sparkles className="size-3.5 text-amber-300" />
-                  Interactive 3D Preview
+                  <BadgeCheck className="size-4 text-emerald-400" />
+                  100% Cotton & Azo-Free Wool
                 </span>
-                <span className="text-[11px] text-slate-400">Drag to rotate</span>
+                <span className="flex items-center gap-1 text-amber-300 font-semibold">
+                  <Star className="size-3.5 fill-current" />
+                  5.0 Customer Rating
+                </span>
               </div>
             </div>
           </motion.div>
