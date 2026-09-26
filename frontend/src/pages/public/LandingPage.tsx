@@ -42,30 +42,6 @@ const perks = [
   },
 ];
 
-const testimonials = [
-  {
-    name: "Ananya Sharma",
-    city: "Bengaluru",
-    rating: 5,
-    comment:
-      "The crochet amigurumi bear is breathtaking! The stitches are remarkably tight and neat, and it came packed with so much love.",
-  },
-  {
-    name: "Priyanshi Mehta",
-    city: "Mumbai",
-    rating: 5,
-    comment:
-      "Ordered a customized pastel crochet throw. Shikha was wonderfully responsive on WhatsApp for color matching. Absolutely in love!",
-  },
-  {
-    name: "Dr. Ritu Verma",
-    city: "Delhi NCR",
-    rating: 5,
-    comment:
-      "Such rare, authentic craftsmanship. You can instantly feel the warmth and care put into each loop. Will definitely order again!",
-  },
-];
-
 export const LandingPage = () => {
   usePageTitle("Handmade Crochet Treasures");
   const { data: featured, isLoading: productsLoading } = useFeaturedProducts(24);
@@ -441,57 +417,7 @@ export const LandingPage = () => {
       </section>
 
       {/* ============================================================
-          5. CUSTOMER TESTIMONIALS (CollectUI Social Proof)
-          ============================================================ */}
-      <section className="mx-auto max-w-7xl px-4 py-12 sm:px-6 sm:py-16">
-        <div className="mb-10 text-center">
-          <p className="text-xs font-bold uppercase tracking-[0.2em] text-indigo-600 dark:text-indigo-400">
-            Customer Love
-          </p>
-          <h2 className="font-display mt-2 text-3xl font-semibold tracking-tight text-slate-950 sm:text-4xl dark:text-slate-50">
-            What our happy shoppers say
-          </h2>
-        </div>
-
-        <div className="grid gap-6 md:grid-cols-3">
-          {testimonials.map((t, idx) => (
-            <motion.div
-              key={idx}
-              initial={{ opacity: 0, y: 16 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true, margin: "-40px" }}
-              transition={{ duration: 0.45, delay: idx * 0.1 }}
-              className="flex flex-col justify-between rounded-2xl border border-slate-200/80 bg-white p-6 shadow-soft transition-all duration-300 hover:shadow-lift dark:border-slate-800 dark:bg-slate-900/70"
-            >
-              <div className="space-y-3">
-                <div className="flex gap-1 text-amber-400">
-                  {Array.from({ length: t.rating }).map((_, i) => (
-                    <Star key={i} className="size-4 fill-current" />
-                  ))}
-                </div>
-                <p className="text-sm italic leading-relaxed text-slate-600 dark:text-slate-300">
-                  "{t.comment}"
-                </p>
-              </div>
-
-              <div className="mt-6 flex items-center justify-between border-t border-slate-100 pt-4 dark:border-slate-800">
-                <div>
-                  <p className="text-xs font-bold text-slate-900 dark:text-white">
-                    {t.name}
-                  </p>
-                  <p className="text-[11px] text-slate-400">{t.city}</p>
-                </div>
-                <span className="rounded-full bg-emerald-50 px-2 py-0.5 text-[10px] font-semibold text-emerald-700 dark:bg-emerald-500/10 dark:text-emerald-400">
-                  Verified Buyer
-                </span>
-              </div>
-            </motion.div>
-          ))}
-        </div>
-      </section>
-
-      {/* ============================================================
-          6. CLOSING CTA (Uiverse Inspired Glow Card)
+          5. CLOSING CTA (Uiverse Inspired Glow Card)
           ============================================================ */}
       <section className="mx-auto max-w-7xl px-4 py-16 sm:px-6 sm:py-20">
         <motion.div
