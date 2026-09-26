@@ -30,9 +30,9 @@ export const CategoriesPage = () => {
             <Link
               key={category._id}
               to={`/categories/${category.slug}`}
-              className="group relative overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-sm transition hover:shadow-lg dark:border-slate-700 dark:bg-slate-800"
+              className="group relative overflow-hidden rounded-2xl border border-[#E8DCD0] bg-[#FFFCF7] shadow-soft transition hover:shadow-lift hover:border-[#B85C4A]/50 dark:border-[#493A34] dark:bg-[#2A211E] dark:hover:border-[#D47763]/50"
             >
-              <div className="relative aspect-[4/3] overflow-hidden bg-slate-100 dark:bg-slate-700/40">
+              <div className="relative aspect-[4/3] overflow-hidden bg-[#F5EDE4] dark:bg-[#1F1816]">
                 {category.image ? (
                   <img
                     src={category.image}
@@ -41,18 +41,18 @@ export const CategoriesPage = () => {
                     className="size-full object-cover transition-transform duration-300 group-hover:scale-105"
                   />
                 ) : (
-                  <div className="flex size-full items-center justify-center bg-gradient-to-br from-indigo-100 to-indigo-200 text-5xl font-bold text-indigo-300 dark:from-indigo-950 dark:to-slate-800 dark:text-indigo-500">
+                  <div className="flex size-full items-center justify-center bg-gradient-to-br from-[#F5EDE4] to-[#E8DCD0] text-5xl font-bold text-[#B85C4A] dark:from-[#352925] dark:to-[#2A211E] dark:text-[#D47763]">
                     {category.name.charAt(0)}
                   </div>
                 )}
-                <div className="absolute inset-0 bg-gradient-to-t from-slate-950/50 via-transparent to-transparent" />
+                <div className="absolute inset-0 bg-gradient-to-t from-[#1F1816]/60 via-transparent to-transparent" />
               </div>
               <div className="absolute inset-x-0 bottom-0 flex items-center justify-between p-4">
                 <h3 className="text-base font-bold text-white drop-shadow">{category.name}</h3>
                 <ChevronRight className="size-5 text-white/80 transition group-hover:translate-x-0.5" />
               </div>
               {category.description && (
-                <p className="border-t border-slate-100 px-4 py-3 text-xs text-slate-500 line-clamp-2 dark:border-slate-700 dark:text-slate-400">
+                <p className="border-t border-[#E8DCD0] px-4 py-3 text-xs text-[#806E66] line-clamp-2 dark:border-[#493A34] dark:text-[#C7B8AE]">
                   {category.description}
                 </p>
               )}

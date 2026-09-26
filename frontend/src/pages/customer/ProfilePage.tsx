@@ -64,13 +64,13 @@ export const ProfilePage = () => {
       <div className="grid gap-8 lg:grid-cols-[1fr_2fr]">
         <div className="space-y-6">
           <Card className="p-6 text-center">
-            <div className="mx-auto flex size-20 items-center justify-center rounded-full bg-gradient-to-br from-indigo-600 to-indigo-300 text-2xl font-bold text-white">
+            <div className="mx-auto flex size-20 items-center justify-center rounded-full bg-gradient-to-br from-[#B85C4A] to-[#D8A85B] text-2xl font-bold text-white shadow-soft">
               {initials(user?.name ?? "U")}
             </div>
-            <h2 className="mt-4 text-lg font-bold text-slate-900 dark:text-white">
+            <h2 className="mt-4 text-lg font-bold text-[#3B2924] dark:text-[#FFF4E8]">
               {user?.name}
             </h2>
-            <p className="mt-1 flex items-center justify-center gap-1.5 text-sm text-slate-500 dark:text-slate-400">
+            <p className="mt-1 flex items-center justify-center gap-1.5 text-sm text-[#806E66] dark:text-[#C7B8AE]">
               <Mail className="size-4" /> {user?.email}
             </p>
             <div className="mt-4 flex justify-center gap-2">
@@ -89,9 +89,9 @@ export const ProfilePage = () => {
               <Link
                 key={link.to}
                 to={link.to}
-                className="flex items-center gap-3 rounded-xl px-3 py-2.5 text-sm font-medium text-slate-700 transition hover:bg-slate-100 dark:text-slate-200 dark:hover:bg-slate-700"
+                className="flex items-center gap-3 rounded-xl px-3 py-2.5 text-sm font-medium text-[#3B2924] transition hover:bg-[#F5EDE4] dark:text-[#FFF4E8] dark:hover:bg-[#352925]"
               >
-                <link.icon className="size-4.5 text-slate-400" />
+                <link.icon className="size-4.5 text-[#806E66] dark:text-[#C7B8AE]" />
                 {link.label}
               </Link>
             ))}
@@ -99,7 +99,7 @@ export const ProfilePage = () => {
         </div>
 
         <Card className="h-fit p-6">
-          <h3 className="mb-5 text-base font-semibold text-slate-900 dark:text-white">
+          <h3 className="mb-5 text-base font-semibold text-[#3B2924] dark:text-[#FFF4E8]">
             Personal details
           </h3>
           <form onSubmit={handleSubmit(onSubmit)} className="space-y-4" noValidate>

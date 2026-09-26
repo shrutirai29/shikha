@@ -24,10 +24,10 @@ import { AnimatePresence, motion } from "framer-motion";
 
 const navLinkClass = ({ isActive }: { isActive: boolean }) =>
   cn(
-    "rounded-lg px-3 py-2 text-sm font-medium transition-colors",
+    "rounded-xl px-3.5 py-2 text-sm font-medium transition-colors",
     isActive
-      ? "bg-slate-100 text-slate-900 dark:bg-slate-700/60 dark:text-white dark:shadow-inner"
-      : "text-slate-600 hover:text-slate-900 dark:text-slate-300 dark:hover:text-white"
+      ? "bg-[#B85C4A]/10 text-[#B85C4A] font-semibold dark:bg-[#D47763]/15 dark:text-[#D47763]"
+      : "text-[#806E66] hover:text-[#B85C4A] hover:bg-[#F5EDE4]/60 dark:text-[#C7B8AE] dark:hover:text-[#D47763] dark:hover:bg-[#352925]/60"
   );
 
 export const Header = () => {
@@ -93,24 +93,24 @@ export const Header = () => {
       ];
 
   return (
-    <header className="sticky top-0 z-50 border-b border-slate-200/80 bg-white/85 backdrop-blur-xl dark:border-slate-800/80 dark:bg-slate-950/85">
+    <header className="sticky top-0 z-50 border-b border-[#E8DCD0] bg-[#FFFCF7]/95 backdrop-blur-xl dark:border-[#493A34] dark:bg-[#2A211E]/95">
       {/* Top micro-announcement bar */}
-      <div className="border-b border-indigo-500/10 bg-gradient-to-r from-slate-950 via-slate-900 to-indigo-950 px-4 py-1.5 text-[11px] font-medium text-slate-200">
+      <div className="border-b border-[#E8DCD0]/20 bg-[#3B2924] px-4 py-1.5 text-[11px] font-medium text-[#FFF4E8] dark:bg-[#1F1816] dark:border-[#493A34]">
         <div className="mx-auto flex max-w-7xl items-center justify-between">
           <div className="flex items-center gap-1.5">
-            <span className="flex size-2 rounded-full bg-emerald-400 animate-pulse" />
+            <span className="flex size-2 rounded-full bg-[#7A8B68] animate-pulse dark:bg-[#9BAF83]" />
             <span className="font-semibold text-white">Knottiingale Studio</span>
-            <span className="hidden sm:inline text-slate-400">· Handcrafted by Shikha Rai</span>
+            <span className="hidden sm:inline text-[#C7B8AE]">· Handcrafted by Shikha Rai</span>
           </div>
-          <p className="flex items-center gap-1.5 text-indigo-200">
-            <Sparkles className="size-3 text-amber-300" />
+          <p className="flex items-center gap-1.5 text-[#F5EDE4]">
+            <Sparkles className="size-3 text-[#D8A85B] dark:text-[#E0B86A]" />
             <span>Free Shipping across India on orders &gt; ₹500 · COD Available</span>
           </p>
           <a
             href="https://wa.me/917985835558"
             target="_blank"
             rel="noopener noreferrer"
-            className="hidden lg:inline-flex items-center gap-1 font-semibold text-emerald-300 transition-colors hover:text-white"
+            className="hidden lg:inline-flex items-center gap-1 font-semibold text-[#D8A85B] transition-colors hover:text-[#FFF4E8] dark:text-[#E0B86A]"
           >
             Custom Orders: WhatsApp +91 7985835558 →
           </a>
@@ -121,7 +121,7 @@ export const Header = () => {
         <div className="flex items-center gap-2">
           <button
             type="button"
-            className="rounded-lg p-2 text-slate-600 hover:bg-slate-100 lg:hidden dark:text-slate-300 dark:hover:bg-slate-800"
+            className="rounded-lg p-2 text-[#806E66] hover:bg-[#F5EDE4] lg:hidden dark:text-[#C7B8AE] dark:hover:bg-[#352925]"
             onClick={() => setMobileOpen((open) => !open)}
             aria-label="Toggle navigation menu"
           >
@@ -153,13 +153,13 @@ export const Header = () => {
         <div className="flex items-center gap-1">
           {searchOpen && (
             <form onSubmit={handleSearch} className="relative mr-1 hidden sm:block">
-              <Search className="pointer-events-none absolute left-3.5 top-1/2 size-4 -translate-y-1/2 text-slate-400" />
+              <Search className="pointer-events-none absolute left-3.5 top-1/2 size-4 -translate-y-1/2 text-[#806E66]" />
               <input
                 autoFocus
                 value={query}
                 onChange={(event) => setQuery(event.target.value)}
                 placeholder="Search handmade treasures…"
-                className="h-9.5 w-60 rounded-full border border-slate-200 bg-slate-50/90 pl-9.5 pr-4 text-sm shadow-inner transition-all focus:w-72 focus:border-indigo-500 focus:bg-white focus:outline-none focus:ring-4 focus:ring-indigo-500/10 dark:border-slate-700 dark:bg-slate-800 dark:text-slate-100"
+                className="h-9.5 w-60 rounded-full border border-[#E8DCD0] bg-[#F5EDE4]/70 pl-9.5 pr-4 text-sm text-[#3B2924] shadow-inner transition-all focus:w-72 focus:border-[#B85C4A] focus:bg-[#FFFCF7] focus:outline-none focus:ring-4 focus:ring-[#B85C4A]/10 dark:border-[#493A34] dark:bg-[#352925] dark:text-[#FFF4E8] dark:focus:border-[#D47763]"
               />
             </form>
           )}
@@ -167,7 +167,7 @@ export const Header = () => {
           <button
             type="button"
             onClick={() => setSearchOpen((open) => !open)}
-            className="rounded-xl p-2.5 text-slate-600 transition hover:bg-slate-100 hover:text-slate-900 sm:hidden dark:text-slate-300 dark:hover:bg-slate-800"
+            className="rounded-xl p-2.5 text-[#806E66] transition hover:bg-[#F5EDE4] hover:text-[#3B2924] sm:hidden dark:text-[#C7B8AE] dark:hover:bg-[#352925] dark:hover:text-[#FFF4E8]"
             aria-label="Open search"
           >
             <Search className="size-5" />
@@ -176,20 +176,20 @@ export const Header = () => {
           <button
             type="button"
             onClick={toggleTheme}
-            className="rounded-xl p-2.5 text-slate-600 transition hover:bg-slate-100 hover:text-slate-900 dark:text-slate-300 dark:hover:bg-slate-800"
+            className="rounded-xl p-2.5 text-[#806E66] transition hover:bg-[#F5EDE4] hover:text-[#3B2924] dark:text-[#C7B8AE] dark:hover:bg-[#352925] dark:hover:text-[#FFF4E8]"
             aria-label={`Switch to ${theme === "dark" ? "light" : "dark"} mode`}
           >
-            {theme === "dark" ? <Sun className="size-5 text-amber-400" /> : <Moon className="size-5 text-indigo-600" />}
+            {theme === "dark" ? <Sun className="size-5 text-[#E0B86A]" /> : <Moon className="size-5 text-[#B85C4A]" />}
           </button>
 
           <Link
             to={isAuthenticated ? "/wishlist" : "/login"}
-            className="relative rounded-xl p-2.5 text-slate-600 transition hover:bg-slate-100 hover:text-slate-900 dark:text-slate-300 dark:hover:bg-slate-800"
+            className="relative rounded-xl p-2.5 text-[#806E66] transition hover:bg-[#F5EDE4] hover:text-[#3B2924] dark:text-[#C7B8AE] dark:hover:bg-[#352925] dark:hover:text-[#FFF4E8]"
             aria-label="Wishlist"
           >
             <Heart className="size-5" />
             {isAuthenticated && (wishlist?.length ?? 0) > 0 && (
-              <span className="absolute right-1 top-1 flex size-4.5 items-center justify-center rounded-full bg-rose-500 text-[10px] font-bold text-white shadow-sm ring-2 ring-white dark:ring-slate-900">
+              <span className="absolute right-1 top-1 flex size-4.5 items-center justify-center rounded-full bg-[#C98F8B] text-[10px] font-bold text-white shadow-sm ring-2 ring-[#FFFCF7] dark:bg-[#D8A09B] dark:text-[#1F1816] dark:ring-[#2A211E]">
                 {wishlist?.length}
               </span>
             )}
@@ -197,12 +197,12 @@ export const Header = () => {
 
           <Link
             to={isAuthenticated ? "/cart" : "/login"}
-            className="relative rounded-xl p-2.5 text-slate-600 transition hover:bg-slate-100 hover:text-slate-900 dark:text-slate-300 dark:hover:bg-slate-800"
+            className="relative rounded-xl p-2.5 text-[#806E66] transition hover:bg-[#F5EDE4] hover:text-[#3B2924] dark:text-[#C7B8AE] dark:hover:bg-[#352925] dark:hover:text-[#FFF4E8]"
             aria-label="Cart"
           >
             <ShoppingBag className="size-5" />
             {isAuthenticated && cartCount > 0 && (
-              <span className="absolute right-1 top-1 flex size-4.5 items-center justify-center rounded-full bg-gradient-to-r from-indigo-600 to-indigo-500 text-[10px] font-bold text-white shadow-sm ring-2 ring-white dark:ring-slate-900">
+              <span className="absolute right-1 top-1 flex size-4.5 items-center justify-center rounded-full bg-[#B85C4A] text-[10px] font-bold text-white shadow-sm ring-2 ring-[#FFFCF7] dark:bg-[#D47763] dark:text-[#1F1816] dark:ring-[#2A211E]">
                 {cartCount}
               </span>
             )}
@@ -213,7 +213,7 @@ export const Header = () => {
               <button
                 type="button"
                 onClick={() => setUserMenuOpen((open) => !open)}
-                className="ml-1 flex size-9 items-center justify-center rounded-full bg-gradient-to-br from-indigo-600 to-indigo-300 text-sm font-bold text-white shadow-soft transition hover:shadow-lift dark:from-indigo-400 dark:to-indigo-200 dark:text-slate-950"
+                className="ml-1 flex size-9 items-center justify-center rounded-full bg-[#B85C4A] text-sm font-bold text-white shadow-soft transition hover:shadow-lift dark:bg-[#D47763] dark:text-[#1F1816]"
                 aria-label="Open user menu"
               >
                 {initials(user?.name ?? "U")}
@@ -226,13 +226,13 @@ export const Header = () => {
                     animate={{ opacity: 1, y: 0, scale: 1 }}
                     exit={{ opacity: 0, y: 6, scale: 0.98 }}
                     transition={{ duration: 0.15 }}
-                    className="absolute right-0 top-12 w-60 overflow-hidden rounded-xl border border-slate-200 bg-white shadow-xl dark:border-slate-700 dark:bg-slate-800"
+                    className="absolute right-0 top-12 w-60 overflow-hidden rounded-2xl border border-[#E8DCD0] bg-[#FFFCF7] shadow-xl dark:border-[#493A34] dark:bg-[#2A211E]"
                   >
-                    <div className="border-b border-slate-100 px-4 py-3 dark:border-slate-700">
-                      <p className="text-sm font-semibold text-slate-900 dark:text-white">
+                    <div className="border-b border-[#E8DCD0] px-4 py-3 dark:border-[#493A34]">
+                      <p className="text-sm font-semibold text-[#3B2924] dark:text-[#FFF4E8]">
                         {user?.name}
                       </p>
-                      <p className="truncate text-xs text-slate-500 dark:text-slate-400">
+                      <p className="truncate text-xs text-[#806E66] dark:text-[#C7B8AE]">
                         {user?.email}
                       </p>
                     </div>
@@ -242,16 +242,16 @@ export const Header = () => {
                           key={link.to}
                           to={link.to}
                           onClick={() => setUserMenuOpen(false)}
-                          className="flex items-center gap-2.5 rounded-lg px-3 py-2 text-sm text-slate-700 transition hover:bg-slate-100 dark:text-slate-200 dark:hover:bg-slate-700"
+                          className="flex items-center gap-2.5 rounded-lg px-3 py-2 text-sm text-[#3B2924] transition hover:bg-[#F5EDE4] dark:text-[#FFF4E8] dark:hover:bg-[#352925]"
                         >
-                          <link.icon className="size-4 text-slate-400" />
+                          <link.icon className="size-4 text-[#806E66] dark:text-[#C7B8AE]" />
                           {link.label}
                         </Link>
                       ))}
                       <button
                         type="button"
                         onClick={handleLogout}
-                        className="flex w-full items-center gap-2.5 rounded-lg px-3 py-2 text-sm text-rose-600 transition hover:bg-rose-50 dark:text-rose-400 dark:hover:bg-rose-500/10"
+                        className="flex w-full items-center gap-2.5 rounded-lg px-3 py-2 text-sm text-[#914536] transition hover:bg-[#B85C4A]/10 dark:text-[#E28A76] dark:hover:bg-[#D47763]/10"
                       >
                         <LogOut className="size-4" />
                         Log out
@@ -265,13 +265,13 @@ export const Header = () => {
             <div className="ml-1 hidden items-center gap-2 sm:flex">
               <Link
                 to="/login"
-                className="rounded-lg px-3 py-2 text-sm font-medium text-slate-600 transition hover:text-slate-900 dark:text-slate-300 dark:hover:text-white"
+                className="rounded-xl px-3.5 py-2 text-sm font-medium text-[#3B2924] transition hover:text-[#B85C4A] hover:bg-[#F5EDE4]/60 dark:text-[#FFF4E8] dark:hover:text-[#D47763] dark:hover:bg-[#352925]/60"
               >
                 Log in
               </Link>
               <Link
                 to="/register"
-                className="rounded-lg bg-indigo-600 px-4 py-2 text-sm font-semibold text-white shadow-sm transition hover:bg-indigo-500 dark:bg-indigo-600 dark:text-slate-950 dark:hover:bg-indigo-500"
+                className="rounded-xl bg-[#B85C4A] px-4.5 py-2 text-sm font-semibold text-white shadow-soft transition hover:bg-[#914536] hover:shadow-lift dark:bg-[#D47763] dark:text-[#1F1816] dark:hover:bg-[#E28A76]"
               >
                 Sign up
               </Link>
@@ -281,14 +281,14 @@ export const Header = () => {
       </div>
 
       {mobileOpen && (
-        <div className="border-t border-slate-200 px-4 py-3 lg:hidden dark:border-slate-700">
+        <div className="border-t border-[#E8DCD0] px-4 py-3 lg:hidden dark:border-[#493A34] bg-[#FFFCF7] dark:bg-[#2A211E]">
           <form onSubmit={handleSearch} className="relative mb-3">
-            <Search className="pointer-events-none absolute left-3 top-1/2 size-4 -translate-y-1/2 text-slate-400" />
+            <Search className="pointer-events-none absolute left-3 top-1/2 size-4 -translate-y-1/2 text-[#806E66]" />
             <input
               value={query}
               onChange={(event) => setQuery(event.target.value)}
               placeholder="Search products…"
-              className="h-10 w-full rounded-full border border-slate-300 bg-white pl-9 pr-3 text-sm shadow-sm focus:border-indigo-500 focus:outline-none focus:ring-2 focus:ring-indigo-500/20 dark:border-slate-600 dark:bg-slate-800 dark:text-slate-100"
+              className="h-10 w-full rounded-xl border border-[#E8DCD0] bg-[#FFFCF7] pl-9 pr-3 text-sm text-[#3B2924] shadow-sm focus:border-[#B85C4A] focus:outline-none focus:ring-2 focus:ring-[#B85C4A]/20 dark:border-[#493A34] dark:bg-[#352925] dark:text-[#FFF4E8]"
             />
           </form>
           <nav className="flex flex-col gap-1" aria-label="Mobile navigation">
@@ -314,14 +314,14 @@ export const Header = () => {
                 <Link
                   to="/login"
                   onClick={() => setMobileOpen(false)}
-                  className="flex-1 rounded-lg border border-slate-300 px-4 py-2 text-center text-sm font-medium text-slate-700 dark:border-slate-600 dark:text-slate-200"
+                  className="flex-1 rounded-xl border border-[#E8DCD0] px-4 py-2 text-center text-sm font-medium text-[#3B2924] dark:border-[#493A34] dark:text-[#FFF4E8]"
                 >
                   Log in
                 </Link>
                 <Link
                   to="/register"
                   onClick={() => setMobileOpen(false)}
-                  className="flex-1 rounded-lg bg-indigo-600 px-4 py-2 text-center text-sm font-semibold text-white dark:bg-indigo-600 dark:text-slate-950"
+                  className="flex-1 rounded-xl bg-[#B85C4A] px-4 py-2 text-center text-sm font-semibold text-white dark:bg-[#D47763] dark:text-[#1F1816]"
                 >
                   Sign up
                 </Link>

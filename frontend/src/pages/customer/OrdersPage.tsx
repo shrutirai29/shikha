@@ -71,7 +71,7 @@ export const OrdersPage = () => {
                     {order.items.slice(0, 3).map((item, index) => (
                       <div
                         key={index}
-                        className="size-12 overflow-hidden rounded-xl border-2 border-white bg-slate-100 dark:border-slate-800 dark:bg-slate-700/40"
+                        className="size-12 overflow-hidden rounded-xl border-2 border-[#FFFCF7] bg-[#F5EDE4] dark:border-[#2A211E] dark:bg-[#352925]"
                       >
                         {item.image ? (
                           <img src={item.image} alt="" className="size-full object-cover" />
@@ -81,10 +81,10 @@ export const OrdersPage = () => {
                   </div>
 
                   <div className="min-w-0 flex-1">
-                    <p className="text-sm font-semibold text-slate-900 dark:text-white">
+                    <p className="text-sm font-semibold text-[#3B2924] dark:text-[#FFF4E8]">
                       Order #{order._id.slice(-6).toUpperCase()}
                     </p>
-                    <p className="text-xs text-slate-500 dark:text-slate-400">
+                    <p className="text-xs text-[#806E66] dark:text-[#C7B8AE]">
                       {formatDateTime(order.createdAt)} ·{" "}
                       {order.items.reduce((sum, item) => sum + item.quantity, 0)} items
                     </p>
@@ -100,12 +100,12 @@ export const OrdersPage = () => {
                       </Badge>
                     </div>
                     <div className="text-right">
-                      <p className="text-base font-bold text-slate-900 dark:text-white">
+                      <p className="text-base font-bold text-[#3B2924] dark:text-[#FFF4E8]">
                         {formatCurrency(order.totalAmount)}
                       </p>
-                      <p className="text-xs text-slate-400">{order.paymentMethod}</p>
+                      <p className="text-xs text-[#806E66] dark:text-[#C7B8AE]">{order.paymentMethod}</p>
                     </div>
-                    <ChevronRight className="size-5 text-slate-300 transition group-hover:translate-x-0.5 group-hover:text-indigo-500" />
+                    <ChevronRight className="size-5 text-[#806E66]/40 transition group-hover:translate-x-0.5 group-hover:text-[#B85C4A] dark:text-[#C7B8AE]/40 dark:group-hover:text-[#D47763]" />
                   </div>
                 </Card>
               </Link>

@@ -18,16 +18,16 @@ export const Rating = ({
           className={cn(
             "size-4",
             index < Math.round(value)
-              ? "fill-amber-400 text-amber-400"
-              : "fill-slate-200 text-slate-200 dark:fill-slate-600 dark:text-slate-600"
+              ? "fill-[#D8A85B] text-[#D8A85B] dark:fill-[#E0B86A] dark:text-[#E0B86A]"
+              : "fill-[#E8DCD0] text-[#E8DCD0] dark:fill-[#493A34] dark:text-[#493A34]"
           )}
         />
       ))}
     </div>
-    <span className="text-xs font-semibold text-slate-600 dark:text-slate-300">
+    <span className="text-xs font-semibold text-[#3B2924] dark:text-[#FFF4E8]">
       {formatRating(value)}
       {count !== undefined && count > 0 && (
-        <span className="ml-1 font-normal text-slate-400">({count})</span>
+        <span className="ml-1 font-normal text-[#806E66] dark:text-[#C7B8AE]">({count})</span>
       )}
     </span>
   </div>
@@ -58,8 +58,8 @@ export const StarInput = ({
             className={cn(
               "size-7",
               starValue <= value
-                ? "fill-amber-400 text-amber-400"
-                : "fill-slate-200 text-slate-200 dark:fill-slate-600 dark:text-slate-600"
+                ? "fill-[#D8A85B] text-[#D8A85B] dark:fill-[#E0B86A] dark:text-[#E0B86A]"
+                : "fill-[#E8DCD0] text-[#E8DCD0] dark:fill-[#493A34] dark:text-[#493A34]"
             )}
           />
         </button>

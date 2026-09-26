@@ -151,37 +151,37 @@ export const CartPage = () => {
 
                 <div className="flex min-w-0 flex-1 flex-col">
                   {category && (
-                    <p className="text-[11px] font-medium uppercase tracking-wide text-indigo-600 dark:text-indigo-400">
+                    <p className="text-[11px] font-medium uppercase tracking-wide text-[#7A8B68] dark:text-[#9BAF83]">
                       {category.name}
                     </p>
                   )}
                   <Link
                     to={`/products/${product.slug}`}
-                    className="line-clamp-1 text-sm font-semibold text-slate-900 hover:text-indigo-600 dark:text-white dark:hover:text-indigo-400"
+                    className="line-clamp-1 text-sm font-semibold text-[#3B2924] hover:text-[#B85C4A] dark:text-[#FFF4E8] dark:hover:text-[#D47763]"
                   >
                     {product.name}
                   </Link>
-                  <p className="mt-0.5 text-sm font-bold text-slate-900 dark:text-white">
+                  <p className="mt-0.5 text-sm font-bold text-[#B85C4A] dark:text-[#D47763]">
                     {formatCurrency(item.price)}
                   </p>
 
                   <div className="mt-auto flex items-center justify-between gap-2 pt-2">
-                    <div className="flex items-center rounded-lg border border-slate-300 dark:border-slate-600">
+                    <div className="flex items-center rounded-xl border border-[#E8DCD0] bg-[#FFFCF7] dark:border-[#493A34] dark:bg-[#2A211E]">
                       <button
                         type="button"
                         onClick={() => handleQuantityChange(product._id, item.quantity - 1)}
                         disabled={item.quantity <= 1}
-                        className="p-2 text-slate-600 transition hover:text-slate-900 disabled:opacity-40 dark:text-slate-300 dark:hover:text-white"
+                        className="p-2 text-[#806E66] transition hover:text-[#3B2924] disabled:opacity-40 dark:text-[#C7B8AE] dark:hover:text-[#FFF4E8]"
                         aria-label="Decrease quantity"
                       >
                         <Minus className="size-3.5" />
                       </button>
-                      <span className="w-8 text-center text-sm font-semibold">{item.quantity}</span>
+                      <span className="w-8 text-center text-sm font-semibold text-[#3B2924] dark:text-[#FFF4E8]">{item.quantity}</span>
                       <button
                         type="button"
                         onClick={() => handleQuantityChange(product._id, item.quantity + 1)}
                         disabled={item.quantity >= product.stock}
-                        className="p-2 text-slate-600 transition hover:text-slate-900 disabled:opacity-40 dark:text-slate-300 dark:hover:text-white"
+                        className="p-2 text-[#806E66] transition hover:text-[#3B2924] disabled:opacity-40 dark:text-[#C7B8AE] dark:hover:text-[#FFF4E8]"
                         aria-label="Increase quantity"
                       >
                         <Plus className="size-3.5" />
@@ -191,7 +191,7 @@ export const CartPage = () => {
                     <button
                       type="button"
                       onClick={() => handleRemove(product._id)}
-                      className="rounded-lg p-2 text-slate-400 transition hover:bg-rose-50 hover:text-rose-600 dark:hover:bg-rose-500/10"
+                      className="rounded-lg p-2 text-[#806E66] transition hover:bg-[#B85C4A]/10 hover:text-[#914536] dark:text-[#C7B8AE]"
                       aria-label={`Remove ${product.name} from cart`}
                     >
                       <Trash2 className="size-4" />
@@ -205,13 +205,13 @@ export const CartPage = () => {
 
         <div className="h-fit space-y-4 lg:sticky lg:top-24">
           <Card className="p-5">
-            <h2 className="mb-4 text-base font-semibold text-slate-900 dark:text-white">
+            <h2 className="mb-4 text-base font-semibold text-[#3B2924] dark:text-[#FFF4E8]">
               Order summary
             </h2>
 
             {cart.coupon && (
-              <div className="mb-4 flex items-center justify-between rounded-xl bg-emerald-50 px-3 py-2 text-sm dark:bg-emerald-500/10">
-                <span className="flex items-center gap-1.5 font-medium text-emerald-700 dark:text-emerald-400">
+              <div className="mb-4 flex items-center justify-between rounded-xl bg-[#7A8B68]/15 px-3 py-2 text-sm dark:bg-[#9BAF83]/20">
+                <span className="flex items-center gap-1.5 font-medium text-[#5e6c50] dark:text-[#9BAF83]">
                   <Tag className="size-4" />
                   {typeof cart.coupon === "object" && "code" in cart.coupon
                     ? cart.coupon.code
@@ -220,7 +220,7 @@ export const CartPage = () => {
                 <button
                   type="button"
                   onClick={handleRemoveCoupon}
-                  className="text-emerald-600 hover:text-emerald-500 dark:text-emerald-400"
+                  className="text-[#7A8B68] hover:text-[#5e6c50] dark:text-[#9BAF83]"
                   aria-label="Remove coupon"
                 >
                   <X className="size-4" />
@@ -229,33 +229,33 @@ export const CartPage = () => {
             )}
 
             <dl className="space-y-2.5 text-sm">
-              <div className="flex justify-between text-slate-600 dark:text-slate-300">
+              <div className="flex justify-between text-[#806E66] dark:text-[#C7B8AE]">
                 <dt>Subtotal</dt>
-                <dd className="font-medium">{formatCurrency(cart.totalAmount)}</dd>
+                <dd className="font-medium text-[#3B2924] dark:text-[#FFF4E8]">{formatCurrency(cart.totalAmount)}</dd>
               </div>
               {cart.discount > 0 && (
-                <div className="flex justify-between text-emerald-600 dark:text-emerald-400">
+                <div className="flex justify-between text-[#7A8B68] dark:text-[#9BAF83]">
                   <dt>Discount</dt>
                   <dd className="font-medium">−{formatCurrency(cart.discount)}</dd>
                 </div>
               )}
-              <div className="flex justify-between text-slate-600 dark:text-slate-300">
+              <div className="flex justify-between text-[#806E66] dark:text-[#C7B8AE]">
                 <dt>Shipping</dt>
                 <dd className="font-medium">
                   {shipping === 0 ? (
-                    <span className="text-emerald-600 dark:text-emerald-400">Free</span>
+                    <span className="text-[#7A8B68] dark:text-[#9BAF83]">Free</span>
                   ) : (
                     formatCurrency(shipping)
                   )}
                 </dd>
               </div>
-              <div className="flex justify-between text-slate-600 dark:text-slate-300">
+              <div className="flex justify-between text-[#806E66] dark:text-[#C7B8AE]">
                 <dt>Estimated GST / Tax (18%)</dt>
-                <dd className="font-medium">{formatCurrency(tax)}</dd>
+                <dd className="font-medium text-[#3B2924] dark:text-[#FFF4E8]">{formatCurrency(tax)}</dd>
               </div>
-              <div className="flex justify-between border-t border-slate-200 pt-2.5 text-base font-bold text-slate-900 dark:border-slate-700 dark:text-white">
+              <div className="flex justify-between border-t border-[#E8DCD0] pt-2.5 text-base font-bold text-[#3B2924] dark:border-[#493A34] dark:text-[#FFF4E8]">
                 <dt>Total</dt>
-                <dd>{formatCurrency(totalAmount)}</dd>
+                <dd className="text-[#B85C4A] dark:text-[#D47763]">{formatCurrency(totalAmount)}</dd>
               </div>
             </dl>
 
@@ -264,7 +264,7 @@ export const CartPage = () => {
                 value={code}
                 onChange={(event) => setCode(event.target.value)}
                 placeholder="Coupon code"
-                className="h-10 min-w-0 flex-1 rounded-lg border border-slate-300 bg-white px-3 text-sm shadow-sm focus:border-indigo-500 focus:outline-none focus:ring-2 focus:ring-indigo-500/20 dark:border-slate-600 dark:bg-slate-800 dark:text-slate-100"
+                className="h-10 min-w-0 flex-1 rounded-xl border border-[#E8DCD0] bg-[#FFFCF7] px-3.5 text-sm text-[#3B2924] shadow-sm focus:border-[#B85C4A] focus:outline-none focus:ring-2 focus:ring-[#B85C4A]/20 dark:border-[#493A34] dark:bg-[#2A211E] dark:text-[#FFF4E8]"
               />
               <Button type="submit" variant="outline" disabled={!code.trim()} loading={applyCoupon.isPending}>
                 Apply

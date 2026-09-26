@@ -93,7 +93,7 @@ export const ProductsPage = () => {
         </div>
 
         <div>
-          <h3 className="mb-3 text-sm font-semibold uppercase tracking-wide text-slate-900 dark:text-white">
+          <h3 className="mb-3 text-sm font-semibold uppercase tracking-wide text-[#3B2924] dark:text-[#FFF4E8]">
             Price range (₹)
           </h3>
           <div className="space-y-2">
@@ -103,7 +103,7 @@ export const ProductsPage = () => {
               placeholder="Min"
               value={minPriceInput}
               onChange={(event) => setMinPriceInput(event.target.value)}
-              className="w-full rounded-lg border border-slate-300 bg-white px-3 py-2 text-sm shadow-sm focus:border-indigo-500 focus:outline-none focus:ring-2 focus:ring-indigo-500/20 dark:border-slate-600 dark:bg-slate-800 dark:text-slate-100"
+              className="w-full rounded-xl border border-[#E8DCD0] bg-[#FFFCF7] px-3.5 py-2 text-sm text-[#3B2924] shadow-sm focus:border-[#B85C4A] focus:outline-none focus:ring-2 focus:ring-[#B85C4A]/20 dark:border-[#493A34] dark:bg-[#2A211E] dark:text-[#FFF4E8]"
             />
             <input
               type="number"
@@ -111,7 +111,7 @@ export const ProductsPage = () => {
               placeholder="Max"
               value={maxPriceInput}
               onChange={(event) => setMaxPriceInput(event.target.value)}
-              className="w-full rounded-lg border border-slate-300 bg-white px-3 py-2 text-sm shadow-sm focus:border-indigo-500 focus:outline-none focus:ring-2 focus:ring-indigo-500/20 dark:border-slate-600 dark:bg-slate-800 dark:text-slate-100"
+              className="w-full rounded-xl border border-[#E8DCD0] bg-[#FFFCF7] px-3.5 py-2 text-sm text-[#3B2924] shadow-sm focus:border-[#B85C4A] focus:outline-none focus:ring-2 focus:ring-[#B85C4A]/20 dark:border-[#493A34] dark:bg-[#2A211E] dark:text-[#FFF4E8]"
             />
             <Button size="sm" variant="outline" className="w-full" onClick={applyPriceFilter}>
               Apply
@@ -120,7 +120,7 @@ export const ProductsPage = () => {
         </div>
 
         {hasFilters && (
-          <Button variant="ghost" size="sm" className="w-full text-rose-600" onClick={clearFilters}>
+          <Button variant="ghost" size="sm" className="w-full text-[#914536] hover:bg-[#B85C4A]/10" onClick={clearFilters}>
             <X className="size-4" /> Clear all filters
           </Button>
         )}
@@ -140,7 +140,7 @@ export const ProductsPage = () => {
             value={sort}
             onChange={(event) => updateParams({ sort: event.target.value })}
             aria-label="Sort products"
-            className="h-10 rounded-lg border border-slate-300 bg-white px-3 text-sm font-medium text-slate-700 shadow-sm focus:border-indigo-500 focus:outline-none dark:border-slate-600 dark:bg-slate-800 dark:text-slate-200"
+            className="h-10 rounded-xl border border-[#E8DCD0] bg-[#FFFCF7] px-3 text-sm font-medium text-[#3B2924] shadow-sm focus:border-[#B85C4A] focus:outline-none dark:border-[#493A34] dark:bg-[#2A211E] dark:text-[#FFF4E8]"
           >
             {sortOptions.map((option) => (
               <option key={option.value} value={option.value}>
@@ -185,16 +185,16 @@ export const ProductsPage = () => {
       {filtersOpen && (
         <div className="fixed inset-0 z-[80] lg:hidden">
           <div
-            className="absolute inset-0 bg-slate-950/50 backdrop-blur-sm"
+            className="absolute inset-0 bg-[#1F1816]/50 backdrop-blur-sm"
             onClick={() => setFiltersOpen(false)}
           />
-          <div className="absolute inset-y-0 left-0 w-80 overflow-y-auto bg-white p-5 shadow-2xl dark:bg-slate-900">
+          <div className="absolute inset-y-0 left-0 w-80 overflow-y-auto bg-[#FFFCF7] p-5 shadow-2xl dark:bg-[#2A211E]">
             <div className="mb-5 flex items-center justify-between">
-              <h2 className="text-base font-semibold text-slate-900 dark:text-white">Filters</h2>
+              <h2 className="text-base font-semibold text-[#3B2924] dark:text-[#FFF4E8]">Filters</h2>
               <button
                 type="button"
                 onClick={() => setFiltersOpen(false)}
-                className="rounded-lg p-1.5 text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800"
+                className="rounded-lg p-1.5 text-[#806E66] hover:bg-[#F5EDE4] dark:text-[#C7B8AE] dark:hover:bg-[#352925]"
                 aria-label="Close filters"
               >
                 <X className="size-5" />
@@ -218,7 +218,7 @@ const CategoryFilter = ({
   const { data: categories, isLoading } = useCategories();
 
   if (isLoading) {
-    return <p className="text-sm text-slate-400">Loading categories…</p>;
+    return <p className="text-sm text-[#806E66] dark:text-[#C7B8AE]">Loading categories…</p>;
   }
 
   return (
@@ -227,10 +227,10 @@ const CategoryFilter = ({
         type="button"
         onClick={() => onSelect("")}
         className={cn(
-          "block w-full rounded-lg px-3 py-2 text-left text-sm transition",
+          "block w-full rounded-xl px-3 py-2 text-left text-sm transition",
           !selected
-            ? "bg-indigo-50 font-semibold text-indigo-700 dark:bg-indigo-500/10 dark:text-indigo-400"
-            : "text-slate-600 hover:bg-slate-100 dark:text-slate-300 dark:hover:bg-slate-800"
+            ? "bg-[#B85C4A]/10 font-semibold text-[#B85C4A] dark:bg-[#D47763]/15 dark:text-[#D47763]"
+            : "text-[#806E66] hover:bg-[#F5EDE4] hover:text-[#3B2924] dark:text-[#C7B8AE] dark:hover:bg-[#352925] dark:hover:text-[#FFF4E8]"
         )}
       >
         All categories
@@ -241,10 +241,10 @@ const CategoryFilter = ({
           type="button"
           onClick={() => onSelect(category._id)}
           className={cn(
-            "block w-full rounded-lg px-3 py-2 text-left text-sm transition",
+            "block w-full rounded-xl px-3 py-2 text-left text-sm transition",
             selected === category._id
-              ? "bg-indigo-50 font-semibold text-indigo-700 dark:bg-indigo-500/10 dark:text-indigo-400"
-              : "text-slate-600 hover:bg-slate-100 dark:text-slate-300 dark:hover:bg-slate-800"
+              ? "bg-[#B85C4A]/10 font-semibold text-[#B85C4A] dark:bg-[#D47763]/15 dark:text-[#D47763]"
+              : "text-[#806E66] hover:bg-[#F5EDE4] hover:text-[#3B2924] dark:text-[#C7B8AE] dark:hover:bg-[#352925] dark:hover:text-[#FFF4E8]"
           )}
         >
           {category.name}

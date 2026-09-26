@@ -90,10 +90,10 @@ export const ProductCard = ({
     >
       <Link
         to={`/products/${product.slug}`}
-        className="collect-card group relative flex h-full flex-col overflow-hidden rounded-[1.5rem] border border-slate-200/80 bg-white shadow-soft transition-all duration-300 dark:border-slate-800/90 dark:bg-slate-900/90 hover:border-indigo-400/40 dark:hover:border-indigo-500/30"
+        className="collect-card group relative flex h-full flex-col overflow-hidden rounded-[1.5rem] border border-[#E8DCD0] bg-[#FFFCF7] shadow-soft transition-all duration-300 dark:border-[#493A34] dark:bg-[#2A211E] hover:border-[#B85C4A]/50 dark:hover:border-[#D47763]/50"
       >
         {/* Image & Floating Tags */}
-        <div className="relative aspect-square overflow-hidden bg-gradient-to-b from-slate-50 to-slate-100 dark:from-slate-800/40 dark:to-slate-800/80 ring-1 ring-inset ring-black/5 dark:ring-white/5">
+        <div className="relative aspect-square overflow-hidden bg-gradient-to-b from-[#F5EDE4]/60 to-[#E8DCD0]/40 dark:from-[#352925]/60 dark:to-[#1F1816]/80 ring-1 ring-inset ring-[#3B2924]/5 dark:ring-white/5">
           {image ? (
             <img
               src={image}
@@ -102,15 +102,15 @@ export const ProductCard = ({
               className="size-full object-cover transition-transform duration-500 ease-out group-hover:scale-108"
             />
           ) : (
-            <div className="flex size-full items-center justify-center text-slate-300 dark:text-slate-600">
+            <div className="flex size-full items-center justify-center text-[#806E66]/40 dark:text-[#C7B8AE]/40">
               <ShoppingBag className="size-12 stroke-[1.5]" />
             </div>
           )}
 
           {/* Uiverse-style discount tag */}
           {hasDiscount && percentOff > 0 && (
-            <span className="absolute left-3 top-3 inline-flex items-center gap-1 rounded-full bg-gradient-to-r from-rose-500 to-amber-500 px-2.5 py-0.5 text-[11px] font-bold text-white shadow-lg shadow-rose-500/25">
-              <Sparkles className="size-3" />
+            <span className="absolute left-3 top-3 inline-flex items-center gap-1 rounded-full bg-[#B85C4A] px-2.5 py-0.5 text-[11px] font-bold text-white shadow-md shadow-[#B85C4A]/25">
+              <Sparkles className="size-3 text-[#D8A85B]" />
               {percentOff}% OFF
             </span>
           )}
@@ -121,10 +121,10 @@ export const ProductCard = ({
             onClick={handleWishlist}
             aria-label={isInWishlist ? "Remove from wishlist" : "Add to wishlist"}
             className={cn(
-              "absolute right-3 top-3 flex size-9 items-center justify-center rounded-full border border-white/40 bg-white/85 shadow-md backdrop-blur-md transition-all duration-200 hover:scale-110 active:scale-90 dark:border-slate-700/60 dark:bg-slate-900/85",
+              "absolute right-3 top-3 flex size-9 items-center justify-center rounded-full border border-[#E8DCD0] bg-[#FFFCF7]/90 shadow-sm backdrop-blur-md transition-all duration-200 hover:scale-110 active:scale-90 dark:border-[#493A34] dark:bg-[#2A211E]/90",
               isInWishlist
-                ? "text-rose-500"
-                : "text-slate-400 hover:text-rose-500"
+                ? "text-[#C98F8B] dark:text-[#D8A09B]"
+                : "text-[#806E66] hover:text-[#C98F8B] dark:text-[#C7B8AE] dark:hover:text-[#D8A09B]"
             )}
           >
             <Heart className={cn("size-4.5 transition-transform", isInWishlist && "fill-current scale-110")} />
@@ -132,8 +132,8 @@ export const ProductCard = ({
 
           {/* Out of Stock overlay */}
           {product.stock <= 0 && (
-            <div className="absolute inset-0 flex items-center justify-center bg-slate-950/50 backdrop-blur-[2px]">
-              <span className="rounded-full bg-slate-900/90 px-3 py-1 text-xs font-bold uppercase tracking-wider text-slate-100 shadow-md">
+            <div className="absolute inset-0 flex items-center justify-center bg-[#1F1816]/60 backdrop-blur-[2px]">
+              <span className="rounded-full bg-[#1F1816]/90 px-3 py-1 text-xs font-bold uppercase tracking-wider text-[#FFF4E8] shadow-md">
                 Sold Out
               </span>
             </div>
@@ -143,12 +143,12 @@ export const ProductCard = ({
         {/* Content Body */}
         <div className="flex flex-1 flex-col gap-2 p-4.5">
           {category && (
-            <span className="w-fit rounded-md bg-indigo-50 px-2 py-0.5 text-[10px] font-bold uppercase tracking-widest text-indigo-700 dark:bg-indigo-500/10 dark:text-indigo-300">
+            <span className="w-fit rounded-md bg-[#F5EDE4] px-2 py-0.5 text-[10px] font-bold uppercase tracking-widest text-[#806E66] dark:bg-[#352925] dark:text-[#C7B8AE]">
               {category.name}
             </span>
           )}
 
-          <h3 className="line-clamp-2 text-sm font-semibold text-slate-900 transition-colors duration-200 group-hover:text-indigo-600 dark:text-slate-100 dark:group-hover:text-indigo-300">
+          <h3 className="line-clamp-2 text-sm font-semibold text-[#3B2924] transition-colors duration-200 group-hover:text-[#B85C4A] dark:text-[#FFF4E8] dark:group-hover:text-[#D47763]">
             {truncate(product.name, 55)}
           </h3>
 
@@ -156,23 +156,23 @@ export const ProductCard = ({
             <Rating value={product.averageRating} count={product.totalReviews} />
           </div>
 
-          <div className="mt-auto flex items-end justify-between gap-2 pt-2 border-t border-slate-100 dark:border-slate-800/80">
+          <div className="mt-auto flex items-end justify-between gap-2 pt-2 border-t border-[#E8DCD0] dark:border-[#493A34]">
             <div className="space-y-0.5">
               <div className="flex items-baseline gap-2">
-                <span className="font-display text-lg font-bold text-slate-950 dark:text-white">
+                <span className="font-display text-lg font-bold text-[#B85C4A] dark:text-[#D47763]">
                   {formatCurrency(price)}
                 </span>
                 {hasDiscount && (
-                  <span className="text-xs text-slate-400 line-through">
+                  <span className="text-xs text-[#806E66] line-through dark:text-[#C7B8AE]">
                     {formatCurrency(originalPrice)}
                   </span>
                 )}
               </div>
-              <p className="text-[11px] font-medium text-slate-400">
+              <p className="text-[11px] font-medium text-[#806E66] dark:text-[#C7B8AE]">
                 {product.stock > 0 ? (
-                  <span className="text-emerald-600 dark:text-emerald-400">In stock</span>
+                  <span className="text-[#7A8B68] dark:text-[#9BAF83]">In stock</span>
                 ) : (
-                  <span className="text-rose-500">Out of stock</span>
+                  <span className="text-[#914536] dark:text-[#E28A76]">Out of stock</span>
                 )}
               </p>
             </div>
@@ -182,7 +182,7 @@ export const ProductCard = ({
               onClick={handleAddToCart}
               disabled={product.stock <= 0}
               aria-label={`Add ${product.name} to cart`}
-              className="cartBtn !min-w-0 !w-10 !h-10 !p-0 !rounded-full shadow-md shadow-indigo-600/20 transition-transform duration-200 hover:scale-110 active:scale-95"
+              className="cartBtn !min-w-0 !w-10 !h-10 !p-0 !rounded-full shadow-md shadow-[#B85C4A]/20 transition-transform duration-200 hover:scale-110 active:scale-95"
             >
               <span className="cartBtn-icon-wrap" aria-hidden="true">
                 <svg

@@ -154,12 +154,12 @@ export const RegisterPage = () => {
       <div className="mx-auto flex min-h-[70vh] w-full max-w-md flex-col justify-center px-4 py-12">
         <div className="mb-8 text-center">
           <Logo className="mb-4 justify-center" />
-          <h1 className="text-2xl font-bold tracking-tight text-slate-900 dark:text-white">
+          <h1 className="text-2xl font-bold tracking-tight text-[#3B2924] dark:text-[#FFF4E8]">
             Verify your email
           </h1>
-          <p className="mt-1 text-sm text-slate-500 dark:text-slate-400">
+          <p className="mt-1 text-sm text-[#806E66] dark:text-[#C7B8AE]">
             Enter the 6-digit code we emailed to{" "}
-            <span className="font-semibold text-slate-700 dark:text-slate-200">
+            <span className="font-semibold text-[#3B2924] dark:text-[#FFF4E8]">
               {pendingEmail}
             </span>
           </p>
@@ -167,10 +167,10 @@ export const RegisterPage = () => {
 
         <form
           onSubmit={handleOtpSubmit(onVerify)}
-          className="space-y-4 rounded-2xl border border-slate-200 bg-white p-6 shadow-sm dark:border-slate-700 dark:bg-slate-800/60"
+          className="space-y-4 rounded-2xl border border-[#E8DCD0] bg-[#FFFCF7] p-6 shadow-sm dark:border-[#493A34] dark:bg-[#2A211E]"
           noValidate
         >
-          <div className="rounded-xl bg-rose-50 p-4 text-sm text-rose-700 dark:bg-rose-500/10 dark:text-rose-300">
+          <div className="rounded-xl bg-[#B85C4A]/10 p-4 text-sm text-[#B85C4A] dark:bg-[#D47763]/20 dark:text-[#D47763]">
             <p className="flex items-start gap-2">
               <MailCheck className="mt-0.5 size-4 shrink-0" />
               <span>
@@ -201,14 +201,14 @@ export const RegisterPage = () => {
           </Button>
 
           <div className="flex items-center justify-between text-sm">
-            <span className="text-slate-500 dark:text-slate-400">
+            <span className="text-[#806E66] dark:text-[#C7B8AE]">
               Didn't get it?
             </span>
             <button
               type="button"
               onClick={onResend}
               disabled={countdown > 0 || resending}
-              className="font-semibold text-indigo-600 transition hover:text-indigo-500 disabled:cursor-not-allowed disabled:text-slate-400 dark:text-indigo-400 dark:disabled:text-slate-600"
+              className="font-semibold text-[#B85C4A] transition hover:text-[#914536] disabled:cursor-not-allowed disabled:text-[#806E66]/40 dark:text-[#D47763] dark:disabled:text-[#C7B8AE]/40"
             >
               {countdown > 0
                 ? `Resend in ${countdown}s`
@@ -224,7 +224,7 @@ export const RegisterPage = () => {
               setPendingEmail(null);
               setCountdown(0);
             }}
-            className="w-full text-center text-sm text-slate-500 transition hover:text-slate-700 dark:text-slate-400 dark:hover:text-slate-200"
+            className="w-full text-center text-sm text-[#806E66] transition hover:text-[#3B2924] dark:text-[#C7B8AE] dark:hover:text-[#FFF4E8]"
           >
             Use a different email
           </button>
@@ -237,17 +237,17 @@ export const RegisterPage = () => {
     <div className="mx-auto flex min-h-[70vh] w-full max-w-md flex-col justify-center px-4 py-12">
       <div className="mb-8 text-center">
         <Logo className="mb-4 justify-center" />
-        <h1 className="text-2xl font-bold tracking-tight text-slate-900 dark:text-white">
+        <h1 className="text-2xl font-bold tracking-tight text-[#3B2924] dark:text-[#FFF4E8]">
           Create your account
         </h1>
-        <p className="mt-1 text-sm text-slate-500 dark:text-slate-400">
+        <p className="mt-1 text-sm text-[#806E66] dark:text-[#C7B8AE]">
           Join Knottiingale for faster checkout and exclusive offers
         </p>
       </div>
 
       <form
         onSubmit={handleSubmit(onSubmit)}
-        className="space-y-4 rounded-2xl border border-slate-200 bg-white p-6 shadow-sm dark:border-slate-700 dark:bg-slate-800/60"
+        className="space-y-4 rounded-2xl border border-[#E8DCD0] bg-[#FFFCF7] p-6 shadow-sm dark:border-[#493A34] dark:bg-[#2A211E]"
         noValidate
       >
         <Input
@@ -289,7 +289,7 @@ export const RegisterPage = () => {
           <button
             type="button"
             onClick={() => setShowPassword((show) => !show)}
-            className="absolute right-3 top-9 text-slate-400 hover:text-slate-600 dark:hover:text-slate-300"
+            className="absolute right-3 top-9 text-[#806E66] hover:text-[#3B2924] dark:text-[#C7B8AE] dark:hover:text-[#FFF4E8]"
             aria-label={showPassword ? "Hide password" : "Show password"}
           >
             {showPassword ? <EyeOff className="size-4" /> : <Eye className="size-4" />}
@@ -311,11 +311,11 @@ export const RegisterPage = () => {
         </Button>
       </form>
 
-      <p className="mt-6 text-center text-sm text-slate-500 dark:text-slate-400">
+      <p className="mt-6 text-center text-sm text-[#806E66] dark:text-[#C7B8AE]">
         Already have an account?{" "}
         <Link
           to="/login"
-          className="font-semibold text-indigo-600 transition hover:text-indigo-500 dark:text-indigo-400"
+          className="font-semibold text-[#B85C4A] transition hover:text-[#914536] dark:text-[#D47763] dark:hover:text-[#E28A76]"
         >
           Log in
         </Link>

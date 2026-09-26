@@ -15,22 +15,22 @@ export const FloatingContact = () => {
             animate={{ opacity: 1, y: 0, scale: 1 }}
             exit={{ opacity: 0, y: 10, scale: 0.95 }}
             transition={{ duration: 0.2 }}
-            className="mb-3 w-80 overflow-hidden rounded-2xl border border-slate-200/80 bg-white/95 p-5 shadow-2xl backdrop-blur-xl dark:border-slate-700/80 dark:bg-slate-900/95"
+            className="mb-3 w-80 overflow-hidden rounded-2xl border border-[#E8DCD0] bg-[#FFFCF7]/95 p-5 shadow-2xl backdrop-blur-xl dark:border-[#493A34] dark:bg-[#2A211E]/95"
           >
-            <div className="flex items-center justify-between pb-3 border-b border-slate-100 dark:border-slate-800">
+            <div className="flex items-center justify-between pb-3 border-b border-[#E8DCD0] dark:border-[#493A34]">
               <div className="flex items-center gap-2">
                 <span className="relative flex size-2.5">
-                  <span className="absolute inline-flex size-full animate-ping rounded-full bg-emerald-400 opacity-75" />
-                  <span className="relative inline-flex size-2.5 rounded-full bg-emerald-500" />
+                  <span className="absolute inline-flex size-full animate-ping rounded-full bg-[#7A8B68] opacity-75 dark:bg-[#9BAF83]" />
+                  <span className="relative inline-flex size-2.5 rounded-full bg-[#7A8B68] dark:bg-[#9BAF83]" />
                 </span>
-                <span className="text-xs font-semibold uppercase tracking-wider text-slate-500 dark:text-slate-400">
+                <span className="text-xs font-semibold uppercase tracking-wider text-[#806E66] dark:text-[#C7B8AE]">
                   Knottiingale Studio
                 </span>
               </div>
               <button
                 type="button"
                 onClick={() => setIsOpen(false)}
-                className="rounded-lg p-1 text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800"
+                className="rounded-lg p-1 text-[#806E66] hover:bg-[#F5EDE4] dark:text-[#C7B8AE] dark:hover:bg-[#352925]"
                 aria-label="Close contact card"
               >
                 <X className="size-4" />
@@ -38,11 +38,11 @@ export const FloatingContact = () => {
             </div>
 
             <div className="my-3 space-y-1">
-              <p className="text-sm font-bold text-slate-900 dark:text-white">
+              <p className="text-sm font-bold text-[#3B2924] dark:text-[#FFF4E8]">
                 Looking for a custom crochet piece?
               </p>
-              <p className="text-xs text-slate-500 dark:text-slate-400">
-                Connect directly with founder & artisan <strong>Shikha Rai</strong> for custom sizes, personalized gifts, or order queries.
+              <p className="text-xs text-[#806E66] dark:text-[#C7B8AE]">
+                Connect directly with founder & artisan <strong className="text-[#3B2924] dark:text-[#FFF4E8]">Shikha Rai</strong> for custom sizes, personalized gifts, or order queries.
               </p>
             </div>
 
@@ -51,7 +51,7 @@ export const FloatingContact = () => {
                 href="https://wa.me/917985835558?text=Hello%20Shikha%2C%20I%20have%20an%20inquiry%20regarding%20Knottiingale%20handmade%20crochet%20pieces."
                 target="_blank"
                 rel="noopener noreferrer"
-                className="group flex w-full items-center justify-center gap-2 rounded-xl bg-gradient-to-r from-emerald-600 to-teal-600 px-4 py-2.5 text-xs font-semibold text-white shadow-md shadow-emerald-600/20 transition hover:from-emerald-500 hover:to-teal-500"
+                className="group flex w-full items-center justify-center gap-2 rounded-xl bg-[#7A8B68] px-4 py-2.5 text-xs font-semibold text-white shadow-md transition hover:bg-[#687757] dark:bg-[#9BAF83] dark:text-[#1F1816]"
               >
                 <MessageCircle className="size-4 transition-transform group-hover:scale-110" />
                 Chat on WhatsApp (+91 7985835558)
@@ -59,7 +59,7 @@ export const FloatingContact = () => {
 
               <a
                 href="tel:+917985835558"
-                className="flex w-full items-center justify-center gap-2 rounded-xl border border-slate-200 bg-slate-50 px-4 py-2 text-xs font-semibold text-slate-700 transition hover:bg-slate-100 dark:border-slate-700 dark:bg-slate-800 dark:text-slate-200 dark:hover:bg-slate-700"
+                className="flex w-full items-center justify-center gap-2 rounded-xl border border-[#E8DCD0] bg-[#F5EDE4] px-4 py-2 text-xs font-semibold text-[#3B2924] transition hover:bg-[#FFFCF7] dark:border-[#493A34] dark:bg-[#352925] dark:text-[#FFF4E8] dark:hover:bg-[#2A211E]"
               >
                 <Phone className="size-3.5" />
                 Call +91 7985835558
@@ -69,22 +69,22 @@ export const FloatingContact = () => {
         )}
       </AnimatePresence>
 
-      {/* Main Trigger Button (Uiverse-style glowing pulse FAB) */}
+      {/* Main Trigger Button */}
       <button
         type="button"
         onClick={() => setIsOpen((prev) => !prev)}
-        className="group relative flex size-13 items-center justify-center rounded-full bg-gradient-to-tr from-emerald-600 via-teal-600 to-emerald-500 text-white shadow-xl shadow-emerald-600/30 transition duration-300 hover:scale-105 active:scale-95"
+        className="group relative flex size-13 items-center justify-center rounded-full bg-[#7A8B68] text-white shadow-xl shadow-[#7A8B68]/30 transition duration-300 hover:scale-105 active:scale-95 dark:bg-[#9BAF83] dark:text-[#1F1816]"
         aria-label="Open contact options"
       >
-        <span className="absolute -inset-1 rounded-full bg-emerald-500/30 blur-sm transition group-hover:opacity-100 opacity-60" />
+        <span className="absolute -inset-1 rounded-full bg-[#7A8B68]/30 blur-sm transition group-hover:opacity-100 opacity-60 dark:bg-[#9BAF83]/30" />
         <span className="relative flex items-center justify-center">
           {isOpen ? (
             <X className="size-6 transition-transform rotate-90 duration-200" />
           ) : (
             <>
               <MessageCircle className="size-6" />
-              <span className="absolute -right-1 -top-1 flex size-3.5 items-center justify-center rounded-full bg-rose-500 ring-2 ring-white dark:ring-slate-900">
-                <Sparkles className="size-2 text-white" />
+              <span className="absolute -right-1 -top-1 flex size-3.5 items-center justify-center rounded-full bg-[#B85C4A] ring-2 ring-[#FFFCF7] dark:ring-[#2A211E]">
+                <Sparkles className="size-2 text-[#D8A85B]" />
               </span>
             </>
           )}

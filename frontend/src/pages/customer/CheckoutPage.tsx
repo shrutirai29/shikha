@@ -141,8 +141,8 @@ export const CheckoutPage = () => {
         <div className="space-y-6">
           {/* Address selection */}
           <Card className="p-5">
-            <h2 className="mb-4 flex items-center gap-2 text-base font-semibold text-slate-900 dark:text-white">
-              <MapPin className="size-4.5 text-indigo-600 dark:text-indigo-400" />
+            <h2 className="mb-4 flex items-center gap-2 text-base font-semibold text-[#3B2924] dark:text-[#FFF4E8]">
+              <MapPin className="size-4.5 text-[#B85C4A] dark:text-[#D47763]" />
               Delivery address
             </h2>
 
@@ -157,22 +157,22 @@ export const CheckoutPage = () => {
                       className={cn(
                         "w-full rounded-xl border-2 p-4 text-left transition",
                         selectedAddress?._id === address._id
-                          ? "border-indigo-600 bg-indigo-50/50 dark:bg-indigo-500/10"
-                          : "border-slate-200 hover:border-slate-300 dark:border-slate-700 dark:hover:border-slate-600"
+                          ? "border-[#B85C4A] bg-[#B85C4A]/5 dark:border-[#D47763] dark:bg-[#D47763]/10"
+                          : "border-[#E8DCD0] bg-[#FFFCF7] hover:border-[#B85C4A]/40 dark:border-[#493A34] dark:bg-[#2A211E] dark:hover:border-[#D47763]/40"
                       )}
                     >
                       <div className="flex items-center justify-between">
-                        <p className="text-sm font-semibold text-slate-900 dark:text-white">
+                        <p className="text-sm font-semibold text-[#3B2924] dark:text-[#FFF4E8]">
                           {address.fullName}
                           {address.isDefault && (
-                            <span className="ml-2 rounded-full bg-indigo-100 px-2 py-0.5 text-[10px] font-bold uppercase tracking-wide text-indigo-700 dark:bg-indigo-500/20 dark:text-indigo-300">
+                            <span className="ml-2 rounded-full bg-[#7A8B68]/15 px-2 py-0.5 text-[10px] font-bold uppercase tracking-wide text-[#7A8B68] dark:bg-[#9BAF83]/20 dark:text-[#9BAF83]">
                               Default
                             </span>
                           )}
                         </p>
-                        <span className="text-xs text-slate-400">{address.phone}</span>
+                        <span className="text-xs text-[#806E66] dark:text-[#C7B8AE]">{address.phone}</span>
                       </div>
-                      <p className="mt-1 text-sm text-slate-600 dark:text-slate-300">
+                      <p className="mt-1 text-sm text-[#806E66] dark:text-[#C7B8AE]">
                         {address.addressLine1}
                         {address.addressLine2 ? `, ${address.addressLine2}` : ""}
                         <br />
@@ -184,14 +184,14 @@ export const CheckoutPage = () => {
                 <div className="mt-3 flex justify-between">
                   <Link
                     to="/addresses"
-                    className="text-sm font-medium text-indigo-600 hover:text-indigo-500 dark:text-indigo-400"
+                    className="text-sm font-medium text-[#B85C4A] hover:text-[#914536] dark:text-[#D47763] dark:hover:text-[#E28A76]"
                   >
                     Manage addresses
                   </Link>
                   <button
                     type="button"
                     onClick={() => setUseNewAddress(true)}
-                    className="text-sm font-medium text-indigo-600 hover:text-indigo-500 dark:text-indigo-400"
+                    className="text-sm font-medium text-[#B85C4A] hover:text-[#914536] dark:text-[#D47763] dark:hover:text-[#E28A76]"
                   >
                     Use a new address
                   </button>
@@ -222,7 +222,7 @@ export const CheckoutPage = () => {
                       setUseNewAddress(false);
                       reset();
                     }}
-                    className="text-sm font-medium text-indigo-600 hover:text-indigo-500 dark:text-indigo-400"
+                    className="text-sm font-medium text-[#B85C4A] hover:text-[#914536] dark:text-[#D47763] dark:hover:text-[#E28A76]"
                   >
                     Back to saved addresses
                   </button>
@@ -236,8 +236,8 @@ export const CheckoutPage = () => {
 
           {/* Payment method */}
           <Card className="p-5">
-            <h2 className="mb-4 flex items-center gap-2 text-base font-semibold text-slate-900 dark:text-white">
-              <CreditCard className="size-4.5 text-indigo-600 dark:text-indigo-400" />
+            <h2 className="mb-4 flex items-center gap-2 text-base font-semibold text-[#3B2924] dark:text-[#FFF4E8]">
+              <CreditCard className="size-4.5 text-[#B85C4A] dark:text-[#D47763]" />
               Payment method
             </h2>
 
@@ -248,16 +248,16 @@ export const CheckoutPage = () => {
                 className={cn(
                   "flex w-full items-center gap-3 rounded-xl border-2 p-4 text-left transition",
                   paymentMethod === "COD"
-                    ? "border-indigo-600 bg-indigo-50/50 dark:bg-indigo-500/10"
-                    : "border-slate-200 hover:border-slate-300 dark:border-slate-700 dark:hover:border-slate-600"
+                    ? "border-[#B85C4A] bg-[#B85C4A]/5 dark:border-[#D47763] dark:bg-[#D47763]/10"
+                    : "border-[#E8DCD0] bg-[#FFFCF7] hover:border-[#B85C4A]/40 dark:border-[#493A34] dark:bg-[#2A211E] dark:hover:border-[#D47763]/40"
                 )}
               >
-                <Banknote className="size-5 text-slate-500" />
+                <Banknote className="size-5 text-[#806E66] dark:text-[#C7B8AE]" />
                 <div>
-                  <p className="text-sm font-semibold text-slate-900 dark:text-white">
+                  <p className="text-sm font-semibold text-[#3B2924] dark:text-[#FFF4E8]">
                     Cash on Delivery
                   </p>
-                  <p className="text-xs text-slate-500 dark:text-slate-400">
+                  <p className="text-xs text-[#806E66] dark:text-[#C7B8AE]">
                     Pay when your order arrives
                   </p>
                 </div>
@@ -269,16 +269,16 @@ export const CheckoutPage = () => {
                 className={cn(
                   "flex w-full items-center gap-3 rounded-xl border-2 p-4 text-left transition",
                   paymentMethod === "RAZORPAY"
-                    ? "border-indigo-600 bg-indigo-50/50 dark:bg-indigo-500/10"
-                    : "border-slate-200 hover:border-slate-300 dark:border-slate-700 dark:hover:border-slate-600"
+                    ? "border-[#B85C4A] bg-[#B85C4A]/5 dark:border-[#D47763] dark:bg-[#D47763]/10"
+                    : "border-[#E8DCD0] bg-[#FFFCF7] hover:border-[#B85C4A]/40 dark:border-[#493A34] dark:bg-[#2A211E] dark:hover:border-[#D47763]/40"
                 )}
               >
-                <ShieldCheck className="size-5 text-slate-500" />
+                <ShieldCheck className="size-5 text-[#806E66] dark:text-[#C7B8AE]" />
                 <div>
-                  <p className="text-sm font-semibold text-slate-900 dark:text-white">
+                  <p className="text-sm font-semibold text-[#3B2924] dark:text-[#FFF4E8]">
                     Pay online (Razorpay)
                   </p>
-                  <p className="text-xs text-slate-500 dark:text-slate-400">
+                  <p className="text-xs text-[#806E66] dark:text-[#C7B8AE]">
                     UPI, cards, net banking & wallets
                   </p>
                 </div>
@@ -301,7 +301,7 @@ export const CheckoutPage = () => {
         {/* Summary */}
         <div className="h-fit space-y-4 lg:sticky lg:top-24">
           <Card className="p-5">
-            <h2 className="mb-4 text-base font-semibold text-slate-900 dark:text-white">
+            <h2 className="mb-4 text-base font-semibold text-[#3B2924] dark:text-[#FFF4E8]">
               Order summary
             </h2>
 
@@ -316,18 +316,18 @@ export const CheckoutPage = () => {
 
                 return (
                   <div key={product._id} className="flex items-center gap-3">
-                    <div className="size-12 shrink-0 overflow-hidden rounded-lg bg-slate-100 dark:bg-slate-700/40">
+                    <div className="size-12 shrink-0 overflow-hidden rounded-lg bg-[#F5EDE4] dark:bg-[#352925]">
                       {product.images[0] ? (
                         <img src={product.images[0]} alt="" className="size-full object-cover" />
                       ) : null}
                     </div>
                     <div className="min-w-0 flex-1">
-                      <p className="truncate text-sm font-medium text-slate-900 dark:text-white">
+                      <p className="truncate text-sm font-medium text-[#3B2924] dark:text-[#FFF4E8]">
                         {product.name}
                       </p>
-                      <p className="text-xs text-slate-400">Qty {item.quantity}</p>
+                      <p className="text-xs text-[#806E66] dark:text-[#C7B8AE]">Qty {item.quantity}</p>
                     </div>
-                    <span className="text-sm font-semibold text-slate-700 dark:text-slate-200">
+                    <span className="text-sm font-semibold text-[#3B2924] dark:text-[#FFF4E8]">
                       {formatCurrency(item.price * item.quantity)}
                     </span>
                   </div>
@@ -335,26 +335,26 @@ export const CheckoutPage = () => {
               })}
             </div>
 
-            <dl className="mt-4 space-y-2.5 border-t border-slate-200 pt-4 text-sm dark:border-slate-700">
-              <div className="flex justify-between text-slate-600 dark:text-slate-300">
+            <dl className="mt-4 space-y-2.5 border-t border-[#E8DCD0] pt-4 text-sm dark:border-[#493A34]">
+              <div className="flex justify-between text-[#806E66] dark:text-[#C7B8AE]">
                 <dt>Subtotal</dt>
                 <dd>{formatCurrency(cart.totalAmount)}</dd>
               </div>
               {cart.discount > 0 && (
-                <div className="flex justify-between text-emerald-600 dark:text-emerald-400">
+                <div className="flex justify-between text-[#7A8B68] dark:text-[#9BAF83]">
                   <dt>Discount</dt>
                   <dd>−{formatCurrency(cart.discount)}</dd>
                 </div>
               )}
-              <div className="flex justify-between text-slate-600 dark:text-slate-300">
+              <div className="flex justify-between text-[#806E66] dark:text-[#C7B8AE]">
                 <dt>Shipping</dt>
                 <dd>{shipping === 0 ? "Free" : formatCurrency(shipping)}</dd>
               </div>
-              <div className="flex justify-between text-slate-600 dark:text-slate-300">
+              <div className="flex justify-between text-[#806E66] dark:text-[#C7B8AE]">
                 <dt>Estimated GST / Tax (18%)</dt>
                 <dd>{formatCurrency(tax)}</dd>
               </div>
-              <div className="flex justify-between border-t border-slate-200 pt-2.5 text-base font-bold text-slate-900 dark:border-slate-700 dark:text-white">
+              <div className="flex justify-between border-t border-[#E8DCD0] pt-2.5 text-base font-bold text-[#3B2924] dark:border-[#493A34] dark:text-[#FFF4E8]">
                 <dt>Total</dt>
                 <dd>{formatCurrency(totalAmount)}</dd>
               </div>

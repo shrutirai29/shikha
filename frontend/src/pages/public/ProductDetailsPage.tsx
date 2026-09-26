@@ -145,27 +145,27 @@ export const ProductDetailsPage = () => {
 
   return (
     <PageLayout>
-      <nav aria-label="Breadcrumb" className="mb-6 flex items-center gap-1.5 text-sm text-slate-500 dark:text-slate-400">
-        <Link to="/" className="transition hover:text-indigo-600 dark:hover:text-indigo-400">Home</Link>
+      <nav aria-label="Breadcrumb" className="mb-6 flex items-center gap-1.5 text-sm text-[#806E66] dark:text-[#C7B8AE]">
+        <Link to="/" className="transition hover:text-[#B85C4A] dark:hover:text-[#D47763]">Home</Link>
         <ChevronRight className="size-4" />
-        <Link to="/products" className="transition hover:text-indigo-600 dark:hover:text-indigo-400">Products</Link>
+        <Link to="/products" className="transition hover:text-[#B85C4A] dark:hover:text-[#D47763]">Products</Link>
         {category && (
           <>
             <ChevronRight className="size-4" />
-            <Link to={`/categories/${category.slug}`} className="transition hover:text-indigo-600 dark:hover:text-indigo-400">
+            <Link to={`/categories/${category.slug}`} className="transition hover:text-[#B85C4A] dark:hover:text-[#D47763]">
               {category.name}
             </Link>
           </>
         )}
         <ChevronRight className="size-4" />
-        <span className="font-medium text-slate-900 dark:text-white">{product.name}</span>
+        <span className="font-medium text-[#3B2924] dark:text-[#FFF4E8]">{product.name}</span>
       </nav>
 
       <div className="grid gap-10 lg:grid-cols-2">
         {/* Gallery */}
         <div>
           <TiltCard className="relative">
-          <div className="relative aspect-square overflow-hidden rounded-[2rem] border border-slate-200 bg-slate-100 shadow-soft dark:border-slate-700 dark:bg-slate-800">
+          <div className="relative aspect-square overflow-hidden rounded-[2rem] border border-[#E8DCD0] bg-[#FFFCF7] shadow-soft dark:border-[#493A34] dark:bg-[#2A211E]">
             {product.images[activeImage] ? (
               <img
                 src={product.images[activeImage]}
@@ -173,19 +173,19 @@ export const ProductDetailsPage = () => {
                 className="size-full object-cover"
               />
             ) : (
-              <div className="flex size-full items-center justify-center text-slate-300 dark:text-slate-600">
+              <div className="flex size-full items-center justify-center text-[#806E66]/40 dark:text-[#C7B8AE]/40">
                 <ShoppingBag className="size-16" />
               </div>
             )}
 
             {hasDiscount && percentOff > 0 && (
-              <span className="absolute left-4 top-4 rounded-full bg-rose-600 px-3 py-1 text-sm font-bold text-white shadow">
+              <span className="absolute left-4 top-4 rounded-full bg-[#B85C4A] px-3.5 py-1 text-sm font-bold text-white shadow-md shadow-[#B85C4A]/25">
                 {percentOff}% OFF
               </span>
             )}
 
             {product.stock <= 0 && (
-              <span className="absolute inset-0 flex items-center justify-center bg-white/60 text-lg font-bold uppercase tracking-widest text-slate-500 backdrop-blur-[2px] dark:bg-slate-900/60 dark:text-slate-300">
+              <span className="absolute inset-0 flex items-center justify-center bg-[#1F1816]/60 text-lg font-bold uppercase tracking-widest text-[#FFF4E8] backdrop-blur-[2px]">
                 Out of stock
               </span>
             )}
@@ -202,7 +202,7 @@ export const ProductDetailsPage = () => {
                   className={cn(
                     "size-20 overflow-hidden rounded-xl border-2 transition",
                     index === activeImage
-                      ? "border-indigo-600"
+                      ? "border-[#B85C4A] dark:border-[#D47763]"
                       : "border-transparent opacity-70 hover:opacity-100"
                   )}
                   aria-label={`View image ${index + 1}`}
@@ -219,24 +219,24 @@ export const ProductDetailsPage = () => {
           {category && (
             <Link
               to={`/categories/${category.slug}`}
-              className="text-sm font-semibold uppercase tracking-wide text-indigo-600 dark:text-indigo-400"
+              className="text-sm font-semibold uppercase tracking-wide text-[#7A8B68] dark:text-[#9BAF83]"
             >
               {category.name}
             </Link>
           )}
 
-          <h1 className="font-display text-4xl font-semibold leading-tight tracking-tight text-slate-950 dark:text-slate-50">
+          <h1 className="font-display text-4xl font-semibold leading-tight tracking-tight text-[#3B2924] dark:text-[#FFF4E8]">
             {product.name}
           </h1>
 
           <Rating value={product.averageRating} count={product.totalReviews} />
 
           <div className="flex items-baseline gap-3">
-            <span className="text-3xl font-bold text-slate-900 dark:text-white">
+            <span className="font-display text-3xl font-bold text-[#B85C4A] dark:text-[#D47763]">
               {formatCurrency(price)}
             </span>
             {hasDiscount && (
-              <span className="text-lg text-slate-400 line-through">
+              <span className="text-lg text-[#806E66] line-through dark:text-[#C7B8AE]">
                 {formatCurrency(originalPrice)}
               </span>
             )}
@@ -250,43 +250,43 @@ export const ProductDetailsPage = () => {
             )}
           </div>
 
-          <p className="whitespace-pre-line text-slate-600 dark:text-slate-300">
+          <p className="whitespace-pre-line text-[#806E66] dark:text-[#C7B8AE] leading-relaxed">
             {product.description}
           </p>
 
           <div className="flex flex-wrap items-center gap-4">
-            <div className="flex items-center rounded-xl border border-slate-300 dark:border-slate-600">
+            <div className="flex items-center rounded-xl border border-[#E8DCD0] bg-[#FFFCF7] dark:border-[#493A34] dark:bg-[#2A211E]">
               <button
                 type="button"
                 onClick={() => setQuantity((q) => Math.max(1, q - 1))}
                 disabled={quantity <= 1}
-                className="p-3 text-slate-600 transition hover:text-slate-900 disabled:opacity-40 dark:text-slate-300 dark:hover:text-white"
+                className="p-3 text-[#806E66] transition hover:text-[#3B2924] disabled:opacity-40 dark:text-[#C7B8AE] dark:hover:text-[#FFF4E8]"
                 aria-label="Decrease quantity"
               >
                 <Minus className="size-4" />
               </button>
-              <span className="w-12 text-center text-sm font-semibold text-slate-900 dark:text-white">
+              <span className="w-12 text-center text-sm font-semibold text-[#3B2924] dark:text-[#FFF4E8]">
                 {quantity}
               </span>
               <button
                 type="button"
                 onClick={() => setQuantity((q) => Math.min(product.stock, q + 1))}
                 disabled={quantity >= product.stock || product.stock <= 0}
-                className="p-3 text-slate-600 transition hover:text-slate-900 disabled:opacity-40 dark:text-slate-300 dark:hover:text-white"
+                className="p-3 text-[#806E66] transition hover:text-[#3B2924] disabled:opacity-40 dark:text-[#C7B8AE] dark:hover:text-[#FFF4E8]"
                 aria-label="Increase quantity"
               >
                 <Plus className="size-4" />
               </button>
             </div>
 
-              <AddToCartButton
-                onClick={handleAddToCart}
-                loading={adding}
-                disabled={product.stock <= 0}
-                className="flex-1 sm:flex-none h-12 px-6"
-              >
-                Add to cart
-              </AddToCartButton>
+            <AddToCartButton
+              onClick={handleAddToCart}
+              loading={adding}
+              disabled={product.stock <= 0}
+              className="flex-1 sm:flex-none h-12 px-6"
+            >
+              Add to cart
+            </AddToCartButton>
 
             <Button
               size="icon"
@@ -295,23 +295,23 @@ export const ProductDetailsPage = () => {
               className="size-12 rounded-xl"
               aria-label={isInWishlist ? "Remove from wishlist" : "Add to wishlist"}
             >
-              <Heart className={cn("size-5", isInWishlist && "fill-current")} />
+              <Heart className={cn("size-5", isInWishlist ? "fill-current text-white" : "text-[#C98F8B] dark:text-[#D8A09B]")} />
             </Button>
 
             <ProductShareButton title={product.name} />
           </div>
 
-          <div className="grid gap-3 rounded-2xl border border-slate-200 bg-slate-50 p-4 text-sm dark:border-slate-700 dark:bg-slate-800/50 sm:grid-cols-3">
-            <div className="flex items-center gap-2.5 text-slate-600 dark:text-slate-300">
-              <Truck className="size-5 text-indigo-600 dark:text-indigo-400" />
+          <div className="grid gap-3 rounded-2xl border border-[#E8DCD0] bg-[#F5EDE4]/60 p-4 text-sm dark:border-[#493A34] dark:bg-[#352925]/60 sm:grid-cols-3">
+            <div className="flex items-center gap-2.5 text-[#3B2924] dark:text-[#FFF4E8]">
+              <Truck className="size-5 text-[#B85C4A] dark:text-[#D47763]" />
               Free shipping over ₹500
             </div>
-            <div className="flex items-center gap-2.5 text-slate-600 dark:text-slate-300">
-              <ShieldCheck className="size-5 text-emerald-600 dark:text-emerald-400" />
+            <div className="flex items-center gap-2.5 text-[#3B2924] dark:text-[#FFF4E8]">
+              <ShieldCheck className="size-5 text-[#7A8B68] dark:text-[#9BAF83]" />
               7-day returns
             </div>
-            <div className="flex items-center gap-2.5 text-slate-600 dark:text-slate-300">
-              <Package className="size-5 text-amber-600 dark:text-amber-400" />
+            <div className="flex items-center gap-2.5 text-[#3B2924] dark:text-[#FFF4E8]">
+              <Package className="size-5 text-[#D8A85B] dark:text-[#E0B86A]" />
               COD available
             </div>
           </div>
@@ -320,10 +320,10 @@ export const ProductDetailsPage = () => {
 
       {/* Reviews */}
       <section className="mt-16">
-        <h2 className="font-display mb-6 text-3xl font-semibold tracking-tight text-slate-950 dark:text-slate-50">
+        <h2 className="font-display mb-6 text-3xl font-semibold tracking-tight text-[#3B2924] dark:text-[#FFF4E8]">
           Reviews
           {product.totalReviews > 0 && (
-            <span className="ml-2 text-base font-normal text-slate-400">
+            <span className="ml-2 text-base font-normal text-[#806E66] dark:text-[#C7B8AE]">
               ({product.totalReviews})
             </span>
           )}
@@ -331,8 +331,8 @@ export const ProductDetailsPage = () => {
 
         <div className="grid gap-8 lg:grid-cols-[1fr_2fr]">
           {canReview && (
-            <form onSubmit={handleReview} className="h-fit rounded-2xl border border-slate-200 bg-white p-5 dark:border-slate-700 dark:bg-slate-800/60">
-              <h3 className="mb-4 text-base font-semibold text-slate-900 dark:text-white">
+            <form onSubmit={handleReview} className="h-fit rounded-2xl border border-[#E8DCD0] bg-[#FFFCF7] p-5 dark:border-[#493A34] dark:bg-[#2A211E]">
+              <h3 className="mb-4 text-base font-semibold text-[#3B2924] dark:text-[#FFF4E8]">
                 Write a review
               </h3>
               <div className="mb-4">
@@ -351,8 +351,8 @@ export const ProductDetailsPage = () => {
               <Button type="submit" className="mt-4 w-full" loading={addReview.isPending} disabled={rating === 0}>
                 Submit review
               </Button>
-              <p className="mt-3 flex items-center gap-1.5 text-xs text-slate-400">
-                <BadgeCheck className="size-4" />
+              <p className="mt-3 flex items-center gap-1.5 text-xs text-[#806E66] dark:text-[#C7B8AE]">
+                <BadgeCheck className="size-4 text-[#7A8B68] dark:text-[#9BAF83]" />
                 Only verified buyers can review products
               </p>
             </form>
@@ -375,18 +375,18 @@ export const ProductDetailsPage = () => {
                 return (
                   <article
                     key={review._id}
-                    className="rounded-2xl border border-slate-200 bg-white p-5 dark:border-slate-700 dark:bg-slate-800/60"
+                    className="rounded-2xl border border-[#E8DCD0] bg-[#FFFCF7] p-5 dark:border-[#493A34] dark:bg-[#2A211E]"
                   >
                     <div className="mb-2 flex items-center justify-between">
                       <div className="flex items-center gap-3">
-                        <span className="flex size-9 items-center justify-center rounded-full bg-gradient-to-br from-indigo-600 to-indigo-300 text-xs font-bold text-white">
+                        <span className="flex size-9 items-center justify-center rounded-full bg-[#B85C4A] text-xs font-bold text-white dark:bg-[#D47763] dark:text-[#1F1816]">
                           {(author?.name ?? "U").charAt(0).toUpperCase()}
                         </span>
                         <div>
-                          <p className="text-sm font-semibold text-slate-900 dark:text-white">
+                          <p className="text-sm font-semibold text-[#3B2924] dark:text-[#FFF4E8]">
                             {author?.name ?? "Anonymous"}
                           </p>
-                          <p className="text-xs text-slate-400">{formatDate(review.createdAt)}</p>
+                          <p className="text-xs text-[#806E66] dark:text-[#C7B8AE]">{formatDate(review.createdAt)}</p>
                         </div>
                       </div>
                       {review.verifiedPurchase && (
@@ -396,7 +396,7 @@ export const ProductDetailsPage = () => {
                       )}
                     </div>
                     <Rating value={review.rating} className="mb-2" />
-                    <p className="text-sm text-slate-600 dark:text-slate-300">{review.comment}</p>
+                    <p className="text-sm text-[#806E66] dark:text-[#C7B8AE]">{review.comment}</p>
                   </article>
                 );
               })

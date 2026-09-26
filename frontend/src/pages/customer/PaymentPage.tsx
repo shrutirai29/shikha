@@ -86,7 +86,7 @@ export const PaymentPage = () => {
         email: user?.email,
         contact: user?.phone,
       },
-      theme: { color: "#4f46e5" },
+      theme: { color: "#B85C4A" },
       handler: async (response) => {
         try {
           await api.post("/payments/verify", {
@@ -122,8 +122,8 @@ export const PaymentPage = () => {
       <PageLayout>
         <div className="flex flex-col items-center gap-3 py-16 text-center">
           <TriangleAlert className="size-10 text-rose-500" />
-          <h1 className="text-xl font-bold text-slate-900 dark:text-white">Order not found</h1>
-          <Link to="/orders" className="text-sm font-semibold text-indigo-600 dark:text-indigo-400">
+          <h1 className="text-xl font-bold text-[#3B2924] dark:text-[#FFF4E8]">Order not found</h1>
+          <Link to="/orders" className="text-sm font-semibold text-[#B85C4A] hover:text-[#914536] dark:text-[#D47763] dark:hover:text-[#E28A76]">
             Back to my orders
           </Link>
         </div>
@@ -135,13 +135,13 @@ export const PaymentPage = () => {
     return (
       <PageLayout>
         <div className="flex flex-col items-center gap-3 py-16 text-center">
-          <ShieldCheck className="size-10 text-emerald-500" />
-          <h1 className="text-xl font-bold text-slate-900 dark:text-white">
+          <ShieldCheck className="size-10 text-[#7A8B68]" />
+          <h1 className="text-xl font-bold text-[#3B2924] dark:text-[#FFF4E8]">
             This order uses Cash on Delivery
           </h1>
           <Link
             to={`/orders/${order._id}`}
-            className="rounded-lg bg-indigo-600 px-6 py-2.5 text-sm font-semibold text-white hover:bg-indigo-500"
+            className="rounded-xl bg-[#B85C4A] px-6 py-2.5 text-sm font-semibold text-white transition hover:bg-[#914536]"
           >
             View order
           </Link>
@@ -154,16 +154,16 @@ export const PaymentPage = () => {
     return (
       <PageLayout>
         <div className="flex flex-col items-center gap-3 py-16 text-center">
-          <ShieldCheck className="size-10 text-emerald-500" />
-          <h1 className="text-xl font-bold text-slate-900 dark:text-white">
+          <ShieldCheck className="size-10 text-[#7A8B68]" />
+          <h1 className="text-xl font-bold text-[#3B2924] dark:text-[#FFF4E8]">
             {order.paymentStatus === "Paid" ? "Payment completed" : "Payment refunded"}
           </h1>
-          <p className="text-sm text-slate-500 dark:text-slate-400">
+          <p className="text-sm text-[#806E66] dark:text-[#C7B8AE]">
             Amount: {formatCurrency(order.totalAmount)}
           </p>
           <Link
             to={`/orders/${order._id}`}
-            className="rounded-lg bg-indigo-600 px-6 py-2.5 text-sm font-semibold text-white hover:bg-indigo-500"
+            className="rounded-xl bg-[#B85C4A] px-6 py-2.5 text-sm font-semibold text-white transition hover:bg-[#914536]"
           >
             View order
           </Link>
@@ -178,28 +178,28 @@ export const PaymentPage = () => {
         <Card className="p-6">
           <div className="mb-6 flex items-center justify-between">
             <div className="flex items-center gap-2">
-              <CreditCard className="size-5 text-indigo-600 dark:text-indigo-400" />
-              <h2 className="text-base font-semibold text-slate-900 dark:text-white">
+              <CreditCard className="size-5 text-[#B85C4A] dark:text-[#D47763]" />
+              <h2 className="text-base font-semibold text-[#3B2924] dark:text-[#FFF4E8]">
                 Razorpay secure checkout
               </h2>
             </div>
-            <span className="flex items-center gap-1 text-xs font-medium text-emerald-600 dark:text-emerald-400">
+            <span className="flex items-center gap-1 text-xs font-medium text-[#7A8B68] dark:text-[#9BAF83]">
               <ShieldCheck className="size-4" /> 256-bit encrypted
             </span>
           </div>
 
-          <dl className="space-y-3 border-y border-slate-200 py-4 text-sm dark:border-slate-700">
-            <div className="flex justify-between text-slate-600 dark:text-slate-300">
+          <dl className="space-y-3 border-y border-[#E8DCD0] py-4 text-sm dark:border-[#493A34]">
+            <div className="flex justify-between text-[#806E66] dark:text-[#C7B8AE]">
               <dt>Order</dt>
-              <dd className="font-medium text-slate-900 dark:text-white">
+              <dd className="font-medium text-[#3B2924] dark:text-[#FFF4E8]">
                 #{order._id.slice(-6).toUpperCase()}
               </dd>
             </div>
-            <div className="flex justify-between text-slate-600 dark:text-slate-300">
+            <div className="flex justify-between text-[#806E66] dark:text-[#C7B8AE]">
               <dt>Placed on</dt>
               <dd>{formatDateTime(order.createdAt)}</dd>
             </div>
-            <div className="flex justify-between text-base font-bold text-slate-900 dark:text-white">
+            <div className="flex justify-between text-base font-bold text-[#3B2924] dark:text-[#FFF4E8]">
               <dt>Amount due</dt>
               <dd>{formatCurrency(order.totalAmount)}</dd>
             </div>
@@ -225,7 +225,7 @@ export const PaymentPage = () => {
 
             <Link
               to={`/orders/${order._id}`}
-              className="block text-center text-sm font-medium text-slate-500 transition hover:text-slate-700 dark:text-slate-400 dark:hover:text-slate-200"
+              className="block text-center text-sm font-medium text-[#806E66] transition hover:text-[#3B2924] dark:text-[#C7B8AE] dark:hover:text-[#FFF4E8]"
             >
               Pay later — go to order details
             </Link>

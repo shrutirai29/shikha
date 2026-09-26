@@ -97,8 +97,8 @@ const StatusTimeline = ({ status }: { status: string }) => {
                 className={cn(
                   "flex size-9 items-center justify-center rounded-full border-2 transition",
                   complete
-                    ? "border-indigo-600 bg-indigo-600 text-white shadow-glow"
-                    : "border-slate-300 bg-white text-slate-300 dark:border-slate-600 dark:bg-slate-800 dark:text-slate-500"
+                    ? "border-[#B85C4A] bg-[#B85C4A] text-white shadow-soft"
+                    : "border-[#E8DCD0] bg-[#FFFCF7] text-[#806E66] dark:border-[#493A34] dark:bg-[#2A211E] dark:text-[#C7B8AE]"
                 )}
               >
                 {complete ? <Check className="size-4" /> : index + 1}
@@ -107,8 +107,8 @@ const StatusTimeline = ({ status }: { status: string }) => {
                 className={cn(
                   "whitespace-nowrap text-xs font-medium",
                   complete
-                    ? "text-slate-900 dark:text-slate-100"
-                    : "text-slate-400 dark:text-slate-500"
+                    ? "text-[#3B2924] dark:text-[#FFF4E8]"
+                    : "text-[#806E66] dark:text-[#C7B8AE]"
                 )}
               >
                 {STEP_LABELS[step] ?? step}
@@ -119,8 +119,8 @@ const StatusTimeline = ({ status }: { status: string }) => {
                 className={cn(
                   "mx-2 mb-6 h-0.5 flex-1 rounded-full transition",
                   index < current
-                    ? "bg-indigo-600"
-                    : "bg-slate-200 dark:bg-slate-700"
+                    ? "bg-[#B85C4A] dark:bg-[#D47763]"
+                    : "bg-[#E8DCD0] dark:bg-[#493A34]"
                 )}
                 aria-hidden="true"
               />
@@ -184,17 +184,17 @@ export const OrderDetailsPage = () => {
     <PageLayout>
       <Link
         to="/orders"
-        className="mb-6 inline-flex items-center gap-1.5 text-sm font-medium text-slate-500 transition hover:text-slate-700 dark:text-slate-400 dark:hover:text-slate-200"
+        className="mb-6 inline-flex items-center gap-1.5 text-sm font-medium text-[#806E66] transition hover:text-[#3B2924] dark:text-[#C7B8AE] dark:hover:text-[#FFF4E8]"
       >
         <ChevronLeft className="size-4" /> Back to orders
       </Link>
 
       <div className="mb-8 flex flex-wrap items-center justify-between gap-4">
         <div>
-          <h1 className="font-display text-3xl font-semibold tracking-tight text-slate-950 dark:text-slate-50">
+          <h1 className="font-display text-3xl font-semibold tracking-tight text-[#3B2924] dark:text-[#FFF4E8]">
             Order #{order._id.slice(-6).toUpperCase()}
           </h1>
-          <p className="mt-1 text-sm text-slate-500 dark:text-slate-400">
+          <p className="mt-1 text-sm text-[#806E66] dark:text-[#C7B8AE]">
             Placed on {formatDateTime(order.createdAt)}
           </p>
         </div>
@@ -215,8 +215,8 @@ export const OrderDetailsPage = () => {
       <div className="grid gap-6 lg:grid-cols-[1fr_340px]">
         <div className="space-y-6">
           <Card className="p-5">
-            <h2 className="mb-4 flex items-center gap-2 text-base font-semibold text-slate-900 dark:text-white">
-              <ShoppingBag className="size-4.5 text-indigo-600 dark:text-indigo-400" />
+            <h2 className="mb-4 flex items-center gap-2 text-base font-semibold text-[#3B2924] dark:text-[#FFF4E8]">
+              <ShoppingBag className="size-4.5 text-[#B85C4A] dark:text-[#D47763]" />
               Items ({order.items.length})
             </h2>
 
@@ -227,20 +227,20 @@ export const OrderDetailsPage = () => {
 
                 return (
                   <div key={`${productId}-${index}`} className="flex items-center gap-4">
-                    <div className="size-16 shrink-0 overflow-hidden rounded-xl bg-slate-100 dark:bg-slate-700/40">
+                    <div className="size-16 shrink-0 overflow-hidden rounded-xl bg-[#F5EDE4] dark:bg-[#352925]">
                       {item.image ? (
                         <img src={item.image} alt={item.name} loading="lazy" className="size-full object-cover" />
                       ) : null}
                     </div>
                     <div className="min-w-0 flex-1">
-                      <p className="text-sm font-semibold text-slate-900 dark:text-white">
+                      <p className="text-sm font-semibold text-[#3B2924] dark:text-[#FFF4E8]">
                         {item.name}
                       </p>
-                      <p className="text-xs text-slate-400">
+                      <p className="text-xs text-[#806E66] dark:text-[#C7B8AE]">
                         {formatCurrency(item.price)} × {item.quantity}
                       </p>
                     </div>
-                    <span className="text-sm font-bold text-slate-900 dark:text-white">
+                    <span className="text-sm font-bold text-[#3B2924] dark:text-[#FFF4E8]">
                       {formatCurrency(item.price * item.quantity)}
                     </span>
                   </div>
@@ -250,12 +250,12 @@ export const OrderDetailsPage = () => {
           </Card>
 
           <Card className="p-5">
-            <h2 className="mb-3 flex items-center gap-2 text-base font-semibold text-slate-900 dark:text-white">
-              <MapPin className="size-4.5 text-indigo-600 dark:text-indigo-400" />
+            <h2 className="mb-3 flex items-center gap-2 text-base font-semibold text-[#3B2924] dark:text-[#FFF4E8]">
+              <MapPin className="size-4.5 text-[#B85C4A] dark:text-[#D47763]" />
               Delivery address
             </h2>
-            <div className="text-sm text-slate-600 dark:text-slate-300">
-              <p className="font-semibold text-slate-900 dark:text-white">
+            <div className="text-sm text-[#806E66] dark:text-[#C7B8AE]">
+              <p className="font-semibold text-[#3B2924] dark:text-[#FFF4E8]">
                 {shippingAddress.fullName}
               </p>
               <p>{shippingAddress.phone}</p>
@@ -273,50 +273,50 @@ export const OrderDetailsPage = () => {
 
         <div className="h-fit space-y-4">
           <Card className="p-5">
-            <h2 className="mb-4 text-base font-semibold text-slate-900 dark:text-white">
+            <h2 className="mb-4 text-base font-semibold text-[#3B2924] dark:text-[#FFF4E8]">
               Payment summary
             </h2>
 
             <dl className="space-y-2.5 text-sm">
-              <div className="flex justify-between text-slate-600 dark:text-slate-300">
+              <div className="flex justify-between text-[#806E66] dark:text-[#C7B8AE]">
                 <dt>Subtotal</dt>
                 <dd>{formatCurrency(order.subtotal)}</dd>
               </div>
               {order.discount > 0 && (
-                <div className="flex justify-between text-emerald-600 dark:text-emerald-400">
+                <div className="flex justify-between text-[#7A8B68] dark:text-[#9BAF83]">
                   <dt>Discount</dt>
                   <dd>−{formatCurrency(order.discount)}</dd>
                 </div>
               )}
-              <div className="flex justify-between text-slate-600 dark:text-slate-300">
+              <div className="flex justify-between text-[#806E66] dark:text-[#C7B8AE]">
                 <dt>Shipping</dt>
                 <dd>
                   {order.shippingCharge === 0 ? "Free" : formatCurrency(order.shippingCharge)}
                 </dd>
               </div>
-              <div className="flex justify-between text-slate-600 dark:text-slate-300">
+              <div className="flex justify-between text-[#806E66] dark:text-[#C7B8AE]">
                 <dt>Tax (18%)</dt>
                 <dd>{formatCurrency(order.tax)}</dd>
               </div>
-              <div className="flex justify-between border-t border-slate-200 pt-2.5 text-base font-bold text-slate-900 dark:border-slate-700 dark:text-white">
+              <div className="flex justify-between border-t border-[#E8DCD0] pt-2.5 text-base font-bold text-[#3B2924] dark:border-[#493A34] dark:text-[#FFF4E8]">
                 <dt>Total</dt>
                 <dd>{formatCurrency(order.totalAmount)}</dd>
               </div>
             </dl>
 
-            <div className="mt-4 rounded-xl bg-slate-100 px-3 py-2.5 text-sm dark:bg-slate-700/40">
-              <p className="font-medium text-slate-700 dark:text-slate-200">
+            <div className="mt-4 rounded-xl bg-[#F5EDE4] px-3 py-2.5 text-sm dark:bg-[#352925]">
+              <p className="font-medium text-[#3B2924] dark:text-[#FFF4E8]">
                 Payment method: {order.paymentMethod === "COD" ? "Cash on Delivery" : "Razorpay (online)"}
               </p>
-              <p className="text-xs text-slate-500 dark:text-slate-400">
+              <p className="text-xs text-[#806E66] dark:text-[#C7B8AE]">
                 Status: {order.paymentStatus}
               </p>
             </div>
 
             {isCodPending && order.orderStatus !== "Cancelled" && (
-              <div className="mt-3 flex items-center gap-2 rounded-xl border border-emerald-200 bg-emerald-50 px-3 py-2.5 text-sm dark:border-emerald-500/25 dark:bg-emerald-500/10">
-                <Banknote className="size-4 shrink-0 text-emerald-600 dark:text-emerald-400" />
-                <p className="text-emerald-800 dark:text-emerald-200">
+              <div className="mt-3 flex items-center gap-2 rounded-xl border border-[#7A8B68]/30 bg-[#7A8B68]/10 px-3 py-2.5 text-sm dark:border-[#9BAF83]/30 dark:bg-[#9BAF83]/20">
+                <Banknote className="size-4 shrink-0 text-[#7A8B68] dark:text-[#9BAF83]" />
+                <p className="text-[#3B2924] dark:text-[#FFF4E8]">
                   Pay <span className="font-bold">{formatCurrency(order.totalAmount)}</span> cash
                   on delivery.
                 </p>
@@ -328,7 +328,7 @@ export const OrderDetailsPage = () => {
                 href={order.shipping.trackingUrl}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="mt-3 flex items-center gap-2 rounded-xl border border-indigo-200 bg-indigo-50 px-3 py-2.5 text-sm text-indigo-800 transition hover:bg-indigo-100 dark:border-indigo-500/25 dark:bg-indigo-500/10 dark:text-indigo-200 dark:hover:bg-indigo-500/20"
+                className="mt-3 flex items-center gap-2 rounded-xl border border-[#B85C4A]/25 bg-[#B85C4A]/10 px-3 py-2.5 text-sm text-[#B85C4A] transition hover:bg-[#B85C4A]/15 dark:border-[#D47763]/25 dark:bg-[#D47763]/10 dark:text-[#D47763] dark:hover:bg-[#D47763]/20"
               >
                 <Truck className="size-4 shrink-0" />
                 <span>

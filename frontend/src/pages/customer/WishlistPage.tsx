@@ -62,16 +62,16 @@ export const WishlistPage = () => {
             return (
               <div
                 key={product._id}
-                className="flex gap-4 rounded-2xl border border-slate-200 bg-white p-4 shadow-sm dark:border-slate-700 dark:bg-slate-800/60"
+                className="flex gap-4 rounded-2xl border border-[#E8DCD0] bg-[#FFFCF7] p-4 shadow-sm dark:border-[#493A34] dark:bg-[#2A211E]"
               >
                 <Link
                   to={`/products/${product.slug}`}
-                  className="size-24 shrink-0 overflow-hidden rounded-xl bg-slate-100 dark:bg-slate-700/40"
+                  className="size-24 shrink-0 overflow-hidden rounded-xl bg-[#F5EDE4] dark:bg-[#352925]"
                 >
                   {product.images[0] ? (
                     <img src={product.images[0]} alt={product.name} loading="lazy" className="size-full object-cover" />
                   ) : (
-                    <div className="flex size-full items-center justify-center text-slate-300 dark:text-slate-600">
+                    <div className="flex size-full items-center justify-center text-[#806E66] dark:text-[#C7B8AE]">
                       <ShoppingBag className="size-6" />
                     </div>
                   )}
@@ -79,22 +79,22 @@ export const WishlistPage = () => {
 
                 <div className="flex min-w-0 flex-1 flex-col">
                   {category && (
-                    <p className="text-[11px] font-medium uppercase tracking-wide text-indigo-600 dark:text-indigo-400">
+                    <p className="text-[11px] font-medium uppercase tracking-wide text-[#7A8B68] dark:text-[#9BAF83]">
                       {category.name}
                     </p>
                   )}
                   <Link
                     to={`/products/${product.slug}`}
-                    className="line-clamp-2 text-sm font-semibold text-slate-900 transition hover:text-indigo-600 dark:text-white dark:hover:text-indigo-400"
+                    className="line-clamp-2 text-sm font-semibold text-[#3B2924] transition hover:text-[#B85C4A] dark:text-[#FFF4E8] dark:hover:text-[#D47763]"
                   >
                     {product.name}
                   </Link>
                   <div className="mt-1 flex items-baseline gap-2">
-                    <span className="text-sm font-bold text-slate-900 dark:text-white">
+                    <span className="text-sm font-bold text-[#B85C4A] dark:text-[#D47763]">
                       {formatCurrency(price)}
                     </span>
                     {hasDiscount && (
-                      <span className="text-xs text-slate-400 line-through">
+                      <span className="text-xs text-[#806E66] line-through dark:text-[#C7B8AE]">
                         {formatCurrency(originalPrice)}
                       </span>
                     )}
@@ -113,10 +113,11 @@ export const WishlistPage = () => {
                     <Button
                       size="sm"
                       variant="outline"
+                      className="text-[#C98F8B] hover:text-[#B85C4A] dark:text-[#D8A09B] dark:hover:text-[#D47763]"
                       onClick={() => handleRemove(product._id, product.name)}
                       aria-label={`Remove ${product.name} from wishlist`}
                     >
-                      <Heart className="size-3.5" />
+                      <Heart className="size-3.5 fill-current" />
                     </Button>
                   </div>
                 </div>

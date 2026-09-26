@@ -17,17 +17,17 @@ export const EmptyState = ({
 }) => (
   <div
     className={cn(
-      "flex flex-col items-center justify-center gap-3 rounded-2xl border border-dashed border-slate-300 bg-slate-50/50 px-6 py-14 text-center dark:border-slate-600 dark:bg-slate-800/40",
+      "flex flex-col items-center justify-center gap-3 rounded-2xl border border-dashed border-[#E8DCD0] bg-[#FFFCF7]/60 px-6 py-14 text-center dark:border-[#493A34] dark:bg-[#2A211E]/40",
       className
     )}
   >
-    <div className="flex size-14 items-center justify-center rounded-full bg-slate-100 text-slate-400 dark:bg-slate-700/60 dark:text-slate-400">
+    <div className="flex size-14 items-center justify-center rounded-full bg-[#F5EDE4] text-[#806E66] dark:bg-[#352925] dark:text-[#C7B8AE]">
       {icon ?? <Inbox className="size-7" />}
     </div>
     <div className="space-y-1">
-      <h3 className="text-base font-semibold text-slate-900 dark:text-white">{title}</h3>
+      <h3 className="text-base font-semibold text-[#3B2924] dark:text-[#FFF4E8]">{title}</h3>
       {description && (
-        <p className="mx-auto max-w-sm text-sm text-slate-500 dark:text-slate-400">{description}</p>
+        <p className="mx-auto max-w-sm text-sm text-[#806E66] dark:text-[#C7B8AE]">{description}</p>
       )}
     </div>
     {action}
@@ -47,24 +47,24 @@ export const ErrorState = ({
 }) => (
   <div
     className={cn(
-      "flex flex-col items-center justify-center gap-3 rounded-2xl border border-rose-200 bg-rose-50/60 px-6 py-14 text-center dark:border-rose-500/30 dark:bg-rose-500/5",
+      "flex flex-col items-center justify-center gap-3 rounded-2xl border border-[#B85C4A]/30 bg-[#B85C4A]/5 px-6 py-14 text-center dark:border-[#D47763]/30 dark:bg-[#D47763]/5",
       className
     )}
   >
-    <div className="flex size-14 items-center justify-center rounded-full bg-rose-100 text-rose-500 dark:bg-rose-500/15">
+    <div className="flex size-14 items-center justify-center rounded-full bg-[#B85C4A]/10 text-[#914536] dark:bg-[#D47763]/15 dark:text-[#E28A76]">
       <TriangleAlert className="size-7" />
     </div>
     <div className="space-y-1">
-      <h3 className="text-base font-semibold text-rose-900 dark:text-rose-200">{title}</h3>
+      <h3 className="text-base font-semibold text-[#914536] dark:text-[#E28A76]">{title}</h3>
       {message && (
-        <p className="mx-auto max-w-sm text-sm text-rose-700 dark:text-rose-300/80">{message}</p>
+        <p className="mx-auto max-w-sm text-sm text-[#806E66] dark:text-[#C7B8AE]">{message}</p>
       )}
     </div>
     {onRetry && (
       <button
         type="button"
         onClick={onRetry}
-        className="rounded-lg border border-rose-300 px-4 py-2 text-sm font-medium text-rose-700 transition hover:bg-rose-100 dark:border-rose-500/40 dark:text-rose-300 dark:hover:bg-rose-500/10"
+        className="rounded-xl border border-[#B85C4A] px-4 py-2 text-sm font-semibold text-[#B85C4A] transition hover:bg-[#B85C4A]/10 dark:border-[#D47763] dark:text-[#D47763] dark:hover:bg-[#D47763]/10"
       >
         Try again
       </button>

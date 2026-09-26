@@ -23,12 +23,12 @@ export const PageLayout = ({
       <div className="mb-8 flex flex-wrap items-end justify-between gap-4">
         <div>
           {title && (
-            <h1 className="font-display text-3xl font-semibold tracking-tight text-slate-950 sm:text-4xl dark:text-slate-50">
+            <h1 className="font-display text-3xl font-semibold tracking-tight text-[#3B2924] sm:text-4xl dark:text-[#FFF4E8]">
               {title}
             </h1>
           )}
           {subtitle && (
-            <p className="mt-1 text-sm text-slate-500 dark:text-slate-400">{subtitle}</p>
+            <p className="mt-1 text-sm text-[#806E66] dark:text-[#C7B8AE]">{subtitle}</p>
           )}
         </div>
         {actions}

@@ -45,14 +45,14 @@ export const PaginationBar = ({
         onClick={() => onPageChange(page - 1)}
         disabled={page <= 1}
         aria-label="Previous page"
-        className="flex size-9 items-center justify-center rounded-lg border border-slate-200 text-slate-600 transition hover:bg-slate-50 disabled:pointer-events-none disabled:opacity-40 dark:border-slate-600 dark:text-slate-300 dark:hover:bg-slate-700"
+        className="flex size-9 items-center justify-center rounded-xl border border-[#E8DCD0] bg-[#FFFCF7] text-[#3B2924] transition hover:bg-[#F5EDE4] disabled:pointer-events-none disabled:opacity-40 dark:border-[#493A34] dark:bg-[#2A211E] dark:text-[#FFF4E8] dark:hover:bg-[#352925]"
       >
         <ChevronLeft className="size-4" />
       </button>
 
       {items.map((item, index) =>
         item === "..." ? (
-          <span key={`gap-${index}`} className="px-1 text-slate-400">
+          <span key={`gap-${index}`} className="px-1 text-[#806E66] dark:text-[#C7B8AE]">
             …
           </span>
         ) : (
@@ -62,10 +62,10 @@ export const PaginationBar = ({
             onClick={() => onPageChange(item)}
             aria-current={item === page ? "page" : undefined}
             className={cn(
-              "flex size-9 items-center justify-center rounded-lg text-sm font-medium transition",
+              "flex size-9 items-center justify-center rounded-xl text-sm font-semibold transition",
               item === page
-                ? "bg-indigo-600 text-white shadow-sm"
-                : "border border-slate-200 text-slate-600 hover:bg-slate-50 dark:border-slate-600 dark:text-slate-300 dark:hover:bg-slate-700"
+                ? "bg-[#B85C4A] text-white shadow-soft dark:bg-[#D47763] dark:text-[#1F1816]"
+                : "border border-[#E8DCD0] bg-[#FFFCF7] text-[#3B2924] hover:bg-[#F5EDE4] dark:border-[#493A34] dark:bg-[#2A211E] dark:text-[#FFF4E8] dark:hover:bg-[#352925]"
             )}
           >
             {item}
@@ -78,7 +78,7 @@ export const PaginationBar = ({
         onClick={() => onPageChange(page + 1)}
         disabled={page >= totalPages}
         aria-label="Next page"
-        className="flex size-9 items-center justify-center rounded-lg border border-slate-200 text-slate-600 transition hover:bg-slate-50 disabled:pointer-events-none disabled:opacity-40 dark:border-slate-600 dark:text-slate-300 dark:hover:bg-slate-700"
+        className="flex size-9 items-center justify-center rounded-xl border border-[#E8DCD0] bg-[#FFFCF7] text-[#3B2924] transition hover:bg-[#F5EDE4] disabled:pointer-events-none disabled:opacity-40 dark:border-[#493A34] dark:bg-[#2A211E] dark:text-[#FFF4E8] dark:hover:bg-[#352925]"
       >
         <ChevronRight className="size-4" />
       </button>

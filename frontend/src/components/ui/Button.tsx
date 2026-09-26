@@ -20,17 +20,17 @@ export interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
 
 const variants: Record<Variant, string> = {
   primary:
-    "bg-slate-950 text-slate-50 shadow-soft hover:bg-slate-800 hover:shadow-lift active:scale-[0.98] focus-visible:outline-slate-950 disabled:bg-slate-400 dark:bg-indigo-600 dark:text-slate-950 dark:hover:bg-indigo-500 dark:focus-visible:outline-indigo-600 dark:disabled:bg-slate-600",
+    "bg-[#B85C4A] text-white shadow-soft hover:bg-[#914536] hover:shadow-lift active:scale-[0.98] focus-visible:outline-[#B85C4A] disabled:bg-[#C7B8AE] dark:bg-[#D47763] dark:text-[#1F1816] dark:hover:bg-[#E28A76] dark:focus-visible:outline-[#D47763] dark:disabled:bg-[#493A34]",
   secondary:
-    "bg-indigo-600 text-white shadow-soft hover:bg-indigo-500 hover:shadow-lift active:scale-[0.98] focus-visible:outline-indigo-600 disabled:bg-indigo-400 dark:bg-indigo-500/20 dark:text-indigo-100 dark:hover:bg-indigo-500/30",
+    "bg-[#7A8B68] text-white shadow-soft hover:bg-[#687757] hover:shadow-lift active:scale-[0.98] focus-visible:outline-[#7A8B68] disabled:bg-[#C7B8AE] dark:bg-[#9BAF83] dark:text-[#1F1816] dark:hover:bg-[#adc096] dark:focus-visible:outline-[#9BAF83]",
   outline:
-    "border border-slate-300 bg-white text-slate-700 shadow-sm hover:bg-slate-100 hover:border-slate-400 active:scale-[0.98] dark:border-slate-600 dark:bg-slate-900 dark:text-slate-200 dark:hover:bg-slate-800",
+    "border border-[#E8DCD0] bg-[#FFFCF7] text-[#3B2924] shadow-sm hover:bg-[#F5EDE4] hover:border-[#C7B8AE] active:scale-[0.98] dark:border-[#493A34] dark:bg-[#2A211E] dark:text-[#FFF4E8] dark:hover:bg-[#352925]",
   ghost:
-    "text-slate-600 hover:bg-slate-100 hover:text-slate-900 active:scale-[0.98] dark:text-slate-300 dark:hover:bg-slate-800 dark:hover:text-white",
+    "text-[#806E66] hover:bg-[#F5EDE4] hover:text-[#3B2924] active:scale-[0.98] dark:text-[#C7B8AE] dark:hover:bg-[#352925] dark:hover:text-[#FFF4E8]",
   danger:
-    "bg-rose-600 text-white shadow-sm hover:bg-rose-500 hover:shadow-lift active:scale-[0.98] focus-visible:outline-rose-600 disabled:bg-rose-400",
+    "bg-[#914536] text-white shadow-sm hover:bg-[#78372A] hover:shadow-lift active:scale-[0.98] focus-visible:outline-[#914536] disabled:opacity-50",
   gradient:
-    "relative overflow-hidden bg-gradient-to-r from-indigo-600 via-rose-500 to-indigo-600 bg-[length:200%_auto] text-white shadow-lift hover:bg-[right_center] active:scale-[0.98] transition-all duration-500 focus-visible:outline-indigo-600 disabled:opacity-50",
+    "relative overflow-hidden bg-gradient-to-r from-[#B85C4A] via-[#C98F8B] to-[#D8A85B] text-white shadow-lift hover:opacity-95 active:scale-[0.98] transition-all duration-300 focus-visible:outline-[#B85C4A] disabled:opacity-50",
   glass:
     "border border-white/20 bg-white/10 text-white backdrop-blur-md hover:bg-white/20 hover:border-white/40 shadow-sm active:scale-[0.98] transition-all dark:border-white/15 dark:bg-white/5 dark:hover:bg-white/10",
 };

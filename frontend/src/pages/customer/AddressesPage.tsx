@@ -185,7 +185,7 @@ export const AddressesPage = () => {
                     <button
                       type="button"
                       onClick={() => setDefaultMutation.mutate(address._id)}
-                      className="text-xs font-medium text-indigo-600 hover:text-indigo-500 dark:text-indigo-400"
+                      className="text-xs font-medium text-[#B85C4A] hover:text-[#914536] dark:text-[#D47763] dark:hover:text-[#E28A76]"
                     >
                       Set as default
                     </button>
@@ -195,7 +195,7 @@ export const AddressesPage = () => {
                   <button
                     type="button"
                     onClick={() => openEdit(address)}
-                    className="rounded-lg p-1.5 text-slate-400 transition hover:bg-slate-100 hover:text-slate-600 dark:hover:bg-slate-700 dark:hover:text-slate-200"
+                    className="rounded-lg p-1.5 text-[#806E66] transition hover:bg-[#F5EDE4] hover:text-[#3B2924] dark:text-[#C7B8AE] dark:hover:bg-[#352925] dark:hover:text-[#FFF4E8]"
                     aria-label={`Edit address for ${address.fullName}`}
                   >
                     <Pencil className="size-4" />
@@ -203,7 +203,7 @@ export const AddressesPage = () => {
                   <button
                     type="button"
                     onClick={() => setDeleting(address)}
-                    className="rounded-lg p-1.5 text-slate-400 transition hover:bg-rose-50 hover:text-rose-600 dark:hover:bg-rose-500/10"
+                    className="rounded-lg p-1.5 text-[#806E66] transition hover:bg-rose-50 hover:text-rose-600 dark:text-[#C7B8AE] dark:hover:bg-rose-500/10"
                     aria-label={`Delete address for ${address.fullName}`}
                   >
                     <Trash2 className="size-4" />
@@ -212,18 +212,18 @@ export const AddressesPage = () => {
               </div>
 
               <div className="space-y-0.5 text-sm">
-                <p className="font-semibold text-slate-900 dark:text-white">
+                <p className="font-semibold text-[#3B2924] dark:text-[#FFF4E8]">
                   {address.fullName}
                 </p>
-                <p className="text-slate-500 dark:text-slate-400">{address.phone}</p>
-                <p className="text-slate-600 dark:text-slate-300">
+                <p className="text-[#806E66] dark:text-[#C7B8AE]">{address.phone}</p>
+                <p className="text-[#806E66] dark:text-[#C7B8AE]">
                   {address.addressLine1}
                   {address.addressLine2 ? `, ${address.addressLine2}` : ""}
                 </p>
-                <p className="text-slate-600 dark:text-slate-300">
+                <p className="text-[#806E66] dark:text-[#C7B8AE]">
                   {address.city}, {address.state} — {address.postalCode}
                 </p>
-                <p className="text-slate-500 dark:text-slate-400">{address.country}</p>
+                <p className="text-[#806E66] dark:text-[#C7B8AE]">{address.country}</p>
               </div>
             </Card>
           ))}
@@ -255,8 +255,8 @@ export const AddressesPage = () => {
           <Input label="Postal code" placeholder="400001" error={errors.postalCode?.message} {...register("postalCode")} />
 
           <label className="flex items-center gap-2 sm:col-span-2">
-            <input type="checkbox" className="size-4 rounded border-slate-300 text-indigo-600 focus:ring-indigo-500" {...register("isDefault")} />
-            <span className="text-sm text-slate-600 dark:text-slate-300">Set as default address</span>
+            <input type="checkbox" className="size-4 rounded border-[#E8DCD0] text-[#B85C4A] focus:ring-[#B85C4A] dark:border-[#493A34]" {...register("isDefault")} />
+            <span className="text-sm text-[#806E66] dark:text-[#C7B8AE]">Set as default address</span>
           </label>
 
           <div className="flex justify-end gap-3 sm:col-span-2">
