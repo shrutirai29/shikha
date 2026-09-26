@@ -72,9 +72,12 @@ export const Spinner = ({ className }: { className?: string }) => (
   <Loader2 className={cn("size-6 animate-spin text-indigo-600 dark:text-indigo-400", className)} />
 );
 
+import { CartLoader } from "./CartLoader";
+
+export { CartLoader };
+
 export const PageLoader = ({ label = "Loading…" }: { label?: string }) => (
-  <div className="flex min-h-[50vh] flex-col items-center justify-center gap-3" role="status">
-    <Spinner className="size-8" />
-    <p className="text-sm font-medium text-slate-500 dark:text-slate-400">{label}</p>
+  <div className="flex min-h-[50vh] flex-col items-center justify-center p-6" role="status">
+    <CartLoader label={label} />
   </div>
 );
