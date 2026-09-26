@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { NavLink, Outlet, useLocation, useNavigate } from "react-router-dom";
+import { Link, NavLink, Outlet, useLocation, useNavigate } from "react-router-dom";
 import { usePageTitle } from "@/hooks/usePageTitle";
 import {
   BarChart3,
@@ -11,6 +11,7 @@ import {
   Package,
   ShoppingBag,
   Star,
+  Store,
   Sun,
   Tag,
   TicketPercent,
@@ -100,7 +101,14 @@ export const AdminLayout = () => {
         ))}
       </nav>
 
-      <div className="border-t border-[#E8DCD0] p-4 dark:border-[#493A34]">
+      <div className="space-y-1 border-t border-[#E8DCD0] p-4 dark:border-[#493A34]">
+        <Link
+          to="/"
+          className="flex w-full items-center gap-3 rounded-xl px-3 py-2 text-sm font-semibold text-[#7A8B68] transition hover:bg-[#7A8B68]/15 dark:text-[#9BAF83] dark:hover:bg-[#9BAF83]/15"
+        >
+          <Store className="size-4.5" />
+          View Storefront
+        </Link>
         <button
           type="button"
           onClick={handleLogout}
