@@ -431,6 +431,120 @@ body {
   }
 }
 
+/* ==========================================================================
+   Uiverse Add To Cart Button (by vinodjangid07)
+   ========================================================================== */
+.cartBtn {
+  min-width: 155px;
+  height: 50px;
+  border: none;
+  border-radius: 14px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  color: #ffffff;
+  font-weight: 600;
+  position: relative;
+  background-color: rgb(26, 27, 46);
+  box-shadow: 0 16px 28px -7px rgba(26, 27, 46, 0.28);
+  transition: all 0.3s ease-in-out;
+  cursor: pointer;
+  overflow: hidden;
+  padding: 0 1.25rem;
+}
+
+.dark .cartBtn {
+  background-color: rgb(34, 35, 58);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  box-shadow: 0 16px 28px -7px rgba(0, 0, 0, 0.5);
+}
+
+.cartBtn:hover:not(:disabled) {
+  background-color: rgb(20, 20, 20);
+  box-shadow: 0 20px 32px -5px rgba(99, 102, 241, 0.35);
+  transform: translateY(-1px);
+}
+
+.dark .cartBtn:hover:not(:disabled) {
+  background-color: rgb(45, 46, 75);
+  box-shadow: 0 20px 32px -5px rgba(129, 140, 248, 0.3);
+}
+
+.cartBtn:active:not(:disabled) {
+  transform: scale(0.96);
+}
+
+.cartBtn:disabled {
+  opacity: 0.55;
+  cursor: not-allowed;
+  transform: none !important;
+}
+
+.cartBtn-icon-wrap {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.cart {
+  z-index: 2;
+  font-size: 1.05em;
+  fill: currentColor;
+}
+
+.product {
+  position: absolute;
+  width: 12px;
+  border-radius: 3px;
+  content: "";
+  left: 23px;
+  bottom: 23px;
+  opacity: 0;
+  z-index: 1;
+  fill: rgb(211, 211, 211);
+  pointer-events: none;
+}
+
+/* Responsive alignment when inside icon wrapper */
+.cartBtn-icon-wrap .product {
+  left: 1px;
+  bottom: 2px;
+}
+
+.cartBtn:hover:not(:disabled) .product {
+  animation: slide-in-top 1.2s cubic-bezier(0.25, 0.46, 0.45, 0.94) both;
+}
+
+@keyframes slide-in-top {
+  0% {
+    transform: translateY(-30px);
+    opacity: 1;
+  }
+
+  100% {
+    transform: translateY(0) rotate(-90deg);
+    opacity: 1;
+  }
+}
+
+.cartBtn:hover:not(:disabled) .cart {
+  animation: slide-in-left 1s cubic-bezier(0.25, 0.46, 0.45, 0.94) both;
+}
+
+@keyframes slide-in-left {
+  0% {
+    transform: translateX(-10px);
+    opacity: 0;
+  }
+
+  100% {
+    transform: translateX(0);
+    opacity: 1;
+  }
+}
+
 /* Respect reduced-motion preferences */
 @media (prefers-reduced-motion: reduce) {
   *,

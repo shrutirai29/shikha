@@ -65,3 +65,6 @@ export const Button = forwardRef<HTMLButtonElement, ButtonProps>(
 );
 
 Button.displayName = "Button";
+
+export { AddToCartButton } from "./AddToCartButton";
+export type { AddToCartButtonProps } from "./AddToCartButton";

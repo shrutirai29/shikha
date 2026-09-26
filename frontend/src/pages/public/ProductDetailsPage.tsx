@@ -16,6 +16,7 @@ import { formatCurrency, getProductPrice, discountPercent, formatDate } from "@/
 import { TiltCard } from "@/components/ui/TiltCard";
 import { Rating, StarInput } from "@/components/ui/Rating";
 import { Button } from "@/components/ui/Button";
+import { AddToCartButton } from "@/components/ui/AddToCartButton";
 import { Badge, Skeleton } from "@/components/ui/Card";
 import { PageLayout } from "@/components/layout/PageLayout";
 import { EmptyState, ErrorState } from "@/components/ui/States";
@@ -277,10 +278,14 @@ export const ProductDetailsPage = () => {
               </button>
             </div>
 
-            <Button size="lg" onClick={handleAddToCart} loading={adding} disabled={product.stock <= 0} className="flex-1 sm:flex-none">
-              <ShoppingBag className="size-5" />
-              Add to cart
-            </Button>
+              <AddToCartButton
+                onClick={handleAddToCart}
+                loading={adding}
+                disabled={product.stock <= 0}
+                className="flex-1 sm:flex-none h-12 px-6"
+              >
+                Add to cart
+              </AddToCartButton>
 
             <Button
               size="icon"
