@@ -59,41 +59,41 @@
 }
 
 .dark {
-  --background: #1F1816;
-  --surface: #2A211E;
-  --surface-secondary: #352925;
+  --background: #140E0C;
+  --surface: #1E1614;
+  --surface-secondary: #271E1B;
   --primary: #D47763;
   --primary-hover: #E28A76;
   --secondary: #9BAF83;
   --accent: #D8A09B;
   --highlight: #E0B86A;
   --text: #FFF4E8;
-  --text-muted: #C7B8AE;
-  --border: #493A34;
+  --text-muted: #B3A198;
+  --border: #382823;
 
   /* Category Accents in Dark mode */
   --cat-earbuds: #D8A09B;
   --cat-decor: #9BAF83;
   --cat-torans: #E0B86A;
   --cat-bags: #D47763;
-  --cat-accessories: #BFA597;
-  --cat-gifts: #C29BB0;
+  --cat-accessories: #C7B8AE;
+  --cat-gifts: #D8A09B;
 
   /* Tailwind scale bindings (Dark mode) */
-  --shikha-slate-950: #1F1816;
-  --shikha-slate-900: #2A211E;
-  --shikha-slate-800: #2A211E;
-  --shikha-slate-700: #352925;
+  --shikha-slate-950: #140E0C;
+  --shikha-slate-900: #1E1614;
+  --shikha-slate-800: #271E1B;
+  --shikha-slate-700: #332724;
   --shikha-slate-600: #493A34;
   --shikha-slate-500: #806E66;
-  --shikha-slate-400: #A8988F;
+  --shikha-slate-400: #B3A198;
   --shikha-slate-300: #C7B8AE;
   --shikha-slate-200: #FFF4E8;
   --shikha-slate-100: #FFF4E8;
   --shikha-slate-50: #FFF4E8;
 
-  --shikha-indigo-50: #352925;
-  --shikha-indigo-100: #493A34;
+  --shikha-indigo-50: #271E1B;
+  --shikha-indigo-100: #382823;
   --shikha-indigo-200: #D8A09B;
   --shikha-indigo-300: #E28A76;
   --shikha-indigo-400: #D47763;
@@ -101,8 +101,8 @@
   --shikha-indigo-600: #D47763;
   --shikha-indigo-700: #E28A76;
   --shikha-indigo-800: #E0B86A;
-  --shikha-indigo-900: #2A211E;
-  --shikha-indigo-950: #1F1816;
+  --shikha-indigo-900: #1E1614;
+  --shikha-indigo-950: #140E0C;
 }
 
 @theme inline {
@@ -254,8 +254,10 @@ body {
 }
 
 .dark .glass-card {
-  background-color: var(--surface);
-  border: 1px solid var(--border);
+  background-color: rgba(30, 22, 20, 0.85);
+  backdrop-filter: blur(16px);
+  border: 1px solid #382823;
+  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.35);
 }
 
 /* CollectUI smooth card hover */

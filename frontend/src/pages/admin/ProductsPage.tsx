@@ -160,8 +160,6 @@ export const ProductsPage = () => {
       } else {
         const { data } = await api.post<{ data: Product }>("/products", payload);
         product = data.data;
-        // Remember the created product so a retry after an image failure
-        // updates it instead of creating a duplicate.
         setEditing(product);
       }
 
@@ -170,8 +168,6 @@ export const ProductsPage = () => {
       try {
         for (const url of removedImages) {
           await api.delete(`/products/${product._id}/images`, { data: { url } });
-          // Drop successfully removed URLs so a retry (e.g. after a
-          // failed upload) doesn't try to delete them a second time.
           setRemovedImages((prev) => prev.filter((u) => u !== url));
         }
 
@@ -235,11 +231,11 @@ export const ProductsPage = () => {
     <div className="space-y-6">
       <div className="flex flex-wrap items-center justify-between gap-4">
         <div>
-          <h1 className="text-2xl font-bold tracking-tight text-slate-900 dark:text-white">
+          <h1 className="text-2xl font-bold tracking-tight text-[#3B2924] dark:text-[#FFF4E8]">
             Products
           </h1>
-          <p className="mt-1 text-sm text-slate-500 dark:text-slate-400">
-            Manage your product catalog
+          <p className="mt-1 text-sm text-[#806E66] dark:text-[#B3A198]">
+            Manage your artisanal catalog and inventory
           </p>
         </div>
         <Button onClick={openCreate}>
@@ -248,12 +244,12 @@ export const ProductsPage = () => {
       </div>
 
       <div className="relative max-w-xs">
-        <Search className="pointer-events-none absolute left-3 top-1/2 size-4 -translate-y-1/2 text-slate-400" />
+        <Search className="pointer-events-none absolute left-3.5 top-1/2 size-4 -translate-y-1/2 text-[#806E66] dark:text-[#B3A198]" />
         <input
           value={search}
           onChange={(event) => setSearch(event.target.value)}
           placeholder="Search products…"
-          className="h-10 w-full rounded-lg border border-slate-300 bg-white pl-9 pr-3 text-sm shadow-sm focus:border-indigo-500 focus:outline-none focus:ring-2 focus:ring-indigo-500/20 dark:border-slate-600 dark:bg-slate-800 dark:text-slate-100"
+          className="h-10 w-full rounded-xl border border-[#E8DCD0] bg-[#FFFCF7] pl-9 pr-3 text-sm text-[#3B2924] shadow-sm placeholder:text-[#806E66]/60 focus:border-[#B85C4A] focus:outline-none focus:ring-2 focus:ring-[#B85C4A]/20 dark:border-[#382823] dark:bg-[#1A1210]/90 dark:text-[#FFF4E8] dark:placeholder:text-[#B3A198]/50 dark:focus:border-[#D47763] dark:focus:ring-[#D47763]/25"
         />
       </div>
 
@@ -274,7 +270,7 @@ export const ProductsPage = () => {
           <div className="overflow-x-auto">
             <table className="w-full text-left text-sm">
               <thead>
-                <tr className="border-b border-slate-200 text-xs uppercase tracking-wide text-slate-400 dark:border-slate-700">
+                <tr className="border-b border-[#E8DCD0] text-xs uppercase tracking-wide text-[#806E66] dark:border-[#382823] dark:text-[#B3A198]">
                   <th className="px-5 py-3 font-semibold">Product</th>
                   <th className="px-5 py-3 font-semibold">Category</th>
                   <th className="px-5 py-3 font-semibold">Price</th>
@@ -291,32 +287,32 @@ export const ProductsPage = () => {
                   return (
                     <tr
                       key={product._id}
-                      className="border-b border-slate-100 last:border-0 dark:border-slate-700/60"
+                      className="border-b border-[#E8DCD0]/60 last:border-0 hover:bg-[#F5EDE4]/30 dark:border-[#382823]/60 dark:hover:bg-[#251B18]/40 transition-colors"
                     >
                       <td className="px-5 py-3">
                         <div className="flex items-center gap-3">
-                          <div className="size-11 shrink-0 overflow-hidden rounded-lg bg-slate-100 dark:bg-slate-700/40">
+                          <div className="size-11 shrink-0 overflow-hidden rounded-xl border border-[#E8DCD0] bg-[#F5EDE4] dark:border-[#382823] dark:bg-[#251B18]">
                             {product.images[0] ? (
                               <img src={product.images[0]} alt="" className="size-full object-cover" />
                             ) : null}
                           </div>
                           <div className="min-w-0">
-                            <p className="max-w-52 truncate font-semibold text-slate-900 dark:text-white">
+                            <p className="max-w-52 truncate font-semibold text-[#3B2924] dark:text-[#FFF4E8]">
                               {product.name}
                             </p>
-                            <p className="text-xs text-slate-400">{product.slug}</p>
+                            <p className="text-xs text-[#806E66] dark:text-[#B3A198]">{product.slug}</p>
                           </div>
                         </div>
                       </td>
-                      <td className="px-5 py-3 text-slate-600 dark:text-slate-300">
+                      <td className="px-5 py-3 text-[#806E66] dark:text-[#B3A198]">
                         {category?.name ?? "—"}
                       </td>
                       <td className="px-5 py-3">
-                        <span className="font-semibold text-slate-900 dark:text-white">
+                        <span className="font-semibold text-[#3B2924] dark:text-[#FFF4E8]">
                           {formatCurrency(product.discountPrice ?? product.price)}
                         </span>
                         {product.discountPrice ? (
-                          <span className="ml-1.5 text-xs text-slate-400 line-through">
+                          <span className="ml-1.5 text-xs text-[#806E66] line-through dark:text-[#B3A198]">
                             {formatCurrency(product.price)}
                           </span>
                         ) : null}
@@ -383,11 +379,11 @@ export const ProductsPage = () => {
           </div>
           <div className="grid gap-4 sm:grid-cols-2">
             <div>
-              <label className="mb-1.5 block text-sm font-medium text-slate-700 dark:text-slate-300">
+              <label className="mb-1.5 block text-sm font-medium text-[#3B2924] dark:text-[#FFF4E8]">
                 Category
               </label>
               <select
-                className="w-full rounded-lg border border-slate-300 bg-white px-3 py-2 text-sm shadow-sm focus:border-indigo-500 focus:outline-none focus:ring-2 focus:ring-indigo-500/20 dark:border-slate-600 dark:bg-slate-800 dark:text-slate-100"
+                className="w-full rounded-xl border border-[#E8DCD0] bg-[#FFFCF7] px-3.5 py-2.5 text-sm text-[#3B2924] shadow-sm focus:border-[#B85C4A] focus:outline-none focus:ring-2 focus:ring-[#B85C4A]/20 dark:border-[#382823] dark:bg-[#1A1210]/90 dark:text-[#FFF4E8] dark:focus:border-[#D47763] dark:focus:ring-[#D47763]/25"
                 {...register("category")}
               >
                 {(categories ?? []).map((category) => (
@@ -401,33 +397,33 @@ export const ProductsPage = () => {
               )}
             </div>
             <div className="flex flex-wrap items-end gap-4">
-              <label className="flex items-end gap-2 pb-2">
+              <label className="flex items-center gap-2 pb-2 cursor-pointer">
                 <input
                   type="checkbox"
-                  className="size-4 rounded border-slate-300 text-indigo-600 focus:ring-indigo-500"
+                  className="size-4 rounded border-[#E8DCD0] accent-[#B85C4A] dark:border-[#382823]"
                   {...register("isFeatured")}
                 />
-                <span className="text-sm text-slate-600 dark:text-slate-300">Featured product</span>
+                <span className="text-sm text-[#3B2924] dark:text-[#FFF4E8]">Featured product</span>
               </label>
-              <label className="flex items-end gap-2 pb-2">
+              <label className="flex items-center gap-2 pb-2 cursor-pointer">
                 <input
                   type="checkbox"
-                  className="size-4 rounded border-slate-300 text-indigo-600 focus:ring-indigo-500"
+                  className="size-4 rounded border-[#E8DCD0] accent-[#B85C4A] dark:border-[#382823]"
                   {...register("isActive")}
                 />
-                <span className="text-sm text-slate-600 dark:text-slate-300">Active (visible in store)</span>
+                <span className="text-sm text-[#3B2924] dark:text-[#FFF4E8]">Active (visible in store)</span>
               </label>
             </div>
           </div>
           <div>
-            <label className="mb-1.5 block text-sm font-medium text-slate-700 dark:text-slate-300">
+            <label className="mb-1.5 block text-sm font-medium text-[#3B2924] dark:text-[#FFF4E8]">
               Product images
             </label>
             <div className="flex flex-wrap gap-3">
               {existingImages.map((url) => (
                 <div
                   key={url}
-                  className="relative size-20 overflow-hidden rounded-lg border border-slate-200 bg-slate-100 dark:border-slate-700 dark:bg-slate-800"
+                  className="relative size-20 overflow-hidden rounded-xl border border-[#E8DCD0] bg-[#F5EDE4] dark:border-[#382823] dark:bg-[#1A1210]"
                 >
                   <img src={url} alt="" className="size-full object-cover" />
                   <button
@@ -443,7 +439,7 @@ export const ProductsPage = () => {
               {newImages.map((file, index) => (
                 <div
                   key={`${file.name}-${index}`}
-                  className="relative size-20 overflow-hidden rounded-lg border border-slate-200 bg-slate-100 dark:border-slate-700 dark:bg-slate-800"
+                  className="relative size-20 overflow-hidden rounded-xl border border-[#E8DCD0] bg-[#F5EDE4] dark:border-[#382823] dark:bg-[#1A1210]"
                 >
                   <img
                     src={newImagePreviews[index]}
@@ -463,7 +459,7 @@ export const ProductsPage = () => {
                 </div>
               ))}
               {!maxImagesReached && (
-                <label className="grid size-20 cursor-pointer place-items-center rounded-lg border-2 border-dashed border-slate-300 text-slate-400 transition hover:border-rose-300 hover:text-rose-400 dark:border-slate-600 dark:hover:border-rose-400/60">
+                <label className="grid size-20 cursor-pointer place-items-center rounded-xl border-2 border-dashed border-[#E8DCD0] text-[#806E66] transition hover:border-[#D47763] hover:text-[#D47763] dark:border-[#382823] dark:text-[#B3A198] dark:hover:border-[#D47763]">
                   <ImagePlus className="size-6" />
                   <span className="sr-only">Upload images</span>
                   <input
@@ -485,12 +481,12 @@ export const ProductsPage = () => {
                 </label>
               )}
             </div>
-            <p className="mt-1.5 text-xs text-slate-400 dark:text-slate-500">
+            <p className="mt-1.5 text-xs text-[#806E66] dark:text-[#B3A198]">
               Up to 5 images — JPG, PNG, WebP, GIF or AVIF (max 5MB each).
             </p>
           </div>
 
-          <div className="flex justify-end gap-3">
+          <div className="flex justify-end gap-3 pt-2">
             <Button type="button" variant="outline" onClick={() => setModalOpen(false)}>
               Cancel
             </Button>

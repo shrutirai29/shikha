@@ -78,15 +78,15 @@ export const UsersPage = () => {
   return (
     <div className="space-y-6">
       <div>
-        <h1 className="text-2xl font-bold tracking-tight text-slate-900 dark:text-white">Users</h1>
-        <p className="mt-1 text-sm text-slate-500 dark:text-slate-400">
-          Manage customer accounts and roles
+        <h1 className="text-2xl font-bold tracking-tight text-[#3B2924] dark:text-[#FFF4E8]">Users</h1>
+        <p className="mt-1 text-sm text-[#806E66] dark:text-[#B3A198]">
+          Manage boutique customer accounts and administrative roles
         </p>
       </div>
 
       <div className="flex flex-wrap gap-3">
         <div className="relative min-w-0 flex-1 sm:max-w-xs">
-          <Search className="pointer-events-none absolute left-3 top-1/2 size-4 -translate-y-1/2 text-slate-400" />
+          <Search className="pointer-events-none absolute left-3.5 top-1/2 size-4 -translate-y-1/2 text-[#806E66] dark:text-[#B3A198]" />
           <input
             value={search}
             onChange={(event) => {
@@ -94,7 +94,7 @@ export const UsersPage = () => {
               setPage(1);
             }}
             placeholder="Search by name or email…"
-            className="h-10 w-full rounded-lg border border-slate-300 bg-white pl-9 pr-3 text-sm shadow-sm focus:border-indigo-500 focus:outline-none focus:ring-2 focus:ring-indigo-500/20 dark:border-slate-600 dark:bg-slate-800 dark:text-slate-100"
+            className="h-10 w-full rounded-xl border border-[#E8DCD0] bg-[#FFFCF7] pl-9 pr-3 text-sm text-[#3B2924] shadow-sm placeholder:text-[#806E66]/60 focus:border-[#B85C4A] focus:outline-none focus:ring-2 focus:ring-[#B85C4A]/20 dark:border-[#382823] dark:bg-[#1A1210]/90 dark:text-[#FFF4E8] dark:placeholder:text-[#B3A198]/50 dark:focus:border-[#D47763] dark:focus:ring-[#D47763]/25"
           />
         </div>
         <select
@@ -104,7 +104,7 @@ export const UsersPage = () => {
             setPage(1);
           }}
           aria-label="Filter by role"
-          className="h-10 rounded-lg border border-slate-300 bg-white px-3 text-sm font-medium text-slate-700 shadow-sm focus:border-indigo-500 focus:outline-none dark:border-slate-600 dark:bg-slate-800 dark:text-slate-200"
+          className="h-10 rounded-xl border border-[#E8DCD0] bg-[#FFFCF7] px-3 text-sm font-medium text-[#3B2924] shadow-sm focus:border-[#B85C4A] focus:outline-none dark:border-[#382823] dark:bg-[#1A1210]/90 dark:text-[#FFF4E8] dark:focus:border-[#D47763]"
         >
           <option value="">All roles</option>
           <option value="customer">Customers</option>
@@ -122,7 +122,7 @@ export const UsersPage = () => {
             <div className="overflow-x-auto">
               <table className="w-full text-left text-sm">
                 <thead>
-                  <tr className="border-b border-slate-200 text-xs uppercase tracking-wide text-slate-400 dark:border-slate-700">
+                  <tr className="border-b border-[#E8DCD0] text-xs uppercase tracking-wide text-[#806E66] dark:border-[#382823] dark:text-[#B3A198]">
                     <th className="px-5 py-3 font-semibold">User</th>
                     <th className="px-5 py-3 font-semibold">Role</th>
                     <th className="px-5 py-3 font-semibold">Status</th>
@@ -135,21 +135,21 @@ export const UsersPage = () => {
                   {data.users.map((target) => (
                     <tr
                       key={target._id}
-                      className="border-b border-slate-100 last:border-0 dark:border-slate-700/60"
+                      className="border-b border-[#E8DCD0]/60 last:border-0 hover:bg-[#F5EDE4]/30 dark:border-[#382823]/60 dark:hover:bg-[#251B18]/40 transition-colors"
                     >
                       <td className="px-5 py-3">
                         <div className="flex items-center gap-3">
-                          <span className="flex size-9 shrink-0 items-center justify-center rounded-full bg-gradient-to-br from-indigo-600 to-indigo-300 text-xs font-bold text-white">
+                          <span className="flex size-9 shrink-0 items-center justify-center rounded-full bg-gradient-to-br from-[#D47763] to-[#B85C4A] text-xs font-bold text-white shadow-sm">
                             {initials(target.name)}
                           </span>
                           <div className="min-w-0">
-                            <p className="truncate font-semibold text-slate-900 dark:text-white">
+                            <p className="truncate font-semibold text-[#3B2924] dark:text-[#FFF4E8]">
                               {target.name}
                               {target._id === currentUser?._id && (
-                                <span className="ml-1.5 text-xs font-normal text-slate-400">(you)</span>
+                                <span className="ml-1.5 text-xs font-normal text-[#806E66] dark:text-[#B3A198]">(you)</span>
                               )}
                             </p>
-                            <p className="truncate text-xs text-slate-400">{target.email}</p>
+                            <p className="truncate text-xs text-[#806E66] dark:text-[#B3A198]">{target.email}</p>
                           </div>
                         </div>
                       </td>
@@ -163,10 +163,10 @@ export const UsersPage = () => {
                           {target.isActive ? "Active" : "Inactive"}
                         </Badge>
                       </td>
-                      <td className="px-5 py-3 text-slate-600 dark:text-slate-300">
+                      <td className="px-5 py-3 text-[#806E66] dark:text-[#B3A198]">
                         {target.isVerified ? "Yes" : "No"}
                       </td>
-                      <td className="px-5 py-3 text-slate-500 dark:text-slate-400">
+                      <td className="px-5 py-3 text-[#806E66] dark:text-[#B3A198]">
                         {formatDate(target.createdAt)}
                       </td>
                       <td className="px-5 py-3">
@@ -223,16 +223,16 @@ export const UsersPage = () => {
           {(["customer", "admin"] as const).map((role) => (
             <label
               key={role}
-              className="flex cursor-pointer items-center gap-3 rounded-xl border border-slate-200 p-3 transition hover:bg-slate-50 dark:border-slate-600 dark:hover:bg-slate-700"
+              className="flex cursor-pointer items-center gap-3 rounded-xl border border-[#E8DCD0] p-3 transition hover:bg-[#F5EDE4] dark:border-[#382823] dark:hover:bg-[#251B18]"
             >
               <input
                 type="radio"
                 name="role"
                 checked={newRole === role}
                 onChange={() => setNewRole(role)}
-                className="size-4 text-indigo-600"
+                className="size-4 accent-[#B85C4A]"
               />
-              <span className="text-sm font-medium capitalize text-slate-700 dark:text-slate-200">
+              <span className="text-sm font-medium capitalize text-[#3B2924] dark:text-[#FFF4E8]">
                 {role}
               </span>
             </label>

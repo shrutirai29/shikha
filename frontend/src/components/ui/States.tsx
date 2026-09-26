@@ -17,17 +17,17 @@ export const EmptyState = ({
 }) => (
   <div
     className={cn(
-      "flex flex-col items-center justify-center gap-3 rounded-2xl border border-dashed border-[#E8DCD0] bg-[#FFFCF7]/60 px-6 py-14 text-center dark:border-[#493A34] dark:bg-[#2A211E]/40",
+      "flex flex-col items-center justify-center gap-3 rounded-2xl border border-dashed border-[#E8DCD0] bg-[#FFFCF7]/60 px-6 py-14 text-center dark:border-[#382823] dark:bg-[#1A1210]/60 dark:backdrop-blur-md",
       className
     )}
   >
-    <div className="flex size-14 items-center justify-center rounded-full bg-[#F5EDE4] text-[#806E66] dark:bg-[#352925] dark:text-[#C7B8AE]">
+    <div className="flex size-14 items-center justify-center rounded-full bg-[#F5EDE4] text-[#806E66] dark:border dark:border-[#D47763]/20 dark:bg-[#251B18] dark:text-[#D47763] dark:shadow-inner">
       {icon ?? <Inbox className="size-7" />}
     </div>
     <div className="space-y-1">
       <h3 className="text-base font-semibold text-[#3B2924] dark:text-[#FFF4E8]">{title}</h3>
       {description && (
-        <p className="mx-auto max-w-sm text-sm text-[#806E66] dark:text-[#C7B8AE]">{description}</p>
+        <p className="mx-auto max-w-sm text-sm text-[#806E66] dark:text-[#B3A198]">{description}</p>
       )}
     </div>
     {action}

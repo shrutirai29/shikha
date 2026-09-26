@@ -2,7 +2,7 @@ import { forwardRef, type InputHTMLAttributes, type TextareaHTMLAttributes, type
 import { cn } from "@/lib/utils";
 
 const baseField =
-  "w-full rounded-xl border border-[#E8DCD0] bg-[#FFFCF7] px-3.5 py-2.5 text-sm text-[#3B2924] shadow-sm placeholder:text-[#806E66]/60 focus:border-[#B85C4A] focus:outline-none focus:ring-2 focus:ring-[#B85C4A]/20 disabled:cursor-not-allowed disabled:bg-[#F5EDE4] disabled:text-[#806E66] dark:border-[#493A34] dark:bg-[#2A211E] dark:text-[#FFF4E8] dark:placeholder:text-[#C7B8AE]/60 dark:focus:border-[#D47763] dark:focus:ring-[#D47763]/20 dark:disabled:bg-[#1F1816]";
+  "w-full rounded-xl border border-[#E8DCD0] bg-[#FFFCF7] px-3.5 py-2.5 text-sm text-[#3B2924] shadow-sm placeholder:text-[#806E66]/60 transition-colors focus:border-[#B85C4A] focus:outline-none focus:ring-2 focus:ring-[#B85C4A]/20 disabled:cursor-not-allowed disabled:bg-[#F5EDE4] disabled:text-[#806E66] dark:border-[#382823] dark:bg-[#1A1210]/90 dark:text-[#FFF4E8] dark:placeholder:text-[#B3A198]/50 dark:focus:border-[#D47763] dark:focus:bg-[#201714] dark:focus:ring-[#D47763]/25 dark:disabled:bg-[#150F0D] dark:disabled:text-[#806E66]";
 
 interface FieldWrapperProps {
   label?: string;
@@ -25,7 +25,7 @@ const FieldWrapper = ({ label, error, hint, id, children }: FieldWrapperProps) =
         {error}
       </p>
     ) : hint ? (
-      <p className="text-xs text-[#806E66] dark:text-[#C7B8AE]">{hint}</p>
+      <p className="text-xs text-[#806E66] dark:text-[#B3A198]">{hint}</p>
     ) : null}
   </div>
 );

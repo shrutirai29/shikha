@@ -84,8 +84,6 @@ export const CategoriesPage = () => {
       } else {
         const { data } = await api.post<{ data: Category }>("/categories", payload);
         category = data.data;
-        // Remember the created category so a retry after an image failure
-        // updates it instead of creating a duplicate.
         setEditing(category);
       }
 
@@ -147,11 +145,11 @@ export const CategoriesPage = () => {
     <div className="space-y-6">
       <div className="flex flex-wrap items-center justify-between gap-4">
         <div>
-          <h1 className="text-2xl font-bold tracking-tight text-slate-900 dark:text-white">
+          <h1 className="text-2xl font-bold tracking-tight text-[#3B2924] dark:text-[#FFF4E8]">
             Categories
           </h1>
-          <p className="mt-1 text-sm text-slate-500 dark:text-slate-400">
-            Organize your catalog
+          <p className="mt-1 text-sm text-[#806E66] dark:text-[#B3A198]">
+            Organize and curate your handmade catalog
           </p>
         </div>
         <Button onClick={openCreate}>
@@ -175,25 +173,25 @@ export const CategoriesPage = () => {
         <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
           {categories.map((category) => (
             <Card key={category._id} className="flex items-center gap-4 p-4">
-              <div className="size-14 shrink-0 overflow-hidden rounded-xl bg-slate-100 dark:bg-slate-700/40">
+              <div className="size-14 shrink-0 overflow-hidden rounded-xl bg-[#F5EDE4] dark:bg-[#251B18] border border-[#E8DCD0] dark:border-[#382823]">
                 {category.image ? (
                   <img src={category.image} alt="" className="size-full object-cover" />
                 ) : (
-                  <div className="flex size-full items-center justify-center bg-gradient-to-br from-indigo-100 to-indigo-200 text-xl font-bold text-indigo-500 dark:from-indigo-950 dark:to-slate-800 dark:text-indigo-400">
+                  <div className="flex size-full items-center justify-center bg-gradient-to-br from-[#E0B86A]/20 to-[#D47763]/20 text-xl font-bold text-[#B85C4A] dark:text-[#E0B86A]">
                     {category.name.charAt(0)}
                   </div>
                 )}
               </div>
               <div className="min-w-0 flex-1">
                 <div className="flex items-center gap-2">
-                  <h3 className="truncate text-sm font-semibold text-slate-900 dark:text-white">
+                  <h3 className="truncate text-sm font-semibold text-[#3B2924] dark:text-[#FFF4E8]">
                     {category.name}
                   </h3>
                   <Badge variant={category.isActive ? "success" : "danger"}>
                     {category.isActive ? "Active" : "Inactive"}
                   </Badge>
                 </div>
-                <p className="mt-0.5 line-clamp-2 text-xs text-slate-400">
+                <p className="mt-0.5 line-clamp-2 text-xs text-[#806E66] dark:text-[#B3A198]">
                   {category.description || category.slug}
                 </p>
               </div>
@@ -201,7 +199,7 @@ export const CategoriesPage = () => {
                 <button
                   type="button"
                   onClick={() => openEdit(category)}
-                  className="rounded-lg p-2 text-slate-400 transition hover:bg-slate-100 hover:text-slate-600 dark:hover:bg-slate-700 dark:hover:text-slate-200"
+                  className="rounded-lg p-2 text-[#806E66] transition hover:bg-[#F5EDE4] hover:text-[#3B2924] dark:text-[#B3A198] dark:hover:bg-[#251B18] dark:hover:text-[#FFF4E8]"
                   aria-label={`Edit ${category.name}`}
                 >
                   <Pencil className="size-4" />
@@ -209,7 +207,7 @@ export const CategoriesPage = () => {
                 <button
                   type="button"
                   onClick={() => setDeleting(category)}
-                  className="rounded-lg p-2 text-slate-400 transition hover:bg-rose-50 hover:text-rose-600 dark:hover:bg-rose-500/10"
+                  className="rounded-lg p-2 text-[#806E66] transition hover:bg-rose-50 hover:text-rose-600 dark:text-[#B3A198] dark:hover:bg-rose-500/10 dark:hover:text-rose-400"
                   aria-label={`Delete ${category.name}`}
                 >
                   <Trash2 className="size-4" />
@@ -233,12 +231,12 @@ export const CategoriesPage = () => {
           <Input label="Name" error={errors.name?.message} {...register("name")} />
           <Textarea label="Description" rows={3} error={errors.description?.message} {...register("description")} />
           <div>
-            <label className="mb-1.5 block text-sm font-medium text-slate-700 dark:text-slate-300">
+            <label className="mb-1.5 block text-sm font-medium text-[#3B2924] dark:text-[#FFF4E8]">
               Category image
             </label>
             <div className="flex items-center gap-3">
               {(imagePreview || (!imageFile && editing?.image)) && (
-                <div className="size-20 shrink-0 overflow-hidden rounded-lg border border-slate-200 bg-slate-100 dark:border-slate-700 dark:bg-slate-800">
+                <div className="size-20 shrink-0 overflow-hidden rounded-lg border border-[#E8DCD0] bg-[#F5EDE4] dark:border-[#382823] dark:bg-[#1A1210]">
                   <img
                     src={imagePreview ?? editing!.image!}
                     alt=""
@@ -246,7 +244,7 @@ export const CategoriesPage = () => {
                   />
                 </div>
               )}
-              <label className="flex cursor-pointer items-center gap-2 rounded-lg border-2 border-dashed border-slate-300 px-4 py-3 text-sm font-medium text-slate-500 transition hover:border-rose-300 hover:text-rose-400 dark:border-slate-600 dark:text-slate-400 dark:hover:border-rose-400/60">
+              <label className="flex cursor-pointer items-center gap-2 rounded-xl border-2 border-dashed border-[#E8DCD0] px-4 py-3 text-sm font-medium text-[#806E66] transition hover:border-[#D47763] hover:text-[#D47763] dark:border-[#382823] dark:text-[#B3A198] dark:hover:border-[#D47763]/60 dark:hover:text-[#FFF4E8]">
                 <ImagePlus className="size-4" />
                 {imageFile
                   ? "Replace image"
@@ -265,11 +263,11 @@ export const CategoriesPage = () => {
                 />
               </label>
             </div>
-            <p className="mt-1.5 text-xs text-slate-400 dark:text-slate-500">
+            <p className="mt-1.5 text-xs text-[#806E66] dark:text-[#B3A198]">
               JPG, PNG, WebP, GIF or AVIF (max 5MB).
             </p>
           </div>
-          <div className="flex justify-end gap-3">
+          <div className="flex justify-end gap-3 pt-2">
             <Button type="button" variant="outline" onClick={() => setModalOpen(false)}>
               Cancel
             </Button>

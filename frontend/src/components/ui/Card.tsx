@@ -7,7 +7,7 @@ export const Card = forwardRef<HTMLDivElement, HTMLAttributes<HTMLDivElement>>(
     <div
       ref={ref}
       className={cn(
-        "rounded-2xl border border-[#E8DCD0] bg-[#FFFCF7] shadow-soft text-[#3B2924] dark:border-[#493A34] dark:bg-[#2A211E] dark:text-[#FFF4E8]",
+        "rounded-2xl border border-[#E8DCD0] bg-[#FFFCF7] text-[#3B2924] shadow-soft transition-all duration-300 dark:border-[#382823] dark:bg-[#1E1614]/85 dark:text-[#FFF4E8] dark:shadow-[0_8px_30px_rgb(0,0,0,0.35)] dark:backdrop-blur-xl dark:ring-1 dark:ring-white/[0.04] dark:hover:border-[#D47763]/30",
         className
       )}
       {...props}
@@ -37,12 +37,18 @@ export const Badge = ({
   children: React.ReactNode;
 }) => {
   const variants: Record<BadgeVariant, string> = {
-    default: "bg-[#F5EDE4] text-[#3B2924] dark:bg-[#352925] dark:text-[#FFF4E8]",
-    success: "bg-[#7A8B68]/15 text-[#5e6c50] dark:bg-[#9BAF83]/20 dark:text-[#9BAF83]",
-    warning: "bg-[#D8A85B]/20 text-[#8e6827] dark:bg-[#E0B86A]/20 dark:text-[#E0B86A]",
-    danger: "bg-[#B85C4A]/15 text-[#914536] dark:bg-[#D47763]/20 dark:text-[#E28A76]",
-    info: "bg-[#C98F8B]/20 text-[#8c5652] dark:bg-[#D8A09B]/20 dark:text-[#D8A09B]",
-    outline: "border border-[#E8DCD0] text-[#806E66] dark:border-[#493A34] dark:text-[#C7B8AE]",
+    default:
+      "bg-[#F5EDE4] text-[#3B2924] border border-[#E8DCD0] dark:bg-[#251B18] dark:text-[#FFF4E8] dark:border-[#382823]",
+    success:
+      "bg-[#7A8B68]/15 text-[#5e6c50] border border-[#7A8B68]/20 dark:bg-[#7A8B68]/20 dark:text-[#A7BA90] dark:border-[#7A8B68]/30",
+    warning:
+      "bg-[#D8A85B]/20 text-[#8e6827] border border-[#D8A85B]/20 dark:bg-[#D8A85B]/20 dark:text-[#E8C27E] dark:border-[#D8A85B]/30",
+    danger:
+      "bg-[#B85C4A]/15 text-[#914536] border border-[#B85C4A]/20 dark:bg-[#B85C4A]/20 dark:text-[#E28A76] dark:border-[#B85C4A]/30",
+    info:
+      "bg-[#C98F8B]/20 text-[#8c5652] border border-[#C98F8B]/20 dark:bg-[#C98F8B]/20 dark:text-[#E2A6A2] dark:border-[#C98F8B]/30",
+    outline:
+      "border border-[#E8DCD0] text-[#806E66] dark:border-[#382823] dark:text-[#C7B8AE]",
   };
 
   return (

@@ -170,11 +170,11 @@ export const CouponsPage = () => {
     <div className="space-y-6">
       <div className="flex flex-wrap items-center justify-between gap-4">
         <div>
-          <h1 className="text-2xl font-bold tracking-tight text-slate-900 dark:text-white">
+          <h1 className="text-2xl font-bold tracking-tight text-[#3B2924] dark:text-[#FFF4E8]">
             Coupons
           </h1>
-          <p className="mt-1 text-sm text-slate-500 dark:text-slate-400">
-            Create and manage discount coupons
+          <p className="mt-1 text-sm text-[#806E66] dark:text-[#B3A198]">
+            Create and manage promotional discount coupons
           </p>
         </div>
         <Button onClick={openCreate}>
@@ -205,10 +205,10 @@ export const CouponsPage = () => {
               <Card key={coupon._id} className="p-5">
                 <div className="mb-3 flex items-start justify-between">
                   <div>
-                    <p className="font-mono text-lg font-bold tracking-wide text-indigo-600 dark:text-indigo-400">
+                    <p className="font-mono text-lg font-bold tracking-wider text-[#B85C4A] dark:text-[#E0B86A]">
                       {coupon.code}
                     </p>
-                    <p className="mt-0.5 text-xs text-slate-400">
+                    <p className="mt-0.5 text-xs text-[#806E66] dark:text-[#B3A198]">
                       {coupon.discountType === "PERCENTAGE"
                         ? `${coupon.discountValue}% off`
                         : `${formatCurrency(coupon.discountValue)} off`}
@@ -219,19 +219,19 @@ export const CouponsPage = () => {
                   </Badge>
                 </div>
 
-                <p className="mb-3 line-clamp-2 text-sm text-slate-600 dark:text-slate-300">
+                <p className="mb-3 line-clamp-2 text-sm text-[#3B2924] dark:text-[#FFF4E8]/90">
                   {coupon.description}
                 </p>
 
-                <dl className="space-y-1 border-t border-slate-100 pt-3 text-xs text-slate-500 dark:border-slate-700 dark:text-slate-400">
+                <dl className="space-y-1.5 border-t border-[#E8DCD0] pt-3 text-xs text-[#806E66] dark:border-[#382823] dark:text-[#B3A198]">
                   <div className="flex justify-between">
                     <dt>Minimum purchase</dt>
-                    <dd>{formatCurrency(coupon.minimumPurchase)}</dd>
+                    <dd className="font-medium text-[#3B2924] dark:text-[#FFF4E8]">{formatCurrency(coupon.minimumPurchase)}</dd>
                   </div>
                   {coupon.discountType === "PERCENTAGE" && (
                     <div className="flex justify-between">
                       <dt>Max discount</dt>
-                      <dd>
+                      <dd className="font-medium text-[#3B2924] dark:text-[#FFF4E8]">
                         {coupon.maximumDiscount > 0
                           ? formatCurrency(coupon.maximumDiscount)
                           : "Unlimited"}
@@ -240,17 +240,17 @@ export const CouponsPage = () => {
                   )}
                   <div className="flex justify-between">
                     <dt>Usage</dt>
-                    <dd>
+                    <dd className="font-medium text-[#3B2924] dark:text-[#FFF4E8]">
                       {coupon.usedCount}/{coupon.usageLimit}
                     </dd>
                   </div>
                   <div className="flex justify-between">
                     <dt>Expires</dt>
-                    <dd>{formatDate(coupon.expiresAt)}</dd>
+                    <dd className="font-medium text-[#3B2924] dark:text-[#FFF4E8]">{formatDate(coupon.expiresAt)}</dd>
                   </div>
                 </dl>
 
-                <div className="mt-4 flex justify-end gap-2">
+                <div className="mt-4 flex justify-end gap-2 border-t border-[#E8DCD0]/60 pt-3 dark:border-[#382823]/60">
                   <Button size="sm" variant="outline" onClick={() => openEdit(coupon)}>
                     <Pencil className="size-3.5" />
                   </Button>
@@ -283,11 +283,11 @@ export const CouponsPage = () => {
               {...register("code")}
             />
             <div>
-              <label className="mb-1.5 block text-sm font-medium text-slate-700 dark:text-slate-300">
+              <label className="mb-1.5 block text-sm font-medium text-[#3B2924] dark:text-[#FFF4E8]">
                 Discount type
               </label>
               <select
-                className="w-full rounded-lg border border-slate-300 bg-white px-3 py-2 text-sm shadow-sm focus:border-indigo-500 focus:outline-none focus:ring-2 focus:ring-indigo-500/20 dark:border-slate-600 dark:bg-slate-800 dark:text-slate-100"
+                className="w-full rounded-xl border border-[#E8DCD0] bg-[#FFFCF7] px-3.5 py-2.5 text-sm text-[#3B2924] shadow-sm focus:border-[#B85C4A] focus:outline-none focus:ring-2 focus:ring-[#B85C4A]/20 dark:border-[#382823] dark:bg-[#1A1210]/90 dark:text-[#FFF4E8] dark:focus:border-[#D47763] dark:focus:ring-[#D47763]/25"
                 {...register("discountType")}
               >
                 <option value="PERCENTAGE">Percentage (%)</option>
@@ -314,7 +314,7 @@ export const CouponsPage = () => {
             <Input label="Expiry date" type="date" error={errors.expiresAt?.message} {...register("expiresAt")} />
           </div>
 
-          <div className="flex justify-end gap-3">
+          <div className="flex justify-end gap-3 pt-2">
             <Button type="button" variant="outline" onClick={() => setModalOpen(false)}>
               Cancel
             </Button>

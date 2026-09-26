@@ -72,11 +72,11 @@ export const PaymentsPage = () => {
   return (
     <div className="space-y-6">
       <div>
-        <h1 className="text-2xl font-bold tracking-tight text-slate-900 dark:text-white">
+        <h1 className="text-2xl font-bold tracking-tight text-[#3B2924] dark:text-[#FFF4E8]">
           Payments
         </h1>
-        <p className="mt-1 text-sm text-slate-500 dark:text-slate-400">
-          Track and refund Razorpay payments
+        <p className="mt-1 text-sm text-[#806E66] dark:text-[#B3A198]">
+          Track transactions and issue customer refunds
         </p>
       </div>
 
@@ -90,7 +90,7 @@ export const PaymentsPage = () => {
             <div className="overflow-x-auto">
               <table className="w-full text-left text-sm">
                 <thead>
-                  <tr className="border-b border-slate-200 text-xs uppercase tracking-wide text-slate-400 dark:border-slate-700">
+                  <tr className="border-b border-[#E8DCD0] text-xs uppercase tracking-wide text-[#806E66] dark:border-[#382823] dark:text-[#B3A198]">
                     <th className="px-5 py-3 font-semibold">Payment</th>
                     <th className="px-5 py-3 font-semibold">Customer</th>
                     <th className="px-5 py-3 font-semibold">Order</th>
@@ -110,24 +110,24 @@ export const PaymentsPage = () => {
                     return (
                       <tr
                         key={payment._id}
-                        className="border-b border-slate-100 last:border-0 dark:border-slate-700/60"
+                        className="border-b border-[#E8DCD0]/60 last:border-0 hover:bg-[#F5EDE4]/30 dark:border-[#382823]/60 dark:hover:bg-[#251B18]/40 transition-colors"
                       >
                         <td className="px-5 py-3">
-                          <p className="font-mono text-xs font-semibold text-slate-700 dark:text-slate-200">
+                          <p className="font-mono text-xs font-semibold text-[#806E66] dark:text-[#B3A198]">
                             {payment.razorpayOrderId.slice(-10)}
                           </p>
-                          <p className="text-xs text-slate-400">{payment.currency}</p>
+                          <p className="text-xs text-[#806E66]/80 dark:text-[#B3A198]/70">{payment.currency}</p>
                         </td>
                         <td className="px-5 py-3">
-                          <p className="font-semibold text-slate-900 dark:text-white">
+                          <p className="font-semibold text-[#3B2924] dark:text-[#FFF4E8]">
                             {customer?.name ?? "—"}
                           </p>
-                          <p className="text-xs text-slate-400">{customer?.email ?? "—"}</p>
+                          <p className="text-xs text-[#806E66] dark:text-[#B3A198]">{customer?.email ?? "—"}</p>
                         </td>
-                        <td className="px-5 py-3 text-slate-600 dark:text-slate-300">
+                        <td className="px-5 py-3 text-[#806E66] dark:text-[#B3A198]">
                           {order ? `#${order._id.slice(-6).toUpperCase()}` : "—"}
                         </td>
-                        <td className="px-5 py-3 font-semibold text-slate-900 dark:text-white">
+                        <td className="px-5 py-3 font-semibold text-[#3B2924] dark:text-[#FFF4E8]">
                           {formatCurrency(payment.amount)}
                         </td>
                         <td className="px-5 py-3">
@@ -135,12 +135,12 @@ export const PaymentsPage = () => {
                             {payment.status}
                           </Badge>
                           {payment.refundId && (
-                            <p className="mt-0.5 text-xs text-slate-400">
+                            <p className="mt-0.5 text-xs text-[#806E66] dark:text-[#B3A198]">
                               Refund: {formatCurrency(payment.refundAmount ?? 0)}
                             </p>
                           )}
                         </td>
-                        <td className="px-5 py-3 text-slate-500 dark:text-slate-400">
+                        <td className="px-5 py-3 text-[#806E66] dark:text-[#B3A198]">
                           {formatDateTime(payment.createdAt)}
                         </td>
                         <td className="px-5 py-3">
@@ -192,10 +192,10 @@ export const PaymentsPage = () => {
       >
         {refundTarget && (
           <div className="space-y-4">
-            <p className="text-sm text-slate-600 dark:text-slate-300">
-              Refunding <span className="font-bold">{formatCurrency(refundTarget.amount)}</span>{" "}
+            <p className="text-sm text-[#806E66] dark:text-[#B3A198]">
+              Refunding <span className="font-bold text-[#3B2924] dark:text-[#FFF4E8]">{formatCurrency(refundTarget.amount)}</span>{" "}
               for payment{" "}
-              <span className="font-mono">{refundTarget.razorpayOrderId.slice(-10)}</span>.
+              <span className="font-mono text-[#B85C4A] dark:text-[#E0B86A]">{refundTarget.razorpayOrderId.slice(-10)}</span>.
             </p>
             <Input
               label="Refund amount (₹) — leave empty for full refund"

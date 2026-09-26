@@ -44,24 +44,24 @@ export const AdminReviewsPage = () => {
     <div className="space-y-6">
       <div className="flex flex-wrap items-end justify-between gap-4">
         <div>
-          <h2 className="font-display text-2xl font-semibold tracking-tight text-slate-950 dark:text-slate-50">
+          <h2 className="font-display text-2xl font-semibold tracking-tight text-[#3B2924] dark:text-[#FFF4E8]">
             Reviews
           </h2>
-          <p className="mt-1 text-sm text-slate-500 dark:text-slate-400">
-            Moderate reviews across the store
+          <p className="mt-1 text-sm text-[#806E66] dark:text-[#B3A198]">
+            Moderate customer reviews across the boutique
           </p>
         </div>
 
         <div className="flex flex-wrap items-center gap-2">
-          <div className="flex items-center gap-1 rounded-full border border-slate-300 bg-white p-1 dark:border-slate-600 dark:bg-slate-900">
+          <div className="flex items-center gap-1 rounded-full border border-[#E8DCD0] bg-[#FFFCF7] p-1 dark:border-[#382823] dark:bg-[#1A1210]/80">
             <button
               type="button"
               onClick={() => setRating(undefined)}
               className={cn(
                 "rounded-full px-3 py-1 text-xs font-semibold transition",
                 rating === undefined
-                  ? "bg-slate-950 text-white dark:bg-slate-100 dark:text-slate-950"
-                  : "text-slate-500 hover:text-slate-900 dark:text-slate-400 dark:hover:text-slate-100"
+                  ? "bg-[#B85C4A] text-white dark:bg-gradient-to-r dark:from-[#D47763] dark:to-[#B85C4A] dark:text-white dark:shadow-[0_2px_10px_rgba(212,119,99,0.35)]"
+                  : "text-[#806E66] hover:text-[#3B2924] dark:text-[#B3A198] dark:hover:text-[#FFF4E8]"
               )}
             >
               All
@@ -74,8 +74,8 @@ export const AdminReviewsPage = () => {
                 className={cn(
                   "flex items-center gap-0.5 rounded-full px-2.5 py-1 text-xs font-semibold transition",
                   rating === value
-                    ? "bg-slate-950 text-white dark:bg-slate-100 dark:text-slate-950"
-                    : "text-slate-500 hover:text-slate-900 dark:text-slate-400 dark:hover:text-slate-100"
+                    ? "bg-[#B85C4A] text-white dark:bg-gradient-to-r dark:from-[#D47763] dark:to-[#B85C4A] dark:text-white dark:shadow-[0_2px_10px_rgba(212,119,99,0.35)]"
+                    : "text-[#806E66] hover:text-[#3B2924] dark:text-[#B3A198] dark:hover:text-[#FFF4E8]"
                 )}
                 aria-label={`Filter ${value} star reviews`}
               >
@@ -92,7 +92,7 @@ export const AdminReviewsPage = () => {
               setPage(1);
             }}
             placeholder="Search comments…"
-            className="h-10 w-52 rounded-full border border-slate-300 bg-white px-4 text-sm text-slate-900 shadow-sm focus:border-indigo-500 focus:outline-none focus:ring-2 focus:ring-indigo-500/20 dark:border-slate-600 dark:bg-slate-900 dark:text-slate-100"
+            className="h-10 w-52 rounded-full border border-[#E8DCD0] bg-[#FFFCF7] px-4 text-sm text-[#3B2924] shadow-sm placeholder:text-[#806E66]/60 focus:border-[#B85C4A] focus:outline-none focus:ring-2 focus:ring-[#B85C4A]/20 dark:border-[#382823] dark:bg-[#1A1210]/90 dark:text-[#FFF4E8] dark:placeholder:text-[#B3A198]/50 dark:focus:border-[#D47763] dark:focus:ring-[#D47763]/25"
           />
         </div>
       </div>
@@ -124,14 +124,14 @@ export const AdminReviewsPage = () => {
                 <div className="flex flex-wrap items-start justify-between gap-4">
                   <div className="min-w-0 flex-1">
                     <div className="mb-2 flex flex-wrap items-center gap-3">
-                      <span className="flex size-9 items-center justify-center rounded-full bg-gradient-to-br from-indigo-600 to-indigo-300 text-xs font-bold text-white">
+                      <span className="flex size-9 items-center justify-center rounded-full bg-gradient-to-br from-[#D47763] to-[#B85C4A] text-xs font-bold text-white shadow-sm">
                         {(author?.name ?? "U").charAt(0).toUpperCase()}
                       </span>
                       <div>
-                        <p className="text-sm font-semibold text-slate-900 dark:text-white">
+                        <p className="text-sm font-semibold text-[#3B2924] dark:text-[#FFF4E8]">
                           {author?.name ?? "Unknown user"}
                         </p>
-                        <p className="text-xs text-slate-400">
+                        <p className="text-xs text-[#806E66] dark:text-[#B3A198]">
                           {author?.email ?? ""} · {formatDate(review.createdAt)}
                         </p>
                       </div>
@@ -144,7 +144,7 @@ export const AdminReviewsPage = () => {
 
                     <Rating value={review.rating} className="mb-2" />
 
-                    <p className="text-sm text-slate-600 dark:text-slate-300">
+                    <p className="text-sm text-[#3B2924]/90 dark:text-[#FFF4E8]/90">
                       “{review.comment}”
                     </p>
                   </div>
@@ -156,10 +156,10 @@ export const AdminReviewsPage = () => {
                           <img
                             src={product.images[0]}
                             alt=""
-                            className="size-8 rounded-lg object-cover"
+                            className="size-8 rounded-lg object-cover border border-[#E8DCD0] dark:border-[#382823]"
                           />
                         ) : null}
-                        <span className="max-w-40 truncate text-xs font-medium text-slate-500 dark:text-slate-400">
+                        <span className="max-w-40 truncate text-xs font-medium text-[#806E66] dark:text-[#B3A198]">
                           {product.name}
                         </span>
                       </div>

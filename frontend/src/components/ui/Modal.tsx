@@ -85,7 +85,7 @@ export const Modal = ({
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
             onClick={onClose}
-            className="absolute inset-0 bg-slate-950/50 backdrop-blur-sm"
+            className="absolute inset-0 bg-[#0D0807]/70 backdrop-blur-md"
           />
           <motion.div
             initial={{ opacity: 0, y: 24, scale: 0.98 }}
@@ -99,20 +99,20 @@ export const Modal = ({
             ref={dialogRef}
             className={cnRelative(sizes[size])}
           >
-            <div className="flex items-center justify-between border-b border-slate-200 px-5 py-4 dark:border-slate-700">
-              <h2 className="text-base font-semibold text-slate-900 dark:text-white">{title}</h2>
+            <div className="flex items-center justify-between border-b border-[#E8DCD0] px-5 py-4 dark:border-[#382823]">
+              <h2 className="text-base font-semibold text-[#3B2924] dark:text-[#FFF4E8]">{title}</h2>
               <button
                 type="button"
                 onClick={onClose}
                 aria-label="Close dialog"
-                className="rounded-lg p-1.5 text-slate-400 transition hover:bg-slate-100 hover:text-slate-600 dark:hover:bg-slate-700 dark:hover:text-slate-200"
+                className="rounded-lg p-1.5 text-[#806E66] transition hover:bg-[#F5EDE4] hover:text-[#3B2924] dark:text-[#B3A198] dark:hover:bg-[#251B18] dark:hover:text-[#FFF4E8]"
               >
                 <X className="size-5" />
               </button>
             </div>
             <div className="px-5 py-4">{children}</div>
             {footer && (
-              <div className="flex justify-end gap-3 border-t border-slate-200 px-5 py-4 dark:border-slate-700">
+              <div className="flex justify-end gap-3 border-t border-[#E8DCD0] px-5 py-4 dark:border-[#382823]">
                 {footer}
               </div>
             )}
@@ -124,7 +124,7 @@ export const Modal = ({
 };
 
 const cnRelative = (size: string) =>
-  `relative w-full ${size} rounded-2xl bg-white shadow-2xl dark:bg-slate-800`;
+  `relative w-full ${size} rounded-2xl bg-[#FFFCF7] border border-[#E8DCD0] shadow-2xl dark:bg-[#1E1614]/95 dark:backdrop-blur-xl dark:border-[#382823] dark:shadow-[0_20px_50px_rgba(0,0,0,0.6)]`;
 
 export const ConfirmDialog = ({
   open,
@@ -162,7 +162,7 @@ export const ConfirmDialog = ({
     }
   >
     {description && (
-      <p className="text-sm text-slate-600 dark:text-slate-300">{description}</p>
+      <p className="text-sm text-[#806E66] dark:text-[#B3A198]">{description}</p>
     )}
   </Modal>
 );

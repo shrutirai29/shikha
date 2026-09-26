@@ -3,12 +3,12 @@ import { Mail, MapPin, Phone, MessageCircle, Heart, Code } from "lucide-react";
 import { Logo } from "./Logo";
 
 export const Footer = () => (
-  <footer className="border-t border-[#493A34] bg-[#3B2924] text-[#FFF4E8] dark:border-[#493A34] dark:bg-[#1F1816]">
+  <footer className="border-t border-[#493A34] bg-[#3B2924] text-[#FFF4E8] dark:border-[#382823] dark:bg-[#0E0908]">
     <div className="mx-auto grid max-w-7xl gap-8 px-4 py-12 sm:grid-cols-2 sm:px-6 lg:grid-cols-4">
       {/* Brand & Owner Info */}
       <div className="space-y-4">
         <Logo />
-        <p className="text-sm text-[#C7B8AE] leading-relaxed">
+        <p className="text-sm text-[#C7B8AE] dark:text-[#B3A198] leading-relaxed">
           Handmade crochet treasures, stitched with love and delivered to your
           door across India. Every piece is made slowly, with care.
         </p>
@@ -145,8 +145,8 @@ export const Footer = () => (
     </div>
 
     {/* Bottom Copyright & Developer Credit */}
-    <div className="border-t border-[#493A34] py-5">
-      <div className="mx-auto flex max-w-7xl flex-col items-center justify-between gap-3 px-4 text-xs text-[#A8988F] sm:flex-row sm:px-6">
+    <div className="border-t border-[#493A34] dark:border-[#382823] py-5">
+      <div className="mx-auto flex max-w-7xl flex-col items-center justify-between gap-3 px-4 text-xs text-[#A8988F] dark:text-[#B3A198] sm:flex-row sm:px-6">
         <p>
           © {new Date().getFullYear()} <span className="font-semibold text-white">Knottiingale</span>. All rights reserved. Owned by Shikha Rai.
         </p>
