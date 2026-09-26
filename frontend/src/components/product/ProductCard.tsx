@@ -1,5 +1,5 @@
 import { Link } from "react-router-dom";
-import { Heart, ShoppingBag } from "lucide-react";
+import { Heart, ShoppingBag, Sparkles } from "lucide-react";
 import { motion } from "framer-motion";
 import type { Product } from "@/types";
 import { cn, discountPercent, formatCurrency, getProductPrice, truncate } from "@/lib/utils";
@@ -84,72 +84,83 @@ export const ProductCard = ({
 
   return (
     <motion.div
-      initial={{ opacity: 0, y: 12 }}
+      initial={{ opacity: 0, y: 16 }}
       animate={{ opacity: 1, y: 0 }}
-      transition={{ duration: 0.25, delay: Math.min(index * 0.04, 0.4) }}
+      transition={{ duration: 0.35, delay: Math.min(index * 0.04, 0.4) }}
+      className="h-full"
     >
       <Link
         to={`/products/${product.slug}`}
-        className="group relative flex h-full flex-col overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-soft transition duration-300 hover:-translate-y-1 hover:shadow-lift dark:border-slate-700/60 dark:bg-slate-800/80"
+        className="collect-card group relative flex h-full flex-col overflow-hidden rounded-[1.5rem] border border-slate-200/80 bg-white shadow-soft transition-all duration-300 dark:border-slate-800/90 dark:bg-slate-900/90 hover:border-indigo-400/40 dark:hover:border-indigo-500/30"
       >
-        <div className="relative aspect-square overflow-hidden bg-slate-100 dark:bg-slate-700/40">
+        {/* Image & Floating Tags */}
+        <div className="relative aspect-square overflow-hidden bg-gradient-to-b from-slate-50 to-slate-100 dark:from-slate-800/40 dark:to-slate-800/80 ring-1 ring-inset ring-black/5 dark:ring-white/5">
           {image ? (
             <img
               src={image}
               alt={product.name}
               loading="lazy"
-              className="size-full object-cover transition-transform duration-300 group-hover:scale-105"
+              className="size-full object-cover transition-transform duration-500 ease-out group-hover:scale-108"
             />
           ) : (
             <div className="flex size-full items-center justify-center text-slate-300 dark:text-slate-600">
-              <ShoppingBag className="size-10" />
+              <ShoppingBag className="size-12 stroke-[1.5]" />
             </div>
           )}
 
+          {/* Uiverse-style discount tag */}
           {hasDiscount && percentOff > 0 && (
-            <span className="absolute left-3 top-3 rounded-full bg-rose-600 px-2.5 py-0.5 text-xs font-bold text-white shadow-sm">
+            <span className="absolute left-3 top-3 inline-flex items-center gap-1 rounded-full bg-gradient-to-r from-rose-500 to-amber-500 px-2.5 py-0.5 text-[11px] font-bold text-white shadow-lg shadow-rose-500/25">
+              <Sparkles className="size-3" />
               {percentOff}% OFF
             </span>
           )}
 
+          {/* Floating Heart Button */}
           <button
             type="button"
             onClick={handleWishlist}
             aria-label={isInWishlist ? "Remove from wishlist" : "Add to wishlist"}
             className={cn(
-              "absolute right-3 top-3 rounded-full bg-white/90 p-2 shadow-sm backdrop-blur transition hover:scale-110 dark:bg-slate-800/90",
+              "absolute right-3 top-3 flex size-9 items-center justify-center rounded-full border border-white/40 bg-white/85 shadow-md backdrop-blur-md transition-all duration-200 hover:scale-110 active:scale-90 dark:border-slate-700/60 dark:bg-slate-900/85",
               isInWishlist
                 ? "text-rose-500"
                 : "text-slate-400 hover:text-rose-500"
             )}
           >
-            <Heart className={cn("size-4", isInWishlist && "fill-current")} />
+            <Heart className={cn("size-4.5 transition-transform", isInWishlist && "fill-current scale-110")} />
           </button>
 
+          {/* Out of Stock overlay */}
           {product.stock <= 0 && (
-            <span className="absolute inset-0 flex items-center justify-center bg-white/60 text-sm font-bold uppercase tracking-wide text-slate-500 backdrop-blur-[2px] dark:bg-slate-900/60 dark:text-slate-300">
-              Out of stock
-            </span>
+            <div className="absolute inset-0 flex items-center justify-center bg-slate-950/50 backdrop-blur-[2px]">
+              <span className="rounded-full bg-slate-900/90 px-3 py-1 text-xs font-bold uppercase tracking-wider text-slate-100 shadow-md">
+                Sold Out
+              </span>
+            </div>
           )}
         </div>
 
-        <div className="flex flex-1 flex-col gap-2 p-4">
+        {/* Content Body */}
+        <div className="flex flex-1 flex-col gap-2 p-4.5">
           {category && (
-            <span className="text-xs font-medium uppercase tracking-wide text-indigo-600 dark:text-indigo-400">
+            <span className="w-fit rounded-md bg-indigo-50 px-2 py-0.5 text-[10px] font-bold uppercase tracking-widest text-indigo-700 dark:bg-indigo-500/10 dark:text-indigo-300">
               {category.name}
             </span>
           )}
 
-          <h3 className="line-clamp-2 text-sm font-semibold text-slate-900 transition group-hover:text-indigo-700 dark:text-slate-50 dark:group-hover:text-indigo-200">
-            {truncate(product.name, 60)}
+          <h3 className="line-clamp-2 text-sm font-semibold text-slate-900 transition-colors duration-200 group-hover:text-indigo-600 dark:text-slate-100 dark:group-hover:text-indigo-300">
+            {truncate(product.name, 55)}
           </h3>
 
-          <Rating value={product.averageRating} count={product.totalReviews} />
+          <div className="pt-0.5">
+            <Rating value={product.averageRating} count={product.totalReviews} />
+          </div>
 
-          <div className="mt-auto flex items-end justify-between gap-2">
+          <div className="mt-auto flex items-end justify-between gap-2 pt-2 border-t border-slate-100 dark:border-slate-800/80">
             <div className="space-y-0.5">
               <div className="flex items-baseline gap-2">
-                <span className="text-base font-bold text-slate-900 dark:text-white">
+                <span className="font-display text-lg font-bold text-slate-950 dark:text-white">
                   {formatCurrency(price)}
                 </span>
                 {hasDiscount && (
@@ -158,8 +169,12 @@ export const ProductCard = ({
                   </span>
                 )}
               </div>
-              <p className="text-xs text-slate-400">
-                {product.stock > 0 ? "In stock" : "Sold out"}
+              <p className="text-[11px] font-medium text-slate-400">
+                {product.stock > 0 ? (
+                  <span className="text-emerald-600 dark:text-emerald-400">In stock</span>
+                ) : (
+                  <span className="text-rose-500">Out of stock</span>
+                )}
               </p>
             </div>
 
@@ -169,9 +184,9 @@ export const ProductCard = ({
               onClick={handleAddToCart}
               disabled={product.stock <= 0}
               aria-label={`Add ${product.name} to cart`}
-              className="size-9 rounded-full"
+              className="size-9.5 rounded-full shadow-md shadow-indigo-600/20 transition-transform duration-200 group-hover:scale-105"
             >
-              <ShoppingBag className="size-4" />
+              <ShoppingBag className="size-4.5" />
             </Button>
           </div>
         </div>

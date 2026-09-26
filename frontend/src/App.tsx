@@ -2,6 +2,7 @@ import { lazy, Suspense } from "react";
 import { Routes, Route } from "react-router-dom";
 import { Header } from "@/components/layout/Header";
 import { Footer } from "@/components/layout/Footer";
+import { FloatingContact } from "@/components/layout/FloatingContact";
 import { ProtectedRoute, GuestRoute } from "@/components/layout/ProtectedRoute";
 import { AdminLayout } from "@/components/layout/AdminLayout";
 import { PageLoader } from "@/components/ui/Card";
@@ -91,6 +92,7 @@ const SiteLayout = () => (
       </Suspense>
     </main>
     <Footer />
+    <FloatingContact />
   </div>
 );
 

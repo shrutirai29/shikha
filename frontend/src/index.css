@@ -181,6 +181,57 @@ body {
     );
 }
 
+/* ============================================================
+   UIVERSE & COLLECTUI ENHANCEMENTS
+   ============================================================ */
+
+/* Shimmer animation for buttons & tags */
+@keyframes uiverse-shimmer {
+  0% {
+    transform: translateX(-150%);
+  }
+  50%, 100% {
+    transform: translateX(150%);
+  }
+}
+
+.animate-uiverse-shimmer {
+  animation: uiverse-shimmer 3s ease-in-out infinite;
+}
+
+/* Glassmorphic card styling */
+.glass-card {
+  background: rgba(255, 255, 255, 0.7);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid rgba(255, 255, 255, 0.6);
+}
+
+.dark .glass-card {
+  background: rgba(26, 27, 46, 0.65);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+/* CollectUI smooth card hover */
+.collect-card {
+  transition: transform 0.3s cubic-bezier(0.2, 0.8, 0.2, 1),
+    box-shadow 0.3s cubic-bezier(0.2, 0.8, 0.2, 1),
+    border-color 0.3s ease;
+}
+
+.collect-card:hover {
+  transform: translateY(-6px);
+  box-shadow: 0 20px 40px -15px rgba(34, 34, 59, 0.12),
+    0 0 0 1px rgba(163, 125, 114, 0.2);
+}
+
+.dark .collect-card:hover {
+  box-shadow: 0 20px 40px -15px rgba(0, 0, 0, 0.45),
+    0 0 0 1px rgba(230, 182, 182, 0.25);
+}
+
 /* Respect reduced-motion preferences */
 @media (prefers-reduced-motion: reduce) {
   *,

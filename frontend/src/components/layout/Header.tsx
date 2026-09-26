@@ -10,6 +10,7 @@ import {
   Search,
   Settings,
   ShoppingBag,
+  Sparkles,
   Sun,
   User as UserIcon,
   X,
@@ -92,7 +93,30 @@ export const Header = () => {
       ];
 
   return (
-    <header className="sticky top-0 z-50 border-b border-slate-200 bg-white/80 backdrop-blur-lg dark:border-slate-700/60 dark:bg-slate-900/80">
+    <header className="sticky top-0 z-50 border-b border-slate-200/80 bg-white/85 backdrop-blur-xl dark:border-slate-800/80 dark:bg-slate-950/85">
+      {/* Top micro-announcement bar */}
+      <div className="border-b border-indigo-500/10 bg-gradient-to-r from-slate-950 via-slate-900 to-indigo-950 px-4 py-1.5 text-[11px] font-medium text-slate-200">
+        <div className="mx-auto flex max-w-7xl items-center justify-between">
+          <div className="flex items-center gap-1.5">
+            <span className="flex size-2 rounded-full bg-emerald-400 animate-pulse" />
+            <span className="font-semibold text-white">Knottiingale Studio</span>
+            <span className="hidden sm:inline text-slate-400">· Handcrafted by Shikha Rai</span>
+          </div>
+          <p className="flex items-center gap-1.5 text-indigo-200">
+            <Sparkles className="size-3 text-amber-300" />
+            <span>Free Shipping across India on orders &gt; ₹500 · COD Available</span>
+          </p>
+          <a
+            href="https://wa.me/917985835558"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="hidden lg:inline-flex items-center gap-1 font-semibold text-emerald-300 transition-colors hover:text-white"
+          >
+            Custom Orders: WhatsApp +91 7985835558 →
+          </a>
+        </div>
+      </div>
+
       <div className="mx-auto flex h-16 max-w-7xl items-center justify-between gap-3 px-4 sm:px-6">
         <div className="flex items-center gap-2">
           <button
@@ -129,13 +153,13 @@ export const Header = () => {
         <div className="flex items-center gap-1">
           {searchOpen && (
             <form onSubmit={handleSearch} className="relative mr-1 hidden sm:block">
-              <Search className="pointer-events-none absolute left-3 top-1/2 size-4 -translate-y-1/2 text-slate-400" />
+              <Search className="pointer-events-none absolute left-3.5 top-1/2 size-4 -translate-y-1/2 text-slate-400" />
               <input
                 autoFocus
                 value={query}
                 onChange={(event) => setQuery(event.target.value)}
-                placeholder="Search products…"
-                className="h-9 w-56 rounded-full border border-slate-300 bg-white pl-9 pr-3 text-sm shadow-sm focus:border-indigo-500 focus:outline-none focus:ring-2 focus:ring-indigo-500/20 dark:border-slate-600 dark:bg-slate-800 dark:text-slate-100"
+                placeholder="Search handmade treasures…"
+                className="h-9.5 w-60 rounded-full border border-slate-200 bg-slate-50/90 pl-9.5 pr-4 text-sm shadow-inner transition-all focus:w-72 focus:border-indigo-500 focus:bg-white focus:outline-none focus:ring-4 focus:ring-indigo-500/10 dark:border-slate-700 dark:bg-slate-800 dark:text-slate-100"
               />
             </form>
           )}
@@ -143,7 +167,7 @@ export const Header = () => {
           <button
             type="button"
             onClick={() => setSearchOpen((open) => !open)}
-            className="rounded-lg p-2 text-slate-600 hover:bg-slate-100 sm:hidden dark:text-slate-300 dark:hover:bg-slate-800"
+            className="rounded-xl p-2.5 text-slate-600 transition hover:bg-slate-100 hover:text-slate-900 sm:hidden dark:text-slate-300 dark:hover:bg-slate-800"
             aria-label="Open search"
           >
             <Search className="size-5" />
@@ -152,20 +176,20 @@ export const Header = () => {
           <button
             type="button"
             onClick={toggleTheme}
-            className="rounded-lg p-2 text-slate-600 hover:bg-slate-100 dark:text-slate-300 dark:hover:bg-slate-800"
+            className="rounded-xl p-2.5 text-slate-600 transition hover:bg-slate-100 hover:text-slate-900 dark:text-slate-300 dark:hover:bg-slate-800"
             aria-label={`Switch to ${theme === "dark" ? "light" : "dark"} mode`}
           >
-            {theme === "dark" ? <Sun className="size-5" /> : <Moon className="size-5" />}
+            {theme === "dark" ? <Sun className="size-5 text-amber-400" /> : <Moon className="size-5 text-indigo-600" />}
           </button>
 
           <Link
             to={isAuthenticated ? "/wishlist" : "/login"}
-            className="relative rounded-lg p-2 text-slate-600 hover:bg-slate-100 dark:text-slate-300 dark:hover:bg-slate-800"
+            className="relative rounded-xl p-2.5 text-slate-600 transition hover:bg-slate-100 hover:text-slate-900 dark:text-slate-300 dark:hover:bg-slate-800"
             aria-label="Wishlist"
           >
             <Heart className="size-5" />
             {isAuthenticated && (wishlist?.length ?? 0) > 0 && (
-              <span className="absolute -right-0.5 -top-0.5 flex size-4 items-center justify-center rounded-full bg-indigo-600 text-[10px] font-bold text-white dark:bg-indigo-600 dark:text-slate-950">
+              <span className="absolute right-1 top-1 flex size-4.5 items-center justify-center rounded-full bg-rose-500 text-[10px] font-bold text-white shadow-sm ring-2 ring-white dark:ring-slate-900">
                 {wishlist?.length}
               </span>
             )}
@@ -173,12 +197,12 @@ export const Header = () => {
 
           <Link
             to={isAuthenticated ? "/cart" : "/login"}
-            className="relative rounded-lg p-2 text-slate-600 hover:bg-slate-100 dark:text-slate-300 dark:hover:bg-slate-800"
+            className="relative rounded-xl p-2.5 text-slate-600 transition hover:bg-slate-100 hover:text-slate-900 dark:text-slate-300 dark:hover:bg-slate-800"
             aria-label="Cart"
           >
             <ShoppingBag className="size-5" />
             {isAuthenticated && cartCount > 0 && (
-              <span className="absolute -right-0.5 -top-0.5 flex size-4 items-center justify-center rounded-full bg-indigo-600 text-[10px] font-bold text-white dark:bg-indigo-600 dark:text-slate-950">
+              <span className="absolute right-1 top-1 flex size-4.5 items-center justify-center rounded-full bg-gradient-to-r from-indigo-600 to-indigo-500 text-[10px] font-bold text-white shadow-sm ring-2 ring-white dark:ring-slate-900">
                 {cartCount}
               </span>
             )}
