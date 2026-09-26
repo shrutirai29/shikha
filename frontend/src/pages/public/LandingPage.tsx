@@ -18,6 +18,7 @@ import { ProductGrid } from "@/components/product/ProductGrid";
 import { Skeleton } from "@/components/ui/Card";
 import type { Category, Product } from "@/types";
 import { formatCurrency } from "@/lib/utils";
+import heroBackdrop from "@/assets/hero-backdrop.jpg";
 
 const perks = [
   {
@@ -70,44 +71,61 @@ export const LandingPage = () => {
   return (
     <div>
       {/* ============================================================
-          1. HERO SECTION (Warm artisanal first impression)
+          1. HERO SECTION (Artisanal Photography Backdrop & Editorial Layout)
           ============================================================ */}
-      <section className="relative overflow-hidden bg-[#FFF8F0] dark:bg-[#1F1816] bg-ink-grain">
-        {/* Ambient background glow orbs */}
-        <div
-          aria-hidden="true"
-          className="pointer-events-none absolute -top-40 left-1/2 -translate-x-1/2 size-[650px] rounded-full bg-gradient-to-tr from-[#C98F8B]/15 via-[#B85C4A]/10 to-transparent blur-3xl dark:from-[#D8A09B]/15 dark:via-[#D47763]/10"
-        />
+      <section className="relative min-h-[580px] sm:min-h-[640px] lg:min-h-[700px] overflow-hidden bg-[#FFF8F0] dark:bg-[#1F1816]">
+        {/* Full-bleed photography backdrop */}
+        <div className="absolute inset-0 select-none">
+          <img
+            src={heroBackdrop}
+            alt="Handmade crochet flowers, bunny and natural yarn flatlay"
+            className="size-full object-cover object-[78%_center] sm:object-[70%_center] lg:object-center opacity-95 dark:opacity-35 transition-opacity duration-500"
+          />
 
-        <div className="mx-auto grid max-w-7xl items-center gap-10 px-4 pb-20 pt-12 sm:px-6 lg:grid-cols-2 lg:gap-12 lg:pb-28 lg:pt-20">
+          {/* Warm artistic gradient scrim: keeps text legible on the left while revealing the photography on the right */}
+          <div className="absolute inset-0 bg-gradient-to-r from-[#FFF8F0]/95 via-[#FFF8F0]/85 to-[#FFF8F0]/40 sm:to-transparent lg:via-[#FFF8F0]/65 dark:from-[#1F1816]/95 dark:via-[#1F1816]/85 dark:to-[#1F1816]/60" />
+
+          {/* Ambient soft glow orbs that accent the pottery and yarn tones */}
+          <div
+            aria-hidden="true"
+            className="pointer-events-none absolute -top-32 left-10 size-96 rounded-full bg-gradient-to-br from-[#C98F8B]/20 via-[#B85C4A]/15 to-transparent blur-3xl dark:from-[#D8A09B]/15 dark:via-[#D47763]/10"
+          />
+        </div>
+
+        {/* Hero Content Container */}
+        <div className="relative mx-auto grid max-w-7xl items-center gap-10 px-4 py-16 sm:px-6 sm:py-20 lg:grid-cols-12 lg:gap-8 lg:py-28">
+          {/* Left Column: Brand Story & Call-to-actions */}
           <motion.div
             initial={{ opacity: 0, y: 24 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
-            className="max-w-xl"
+            className="lg:col-span-7 xl:col-span-7 max-w-2xl"
           >
-            {/* Pulsing announcement pill */}
-            <span className="relative inline-flex items-center gap-2 overflow-hidden rounded-full border border-[#B85C4A]/25 bg-[#FFFCF7] px-4 py-1.5 text-xs font-semibold text-[#B85C4A] shadow-soft dark:border-[#D47763]/30 dark:bg-[#2A211E] dark:text-[#D47763]">
+            {/* Pill: Hand-Stitched by Shikha Rai */}
+            <div className="inline-flex items-center gap-2.5 rounded-full border border-[#B85C4A]/25 bg-[#FFFCF7]/90 px-4 py-1.5 text-xs font-semibold text-[#B85C4A] shadow-soft backdrop-blur-md dark:border-[#D47763]/30 dark:bg-[#2A211E]/90 dark:text-[#D47763]">
               <span className="relative flex size-2">
                 <span className="absolute inline-flex size-full animate-ping rounded-full bg-[#C98F8B] opacity-75" />
                 <span className="relative inline-flex size-2 rounded-full bg-[#B85C4A] dark:bg-[#D47763]" />
               </span>
-              Handcrafted Collection · Fresh Drops Live
-            </span>
+              <span>Pure Artisan Craft · Hand-Stitched by Shikha Rai</span>
+            </div>
 
-            <h1 className="font-display mt-6 text-4xl font-semibold leading-[1.08] tracking-tight text-[#3B2924] sm:text-6xl lg:text-7xl dark:text-[#FFF4E8]">
+            {/* Display Headline */}
+            <h1 className="font-display mt-5 text-4xl font-semibold leading-[1.08] tracking-tight text-[#3B2924] sm:text-6xl lg:text-7xl dark:text-[#FFF4E8]">
               Handmade with love,{" "}
-              <span className="block italic text-[#B85C4A] dark:text-[#D47763]">
+              <span className="block font-normal italic text-[#B85C4A] dark:text-[#D47763]">
                 one stitch at a time.
               </span>
             </h1>
 
-            <p className="mt-6 max-w-lg text-base leading-relaxed text-[#806E66] sm:text-lg dark:text-[#C7B8AE]">
+            {/* Narrative description */}
+            <p className="mt-5 max-w-xl text-base leading-relaxed text-[#806E66] sm:text-lg dark:text-[#C7B8AE]">
               Welcome to <strong className="text-[#3B2924] dark:text-[#FFF4E8]">Knottiingale</strong>. Soft plush toys, cozy
-              warm throws, and heartfelt artisanal gifts — hand-crocheted slowly
-              with care by <strong className="text-[#3B2924] dark:text-[#FFF4E8]">Shikha Rai</strong> and delivered across India.
+              home décor, torans, bags, and heartfelt handcrafted gifts — carefully crocheted with natural cotton yarn
+              by <strong className="text-[#3B2924] dark:text-[#FFF4E8]">Shikha Rai</strong> and delivered across India.
             </p>
 
+            {/* Action buttons */}
             <div className="mt-8 flex flex-wrap items-center gap-3.5">
               <Link
                 to="/products"
@@ -118,131 +136,136 @@ export const LandingPage = () => {
               </Link>
               <Link
                 to="/contact"
-                className="inline-flex h-12.5 items-center gap-2 rounded-2xl border border-[#7A8B68] bg-[#FFFCF7] px-6 text-sm font-semibold text-[#7A8B68] shadow-sm transition hover:bg-[#7A8B68]/10 active:scale-98 dark:border-[#9BAF83] dark:bg-[#2A211E] dark:text-[#9BAF83] dark:hover:bg-[#9BAF83]/10"
+                className="inline-flex h-12.5 items-center gap-2 rounded-2xl border border-[#7A8B68] bg-[#FFFCF7]/90 px-6 text-sm font-semibold text-[#7A8B68] shadow-sm backdrop-blur-md transition hover:bg-[#7A8B68]/15 active:scale-98 dark:border-[#9BAF83] dark:bg-[#2A211E]/90 dark:text-[#9BAF83] dark:hover:bg-[#9BAF83]/15"
               >
                 Custom Order Inquiry
               </Link>
             </div>
 
-            {/* Social Proof metrics */}
-            <dl className="mt-12 flex gap-8 border-t border-[#E8DCD0] pt-6 text-[#806E66] sm:gap-12 dark:border-[#493A34] dark:text-[#C7B8AE]">
-              <div>
-                <dt className="font-display text-2xl font-bold text-[#3B2924] sm:text-3xl dark:text-[#FFF4E8]">
-                  {featured?.length ? `${featured.length}+` : "4.9"}
-                </dt>
-                <dd className="mt-0.5 text-[11px] font-semibold uppercase tracking-widest text-[#806E66] dark:text-[#C7B8AE]">
-                  Unique Pieces
-                </dd>
-              </div>
-              <div>
-                <dt className="font-display text-2xl font-bold text-[#3B2924] sm:text-3xl dark:text-[#FFF4E8]">
-                  24–48h
-                </dt>
-                <dd className="mt-0.5 text-[11px] font-semibold uppercase tracking-widest text-[#806E66] dark:text-[#C7B8AE]">
-                  Fast Dispatch
-                </dd>
-              </div>
-              <div>
-                <dt className="font-display text-2xl font-bold text-[#3B2924] sm:text-3xl dark:text-[#FFF4E8]">
-                  100%
-                </dt>
-                <dd className="mt-0.5 text-[11px] font-semibold uppercase tracking-widest text-[#806E66] dark:text-[#C7B8AE]">
-                  Handmade Craft
-                </dd>
-              </div>
-            </dl>
+            {/* Craft Highlights */}
+            <div className="mt-10 flex flex-wrap items-center gap-6 border-t border-[#E8DCD0]/70 pt-6 text-xs font-medium text-[#806E66] dark:border-[#493A34]/70 dark:text-[#C7B8AE]">
+              <span className="flex items-center gap-2">
+                <span className="flex size-6 items-center justify-center rounded-full bg-[#7A8B68]/15 text-[#7A8B68] dark:bg-[#9BAF83]/20 dark:text-[#9BAF83]">✓</span>
+                100% Handcrafted
+              </span>
+              <span className="flex items-center gap-2">
+                <span className="flex size-6 items-center justify-center rounded-full bg-[#D8A85B]/20 text-[#D8A85B] dark:bg-[#E0B86A]/20 dark:text-[#E0B86A]">
+                  <Star className="size-3.5 fill-current" />
+                </span>
+                5.0 Rated by Buyers
+              </span>
+              <span className="flex items-center gap-2">
+                <span className="flex size-6 items-center justify-center rounded-full bg-[#B85C4A]/15 text-[#B85C4A] dark:bg-[#D47763]/20 dark:text-[#D47763]">⚡</span>
+                Fast Pan-India Dispatch
+              </span>
+            </div>
           </motion.div>
 
-          {/* Featured Artisan Showcase */}
+          {/* Right Column: Floating Boutique Spotlight Card */}
           <motion.div
-            initial={{ opacity: 0, scale: 0.95 }}
-            animate={{ opacity: 1, scale: 1 }}
+            initial={{ opacity: 0, scale: 0.95, y: 16 }}
+            animate={{ opacity: 1, scale: 1, y: 0 }}
             transition={{ duration: 0.7, delay: 0.15, ease: [0.22, 1, 0.36, 1] }}
-            className="relative mx-auto w-full max-w-md lg:max-w-none"
+            className="lg:col-span-5 xl:col-span-5 flex flex-col justify-end lg:items-end"
           >
-            {/* Soft Ambient Glow */}
-            <div
-              aria-hidden="true"
-              className="absolute -inset-1 rounded-[3rem] bg-gradient-to-r from-[#C98F8B]/20 via-[#B85C4A]/25 to-[#D8A85B]/20 blur-2xl opacity-60 dark:from-[#D8A09B]/20 dark:via-[#D47763]/25"
-            />
-
-            <div className="relative overflow-hidden rounded-[2.5rem] border border-[#E8DCD0] bg-[#FFFCF7] p-6 shadow-soft dark:border-[#493A34] dark:bg-[#2A211E]">
-              {heroProduct?.images?.[0] ? (
-                <div className="group relative aspect-square overflow-hidden rounded-[2rem] bg-[#F5EDE4] dark:bg-[#1F1816] ring-1 ring-inset ring-[#3B2924]/5 dark:ring-white/5">
-                  <img
-                    src={heroProduct.images[0]}
-                    alt={heroProduct.name}
-                    className="size-full object-cover transition-transform duration-700 ease-out group-hover:scale-105"
-                  />
-                  <div className="absolute inset-0 bg-gradient-to-t from-[#1F1816]/90 via-[#1F1816]/25 to-transparent" />
-
-                  {/* Top Bestseller Badge */}
-                  <div className="absolute left-4 top-4 flex items-center gap-2 rounded-full border border-white/20 bg-[#1F1816]/75 px-3.5 py-1 text-xs font-semibold text-[#D8A85B] backdrop-blur-md">
-                    <Sparkles className="size-3.5 text-[#D8A85B]" />
-                    Bestseller of the Week
-                  </div>
-
-                  {/* Bottom Info Overlay */}
-                  <div className="absolute bottom-5 left-5 right-5 space-y-2">
-                    <p className="text-xs font-semibold uppercase tracking-wider text-[#C98F8B]">
-                      Featured Handcraft
+            {/* Elegant glassmorphic showcase card floating harmoniously over the photo */}
+            <div className="w-full max-w-sm rounded-3xl border border-[#E8DCD0]/90 bg-[#FFFCF7]/90 p-5 shadow-lift backdrop-blur-md dark:border-[#493A34]/80 dark:bg-[#2A211E]/90">
+              <div className="flex items-center justify-between border-b border-[#E8DCD0]/80 pb-3 dark:border-[#493A34]/80">
+                <div className="flex items-center gap-2">
+                  <span className="flex size-7 items-center justify-center rounded-lg bg-[#B85C4A]/15 text-[#B85C4A] dark:bg-[#D47763]/20 dark:text-[#D47763]">
+                    <Sparkles className="size-4" />
+                  </span>
+                  <div>
+                    <p className="text-xs font-bold text-[#3B2924] dark:text-[#FFF4E8]">
+                      Artisan Spotlight
                     </p>
-                    <div className="flex items-end justify-between gap-3">
-                      <div>
-                        <h3 className="font-display text-xl font-bold text-white line-clamp-1">
-                          {heroProduct.name}
-                        </h3>
-                        <p className="text-base font-semibold text-[#FFF4E8]">
-                          {formatCurrency(heroProduct.price)}
-                        </p>
-                      </div>
-                      <Link
-                        to={`/products/${heroProduct.slug}`}
-                        className="inline-flex items-center gap-1.5 rounded-xl bg-[#B85C4A] px-4 py-2 text-xs font-bold text-white shadow-md transition hover:bg-[#914536] active:scale-95 dark:bg-[#D47763] dark:text-[#1F1816] dark:hover:bg-[#E28A76]"
-                      >
-                        View Piece
-                        <ArrowRight className="size-3.5" />
-                      </Link>
-                    </div>
+                    <p className="text-[10px] text-[#806E66] dark:text-[#C7B8AE]">
+                      Limited batch pieces
+                    </p>
                   </div>
                 </div>
-              ) : (
-                <div className="flex aspect-square flex-col justify-between rounded-[2rem] bg-gradient-to-br from-[#F5EDE4] to-[#E8DCD0] p-8 border border-[#E8DCD0] dark:border-[#493A34] dark:from-[#352925] dark:to-[#1F1816]">
-                  <div className="inline-flex w-fit items-center gap-2 rounded-full border border-[#B85C4A]/30 bg-[#B85C4A]/10 px-3.5 py-1 text-xs font-semibold text-[#B85C4A] dark:text-[#D47763]">
-                    <Sparkles className="size-3.5 text-[#D8A85B]" />
-                    Artisan Spotlight
-                  </div>
+                <span className="rounded-full bg-[#7A8B68]/15 px-2.5 py-0.5 text-[11px] font-semibold text-[#7A8B68] dark:bg-[#9BAF83]/20 dark:text-[#9BAF83]">
+                  In Stock
+                </span>
+              </div>
 
-                  <div className="space-y-3">
-                    <span className="text-4xl">🧶</span>
-                    <h3 className="font-display text-2xl font-bold text-[#3B2924] dark:text-[#FFF4E8]">
-                      Every Stitch Woven with Love
-                    </h3>
-                    <p className="text-sm leading-relaxed text-[#806E66] dark:text-[#C7B8AE]">
-                      Explore slow-made crochet plushies, winter wearables, and home accessories hand-crocheted by Shikha Rai in India.
+              {heroProduct ? (
+                <div className="mt-4 flex items-center gap-3.5">
+                  <div className="size-16 shrink-0 overflow-hidden rounded-2xl bg-[#F5EDE4] ring-1 ring-[#3B2924]/10 dark:bg-[#352925] dark:ring-white/10">
+                    {heroProduct.images?.[0] ? (
+                      <img
+                        src={heroProduct.images[0]}
+                        alt={heroProduct.name}
+                        className="size-full object-cover"
+                      />
+                    ) : (
+                      <div className="flex size-full items-center justify-center text-2xl">🧶</div>
+                    )}
+                  </div>
+                  <div className="min-w-0 flex-1">
+                    <p className="truncate text-sm font-semibold text-[#3B2924] dark:text-[#FFF4E8]">
+                      {heroProduct.name}
+                    </p>
+                    <p className="text-xs font-bold text-[#B85C4A] dark:text-[#D47763]">
+                      {formatCurrency(heroProduct.price)}
+                    </p>
+                    <p className="mt-0.5 text-[11px] text-[#806E66] line-clamp-1 dark:text-[#C7B8AE]">
+                      Made slowly with 100% cotton
                     </p>
                   </div>
-
                   <Link
-                    to="/products"
-                    className="inline-flex w-fit items-center gap-2 rounded-xl bg-[#B85C4A] px-5 py-2.5 text-xs font-bold text-white shadow-soft transition hover:bg-[#914536] dark:bg-[#D47763] dark:text-[#1F1816]"
+                    to={`/products/${heroProduct.slug}`}
+                    className="shrink-0 rounded-xl bg-[#B85C4A] p-2 text-white shadow-soft transition hover:bg-[#914536] dark:bg-[#D47763] dark:text-[#1F1816]"
+                    aria-label={`View ${heroProduct.name}`}
                   >
-                    Browse All Handcrafted Pieces
-                    <ArrowRight className="size-3.5" />
+                    <ArrowRight className="size-4" />
                   </Link>
+                </div>
+              ) : (
+                <div className="mt-4 flex items-center gap-3">
+                  <span className="text-3xl">🐰</span>
+                  <div>
+                    <p className="text-sm font-semibold text-[#3B2924] dark:text-[#FFF4E8]">
+                      Bunny & Flora Collection
+                    </p>
+                    <p className="text-xs text-[#806E66] dark:text-[#C7B8AE]">
+                      Hand-crocheted daisy blossoms & plushies
+                    </p>
+                  </div>
                 </div>
               )}
 
-              {/* Trust badges footer */}
-              <div className="mt-4 flex flex-wrap items-center justify-between gap-2 pt-2 text-xs text-[#806E66] dark:text-[#C7B8AE]">
-                <span className="flex items-center gap-1.5 font-medium text-[#7A8B68] dark:text-[#9BAF83]">
-                  <BadgeCheck className="size-4 text-[#7A8B68] dark:text-[#9BAF83]" />
-                  100% Cotton & Azo-Free Wool
-                </span>
-                <span className="flex items-center gap-1 text-[#D8A85B] dark:text-[#E0B86A] font-semibold">
-                  <Star className="size-3.5 fill-current" />
-                  5.0 Customer Rating
-                </span>
+              {/* Popular category chips */}
+              <div className="mt-4 border-t border-[#E8DCD0]/70 pt-3 dark:border-[#493A34]/70">
+                <p className="mb-2 text-[10px] font-bold uppercase tracking-wider text-[#806E66] dark:text-[#C7B8AE]">
+                  Quick Explore
+                </p>
+                <div className="flex flex-wrap gap-1.5">
+                  <Link
+                    to="/products"
+                    className="rounded-lg bg-[#F5EDE4]/90 px-2.5 py-1 text-[11px] font-medium text-[#3B2924] transition hover:bg-[#B85C4A] hover:text-white dark:bg-[#352925] dark:text-[#FFF4E8] dark:hover:bg-[#D47763] dark:hover:text-[#1F1816]"
+                  >
+                    🐰 Plushies
+                  </Link>
+                  <Link
+                    to="/products"
+                    className="rounded-lg bg-[#F5EDE4]/90 px-2.5 py-1 text-[11px] font-medium text-[#3B2924] transition hover:bg-[#B85C4A] hover:text-white dark:bg-[#352925] dark:text-[#FFF4E8] dark:hover:bg-[#D47763] dark:hover:text-[#1F1816]"
+                  >
+                    🌸 Daisy Torans
+                  </Link>
+                  <Link
+                    to="/products"
+                    className="rounded-lg bg-[#F5EDE4]/90 px-2.5 py-1 text-[11px] font-medium text-[#3B2924] transition hover:bg-[#B85C4A] hover:text-white dark:bg-[#352925] dark:text-[#FFF4E8] dark:hover:bg-[#D47763] dark:hover:text-[#1F1816]"
+                  >
+                    🎧 Earbuds Cases
+                  </Link>
+                  <Link
+                    to="/products"
+                    className="rounded-lg bg-[#F5EDE4]/90 px-2.5 py-1 text-[11px] font-medium text-[#3B2924] transition hover:bg-[#B85C4A] hover:text-white dark:bg-[#352925] dark:text-[#FFF4E8] dark:hover:bg-[#D47763] dark:hover:text-[#1F1816]"
+                  >
+                    👜 Bags
+                  </Link>
+                </div>
               </div>
             </div>
           </motion.div>
@@ -251,7 +274,7 @@ export const LandingPage = () => {
         {/* Bottom smooth fade into content */}
         <div
           aria-hidden="true"
-          className="absolute inset-x-0 bottom-0 h-16 bg-gradient-to-b from-transparent to-[#FFF8F0] dark:to-[#1F1816]"
+          className="pointer-events-none absolute inset-x-0 bottom-0 h-16 bg-gradient-to-t from-[#FFF8F0] dark:from-[#1F1816] to-transparent"
         />
       </section>
 
