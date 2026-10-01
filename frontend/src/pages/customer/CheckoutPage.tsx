@@ -140,7 +140,7 @@ export const CheckoutPage = () => {
       <div className="grid gap-8 lg:grid-cols-[1fr_380px]">
         <div className="space-y-6">
           {/* Address selection */}
-          <Card className="p-5">
+          <Card className="p-4 sm:p-5">
             <h2 className="mb-4 flex items-center gap-2 text-base font-semibold text-[#3B2924] dark:text-[#FFF4E8]">
               <MapPin className="size-4.5 text-[#B85C4A] dark:text-[#D47763]" />
               Delivery address
@@ -155,10 +155,10 @@ export const CheckoutPage = () => {
                       type="button"
                       onClick={() => setSelectedAddress(address)}
                       className={cn(
-                        "w-full rounded-xl border-2 p-4 text-left transition",
+                        "w-full rounded-xl border-2 p-3 sm:p-4 text-left transition",
                         selectedAddress?._id === address._id
                           ? "border-[#B85C4A] bg-[#B85C4A]/5 dark:border-[#D47763] dark:bg-[#D47763]/10"
-                          : "border-[#E8DCD0] bg-[#FFFCF7] hover:border-[#B85C4A]/40 dark:border-[#493A34] dark:bg-[#2A211E] dark:hover:border-[#D47763]/40"
+                          : "border-[#E8DCD0] bg-[#FFFCF7] hover:border-[#B85C4A]/40 dark:border-[#382823] dark:bg-[#1E1614] dark:hover:border-[#D47763]/40"
                       )}
                     >
                       <div className="flex items-center justify-between">
@@ -235,7 +235,7 @@ export const CheckoutPage = () => {
           </Card>
 
           {/* Payment method */}
-          <Card className="p-5">
+          <Card className="p-4 sm:p-5">
             <h2 className="mb-4 flex items-center gap-2 text-base font-semibold text-[#3B2924] dark:text-[#FFF4E8]">
               <CreditCard className="size-4.5 text-[#B85C4A] dark:text-[#D47763]" />
               Payment method
@@ -246,10 +246,10 @@ export const CheckoutPage = () => {
                 type="button"
                 onClick={() => setPaymentMethod("COD")}
                 className={cn(
-                  "flex w-full items-center gap-3 rounded-xl border-2 p-4 text-left transition",
+                  "flex w-full items-center gap-3 rounded-xl border-2 p-3 sm:p-4 text-left transition",
                   paymentMethod === "COD"
                     ? "border-[#B85C4A] bg-[#B85C4A]/5 dark:border-[#D47763] dark:bg-[#D47763]/10"
-                    : "border-[#E8DCD0] bg-[#FFFCF7] hover:border-[#B85C4A]/40 dark:border-[#493A34] dark:bg-[#2A211E] dark:hover:border-[#D47763]/40"
+                    : "border-[#E8DCD0] bg-[#FFFCF7] hover:border-[#B85C4A]/40 dark:border-[#382823] dark:bg-[#1E1614] dark:hover:border-[#D47763]/40"
                 )}
               >
                 <Banknote className="size-5 text-[#806E66] dark:text-[#C7B8AE]" />
@@ -267,10 +267,10 @@ export const CheckoutPage = () => {
                 type="button"
                 onClick={() => setPaymentMethod("RAZORPAY")}
                 className={cn(
-                  "flex w-full items-center gap-3 rounded-xl border-2 p-4 text-left transition",
+                  "flex w-full items-center gap-3 rounded-xl border-2 p-3 sm:p-4 text-left transition",
                   paymentMethod === "RAZORPAY"
                     ? "border-[#B85C4A] bg-[#B85C4A]/5 dark:border-[#D47763] dark:bg-[#D47763]/10"
-                    : "border-[#E8DCD0] bg-[#FFFCF7] hover:border-[#B85C4A]/40 dark:border-[#493A34] dark:bg-[#2A211E] dark:hover:border-[#D47763]/40"
+                    : "border-[#E8DCD0] bg-[#FFFCF7] hover:border-[#B85C4A]/40 dark:border-[#382823] dark:bg-[#1E1614] dark:hover:border-[#D47763]/40"
                 )}
               >
                 <ShieldCheck className="size-5 text-[#806E66] dark:text-[#C7B8AE]" />

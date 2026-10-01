@@ -161,11 +161,11 @@ export const ProductDetailsPage = () => {
         <span className="font-medium text-[#3B2924] dark:text-[#FFF4E8]">{product.name}</span>
       </nav>
 
-      <div className="grid gap-10 lg:grid-cols-2">
+      <div className="grid gap-8 lg:gap-10 lg:grid-cols-2">
         {/* Gallery */}
         <div>
           <TiltCard className="relative">
-          <div className="relative aspect-square overflow-hidden rounded-[2rem] border border-[#E8DCD0] bg-[#FFFCF7] shadow-soft dark:border-[#493A34] dark:bg-[#2A211E]">
+          <div className="relative aspect-square overflow-hidden rounded-[1.5rem] sm:rounded-[2rem] border border-[#E8DCD0] bg-[#FFFCF7] shadow-soft dark:border-[#382823] dark:bg-[#1E1614]">
             {product.images[activeImage] ? (
               <img
                 src={product.images[activeImage]}
@@ -179,13 +179,13 @@ export const ProductDetailsPage = () => {
             )}
 
             {hasDiscount && percentOff > 0 && (
-              <span className="absolute left-4 top-4 rounded-full bg-[#B85C4A] px-3.5 py-1 text-sm font-bold text-white shadow-md shadow-[#B85C4A]/25">
+              <span className="absolute left-3.5 top-3.5 sm:left-4 sm:top-4 rounded-full bg-[#B85C4A] px-3 sm:px-3.5 py-0.5 sm:py-1 text-xs sm:text-sm font-bold text-white shadow-md shadow-[#B85C4A]/25">
                 {percentOff}% OFF
               </span>
             )}
 
             {product.stock <= 0 && (
-              <span className="absolute inset-0 flex items-center justify-center bg-[#1F1816]/60 text-lg font-bold uppercase tracking-widest text-[#FFF4E8] backdrop-blur-[2px]">
+              <span className="absolute inset-0 flex items-center justify-center bg-[#1F1816]/60 text-base sm:text-lg font-bold uppercase tracking-widest text-[#FFF4E8] backdrop-blur-[2px]">
                 Out of stock
               </span>
             )}
@@ -193,14 +193,14 @@ export const ProductDetailsPage = () => {
           </TiltCard>
 
           {product.images.length > 1 && (
-            <div className="mt-4 flex gap-3">
+            <div className="mt-3 sm:mt-4 flex gap-2.5 sm:gap-3 overflow-x-auto pb-2 scrollbar-none touch-pan-x [-webkit-overflow-scrolling:touch]">
               {product.images.map((image, index) => (
                 <button
                   key={index}
                   type="button"
                   onClick={() => setActiveImage(index)}
                   className={cn(
-                    "size-20 overflow-hidden rounded-xl border-2 transition",
+                    "size-16 sm:size-20 shrink-0 overflow-hidden rounded-xl border-2 transition",
                     index === activeImage
                       ? "border-[#B85C4A] dark:border-[#D47763]"
                       : "border-transparent opacity-70 hover:opacity-100"
@@ -215,28 +215,28 @@ export const ProductDetailsPage = () => {
         </div>
 
         {/* Details */}
-        <div className="space-y-6">
+        <div className="space-y-5 sm:space-y-6">
           {category && (
             <Link
               to={`/categories/${category.slug}`}
-              className="text-sm font-semibold uppercase tracking-wide text-[#7A8B68] dark:text-[#9BAF83]"
+              className="text-xs sm:text-sm font-semibold uppercase tracking-wide text-[#7A8B68] dark:text-[#9BAF83]"
             >
               {category.name}
             </Link>
           )}
 
-          <h1 className="font-display text-4xl font-semibold leading-tight tracking-tight text-[#3B2924] dark:text-[#FFF4E8]">
+          <h1 className="font-display text-2xl sm:text-3xl lg:text-4xl font-semibold leading-tight tracking-tight text-[#3B2924] dark:text-[#FFF4E8]">
             {product.name}
           </h1>
 
           <Rating value={product.averageRating} count={product.totalReviews} />
 
           <div className="flex items-baseline gap-3">
-            <span className="font-display text-3xl font-bold text-[#B85C4A] dark:text-[#D47763]">
+            <span className="font-display text-2xl sm:text-3xl font-bold text-[#B85C4A] dark:text-[#D47763]">
               {formatCurrency(price)}
             </span>
             {hasDiscount && (
-              <span className="text-lg text-[#806E66] line-through dark:text-[#C7B8AE]">
+              <span className="text-base sm:text-lg text-[#806E66] line-through dark:text-[#C7B8AE]">
                 {formatCurrency(originalPrice)}
               </span>
             )}
@@ -250,58 +250,60 @@ export const ProductDetailsPage = () => {
             )}
           </div>
 
-          <p className="whitespace-pre-line text-[#806E66] dark:text-[#C7B8AE] leading-relaxed">
+          <p className="whitespace-pre-line text-sm sm:text-base text-[#806E66] dark:text-[#C7B8AE] leading-relaxed">
             {product.description}
           </p>
 
-          <div className="flex flex-wrap items-center gap-4">
-            <div className="flex items-center rounded-xl border border-[#E8DCD0] bg-[#FFFCF7] dark:border-[#493A34] dark:bg-[#2A211E]">
-              <button
-                type="button"
-                onClick={() => setQuantity((q) => Math.max(1, q - 1))}
-                disabled={quantity <= 1}
-                className="p-3 text-[#806E66] transition hover:text-[#3B2924] disabled:opacity-40 dark:text-[#C7B8AE] dark:hover:text-[#FFF4E8]"
-                aria-label="Decrease quantity"
+          <div className="flex flex-col sm:flex-row sm:items-center gap-3">
+            <div className="flex items-center gap-2.5 sm:gap-3">
+              <div className="flex items-center rounded-xl border border-[#E8DCD0] bg-[#FFFCF7] dark:border-[#382823] dark:bg-[#1E1614]">
+                <button
+                  type="button"
+                  onClick={() => setQuantity((q) => Math.max(1, q - 1))}
+                  disabled={quantity <= 1}
+                  className="p-3 text-[#806E66] transition hover:text-[#3B2924] disabled:opacity-40 dark:text-[#C7B8AE] dark:hover:text-[#FFF4E8]"
+                  aria-label="Decrease quantity"
+                >
+                  <Minus className="size-4" />
+                </button>
+                <span className="w-10 sm:w-12 text-center text-sm font-semibold text-[#3B2924] dark:text-[#FFF4E8]">
+                  {quantity}
+                </span>
+                <button
+                  type="button"
+                  onClick={() => setQuantity((q) => Math.min(product.stock, q + 1))}
+                  disabled={quantity >= product.stock || product.stock <= 0}
+                  className="p-3 text-[#806E66] transition hover:text-[#3B2924] disabled:opacity-40 dark:text-[#C7B8AE] dark:hover:text-[#FFF4E8]"
+                  aria-label="Increase quantity"
+                >
+                  <Plus className="size-4" />
+                </button>
+              </div>
+
+              <Button
+                size="icon"
+                variant={isInWishlist ? "danger" : "outline"}
+                onClick={handleWishlist}
+                className="size-12 shrink-0 rounded-xl"
+                aria-label={isInWishlist ? "Remove from wishlist" : "Add to wishlist"}
               >
-                <Minus className="size-4" />
-              </button>
-              <span className="w-12 text-center text-sm font-semibold text-[#3B2924] dark:text-[#FFF4E8]">
-                {quantity}
-              </span>
-              <button
-                type="button"
-                onClick={() => setQuantity((q) => Math.min(product.stock, q + 1))}
-                disabled={quantity >= product.stock || product.stock <= 0}
-                className="p-3 text-[#806E66] transition hover:text-[#3B2924] disabled:opacity-40 dark:text-[#C7B8AE] dark:hover:text-[#FFF4E8]"
-                aria-label="Increase quantity"
-              >
-                <Plus className="size-4" />
-              </button>
+                <Heart className={cn("size-5", isInWishlist ? "fill-current text-white" : "text-[#C98F8B] dark:text-[#D8A09B]")} />
+              </Button>
+
+              <ProductShareButton title={product.name} />
             </div>
 
             <AddToCartButton
               onClick={handleAddToCart}
               loading={adding}
               disabled={product.stock <= 0}
-              className="flex-1 sm:flex-none h-12 px-6"
+              className="w-full sm:flex-1 h-12 px-6"
             >
               Add to cart
             </AddToCartButton>
-
-            <Button
-              size="icon"
-              variant={isInWishlist ? "danger" : "outline"}
-              onClick={handleWishlist}
-              className="size-12 rounded-xl"
-              aria-label={isInWishlist ? "Remove from wishlist" : "Add to wishlist"}
-            >
-              <Heart className={cn("size-5", isInWishlist ? "fill-current text-white" : "text-[#C98F8B] dark:text-[#D8A09B]")} />
-            </Button>
-
-            <ProductShareButton title={product.name} />
           </div>
 
-          <div className="grid gap-3 rounded-2xl border border-[#E8DCD0] bg-[#F5EDE4]/60 p-4 text-sm dark:border-[#493A34] dark:bg-[#352925]/60 sm:grid-cols-3">
+          <div className="grid gap-3 rounded-2xl border border-[#E8DCD0] bg-[#F5EDE4]/60 p-4 text-xs sm:text-sm dark:border-[#382823] dark:bg-[#1E1614]/60 sm:grid-cols-3">
             <div className="flex items-center gap-2.5 text-[#3B2924] dark:text-[#FFF4E8]">
               <Truck className="size-5 text-[#B85C4A] dark:text-[#D47763]" />
               Free shipping over ₹500

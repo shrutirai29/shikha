@@ -84,7 +84,7 @@ export const UsersPage = () => {
         </p>
       </div>
 
-      <div className="flex flex-wrap gap-3">
+      <div className="flex flex-col sm:flex-row gap-3">
         <div className="relative min-w-0 flex-1 sm:max-w-xs">
           <Search className="pointer-events-none absolute left-3.5 top-1/2 size-4 -translate-y-1/2 text-[#806E66] dark:text-[#B3A198]" />
           <input
@@ -123,12 +123,12 @@ export const UsersPage = () => {
               <table className="w-full text-left text-sm">
                 <thead>
                   <tr className="border-b border-[#E8DCD0] text-xs uppercase tracking-wide text-[#806E66] dark:border-[#382823] dark:text-[#B3A198]">
-                    <th className="px-5 py-3 font-semibold">User</th>
-                    <th className="px-5 py-3 font-semibold">Role</th>
-                    <th className="px-5 py-3 font-semibold">Status</th>
-                    <th className="px-5 py-3 font-semibold">Verified</th>
-                    <th className="px-5 py-3 font-semibold">Joined</th>
-                    <th className="px-5 py-3 text-right font-semibold">Actions</th>
+                    <th className="px-3.5 py-3 sm:px-5 font-semibold">User</th>
+                    <th className="px-3.5 py-3 sm:px-5 font-semibold">Role</th>
+                    <th className="px-3.5 py-3 sm:px-5 font-semibold">Status</th>
+                    <th className="px-3.5 py-3 sm:px-5 font-semibold">Verified</th>
+                    <th className="px-3.5 py-3 sm:px-5 font-semibold">Joined</th>
+                    <th className="px-3.5 py-3 sm:px-5 text-right font-semibold">Actions</th>
                   </tr>
                 </thead>
                 <tbody>
@@ -137,9 +137,9 @@ export const UsersPage = () => {
                       key={target._id}
                       className="border-b border-[#E8DCD0]/60 last:border-0 hover:bg-[#F5EDE4]/30 dark:border-[#382823]/60 dark:hover:bg-[#251B18]/40 transition-colors"
                     >
-                      <td className="px-5 py-3">
-                        <div className="flex items-center gap-3">
-                          <span className="flex size-9 shrink-0 items-center justify-center rounded-full bg-gradient-to-br from-[#D47763] to-[#B85C4A] text-xs font-bold text-white shadow-sm">
+                      <td className="px-3.5 py-3 sm:px-5">
+                        <div className="flex items-center gap-2.5 sm:gap-3">
+                          <span className="flex size-8 sm:size-9 shrink-0 items-center justify-center rounded-full bg-gradient-to-br from-[#D47763] to-[#B85C4A] text-xs font-bold text-white shadow-sm">
                             {initials(target.name)}
                           </span>
                           <div className="min-w-0">
@@ -153,24 +153,24 @@ export const UsersPage = () => {
                           </div>
                         </div>
                       </td>
-                      <td className="px-5 py-3">
+                      <td className="px-3.5 py-3 sm:px-5">
                         <Badge variant={target.role === "admin" ? "info" : "default"}>
                           {target.role}
                         </Badge>
                       </td>
-                      <td className="px-5 py-3">
+                      <td className="px-3.5 py-3 sm:px-5">
                         <Badge variant={target.isActive ? "success" : "danger"}>
                           {target.isActive ? "Active" : "Inactive"}
                         </Badge>
                       </td>
-                      <td className="px-5 py-3 text-[#806E66] dark:text-[#B3A198]">
+                      <td className="px-3.5 py-3 sm:px-5 text-[#806E66] dark:text-[#B3A198]">
                         {target.isVerified ? "Yes" : "No"}
                       </td>
-                      <td className="px-5 py-3 text-[#806E66] dark:text-[#B3A198]">
+                      <td className="px-3.5 py-3 sm:px-5 text-[#806E66] dark:text-[#B3A198]">
                         {formatDate(target.createdAt)}
                       </td>
-                      <td className="px-5 py-3">
-                        <div className="flex justify-end gap-2">
+                      <td className="px-3.5 py-3 sm:px-5">
+                        <div className="flex justify-end gap-2 whitespace-nowrap">
                           <Button
                             size="sm"
                             variant="outline"

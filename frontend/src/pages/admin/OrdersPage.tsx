@@ -202,13 +202,13 @@ export const OrdersPage = () => {
               <table className="w-full text-left text-sm">
                 <thead>
                   <tr className="border-b border-[#E8DCD0] text-xs uppercase tracking-wide text-[#806E66] dark:border-[#382823] dark:text-[#B3A198]">
-                    <th className="px-5 py-3 font-semibold">Order</th>
-                    <th className="px-5 py-3 font-semibold">Customer</th>
-                    <th className="px-5 py-3 font-semibold">Items</th>
-                    <th className="px-5 py-3 font-semibold">Total</th>
-                    <th className="px-5 py-3 font-semibold">Status</th>
-                    <th className="px-5 py-3 font-semibold">Payment</th>
-                    <th className="px-5 py-3 text-right font-semibold">Actions</th>
+                    <th className="px-3.5 py-3 sm:px-5 font-semibold">Order</th>
+                    <th className="px-3.5 py-3 sm:px-5 font-semibold">Customer</th>
+                    <th className="px-3.5 py-3 sm:px-5 font-semibold">Items</th>
+                    <th className="px-3.5 py-3 sm:px-5 font-semibold">Total</th>
+                    <th className="px-3.5 py-3 sm:px-5 font-semibold">Status</th>
+                    <th className="px-3.5 py-3 sm:px-5 font-semibold">Payment</th>
+                    <th className="px-3.5 py-3 sm:px-5 text-right font-semibold">Actions</th>
                   </tr>
                 </thead>
                 <tbody>
@@ -221,7 +221,7 @@ export const OrdersPage = () => {
                         key={order._id}
                         className="border-b border-[#E8DCD0]/60 last:border-0 hover:bg-[#F5EDE4]/30 dark:border-[#382823]/60 dark:hover:bg-[#251B18]/40 transition-colors"
                       >
-                        <td className="px-5 py-3">
+                        <td className="px-3.5 py-3 sm:px-5">
                           <p className="font-semibold text-[#3B2924] dark:text-[#FFF4E8]">
                             #{order._id.slice(-6).toUpperCase()}
                           </p>
@@ -229,19 +229,19 @@ export const OrdersPage = () => {
                             {formatDateTime(order.createdAt)}
                           </p>
                         </td>
-                        <td className="px-5 py-3">
+                        <td className="px-3.5 py-3 sm:px-5">
                           <p className="font-semibold text-[#3B2924] dark:text-[#FFF4E8]">
                             {customer?.name ?? "—"}
                           </p>
                           <p className="text-xs text-[#806E66] dark:text-[#B3A198]">{customer?.email ?? "—"}</p>
                         </td>
-                        <td className="px-5 py-3 text-[#806E66] dark:text-[#B3A198]">
+                        <td className="px-3.5 py-3 sm:px-5 text-[#806E66] dark:text-[#B3A198]">
                           {order.items.reduce((sum, item) => sum + item.quantity, 0)}
                         </td>
-                        <td className="px-5 py-3 font-semibold text-[#3B2924] dark:text-[#FFF4E8]">
+                        <td className="px-3.5 py-3 sm:px-5 font-semibold text-[#3B2924] dark:text-[#FFF4E8]">
                           {formatCurrency(order.totalAmount)}
                         </td>
-                        <td className="px-5 py-3">
+                        <td className="px-3.5 py-3 sm:px-5">
                           <Badge variant={statusVariant(order.orderStatus)}>
                             {order.orderStatus}
                           </Badge>
@@ -252,14 +252,14 @@ export const OrdersPage = () => {
                             </p>
                           )}
                         </td>
-                        <td className="px-5 py-3">
+                        <td className="px-3.5 py-3 sm:px-5">
                           <Badge variant={order.paymentStatus === "Paid" ? "success" : "warning"}>
                             {order.paymentStatus}
                           </Badge>
                           <p className="mt-0.5 text-xs text-[#806E66] dark:text-[#B3A198]">{order.paymentMethod}</p>
                         </td>
-                        <td className="px-5 py-3">
-                          <div className="flex justify-end gap-2">
+                        <td className="px-3.5 py-3 sm:px-5">
+                          <div className="flex justify-end gap-2 whitespace-nowrap">
                             {(NEXT_STATUS[order.orderStatus] ?? []).length > 0 && (
                               <Button
                                 size="sm"

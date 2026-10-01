@@ -80,7 +80,7 @@ const StatusTimeline = ({ status }: { status: string }) => {
   const current = LIFECYCLE.indexOf(status as (typeof LIFECYCLE)[number]);
 
   return (
-    <ol className="flex items-center" aria-label="Order status">
+    <ol className="flex items-center min-w-full overflow-x-auto pb-2 scrollbar-none touch-pan-x [-webkit-overflow-scrolling:touch]" aria-label="Order status">
       {LIFECYCLE.map((step, index) => {
         const complete = index <= current;
 
@@ -88,24 +88,24 @@ const StatusTimeline = ({ status }: { status: string }) => {
           <li
             key={step}
             className={cn(
-              "flex items-center",
-              index < LIFECYCLE.length - 1 && "flex-1"
+              "flex items-center shrink-0 sm:shrink",
+              index < LIFECYCLE.length - 1 && "flex-1 min-w-[70px] sm:min-w-0"
             )}
           >
-            <div className="flex flex-col items-center gap-2">
+            <div className="flex flex-col items-center gap-1.5 sm:gap-2">
               <span
                 className={cn(
-                  "flex size-9 items-center justify-center rounded-full border-2 transition",
+                  "flex size-7 sm:size-9 items-center justify-center rounded-full border-2 text-xs sm:text-sm transition",
                   complete
                     ? "border-[#B85C4A] bg-[#B85C4A] text-white shadow-soft"
-                    : "border-[#E8DCD0] bg-[#FFFCF7] text-[#806E66] dark:border-[#493A34] dark:bg-[#2A211E] dark:text-[#C7B8AE]"
+                    : "border-[#E8DCD0] bg-[#FFFCF7] text-[#806E66] dark:border-[#382823] dark:bg-[#1E1614] dark:text-[#C7B8AE]"
                 )}
               >
-                {complete ? <Check className="size-4" /> : index + 1}
+                {complete ? <Check className="size-3.5 sm:size-4" /> : index + 1}
               </span>
               <span
                 className={cn(
-                  "whitespace-nowrap text-xs font-medium",
+                  "whitespace-nowrap text-[10px] sm:text-xs font-medium",
                   complete
                     ? "text-[#3B2924] dark:text-[#FFF4E8]"
                     : "text-[#806E66] dark:text-[#C7B8AE]"
@@ -117,10 +117,10 @@ const StatusTimeline = ({ status }: { status: string }) => {
             {index < LIFECYCLE.length - 1 && (
               <span
                 className={cn(
-                  "mx-2 mb-6 h-0.5 flex-1 rounded-full transition",
+                  "mx-1.5 sm:mx-2 mb-5 sm:mb-6 h-0.5 flex-1 rounded-full transition min-w-[20px]",
                   index < current
                     ? "bg-[#B85C4A] dark:bg-[#D47763]"
-                    : "bg-[#E8DCD0] dark:bg-[#493A34]"
+                    : "bg-[#E8DCD0] dark:bg-[#382823]"
                 )}
                 aria-hidden="true"
               />

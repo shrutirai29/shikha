@@ -91,13 +91,13 @@ export const PaymentsPage = () => {
               <table className="w-full text-left text-sm">
                 <thead>
                   <tr className="border-b border-[#E8DCD0] text-xs uppercase tracking-wide text-[#806E66] dark:border-[#382823] dark:text-[#B3A198]">
-                    <th className="px-5 py-3 font-semibold">Payment</th>
-                    <th className="px-5 py-3 font-semibold">Customer</th>
-                    <th className="px-5 py-3 font-semibold">Order</th>
-                    <th className="px-5 py-3 font-semibold">Amount</th>
-                    <th className="px-5 py-3 font-semibold">Status</th>
-                    <th className="px-5 py-3 font-semibold">Date</th>
-                    <th className="px-5 py-3 text-right font-semibold">Actions</th>
+                    <th className="px-3.5 py-3 sm:px-5 font-semibold">Payment</th>
+                    <th className="px-3.5 py-3 sm:px-5 font-semibold">Customer</th>
+                    <th className="px-3.5 py-3 sm:px-5 font-semibold">Order</th>
+                    <th className="px-3.5 py-3 sm:px-5 font-semibold">Amount</th>
+                    <th className="px-3.5 py-3 sm:px-5 font-semibold">Status</th>
+                    <th className="px-3.5 py-3 sm:px-5 font-semibold">Date</th>
+                    <th className="px-3.5 py-3 sm:px-5 text-right font-semibold">Actions</th>
                   </tr>
                 </thead>
                 <tbody>
@@ -112,25 +112,25 @@ export const PaymentsPage = () => {
                         key={payment._id}
                         className="border-b border-[#E8DCD0]/60 last:border-0 hover:bg-[#F5EDE4]/30 dark:border-[#382823]/60 dark:hover:bg-[#251B18]/40 transition-colors"
                       >
-                        <td className="px-5 py-3">
+                        <td className="px-3.5 py-3 sm:px-5">
                           <p className="font-mono text-xs font-semibold text-[#806E66] dark:text-[#B3A198]">
                             {payment.razorpayOrderId.slice(-10)}
                           </p>
                           <p className="text-xs text-[#806E66]/80 dark:text-[#B3A198]/70">{payment.currency}</p>
                         </td>
-                        <td className="px-5 py-3">
+                        <td className="px-3.5 py-3 sm:px-5">
                           <p className="font-semibold text-[#3B2924] dark:text-[#FFF4E8]">
                             {customer?.name ?? "—"}
                           </p>
                           <p className="text-xs text-[#806E66] dark:text-[#B3A198]">{customer?.email ?? "—"}</p>
                         </td>
-                        <td className="px-5 py-3 text-[#806E66] dark:text-[#B3A198]">
+                        <td className="px-3.5 py-3 sm:px-5 text-[#806E66] dark:text-[#B3A198]">
                           {order ? `#${order._id.slice(-6).toUpperCase()}` : "—"}
                         </td>
-                        <td className="px-5 py-3 font-semibold text-[#3B2924] dark:text-[#FFF4E8]">
+                        <td className="px-3.5 py-3 sm:px-5 font-semibold text-[#3B2924] dark:text-[#FFF4E8]">
                           {formatCurrency(payment.amount)}
                         </td>
-                        <td className="px-5 py-3">
+                        <td className="px-3.5 py-3 sm:px-5">
                           <Badge variant={statusVariant(payment.status)}>
                             {payment.status}
                           </Badge>
@@ -140,11 +140,11 @@ export const PaymentsPage = () => {
                             </p>
                           )}
                         </td>
-                        <td className="px-5 py-3 text-[#806E66] dark:text-[#B3A198]">
+                        <td className="px-3.5 py-3 sm:px-5 text-[#806E66] dark:text-[#B3A198]">
                           {formatDateTime(payment.createdAt)}
                         </td>
-                        <td className="px-5 py-3">
-                          <div className="flex justify-end">
+                        <td className="px-3.5 py-3 sm:px-5">
+                          <div className="flex justify-end whitespace-nowrap">
                             {payment.status === "Paid" && (
                               <Button
                                 size="sm"

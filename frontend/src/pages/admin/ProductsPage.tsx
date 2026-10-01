@@ -229,7 +229,7 @@ export const ProductsPage = () => {
 
   return (
     <div className="space-y-6">
-      <div className="flex flex-wrap items-center justify-between gap-4">
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
         <div>
           <h1 className="text-2xl font-bold tracking-tight text-[#3B2924] dark:text-[#FFF4E8]">
             Products
@@ -238,12 +238,12 @@ export const ProductsPage = () => {
             Manage your artisanal catalog and inventory
           </p>
         </div>
-        <Button onClick={openCreate}>
+        <Button onClick={openCreate} className="w-full sm:w-auto">
           <Plus className="size-4" /> Add product
         </Button>
       </div>
 
-      <div className="relative max-w-xs">
+      <div className="relative w-full sm:max-w-xs">
         <Search className="pointer-events-none absolute left-3.5 top-1/2 size-4 -translate-y-1/2 text-[#806E66] dark:text-[#B3A198]" />
         <input
           value={search}
@@ -271,12 +271,12 @@ export const ProductsPage = () => {
             <table className="w-full text-left text-sm">
               <thead>
                 <tr className="border-b border-[#E8DCD0] text-xs uppercase tracking-wide text-[#806E66] dark:border-[#382823] dark:text-[#B3A198]">
-                  <th className="px-5 py-3 font-semibold">Product</th>
-                  <th className="px-5 py-3 font-semibold">Category</th>
-                  <th className="px-5 py-3 font-semibold">Price</th>
-                  <th className="px-5 py-3 font-semibold">Stock</th>
-                  <th className="px-5 py-3 font-semibold">Status</th>
-                  <th className="px-5 py-3 text-right font-semibold">Actions</th>
+                  <th className="px-3.5 py-3 sm:px-5 font-semibold">Product</th>
+                  <th className="px-3.5 py-3 sm:px-5 font-semibold">Category</th>
+                  <th className="px-3.5 py-3 sm:px-5 font-semibold">Price</th>
+                  <th className="px-3.5 py-3 sm:px-5 font-semibold">Stock</th>
+                  <th className="px-3.5 py-3 sm:px-5 font-semibold">Status</th>
+                  <th className="px-3.5 py-3 sm:px-5 text-right font-semibold">Actions</th>
                 </tr>
               </thead>
               <tbody>
@@ -289,25 +289,25 @@ export const ProductsPage = () => {
                       key={product._id}
                       className="border-b border-[#E8DCD0]/60 last:border-0 hover:bg-[#F5EDE4]/30 dark:border-[#382823]/60 dark:hover:bg-[#251B18]/40 transition-colors"
                     >
-                      <td className="px-5 py-3">
-                        <div className="flex items-center gap-3">
-                          <div className="size-11 shrink-0 overflow-hidden rounded-xl border border-[#E8DCD0] bg-[#F5EDE4] dark:border-[#382823] dark:bg-[#251B18]">
+                      <td className="px-3.5 py-3 sm:px-5">
+                        <div className="flex items-center gap-2.5 sm:gap-3">
+                          <div className="size-10 sm:size-11 shrink-0 overflow-hidden rounded-xl border border-[#E8DCD0] bg-[#F5EDE4] dark:border-[#382823] dark:bg-[#251B18]">
                             {product.images[0] ? (
                               <img src={product.images[0]} alt="" className="size-full object-cover" />
                             ) : null}
                           </div>
                           <div className="min-w-0">
-                            <p className="max-w-52 truncate font-semibold text-[#3B2924] dark:text-[#FFF4E8]">
+                            <p className="max-w-36 sm:max-w-52 truncate font-semibold text-[#3B2924] dark:text-[#FFF4E8]">
                               {product.name}
                             </p>
-                            <p className="text-xs text-[#806E66] dark:text-[#B3A198]">{product.slug}</p>
+                            <p className="text-xs text-[#806E66] dark:text-[#B3A198] truncate max-w-32 sm:max-w-none">{product.slug}</p>
                           </div>
                         </div>
                       </td>
-                      <td className="px-5 py-3 text-[#806E66] dark:text-[#B3A198]">
+                      <td className="px-3.5 py-3 sm:px-5 text-[#806E66] dark:text-[#B3A198]">
                         {category?.name ?? "—"}
                       </td>
-                      <td className="px-5 py-3">
+                      <td className="px-3.5 py-3 sm:px-5">
                         <span className="font-semibold text-[#3B2924] dark:text-[#FFF4E8]">
                           {formatCurrency(product.discountPrice ?? product.price)}
                         </span>
@@ -317,12 +317,12 @@ export const ProductsPage = () => {
                           </span>
                         ) : null}
                       </td>
-                      <td className="px-5 py-3">
+                      <td className="px-3.5 py-3 sm:px-5">
                         <Badge variant={product.stock <= 5 ? "warning" : "success"}>
                           {product.stock}
                         </Badge>
                       </td>
-                      <td className="px-5 py-3">
+                      <td className="px-3.5 py-3 sm:px-5">
                         <div className="flex gap-1">
                           {product.isFeatured && <Badge variant="info">Featured</Badge>}
                           <Badge variant={product.isActive ? "success" : "danger"}>
@@ -330,8 +330,8 @@ export const ProductsPage = () => {
                           </Badge>
                         </div>
                       </td>
-                      <td className="px-5 py-3">
-                        <div className="flex justify-end gap-2">
+                      <td className="px-3.5 py-3 sm:px-5">
+                        <div className="flex justify-end gap-2 whitespace-nowrap">
                           <Button
                             size="sm"
                             variant="outline"

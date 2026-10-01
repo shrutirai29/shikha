@@ -90,10 +90,10 @@ export const ProductCard = ({
     >
       <Link
         to={`/products/${product.slug}`}
-        className="collect-card group relative flex h-full flex-col overflow-hidden rounded-[1.5rem] border border-[#E8DCD0] bg-[#FFFCF7] shadow-soft transition-all duration-300 dark:border-[#493A34] dark:bg-[#2A211E] hover:border-[#B85C4A]/50 dark:hover:border-[#D47763]/50"
+        className="collect-card group relative flex h-full flex-col overflow-hidden rounded-[1.25rem] sm:rounded-[1.5rem] border border-[#E8DCD0] bg-[#FFFCF7] shadow-soft transition-all duration-300 dark:border-[#382823] dark:bg-[#1E1614] hover:border-[#B85C4A]/50 dark:hover:border-[#D47763]/50"
       >
         {/* Image & Floating Tags */}
-        <div className="relative aspect-square overflow-hidden bg-gradient-to-b from-[#F5EDE4]/60 to-[#E8DCD0]/40 dark:from-[#352925]/60 dark:to-[#1F1816]/80 ring-1 ring-inset ring-[#3B2924]/5 dark:ring-white/5">
+        <div className="relative aspect-square overflow-hidden bg-gradient-to-b from-[#F5EDE4]/60 to-[#E8DCD0]/40 dark:from-[#251B18]/60 dark:to-[#140E0C]/80 ring-1 ring-inset ring-[#3B2924]/5 dark:ring-white/5">
           {image ? (
             <img
               src={image}
@@ -109,8 +109,8 @@ export const ProductCard = ({
 
           {/* Uiverse-style discount tag */}
           {hasDiscount && percentOff > 0 && (
-            <span className="absolute left-3 top-3 inline-flex items-center gap-1 rounded-full bg-[#B85C4A] px-2.5 py-0.5 text-[11px] font-bold text-white shadow-md shadow-[#B85C4A]/25">
-              <Sparkles className="size-3 text-[#D8A85B]" />
+            <span className="absolute left-2.5 top-2.5 sm:left-3 sm:top-3 inline-flex items-center gap-1 rounded-full bg-[#B85C4A] px-2 sm:px-2.5 py-0.5 text-[10px] sm:text-[11px] font-bold text-white shadow-md shadow-[#B85C4A]/25">
+              <Sparkles className="size-2.5 sm:size-3 text-[#D8A85B]" />
               {percentOff}% OFF
             </span>
           )}
@@ -121,13 +121,13 @@ export const ProductCard = ({
             onClick={handleWishlist}
             aria-label={isInWishlist ? "Remove from wishlist" : "Add to wishlist"}
             className={cn(
-              "absolute right-3 top-3 flex size-9 items-center justify-center rounded-full border border-[#E8DCD0] bg-[#FFFCF7]/90 shadow-sm backdrop-blur-md transition-all duration-200 hover:scale-110 active:scale-90 dark:border-[#493A34] dark:bg-[#2A211E]/90",
+              "absolute right-2.5 top-2.5 sm:right-3 sm:top-3 flex size-8 sm:size-9 items-center justify-center rounded-full border border-[#E8DCD0] bg-[#FFFCF7]/90 shadow-sm backdrop-blur-md transition-all duration-200 hover:scale-110 active:scale-90 dark:border-[#382823] dark:bg-[#1E1614]/90",
               isInWishlist
                 ? "text-[#C98F8B] dark:text-[#D8A09B]"
                 : "text-[#806E66] hover:text-[#C98F8B] dark:text-[#C7B8AE] dark:hover:text-[#D8A09B]"
             )}
           >
-            <Heart className={cn("size-4.5 transition-transform", isInWishlist && "fill-current scale-110")} />
+            <Heart className={cn("size-4 sm:size-4.5 transition-transform", isInWishlist && "fill-current scale-110")} />
           </button>
 
           {/* Out of Stock overlay */}
@@ -141,14 +141,14 @@ export const ProductCard = ({
         </div>
 
         {/* Content Body */}
-        <div className="flex flex-1 flex-col gap-2 p-4.5">
+        <div className="flex flex-1 flex-col gap-1.5 sm:gap-2 p-3 sm:p-4.5">
           {category && (
-            <span className="w-fit rounded-md bg-[#F5EDE4] px-2 py-0.5 text-[10px] font-bold uppercase tracking-widest text-[#806E66] dark:bg-[#352925] dark:text-[#C7B8AE]">
+            <span className="w-fit rounded-md bg-[#F5EDE4] px-1.5 sm:px-2 py-0.5 text-[9px] sm:text-[10px] font-bold uppercase tracking-widest text-[#806E66] dark:bg-[#251B18] dark:text-[#C7B8AE]">
               {category.name}
             </span>
           )}
 
-          <h3 className="line-clamp-2 text-sm font-semibold text-[#3B2924] transition-colors duration-200 group-hover:text-[#B85C4A] dark:text-[#FFF4E8] dark:group-hover:text-[#D47763]">
+          <h3 className="line-clamp-2 text-xs sm:text-sm font-semibold text-[#3B2924] transition-colors duration-200 group-hover:text-[#B85C4A] dark:text-[#FFF4E8] dark:group-hover:text-[#D47763]">
             {truncate(product.name, 55)}
           </h3>
 
@@ -156,19 +156,19 @@ export const ProductCard = ({
             <Rating value={product.averageRating} count={product.totalReviews} />
           </div>
 
-          <div className="mt-auto flex items-end justify-between gap-2 pt-2 border-t border-[#E8DCD0] dark:border-[#493A34]">
-            <div className="space-y-0.5">
-              <div className="flex items-baseline gap-2">
-                <span className="font-display text-lg font-bold text-[#B85C4A] dark:text-[#D47763]">
+          <div className="mt-auto flex items-end justify-between gap-1.5 sm:gap-2 pt-2 border-t border-[#E8DCD0] dark:border-[#382823]">
+            <div className="space-y-0.5 min-w-0">
+              <div className="flex items-baseline gap-1.5 sm:gap-2 flex-wrap">
+                <span className="font-display text-base sm:text-lg font-bold text-[#B85C4A] dark:text-[#D47763]">
                   {formatCurrency(price)}
                 </span>
                 {hasDiscount && (
-                  <span className="text-xs text-[#806E66] line-through dark:text-[#C7B8AE]">
+                  <span className="text-[11px] sm:text-xs text-[#806E66] line-through dark:text-[#C7B8AE]">
                     {formatCurrency(originalPrice)}
                   </span>
                 )}
               </div>
-              <p className="text-[11px] font-medium text-[#806E66] dark:text-[#C7B8AE]">
+              <p className="text-[10px] sm:text-[11px] font-medium text-[#806E66] dark:text-[#C7B8AE]">
                 {product.stock > 0 ? (
                   <span className="text-[#7A8B68] dark:text-[#9BAF83]">In stock</span>
                 ) : (
@@ -182,11 +182,11 @@ export const ProductCard = ({
               onClick={handleAddToCart}
               disabled={product.stock <= 0}
               aria-label={`Add ${product.name} to cart`}
-              className="cartBtn !min-w-0 !w-10 !h-10 !p-0 !rounded-full shadow-md shadow-[#B85C4A]/20 transition-transform duration-200 hover:scale-110 active:scale-95"
+              className="cartBtn !min-w-0 !size-8 sm:!size-10 !p-0 !rounded-full shrink-0 shadow-md shadow-[#B85C4A]/20 transition-transform duration-200 hover:scale-110 active:scale-95"
             >
               <span className="cartBtn-icon-wrap" aria-hidden="true">
                 <svg
-                  className="cart text-sm"
+                  className="cart text-xs sm:text-sm"
                   fill="currentColor"
                   viewBox="0 0 576 512"
                   height="1.1em"

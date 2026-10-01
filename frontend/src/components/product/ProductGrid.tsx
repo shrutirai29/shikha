@@ -22,14 +22,14 @@ export const ProductGrid = ({
   if (loading) {
     return (
       <div className={className}>
-        <div className="grid grid-cols-2 gap-4 sm:gap-6 md:grid-cols-3 lg:grid-cols-4">
+        <div className="grid grid-cols-2 gap-3 sm:gap-6 md:grid-cols-3 lg:grid-cols-4">
           {Array.from({ length: skeletonCount }).map((_, index) => (
             <div
               key={index}
-              className="overflow-hidden rounded-2xl border border-slate-200 dark:border-slate-700/60"
+              className="overflow-hidden rounded-2xl border border-[#E8DCD0] dark:border-[#382823]"
             >
               <Skeleton className="aspect-square w-full rounded-none" />
-              <div className="space-y-2 p-4">
+              <div className="space-y-2 p-3 sm:p-4">
                 <Skeleton className="h-3 w-16" />
                 <Skeleton className="h-4 w-4/5" />
                 <Skeleton className="h-4 w-2/3" />
@@ -55,7 +55,7 @@ export const ProductGrid = ({
 
   return (
     <div
-      className={`grid grid-cols-2 gap-4 sm:gap-6 md:grid-cols-3 lg:grid-cols-4 ${className ?? ""}`}
+      className={`grid grid-cols-2 gap-3 sm:gap-6 md:grid-cols-3 lg:grid-cols-4 ${className ?? ""}`}
     >
       {products.map((product, index) => (
         <ProductCard key={product._id} product={product} index={index} />

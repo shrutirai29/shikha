@@ -83,7 +83,7 @@ export const ProductsPage = () => {
     () => (
       <div className="space-y-6">
         <div>
-          <h3 className="mb-3 text-sm font-semibold uppercase tracking-wide text-slate-900 dark:text-white">
+          <h3 className="mb-3 text-sm font-semibold uppercase tracking-wide text-[#3B2924] dark:text-[#FFF4E8]">
             Categories
           </h3>
           <CategoryFilter
@@ -103,7 +103,7 @@ export const ProductsPage = () => {
               placeholder="Min"
               value={minPriceInput}
               onChange={(event) => setMinPriceInput(event.target.value)}
-              className="w-full rounded-xl border border-[#E8DCD0] bg-[#FFFCF7] px-3.5 py-2 text-sm text-[#3B2924] shadow-sm focus:border-[#B85C4A] focus:outline-none focus:ring-2 focus:ring-[#B85C4A]/20 dark:border-[#493A34] dark:bg-[#2A211E] dark:text-[#FFF4E8]"
+              className="w-full rounded-xl border border-[#E8DCD0] bg-[#FFFCF7] px-3.5 py-2 text-sm text-[#3B2924] shadow-sm focus:border-[#B85C4A] focus:outline-none focus:ring-2 focus:ring-[#B85C4A]/20 dark:border-[#382823] dark:bg-[#1E1614] dark:text-[#FFF4E8]"
             />
             <input
               type="number"
@@ -111,7 +111,7 @@ export const ProductsPage = () => {
               placeholder="Max"
               value={maxPriceInput}
               onChange={(event) => setMaxPriceInput(event.target.value)}
-              className="w-full rounded-xl border border-[#E8DCD0] bg-[#FFFCF7] px-3.5 py-2 text-sm text-[#3B2924] shadow-sm focus:border-[#B85C4A] focus:outline-none focus:ring-2 focus:ring-[#B85C4A]/20 dark:border-[#493A34] dark:bg-[#2A211E] dark:text-[#FFF4E8]"
+              className="w-full rounded-xl border border-[#E8DCD0] bg-[#FFFCF7] px-3.5 py-2 text-sm text-[#3B2924] shadow-sm focus:border-[#B85C4A] focus:outline-none focus:ring-2 focus:ring-[#B85C4A]/20 dark:border-[#382823] dark:bg-[#1E1614] dark:text-[#FFF4E8]"
             />
             <Button size="sm" variant="outline" className="w-full" onClick={applyPriceFilter}>
               Apply
@@ -140,7 +140,7 @@ export const ProductsPage = () => {
             value={sort}
             onChange={(event) => updateParams({ sort: event.target.value })}
             aria-label="Sort products"
-            className="h-10 rounded-xl border border-[#E8DCD0] bg-[#FFFCF7] px-3 text-sm font-medium text-[#3B2924] shadow-sm focus:border-[#B85C4A] focus:outline-none dark:border-[#493A34] dark:bg-[#2A211E] dark:text-[#FFF4E8]"
+            className="h-10 rounded-xl border border-[#E8DCD0] bg-[#FFFCF7] px-3 text-sm font-medium text-[#3B2924] shadow-sm focus:border-[#B85C4A] focus:outline-none dark:border-[#382823] dark:bg-[#1E1614] dark:text-[#FFF4E8]"
           >
             {sortOptions.map((option) => (
               <option key={option.value} value={option.value}>
@@ -188,13 +188,13 @@ export const ProductsPage = () => {
             className="absolute inset-0 bg-[#1F1816]/50 backdrop-blur-sm"
             onClick={() => setFiltersOpen(false)}
           />
-          <div className="absolute inset-y-0 left-0 w-80 overflow-y-auto bg-[#FFFCF7] p-5 shadow-2xl dark:bg-[#2A211E]">
+          <div className="absolute inset-y-0 left-0 w-80 max-w-[85vw] overflow-y-auto bg-[#FFFCF7] p-5 shadow-2xl dark:bg-[#1E1614]">
             <div className="mb-5 flex items-center justify-between">
               <h2 className="text-base font-semibold text-[#3B2924] dark:text-[#FFF4E8]">Filters</h2>
               <button
                 type="button"
                 onClick={() => setFiltersOpen(false)}
-                className="rounded-lg p-1.5 text-[#806E66] hover:bg-[#F5EDE4] dark:text-[#C7B8AE] dark:hover:bg-[#352925]"
+                className="rounded-lg p-1.5 text-[#806E66] hover:bg-[#F5EDE4] dark:text-[#C7B8AE] dark:hover:bg-[#251B18]"
                 aria-label="Close filters"
               >
                 <X className="size-5" />

@@ -75,12 +75,12 @@ export const AdminLayout = () => {
 
   const sidebar = (
     <div className="flex h-full flex-col">
-      <div className="flex h-16 items-center justify-between border-b border-[#E8DCD0] px-5 dark:border-[#493A34]">
+      <div className="flex h-16 items-center justify-between border-b border-[#E8DCD0] px-5 dark:border-[#382823]">
         <Logo to="/admin" />
         <button
           type="button"
           onClick={() => setSidebarOpen(false)}
-          className="rounded-lg p-1.5 text-[#806E66] hover:bg-[#F5EDE4] lg:hidden dark:text-[#C7B8AE] dark:hover:bg-[#352925]"
+          className="rounded-lg p-1.5 text-[#806E66] hover:bg-[#F5EDE4] lg:hidden dark:text-[#C7B8AE] dark:hover:bg-[#251B18]"
           aria-label="Close admin menu"
         >
           <X className="size-5" />
@@ -102,7 +102,7 @@ export const AdminLayout = () => {
         ))}
       </nav>
 
-      <div className="space-y-1 border-t border-[#E8DCD0] p-4 dark:border-[#493A34]">
+      <div className="space-y-1 border-t border-[#E8DCD0] p-4 dark:border-[#382823]">
         <Link
           to="/"
           className="flex w-full items-center gap-3 rounded-xl px-3 py-2 text-sm font-semibold text-[#7A8B68] transition hover:bg-[#7A8B68]/15 dark:text-[#9BAF83] dark:hover:bg-[#9BAF83]/15"
@@ -156,8 +156,8 @@ export const AdminLayout = () => {
         </div>
       )}
 
-      <div className="relative z-10 flex min-h-screen flex-1 flex-col lg:pl-64">
-        <header className="sticky top-0 z-30 flex h-16 items-center gap-3 border-b border-[#E8DCD0]/80 bg-[#FFFCF7]/85 px-4 backdrop-blur-xl dark:border-[#382823] dark:bg-[#1B1311]/85 sm:px-6 shadow-xs">
+      <div className="relative z-10 flex min-h-screen min-w-0 flex-1 flex-col overflow-x-hidden lg:pl-64">
+        <header className="sticky top-0 z-30 flex h-16 items-center gap-2.5 sm:gap-3 border-b border-[#E8DCD0]/80 bg-[#FFFCF7]/85 px-3 backdrop-blur-xl dark:border-[#382823] dark:bg-[#1B1311]/85 sm:px-6 shadow-xs">
           <button
             type="button"
             onClick={() => setSidebarOpen(true)}
@@ -166,14 +166,14 @@ export const AdminLayout = () => {
           >
             <Menu className="size-5" />
           </button>
-          <div className="flex items-center gap-2.5">
-            <span className="flex size-2 rounded-full bg-[#B85C4A] shadow-[0_0_8px_#B85C4A] animate-pulse dark:bg-[#D47763] dark:shadow-[0_0_8px_#D47763]" />
-            <h1 className="text-sm font-bold uppercase tracking-wider text-[#3B2924] dark:text-[#FFF4E8]">
-              Knottiingale Studio Admin
+          <div className="flex items-center gap-2 sm:gap-2.5 min-w-0">
+            <span className="flex size-2 shrink-0 rounded-full bg-[#B85C4A] shadow-[0_0_8px_#B85C4A] animate-pulse dark:bg-[#D47763] dark:shadow-[0_0_8px_#D47763]" />
+            <h1 className="text-xs sm:text-sm font-bold uppercase tracking-wider text-[#3B2924] dark:text-[#FFF4E8] truncate">
+              <span className="hidden sm:inline">Knottiingale Studio </span>Admin
             </h1>
           </div>
 
-          <div className="ml-auto flex items-center gap-3">
+          <div className="ml-auto flex items-center gap-2 sm:gap-3">
             <Link
               to="/"
               className="hidden sm:inline-flex items-center gap-1.5 rounded-xl border border-[#7A8B68]/30 bg-[#FFFCF7]/80 px-3 py-1.5 text-xs font-semibold text-[#7A8B68] shadow-xs backdrop-blur-sm transition hover:bg-[#7A8B68]/15 dark:border-[#9BAF83]/40 dark:bg-[#221A17]/80 dark:text-[#9BAF83] dark:hover:bg-[#9BAF83]/15"
@@ -192,7 +192,7 @@ export const AdminLayout = () => {
           </div>
         </header>
 
-        <main className="flex-1 p-4 sm:p-6 lg:p-8">
+        <main className="flex-1 min-w-0 p-3 sm:p-6 lg:p-8">
           <Outlet />
         </main>
       </div>

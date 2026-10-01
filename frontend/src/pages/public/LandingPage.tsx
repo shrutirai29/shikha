@@ -296,8 +296,8 @@ export const LandingPage = () => {
       {/* ============================================================
           TOP E-COMMERCE CATEGORY RAIL (Flipkart-style)
           ============================================================ */}
-      <nav aria-label="Quick Categories" className="border-b border-[#E8DCD0] bg-[#FFFCF7] shadow-xs dark:border-[#493A34] dark:bg-[#2A211E]">
-        <div className="mx-auto flex max-w-7xl items-center justify-between gap-3 overflow-x-auto px-4 py-3 sm:px-6 scrollbar-none">
+      <nav aria-label="Quick Categories" className="border-b border-[#E8DCD0] bg-[#FFFCF7] shadow-xs dark:border-[#382823] dark:bg-[#1E1614]">
+        <div className="mx-auto flex max-w-7xl items-center justify-start sm:justify-between gap-2.5 sm:gap-3 overflow-x-auto px-3 py-3 sm:px-6 scrollbar-none touch-pan-x [-webkit-overflow-scrolling:touch]">
           {QUICK_CATEGORIES.map((cat) => (
             <Link
               key={cat.name}
@@ -314,7 +314,7 @@ export const LandingPage = () => {
                   </span>
                 )}
               </div>
-              <span className="text-xs font-semibold text-[#3B2924] transition group-hover:text-[#B85C4A] whitespace-nowrap dark:text-[#FFF4E8] dark:group-hover:text-[#D47763]">
+              <span className="text-[11px] sm:text-xs font-semibold text-[#3B2924] transition group-hover:text-[#B85C4A] whitespace-nowrap dark:text-[#FFF4E8] dark:group-hover:text-[#D47763]">
                 {cat.name}
               </span>
             </Link>
@@ -325,7 +325,7 @@ export const LandingPage = () => {
       {/* ============================================================
           MYNTRA-STYLE FIRST ORDER OFFER STRIP
           ============================================================ */}
-      <div className="bg-gradient-to-r from-[#B85C4A] via-[#914536] to-[#B85C4A] px-4 py-2 text-center text-xs font-semibold tracking-wide text-white shadow-xs">
+      <div className="bg-gradient-to-r from-[#B85C4A] via-[#914536] to-[#B85C4A] px-3 sm:px-4 py-2 text-center text-xs font-semibold tracking-wide text-white shadow-xs">
         <span className="inline-flex items-center gap-2">
           <span>🎟️ <strong>FLAT 10% OFF</strong> on your 1st order with code <span className="underline decoration-white/60 font-mono font-bold tracking-wider">KNOTTY10</span></span>
           <span className="hidden sm:inline">•</span>
@@ -336,7 +336,7 @@ export const LandingPage = () => {
       {/* ============================================================
           1. HERO SECTION (Artisanal Photography Backdrop & Editorial Layout)
           ============================================================ */}
-      <section className="relative min-h-[580px] sm:min-h-[640px] lg:min-h-[700px] overflow-hidden bg-[#FFF8F0] dark:bg-[#1F1816]">
+      <section className="relative min-h-[540px] sm:min-h-[640px] lg:min-h-[700px] overflow-hidden bg-[#FFF8F0] dark:bg-[#1F1816]">
         {/* Full-bleed photography backdrop */}
         <div className="absolute inset-0 select-none">
           <img
@@ -356,7 +356,7 @@ export const LandingPage = () => {
         </div>
 
         {/* Hero Content Container */}
-        <div className="relative mx-auto grid max-w-7xl items-center gap-10 px-4 py-16 sm:px-6 sm:py-20 lg:grid-cols-12 lg:gap-8 lg:py-28">
+        <div className="relative mx-auto grid max-w-7xl items-center gap-8 sm:gap-10 px-4 py-12 sm:px-6 sm:py-20 lg:grid-cols-12 lg:gap-8 lg:py-28">
           {/* Left Column: Brand Story & Call-to-actions */}
           <motion.div
             initial={{ opacity: 0, y: 24 }}
@@ -365,8 +365,8 @@ export const LandingPage = () => {
             className="lg:col-span-7 xl:col-span-7 max-w-2xl"
           >
             {/* Pill: Hand-Stitched by Shikha Rai */}
-            <div className="inline-flex items-center gap-2.5 rounded-full border border-[#B85C4A]/25 bg-[#FFFCF7]/90 px-4 py-1.5 text-xs font-semibold text-[#B85C4A] shadow-soft backdrop-blur-md dark:border-[#D47763]/30 dark:bg-[#2A211E]/90 dark:text-[#D47763]">
-              <span className="relative flex size-2">
+            <div className="inline-flex items-center gap-2 rounded-full border border-[#B85C4A]/25 bg-[#FFFCF7]/90 px-3.5 sm:px-4 py-1.5 text-[11px] sm:text-xs font-semibold text-[#B85C4A] shadow-soft backdrop-blur-md dark:border-[#D47763]/30 dark:bg-[#1E1614]/90 dark:text-[#D47763]">
+              <span className="relative flex size-2 shrink-0">
                 <span className="absolute inline-flex size-full animate-ping rounded-full bg-[#C98F8B] opacity-75" />
                 <span className="relative inline-flex size-2 rounded-full bg-[#B85C4A] dark:bg-[#D47763]" />
               </span>
@@ -374,7 +374,7 @@ export const LandingPage = () => {
             </div>
 
             {/* Display Headline */}
-            <h1 className="font-display mt-5 text-4xl font-semibold leading-[1.08] tracking-tight text-[#3B2924] sm:text-6xl lg:text-7xl dark:text-[#FFF4E8]">
+            <h1 className="font-display mt-4 sm:mt-5 text-3xl sm:text-5xl lg:text-7xl font-semibold leading-[1.12] sm:leading-[1.08] tracking-tight text-[#3B2924] dark:text-[#FFF4E8]">
               Handmade with love,{" "}
               <span className="block font-normal italic text-[#B85C4A] dark:text-[#D47763]">
                 one stitch at a time.
@@ -382,24 +382,24 @@ export const LandingPage = () => {
             </h1>
 
             {/* Narrative description */}
-            <p className="mt-5 max-w-xl text-base leading-relaxed text-[#806E66] sm:text-lg dark:text-[#C7B8AE]">
+            <p className="mt-4 sm:mt-5 max-w-xl text-sm leading-relaxed text-[#806E66] sm:text-lg dark:text-[#C7B8AE]">
               Welcome to <strong className="text-[#3B2924] dark:text-[#FFF4E8]">Knottiingale</strong>. Soft plush toys, cozy
               home décor, torans, bags, and heartfelt handcrafted gifts — carefully crocheted with natural cotton yarn
               by <strong className="text-[#3B2924] dark:text-[#FFF4E8]">Shikha Rai</strong> and delivered across India.
             </p>
 
             {/* Action buttons */}
-            <div className="mt-8 flex flex-wrap items-center gap-3.5">
+            <div className="mt-6 sm:mt-8 flex flex-col sm:flex-row items-stretch sm:items-center gap-3">
               <Link
                 to="/products"
-                className="group relative inline-flex h-12.5 items-center gap-2 rounded-2xl bg-[#B85C4A] px-7 text-sm font-bold text-white shadow-soft transition hover:bg-[#914536] hover:shadow-lift active:scale-98 dark:bg-[#D47763] dark:text-[#1F1816] dark:hover:bg-[#E28A76]"
+                className="group relative inline-flex h-12 items-center justify-center gap-2 rounded-2xl bg-[#B85C4A] px-7 text-sm font-bold text-white shadow-soft transition hover:bg-[#914536] hover:shadow-lift active:scale-98 dark:bg-[#D47763] dark:text-[#1F1816] dark:hover:bg-[#E28A76]"
               >
                 Explore Collection
                 <ArrowRight className="size-4.5 transition-transform group-hover:translate-x-1" />
               </Link>
               <Link
                 to="/contact"
-                className="inline-flex h-12.5 items-center gap-2 rounded-2xl border border-[#7A8B68] bg-[#FFFCF7]/90 px-6 text-sm font-semibold text-[#7A8B68] shadow-sm backdrop-blur-md transition hover:bg-[#7A8B68]/15 active:scale-98 dark:border-[#9BAF83] dark:bg-[#2A211E]/90 dark:text-[#9BAF83] dark:hover:bg-[#9BAF83]/15"
+                className="inline-flex h-12 items-center justify-center gap-2 rounded-2xl border border-[#7A8B68] bg-[#FFFCF7]/90 px-6 text-sm font-semibold text-[#7A8B68] shadow-sm backdrop-blur-md transition hover:bg-[#7A8B68]/15 active:scale-98 dark:border-[#9BAF83] dark:bg-[#1E1614]/90 dark:text-[#9BAF83] dark:hover:bg-[#9BAF83]/15"
               >
                 Custom Order Inquiry
               </Link>
@@ -622,7 +622,7 @@ export const LandingPage = () => {
           FLIPKART-STYLE HORIZONTAL RAIL 1: TRENDING BESTSELLERS
           ============================================================ */}
       <section className="mx-auto max-w-7xl px-4 py-6 sm:px-6 sm:py-8">
-        <div className="rounded-3xl border border-[#E8DCD0] bg-gradient-to-b from-[#FFFCF7] to-[#F5EDE4]/30 p-4 sm:p-6 shadow-soft dark:border-[#493A34] dark:from-[#2A211E] dark:to-[#1F1816]">
+        <div className="rounded-3xl border border-[#E8DCD0] bg-gradient-to-b from-[#FFFCF7] to-[#F5EDE4]/30 p-4 sm:p-6 shadow-soft dark:border-[#382823] dark:from-[#1E1614] dark:to-[#150F0D]">
           {/* Header with Title and Scroll Controls */}
           <div className="mb-5 flex items-center justify-between gap-4">
             <div className="flex items-center gap-3">
@@ -650,7 +650,7 @@ export const LandingPage = () => {
                 type="button"
                 onClick={() => scrollRail(trendingRailRef, "left")}
                 aria-label="Scroll left"
-                className="flex size-9 items-center justify-center rounded-xl border border-[#E8DCD0] bg-white text-[#3B2924] shadow-xs transition hover:bg-[#F5EDE4] active:scale-95 dark:border-[#493A34] dark:bg-[#352925] dark:text-[#FFF4E8] dark:hover:bg-[#493A34]"
+                className="flex size-9 items-center justify-center rounded-xl border border-[#E8DCD0] bg-white text-[#3B2924] shadow-xs transition hover:bg-[#F5EDE4] active:scale-95 dark:border-[#382823] dark:bg-[#251B18] dark:text-[#FFF4E8] dark:hover:bg-[#352925]"
               >
                 <ChevronLeft className="size-4" />
               </button>
@@ -658,7 +658,7 @@ export const LandingPage = () => {
                 type="button"
                 onClick={() => scrollRail(trendingRailRef, "right")}
                 aria-label="Scroll right"
-                className="flex size-9 items-center justify-center rounded-xl border border-[#E8DCD0] bg-white text-[#3B2924] shadow-xs transition hover:bg-[#F5EDE4] active:scale-95 dark:border-[#493A34] dark:bg-[#352925] dark:text-[#FFF4E8] dark:hover:bg-[#493A34]"
+                className="flex size-9 items-center justify-center rounded-xl border border-[#E8DCD0] bg-white text-[#3B2924] shadow-xs transition hover:bg-[#F5EDE4] active:scale-95 dark:border-[#382823] dark:bg-[#251B18] dark:text-[#FFF4E8] dark:hover:bg-[#352925]"
               >
                 <ChevronRight className="size-4" />
               </button>
@@ -668,7 +668,7 @@ export const LandingPage = () => {
           {/* Horizontal Snap Scroll Track */}
           <div
             ref={trendingRailRef}
-            className="flex gap-4 overflow-x-auto pb-2 scrollbar-none snap-x snap-mandatory"
+            className="flex gap-3 sm:gap-4 overflow-x-auto pb-2 scrollbar-none snap-x snap-mandatory touch-pan-x [-webkit-overflow-scrolling:touch]"
           >
             {CURATED_TRENDING.map((item) => {
               const discountPercent = Math.round(
@@ -678,11 +678,11 @@ export const LandingPage = () => {
               return (
                 <div
                   key={item._id}
-                  className="group relative flex w-[230px] sm:w-[260px] shrink-0 snap-start flex-col justify-between overflow-hidden rounded-2xl border border-[#E8DCD0] bg-white p-3 shadow-xs transition-all duration-300 hover:-translate-y-1 hover:border-[#B85C4A]/40 hover:shadow-lift dark:border-[#493A34] dark:bg-[#2A211E]"
+                  className="group relative flex w-[195px] sm:w-[260px] shrink-0 snap-start flex-col justify-between overflow-hidden rounded-2xl border border-[#E8DCD0] bg-white p-3 shadow-xs transition-all duration-300 hover:-translate-y-1 hover:border-[#B85C4A]/40 hover:shadow-lift dark:border-[#382823] dark:bg-[#1E1614]"
                 >
                   {/* Image area */}
                   <Link to={`/products?search=${encodeURIComponent(item.name)}`} className="block">
-                    <div className="relative aspect-square w-full overflow-hidden rounded-xl bg-[#F5EDE4] dark:bg-[#352925]">
+                    <div className="relative aspect-square w-full overflow-hidden rounded-xl bg-[#F5EDE4] dark:bg-[#251B18]">
                       <img
                         src={item.image}
                         alt={item.name}
@@ -728,11 +728,11 @@ export const LandingPage = () => {
                   </Link>
 
                   {/* Quick Action Button */}
-                  <div className="mt-3 pt-2 border-t border-[#E8DCD0]/60 dark:border-[#493A34]/60">
+                  <div className="mt-3 pt-2 border-t border-[#E8DCD0]/60 dark:border-[#382823]/60">
                     <button
                       type="button"
                       onClick={() => handleQuickAdd(item)}
-                      className="flex w-full items-center justify-center gap-1.5 rounded-xl bg-[#F5EDE4] py-2 text-xs font-bold text-[#3B2924] transition hover:bg-[#B85C4A] hover:text-white active:scale-98 dark:bg-[#352925] dark:text-[#FFF4E8] dark:hover:bg-[#D47763] dark:hover:text-[#1F1816]"
+                      className="flex w-full items-center justify-center gap-1.5 rounded-xl bg-[#F5EDE4] py-2 text-xs font-bold text-[#3B2924] transition hover:bg-[#B85C4A] hover:text-white active:scale-98 dark:bg-[#251B18] dark:text-[#FFF4E8] dark:hover:bg-[#D47763] dark:hover:text-[#1F1816]"
                     >
                       <ShoppingBag className="size-3.5" />
                       Add to Bag
@@ -749,7 +749,7 @@ export const LandingPage = () => {
           FLIPKART-STYLE HORIZONTAL RAIL 2: POCKET-FRIENDLY UNDER ₹499
           ============================================================ */}
       <section className="mx-auto max-w-7xl px-4 py-4 sm:px-6 sm:py-6">
-        <div className="rounded-3xl border border-[#E8DCD0] bg-[#FFFCF7] p-4 sm:p-6 shadow-soft dark:border-[#493A34] dark:bg-[#2A211E]">
+        <div className="rounded-3xl border border-[#E8DCD0] bg-[#FFFCF7] p-4 sm:p-6 shadow-soft dark:border-[#382823] dark:bg-[#1E1614]">
           {/* Header */}
           <div className="mb-5 flex items-center justify-between gap-4">
             <div className="flex items-center gap-3">
@@ -777,7 +777,7 @@ export const LandingPage = () => {
                 type="button"
                 onClick={() => scrollRail(budgetRailRef, "left")}
                 aria-label="Scroll left"
-                className="flex size-9 items-center justify-center rounded-xl border border-[#E8DCD0] bg-white text-[#3B2924] shadow-xs transition hover:bg-[#F5EDE4] active:scale-95 dark:border-[#493A34] dark:bg-[#352925] dark:text-[#FFF4E8] dark:hover:bg-[#493A34]"
+                className="flex size-9 items-center justify-center rounded-xl border border-[#E8DCD0] bg-white text-[#3B2924] shadow-xs transition hover:bg-[#F5EDE4] active:scale-95 dark:border-[#382823] dark:bg-[#251B18] dark:text-[#FFF4E8] dark:hover:bg-[#352925]"
               >
                 <ChevronLeft className="size-4" />
               </button>
@@ -785,7 +785,7 @@ export const LandingPage = () => {
                 type="button"
                 onClick={() => scrollRail(budgetRailRef, "right")}
                 aria-label="Scroll right"
-                className="flex size-9 items-center justify-center rounded-xl border border-[#E8DCD0] bg-white text-[#3B2924] shadow-xs transition hover:bg-[#F5EDE4] active:scale-95 dark:border-[#493A34] dark:bg-[#352925] dark:text-[#FFF4E8] dark:hover:bg-[#493A34]"
+                className="flex size-9 items-center justify-center rounded-xl border border-[#E8DCD0] bg-white text-[#3B2924] shadow-xs transition hover:bg-[#F5EDE4] active:scale-95 dark:border-[#382823] dark:bg-[#251B18] dark:text-[#FFF4E8] dark:hover:bg-[#352925]"
               >
                 <ChevronRight className="size-4" />
               </button>
@@ -795,15 +795,15 @@ export const LandingPage = () => {
           {/* Horizontal Snap Scroll Track */}
           <div
             ref={budgetRailRef}
-            className="flex gap-4 overflow-x-auto pb-2 scrollbar-none snap-x snap-mandatory"
+            className="flex gap-3 sm:gap-4 overflow-x-auto pb-2 scrollbar-none snap-x snap-mandatory touch-pan-x [-webkit-overflow-scrolling:touch]"
           >
             {CURATED_UNDER_499.map((item) => (
               <div
                 key={item._id}
-                className="group relative flex w-[190px] sm:w-[210px] shrink-0 snap-start flex-col justify-between overflow-hidden rounded-2xl border border-[#E8DCD0] bg-white p-3 shadow-xs transition-all duration-300 hover:-translate-y-1 hover:border-[#7A8B68]/40 hover:shadow-lift dark:border-[#493A34] dark:bg-[#2A211E]"
+                className="group relative flex w-[175px] sm:w-[210px] shrink-0 snap-start flex-col justify-between overflow-hidden rounded-2xl border border-[#E8DCD0] bg-white p-3 shadow-xs transition-all duration-300 hover:-translate-y-1 hover:border-[#7A8B68]/40 hover:shadow-lift dark:border-[#382823] dark:bg-[#1E1614]"
               >
                 <Link to={`/products?search=${encodeURIComponent(item.name)}`} className="block">
-                  <div className="relative aspect-square w-full overflow-hidden rounded-xl bg-[#F5EDE4] dark:bg-[#352925]">
+                  <div className="relative aspect-square w-full overflow-hidden rounded-xl bg-[#F5EDE4] dark:bg-[#251B18]">
                     <img
                       src={item.image}
                       alt={item.name}
@@ -830,11 +830,11 @@ export const LandingPage = () => {
                   </div>
                 </Link>
 
-                <div className="mt-2.5 pt-2 border-t border-[#E8DCD0]/60 dark:border-[#493A34]/60">
+                <div className="mt-2.5 pt-2 border-t border-[#E8DCD0]/60 dark:border-[#382823]/60">
                   <button
                     type="button"
                     onClick={() => handleQuickAdd(item)}
-                    className="flex w-full items-center justify-center gap-1 rounded-lg bg-[#F5EDE4] py-1.5 text-[11px] font-bold text-[#3B2924] transition hover:bg-[#7A8B68] hover:text-white active:scale-98 dark:bg-[#352925] dark:text-[#FFF4E8] dark:hover:bg-[#9BAF83] dark:hover:text-[#1F1816]"
+                    className="flex w-full items-center justify-center gap-1 rounded-lg bg-[#F5EDE4] py-1.5 text-[11px] font-bold text-[#3B2924] transition hover:bg-[#7A8B68] hover:text-white active:scale-98 dark:bg-[#251B18] dark:text-[#FFF4E8] dark:hover:bg-[#9BAF83] dark:hover:text-[#1F1816]"
                   >
                     <ShoppingBag className="size-3" />
                     Quick Add

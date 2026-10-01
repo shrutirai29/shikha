@@ -95,33 +95,33 @@ export const Header = () => {
   return (
     <header className="sticky top-0 z-50 border-b border-[#E8DCD0] bg-[#FFFCF7]/95 backdrop-blur-xl dark:border-[#382823] dark:bg-[#140E0C]/90">
       {/* Top micro-announcement bar */}
-      <div className="border-b border-[#E8DCD0]/20 bg-[#3B2924] px-4 py-1.5 text-[11px] font-medium text-[#FFF4E8] dark:bg-[#0E0908] dark:border-[#382823]">
-        <div className="mx-auto flex max-w-7xl items-center justify-between">
-          <div className="flex items-center gap-1.5">
+      <div className="border-b border-[#E8DCD0]/20 bg-[#3B2924] px-3 sm:px-4 py-1.5 text-[10px] sm:text-[11px] font-medium text-[#FFF4E8] dark:bg-[#0E0908] dark:border-[#382823]">
+        <div className="mx-auto flex max-w-7xl items-center justify-between gap-2">
+          <div className="hidden sm:flex items-center gap-1.5 shrink-0">
             <span className="flex size-2 rounded-full bg-[#7A8B68] animate-pulse dark:bg-[#9BAF83]" />
             <span className="font-semibold text-white">Knottiingale Studio</span>
-            <span className="hidden sm:inline text-[#C7B8AE] dark:text-[#B3A198]">· Handcrafted by Shikha Rai</span>
+            <span className="hidden md:inline text-[#C7B8AE] dark:text-[#B3A198]">· Handcrafted by Shikha Rai</span>
           </div>
-          <p className="flex items-center gap-1.5 text-[#F5EDE4]">
-            <Sparkles className="size-3 text-[#D8A85B] dark:text-[#E0B86A]" />
-            <span>Free Shipping across India on orders &gt; ₹500 · COD Available</span>
+          <p className="mx-auto sm:mx-0 flex items-center gap-1.5 text-[#F5EDE4] truncate text-center sm:text-left">
+            <Sparkles className="size-3 text-[#D8A85B] dark:text-[#E0B86A] shrink-0" />
+            <span className="truncate">Free Shipping across India on orders &gt; ₹500 · COD Available</span>
           </p>
           <a
             href="https://wa.me/917985835558"
             target="_blank"
             rel="noopener noreferrer"
-            className="hidden lg:inline-flex items-center gap-1 font-semibold text-[#D8A85B] transition-colors hover:text-[#FFF4E8] dark:text-[#E0B86A]"
+            className="hidden lg:inline-flex items-center gap-1 font-semibold text-[#D8A85B] transition-colors hover:text-[#FFF4E8] dark:text-[#E0B86A] shrink-0"
           >
             Custom Orders: WhatsApp +91 7985835558 →
           </a>
         </div>
       </div>
 
-      <div className="mx-auto flex h-16 max-w-7xl items-center justify-between gap-3 px-4 sm:px-6">
-        <div className="flex items-center gap-2">
+      <div className="mx-auto flex h-16 max-w-7xl items-center justify-between gap-2 sm:gap-3 px-3 sm:px-6">
+        <div className="flex items-center gap-1.5 sm:gap-2">
           <button
             type="button"
-            className="rounded-lg p-2 text-[#806E66] hover:bg-[#F5EDE4] lg:hidden dark:text-[#B3A198] dark:hover:bg-[#251B18]"
+            className="rounded-lg p-1.5 sm:p-2 text-[#806E66] hover:bg-[#F5EDE4] lg:hidden dark:text-[#B3A198] dark:hover:bg-[#251B18]"
             onClick={() => setMobileOpen((open) => !open)}
             aria-label="Toggle navigation menu"
           >
@@ -150,7 +150,7 @@ export const Header = () => {
           )}
         </nav>
 
-        <div className="flex items-center gap-1">
+        <div className="flex items-center gap-0.5 sm:gap-1">
           {searchOpen && (
             <form onSubmit={handleSearch} className="relative mr-1 hidden sm:block">
               <Search className="pointer-events-none absolute left-3.5 top-1/2 size-4 -translate-y-1/2 text-[#806E66] dark:text-[#B3A198]" />
@@ -159,7 +159,7 @@ export const Header = () => {
                 value={query}
                 onChange={(event) => setQuery(event.target.value)}
                 placeholder="Search handmade treasures…"
-                className="h-9.5 w-60 rounded-full border border-[#E8DCD0] bg-[#F5EDE4]/70 pl-9.5 pr-4 text-sm text-[#3B2924] shadow-inner transition-all focus:w-72 focus:border-[#B85C4A] focus:bg-[#FFFCF7] focus:outline-none focus:ring-4 focus:ring-[#B85C4A]/10 dark:border-[#382823] dark:bg-[#1E1614] dark:text-[#FFF4E8] dark:focus:border-[#D47763]"
+                className="h-9.5 w-48 md:w-60 rounded-full border border-[#E8DCD0] bg-[#F5EDE4]/70 pl-9.5 pr-4 text-sm text-[#3B2924] shadow-inner transition-all focus:w-60 md:focus:w-72 focus:border-[#B85C4A] focus:bg-[#FFFCF7] focus:outline-none focus:ring-4 focus:ring-[#B85C4A]/10 dark:border-[#382823] dark:bg-[#1E1614] dark:text-[#FFF4E8] dark:focus:border-[#D47763]"
               />
             </form>
           )}
@@ -167,29 +167,29 @@ export const Header = () => {
           <button
             type="button"
             onClick={() => setSearchOpen((open) => !open)}
-            className="rounded-xl p-2.5 text-[#806E66] transition hover:bg-[#F5EDE4] hover:text-[#3B2924] sm:hidden dark:text-[#B3A198] dark:hover:bg-[#251B18] dark:hover:text-[#FFF4E8]"
-            aria-label="Open search"
+            className="rounded-xl p-2 sm:p-2.5 text-[#806E66] transition hover:bg-[#F5EDE4] hover:text-[#3B2924] dark:text-[#B3A198] dark:hover:bg-[#251B18] dark:hover:text-[#FFF4E8]"
+            aria-label={searchOpen ? "Close search" : "Open search"}
           >
-            <Search className="size-5" />
+            {searchOpen ? <X className="size-4.5 sm:size-5" /> : <Search className="size-4.5 sm:size-5" />}
           </button>
 
           <button
             type="button"
             onClick={toggleTheme}
-            className="rounded-xl p-2.5 text-[#806E66] transition hover:bg-[#F5EDE4] hover:text-[#3B2924] dark:text-[#B3A198] dark:hover:bg-[#251B18] dark:hover:text-[#FFF4E8]"
+            className="rounded-xl p-2 sm:p-2.5 text-[#806E66] transition hover:bg-[#F5EDE4] hover:text-[#3B2924] dark:text-[#B3A198] dark:hover:bg-[#251B18] dark:hover:text-[#FFF4E8]"
             aria-label={`Switch to ${theme === "dark" ? "light" : "dark"} mode`}
           >
-            {theme === "dark" ? <Sun className="size-5 text-[#E0B86A]" /> : <Moon className="size-5 text-[#B85C4A]" />}
+            {theme === "dark" ? <Sun className="size-4.5 sm:size-5 text-[#E0B86A]" /> : <Moon className="size-4.5 sm:size-5 text-[#B85C4A]" />}
           </button>
 
           <Link
             to={isAuthenticated ? "/wishlist" : "/login"}
-            className="relative rounded-xl p-2.5 text-[#806E66] transition hover:bg-[#F5EDE4] hover:text-[#3B2924] dark:text-[#B3A198] dark:hover:bg-[#251B18] dark:hover:text-[#FFF4E8]"
+            className="relative rounded-xl p-2 sm:p-2.5 text-[#806E66] transition hover:bg-[#F5EDE4] hover:text-[#3B2924] dark:text-[#B3A198] dark:hover:bg-[#251B18] dark:hover:text-[#FFF4E8]"
             aria-label="Wishlist"
           >
-            <Heart className="size-5" />
+            <Heart className="size-4.5 sm:size-5" />
             {isAuthenticated && (wishlist?.length ?? 0) > 0 && (
-              <span className="absolute right-1 top-1 flex size-4.5 items-center justify-center rounded-full bg-[#C98F8B] text-[10px] font-bold text-white shadow-sm ring-2 ring-[#FFFCF7] dark:bg-[#D47763] dark:text-white dark:ring-[#140E0C]">
+              <span className="absolute right-0.5 top-0.5 sm:right-1 sm:top-1 flex size-4 sm:size-4.5 items-center justify-center rounded-full bg-[#C98F8B] text-[9px] sm:text-[10px] font-bold text-white shadow-sm ring-2 ring-[#FFFCF7] dark:bg-[#D47763] dark:text-white dark:ring-[#140E0C]">
                 {wishlist?.length}
               </span>
             )}
@@ -197,12 +197,12 @@ export const Header = () => {
 
           <Link
             to={isAuthenticated ? "/cart" : "/login"}
-            className="relative rounded-xl p-2.5 text-[#806E66] transition hover:bg-[#F5EDE4] hover:text-[#3B2924] dark:text-[#B3A198] dark:hover:bg-[#251B18] dark:hover:text-[#FFF4E8]"
+            className="relative rounded-xl p-2 sm:p-2.5 text-[#806E66] transition hover:bg-[#F5EDE4] hover:text-[#3B2924] dark:text-[#B3A198] dark:hover:bg-[#251B18] dark:hover:text-[#FFF4E8]"
             aria-label="Cart"
           >
-            <ShoppingBag className="size-5" />
+            <ShoppingBag className="size-4.5 sm:size-5" />
             {isAuthenticated && cartCount > 0 && (
-              <span className="absolute right-1 top-1 flex size-4.5 items-center justify-center rounded-full bg-[#B85C4A] text-[10px] font-bold text-white shadow-sm ring-2 ring-[#FFFCF7] dark:bg-[#D47763] dark:text-white dark:ring-[#140E0C]">
+              <span className="absolute right-0.5 top-0.5 sm:right-1 sm:top-1 flex size-4 sm:size-4.5 items-center justify-center rounded-full bg-[#B85C4A] text-[9px] sm:text-[10px] font-bold text-white shadow-sm ring-2 ring-[#FFFCF7] dark:bg-[#D47763] dark:text-white dark:ring-[#140E0C]">
                 {cartCount}
               </span>
             )}
@@ -213,7 +213,7 @@ export const Header = () => {
               <button
                 type="button"
                 onClick={() => setUserMenuOpen((open) => !open)}
-                className="ml-1 flex size-9 items-center justify-center rounded-full bg-[#B85C4A] text-sm font-bold text-white shadow-soft transition hover:shadow-lift dark:bg-gradient-to-r dark:from-[#D47763] dark:to-[#B85C4A]"
+                className="ml-0.5 sm:ml-1 flex size-8 sm:size-9 items-center justify-center rounded-full bg-[#B85C4A] text-xs sm:text-sm font-bold text-white shadow-soft transition hover:shadow-lift dark:bg-gradient-to-r dark:from-[#D47763] dark:to-[#B85C4A]"
                 aria-label="Open user menu"
               >
                 {initials(user?.name ?? "U")}
@@ -226,7 +226,7 @@ export const Header = () => {
                     animate={{ opacity: 1, y: 0, scale: 1 }}
                     exit={{ opacity: 0, y: 6, scale: 0.98 }}
                     transition={{ duration: 0.15 }}
-                    className="absolute right-0 top-12 w-60 overflow-hidden rounded-2xl border border-[#E8DCD0] bg-[#FFFCF7] shadow-xl dark:border-[#382823] dark:bg-[#1E1614]/95 dark:backdrop-blur-xl dark:shadow-[0_12px_40px_rgba(0,0,0,0.5)]"
+                    className="absolute right-0 top-11 sm:top-12 w-60 overflow-hidden rounded-2xl border border-[#E8DCD0] bg-[#FFFCF7] shadow-xl dark:border-[#382823] dark:bg-[#1E1614]/95 dark:backdrop-blur-xl dark:shadow-[0_12px_40px_rgba(0,0,0,0.5)]"
                   >
                     <div className="border-b border-[#E8DCD0] px-4 py-3 dark:border-[#382823]">
                       <p className="text-sm font-semibold text-[#3B2924] dark:text-[#FFF4E8]">
@@ -265,13 +265,13 @@ export const Header = () => {
             <div className="ml-1 hidden items-center gap-2 sm:flex">
               <Link
                 to="/login"
-                className="rounded-xl px-3.5 py-2 text-sm font-medium text-[#3B2924] transition hover:text-[#B85C4A] hover:bg-[#F5EDE4]/60 dark:text-[#FFF4E8] dark:hover:text-[#D47763] dark:hover:bg-[#251B18]/60"
+                className="rounded-xl px-3 py-1.5 text-xs sm:text-sm font-medium text-[#3B2924] transition hover:text-[#B85C4A] hover:bg-[#F5EDE4]/60 dark:text-[#FFF4E8] dark:hover:text-[#D47763] dark:hover:bg-[#251B18]/60"
               >
                 Log in
               </Link>
               <Link
                 to="/register"
-                className="rounded-xl bg-[#B85C4A] px-4.5 py-2 text-sm font-semibold text-white shadow-soft transition hover:bg-[#914536] hover:shadow-lift dark:bg-gradient-to-r dark:from-[#D47763] dark:to-[#B85C4A] dark:text-white"
+                className="rounded-xl bg-[#B85C4A] px-3.5 sm:px-4.5 py-1.5 sm:py-2 text-xs sm:text-sm font-semibold text-white shadow-soft transition hover:bg-[#914536] hover:shadow-lift dark:bg-gradient-to-r dark:from-[#D47763] dark:to-[#B85C4A] dark:text-white"
               >
                 Sign up
               </Link>
@@ -279,6 +279,36 @@ export const Header = () => {
           )}
         </div>
       </div>
+
+      {/* Mobile Expanding Search Bar */}
+      <AnimatePresence>
+        {searchOpen && (
+          <motion.div
+            initial={{ height: 0, opacity: 0 }}
+            animate={{ height: "auto", opacity: 1 }}
+            exit={{ height: 0, opacity: 0 }}
+            className="overflow-hidden border-t border-[#E8DCD0] bg-[#FFFCF7] px-3 py-2.5 sm:hidden dark:border-[#382823] dark:bg-[#140E0C]"
+          >
+            <form onSubmit={handleSearch} className="relative flex items-center">
+              <Search className="pointer-events-none absolute left-3 top-1/2 size-4 -translate-y-1/2 text-[#806E66] dark:text-[#B3A198]" />
+              <input
+                autoFocus
+                value={query}
+                onChange={(event) => setQuery(event.target.value)}
+                placeholder="Search handmade treasures…"
+                className="h-9.5 w-full rounded-full border border-[#E8DCD0] bg-[#F5EDE4]/70 pl-9 pr-9 text-sm text-[#3B2924] shadow-inner focus:border-[#B85C4A] focus:outline-none dark:border-[#382823] dark:bg-[#1E1614] dark:text-[#FFF4E8]"
+              />
+              <button
+                type="button"
+                onClick={() => setSearchOpen(false)}
+                className="absolute right-2.5 top-1/2 -translate-y-1/2 rounded-full p-1 text-[#806E66] hover:bg-[#E8DCD0]/50 dark:text-[#B3A198]"
+              >
+                <X className="size-4" />
+              </button>
+            </form>
+          </motion.div>
+        )}
+      </AnimatePresence>
 
       {mobileOpen && (
         <div className="border-t border-[#E8DCD0] px-4 py-3 lg:hidden dark:border-[#382823] bg-[#FFFCF7] dark:bg-[#140E0C]">

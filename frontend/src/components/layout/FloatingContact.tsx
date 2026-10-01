@@ -6,7 +6,7 @@ export const FloatingContact = () => {
   const [isOpen, setIsOpen] = useState(false);
 
   return (
-    <div className="fixed bottom-6 right-6 z-40 flex flex-col items-end">
+    <div className="fixed bottom-4 right-4 sm:bottom-6 sm:right-6 z-40 flex flex-col items-end">
       {/* Popover Card */}
       <AnimatePresence>
         {isOpen && (
@@ -15,9 +15,9 @@ export const FloatingContact = () => {
             animate={{ opacity: 1, y: 0, scale: 1 }}
             exit={{ opacity: 0, y: 10, scale: 0.95 }}
             transition={{ duration: 0.2 }}
-            className="mb-3 w-80 overflow-hidden rounded-2xl border border-[#E8DCD0] bg-[#FFFCF7]/95 p-5 shadow-2xl backdrop-blur-xl dark:border-[#493A34] dark:bg-[#2A211E]/95"
+            className="mb-3 w-[calc(100vw-2rem)] max-w-xs sm:w-80 overflow-hidden rounded-2xl border border-[#E8DCD0] bg-[#FFFCF7]/95 p-4 sm:p-5 shadow-2xl backdrop-blur-xl dark:border-[#382823] dark:bg-[#1E1614]/95"
           >
-            <div className="flex items-center justify-between pb-3 border-b border-[#E8DCD0] dark:border-[#493A34]">
+            <div className="flex items-center justify-between pb-3 border-b border-[#E8DCD0] dark:border-[#382823]">
               <div className="flex items-center gap-2">
                 <span className="relative flex size-2.5">
                   <span className="absolute inline-flex size-full animate-ping rounded-full bg-[#7A8B68] opacity-75 dark:bg-[#9BAF83]" />
@@ -30,7 +30,7 @@ export const FloatingContact = () => {
               <button
                 type="button"
                 onClick={() => setIsOpen(false)}
-                className="rounded-lg p-1 text-[#806E66] hover:bg-[#F5EDE4] dark:text-[#C7B8AE] dark:hover:bg-[#352925]"
+                className="rounded-lg p-1 text-[#806E66] hover:bg-[#F5EDE4] dark:text-[#C7B8AE] dark:hover:bg-[#251B18]"
                 aria-label="Close contact card"
               >
                 <X className="size-4" />
@@ -59,7 +59,7 @@ export const FloatingContact = () => {
 
               <a
                 href="tel:+917985835558"
-                className="flex w-full items-center justify-center gap-2 rounded-xl border border-[#E8DCD0] bg-[#F5EDE4] px-4 py-2 text-xs font-semibold text-[#3B2924] transition hover:bg-[#FFFCF7] dark:border-[#493A34] dark:bg-[#352925] dark:text-[#FFF4E8] dark:hover:bg-[#2A211E]"
+                className="flex w-full items-center justify-center gap-2 rounded-xl border border-[#E8DCD0] bg-[#F5EDE4] px-4 py-2 text-xs font-semibold text-[#3B2924] transition hover:bg-[#FFFCF7] dark:border-[#382823] dark:bg-[#251B18] dark:text-[#FFF4E8] dark:hover:bg-[#1E1614]"
               >
                 <Phone className="size-3.5" />
                 Call +91 7985835558
@@ -73,17 +73,17 @@ export const FloatingContact = () => {
       <button
         type="button"
         onClick={() => setIsOpen((prev) => !prev)}
-        className="group relative flex size-13 items-center justify-center rounded-full bg-[#7A8B68] text-white shadow-xl shadow-[#7A8B68]/30 transition duration-300 hover:scale-105 active:scale-95 dark:bg-[#9BAF83] dark:text-[#1F1816]"
+        className="group relative flex size-12 sm:size-13 items-center justify-center rounded-full bg-[#7A8B68] text-white shadow-xl shadow-[#7A8B68]/30 transition duration-300 hover:scale-105 active:scale-95 dark:bg-[#9BAF83] dark:text-[#1F1816]"
         aria-label="Open contact options"
       >
         <span className="absolute -inset-1 rounded-full bg-[#7A8B68]/30 blur-sm transition group-hover:opacity-100 opacity-60 dark:bg-[#9BAF83]/30" />
         <span className="relative flex items-center justify-center">
           {isOpen ? (
-            <X className="size-6 transition-transform rotate-90 duration-200" />
+            <X className="size-5 sm:size-6 transition-transform rotate-90 duration-200" />
           ) : (
             <>
-              <MessageCircle className="size-6" />
-              <span className="absolute -right-1 -top-1 flex size-3.5 items-center justify-center rounded-full bg-[#B85C4A] ring-2 ring-[#FFFCF7] dark:ring-[#2A211E]">
+              <MessageCircle className="size-5 sm:size-6" />
+              <span className="absolute -right-1 -top-1 flex size-3.5 items-center justify-center rounded-full bg-[#B85C4A] ring-2 ring-[#FFFCF7] dark:ring-[#1E1614]">
                 <Sparkles className="size-2 text-[#D8A85B]" />
               </span>
             </>

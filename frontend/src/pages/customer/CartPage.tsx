@@ -135,10 +135,10 @@ export const CartPage = () => {
               typeof product.category === "string" ? null : product.category;
 
             return (
-              <Card key={product._id} className="flex gap-4 p-4">
+              <Card key={product._id} className="flex gap-3 sm:gap-4 p-3 sm:p-4">
                 <Link
                   to={`/products/${product.slug}`}
-                  className="size-24 shrink-0 overflow-hidden rounded-xl bg-slate-100 dark:bg-slate-700/40"
+                  className="size-20 sm:size-24 shrink-0 overflow-hidden rounded-xl bg-[#F5EDE4] dark:bg-[#251B18]"
                 >
                   {product.images[0] ? (
                     <img src={product.images[0]} alt={product.name} loading="lazy" className="size-full object-cover" />
@@ -151,22 +151,22 @@ export const CartPage = () => {
 
                 <div className="flex min-w-0 flex-1 flex-col">
                   {category && (
-                    <p className="text-[11px] font-medium uppercase tracking-wide text-[#7A8B68] dark:text-[#9BAF83]">
+                    <p className="text-[10px] sm:text-[11px] font-medium uppercase tracking-wide text-[#7A8B68] dark:text-[#9BAF83]">
                       {category.name}
                     </p>
                   )}
                   <Link
                     to={`/products/${product.slug}`}
-                    className="line-clamp-1 text-sm font-semibold text-[#3B2924] hover:text-[#B85C4A] dark:text-[#FFF4E8] dark:hover:text-[#D47763]"
+                    className="line-clamp-1 text-xs sm:text-sm font-semibold text-[#3B2924] hover:text-[#B85C4A] dark:text-[#FFF4E8] dark:hover:text-[#D47763]"
                   >
                     {product.name}
                   </Link>
-                  <p className="mt-0.5 text-sm font-bold text-[#B85C4A] dark:text-[#D47763]">
+                  <p className="mt-0.5 text-xs sm:text-sm font-bold text-[#B85C4A] dark:text-[#D47763]">
                     {formatCurrency(item.price)}
                   </p>
 
                   <div className="mt-auto flex items-center justify-between gap-2 pt-2">
-                    <div className="flex items-center rounded-xl border border-[#E8DCD0] bg-[#FFFCF7] dark:border-[#493A34] dark:bg-[#2A211E]">
+                    <div className="flex items-center rounded-xl border border-[#E8DCD0] bg-[#FFFCF7] dark:border-[#382823] dark:bg-[#1E1614]">
                       <button
                         type="button"
                         onClick={() => handleQuantityChange(product._id, item.quantity - 1)}
