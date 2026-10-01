@@ -16,6 +16,7 @@ const API_URL = rawApiUrl.endsWith("/api")
 
 export const api = axios.create({
   baseURL: API_URL,
+  withCredentials: true,
   // No global Content-Type: axios sets application/json automatically for
   // JSON bodies, and leaving it unset lets the browser attach the correct
   // multipart boundary when posting FormData (file uploads).

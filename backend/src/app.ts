@@ -62,14 +62,20 @@ app.use((req, res, next) => {
   next();
 });
 
+// Parse client URLs (supports comma-separated list and strips trailing slashes)
+const configuredClientOrigins = (config.CLIENT_URL || "")
+  .split(",")
+  .map((url) => url.trim().replace(/\/$/, ""))
+  .filter(Boolean);
+
 // Comprehensive security headers with Helmet
 const allowedOrigins = [
-  config.CLIENT_URL,
+  ...configuredClientOrigins,
   "http://localhost:5173",
   "http://localhost:5174",
   "http://localhost:3000",
   "http://127.0.0.1:5173",
-].filter(Boolean) as string[];
+];
 
 app.use(
   helmet({
@@ -136,10 +142,26 @@ app.use(
         return callback(null, true);
       }
 
-      // In production, strictly enforce origin allowlist
+      const normalizedOrigin = requestOrigin.replace(/\/$/, "");
+
+      // In production, enforce origin allowlist
       if (
-        allowedOrigins.includes(requestOrigin) ||
-        (config.CLIENT_URL && requestOrigin === config.CLIENT_URL)
+        allowedOrigins.includes(normalizedOrigin) ||
+        configuredClientOrigins.includes(normalizedOrigin) ||
+        configuredClientOrigins.some((u) => {
+          try {
+            const parsedHost = new URL(u).hostname;
+            const reqHost = new URL(normalizedOrigin).hostname;
+            return (
+              reqHost === parsedHost ||
+              (parsedHost.includes("vercel.app") && reqHost.endsWith(".vercel.app")) ||
+              (parsedHost.includes("netlify.app") && reqHost.endsWith(".netlify.app")) ||
+              (parsedHost.includes("onrender.com") && reqHost.endsWith(".onrender.com"))
+            );
+          } catch {
+            return false;
+          }
+        })
       ) {
         return callback(null, true);
       }

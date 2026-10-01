@@ -15,7 +15,7 @@ const envSchema = z
     JWT_REFRESH_SECRET: z
       .string()
       .min(8, "JWT_REFRESH_SECRET must be at least 8 characters"),
-    CLIENT_URL: z.string().url().optional(),
+    CLIENT_URL: z.string().optional(),
     COOKIE_SECRET: z.string().optional(),
     ENABLE_SWAGGER: z.enum(["true", "false"]).optional().default("false"),
     CLOUDINARY_CLOUD_NAME: z.string().optional(),
