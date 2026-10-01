@@ -22,6 +22,7 @@ import addressRoutes from "./routes/address/address.routes";
 import dashboardRoutes from "./routes/dashboard/dashboard.routes";
 import analyticsRoutes from "./routes/analytics/analytics.routes";
 import searchRoutes from "./routes/search/search.routes";
+import seoRoutes from "./routes/seo/seo.routes";
 import {
   globalRateLimiter,
   authRateLimiter,
@@ -211,6 +212,9 @@ if (!isProd || config.ENABLE_SWAGGER === "true") {
     })
   );
 }
+
+// SEO, Sitemap and Search Engine Verification routes
+app.use(seoRoutes);
 
 // Routes
 app.use("/api/auth", authRateLimiter, authRoutes);

@@ -9,6 +9,7 @@
     "start": "node dist/server.js",
     "seed:admin": "tsx scripts/seedAdmin.ts",
     "seed:store": "tsx scripts/seedStoreData.ts",
+    "submit:indexnow": "tsx scripts/submitIndexNow.ts",
     "test": "vitest run",
     "test:watch": "vitest"
   },

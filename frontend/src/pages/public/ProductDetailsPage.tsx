@@ -26,7 +26,7 @@ import { useAuth } from "@/context/AuthContext";
 import { useToast } from "@/context/ToastContext";
 import { getErrorMessage } from "@/lib/api";
 import { cn } from "@/lib/utils";
-import { usePageTitle } from "@/hooks/usePageTitle";
+import { useSEO } from "@/hooks/useSEO";
 
 export const ProductDetailsPage = () => {
   const { slug } = useParams<{ slug: string }>();
@@ -48,7 +48,27 @@ export const ProductDetailsPage = () => {
   const [comment, setComment] = useState("");
   const [adding, setAdding] = useState(false);
 
-  usePageTitle(product?.name);
+  useSEO({
+    title: product?.name,
+    description: product?.description,
+    image: product?.images?.[0],
+    url: product?.slug ? `/products/${product.slug}` : undefined,
+    type: "product",
+    productData: product
+      ? {
+          name: product.name,
+          price:
+            product.discountPrice && product.discountPrice > 0
+              ? product.discountPrice
+              : product.price,
+          currency: "INR",
+          inStock: product.stock > 0,
+          image: product.images?.[0],
+          rating: product.averageRating,
+          reviewCount: product.totalReviews,
+        }
+      : undefined,
+  });
 
   if (isLoading) {
     return (

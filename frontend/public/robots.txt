@@ -1,0 +1,28 @@
+# robots.txt for Knottiingale
+User-agent: *
+Allow: /
+Allow: /products
+Allow: /products/*
+Allow: /categories
+Allow: /categories/*
+Allow: /contact
+Allow: /privacy
+Allow: /terms
+Allow: /shipping-policy
+Allow: /refund-policy
+
+# Disallow private user account, checkout, and admin pages
+Disallow: /admin
+Disallow: /admin/*
+Disallow: /dashboard
+Disallow: /analytics
+Disallow: /checkout
+Disallow: /orders
+Disallow: /orders/*
+Disallow: /profile
+Disallow: /settings
+Disallow: /reset-password
+Disallow: /api/
+
+# Sitemap location
+Sitemap: https://knottiingale.com/sitemap.xml
