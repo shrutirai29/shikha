@@ -15,18 +15,20 @@ interface ThemeContextValue {
 
 const ThemeContext = createContext<ThemeContextValue | null>(null);
 
-const STORAGE_KEY = "shikha_theme";
+const STORAGE_KEY = "knottiingale_theme";
 
 const getInitialTheme = (): Theme => {
-  const stored = localStorage.getItem(STORAGE_KEY);
+  try {
+    const stored = localStorage.getItem(STORAGE_KEY);
+    if (stored === "light" || stored === "dark") {
+      return stored;
+    }
+    // Clean up any legacy theme key that may have auto-saved dark mode
+    localStorage.removeItem("shikha_theme");
+  } catch {}
 
-  if (stored === "light" || stored === "dark") {
-    return stored;
-  }
-
-  return window.matchMedia("(prefers-color-scheme: dark)").matches
-    ? "dark"
-    : "light";
+  // Explicitly default to light mode
+  return "light";
 };
 
 export const ThemeProvider = ({ children }: { children: ReactNode }) => {

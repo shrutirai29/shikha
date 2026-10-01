@@ -173,14 +173,18 @@ export const Header = () => {
             {searchOpen ? <X className="size-4.5 sm:size-5" /> : <Search className="size-4.5 sm:size-5" />}
           </button>
 
-          {/* Theme toggle: visible on sm+ screens; on mobile it's located in the menu and user dropdown */}
+          {/* Theme toggle: visible on all screen sizes including mobile navbar */}
           <button
             type="button"
             onClick={toggleTheme}
-            className="hidden sm:flex rounded-xl p-2 sm:p-2.5 text-[#806E66] transition hover:bg-[#F5EDE4] hover:text-[#3B2924] dark:text-[#B3A198] dark:hover:bg-[#251B18] dark:hover:text-[#FFF4E8]"
+            className="flex items-center justify-center rounded-xl p-1.5 sm:p-2.5 text-[#806E66] transition active:scale-90 hover:bg-[#F5EDE4] hover:text-[#3B2924] dark:text-[#B3A198] dark:hover:bg-[#251B18] dark:hover:text-[#FFF4E8]"
             aria-label={`Switch to ${theme === "dark" ? "light" : "dark"} mode`}
           >
-            {theme === "dark" ? <Sun className="size-4.5 sm:size-5 text-[#E0B86A]" /> : <Moon className="size-4.5 sm:size-5 text-[#B85C4A]" />}
+            {theme === "dark" ? (
+              <Sun className="size-4.5 sm:size-5 text-[#E0B86A]" />
+            ) : (
+              <Moon className="size-4.5 sm:size-5 text-[#B85C4A]" />
+            )}
           </button>
 
           <Link
