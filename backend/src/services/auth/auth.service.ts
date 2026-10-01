@@ -9,6 +9,7 @@ import { ForbiddenError } from "../../errors/ForbiddenError";
 import { BadRequestError } from "../../errors/BadRequestError";
 
 import { generateAccessToken } from "../../utils/jwt";
+import { env } from "../../config/env";
 
 import {
   sendPasswordResetEmail,
@@ -236,6 +237,7 @@ export const forgotPassword = async (email: string) => {
   if (!user) {
     return {
       message: "If an account exists for this email, a reset link has been sent",
+      delivered: false,
     };
   }
 
@@ -246,10 +248,18 @@ export const forgotPassword = async (email: string) => {
 
   await user.save();
 
-  await sendPasswordResetEmail(user.email, resetToken);
+  const { delivered } = await sendPasswordResetEmail(user.email, resetToken);
+
+  const clientUrl = env().CLIENT_URL ?? "http://localhost:5173";
+  const resetLink = `${clientUrl}/reset-password?token=${resetToken}`;
 
   return {
-    message: "If an account exists for this email, a reset link has been sent",
+    message: delivered
+      ? "Password reset link has been sent to your email"
+      : "If an account exists for this email, a reset link has been generated",
+    delivered,
+    resetLink,
+    resetToken,
   };
 };
 

@@ -1,7 +1,7 @@
 import dns from "node:dns";
 
-// Force Google DNS for MongoDB SRV lookup
-dns.setServers(["8.8.8.8", "8.8.4.4"]);
+// Force reliable DNS for MongoDB SRV lookup
+dns.setServers(["1.1.1.1", "8.8.8.8", "8.8.4.4"]);
 
 import dotenv from "dotenv";
 dotenv.config();

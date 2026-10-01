@@ -166,17 +166,39 @@ export const sendVerificationOtpEmail = async (
 export const sendPasswordResetEmail = async (
   to: string,
   token: string
-): Promise<void> => {
+): Promise<{ delivered: boolean }> => {
   const link = `${config.CLIENT_URL ?? "http://localhost:5173"}/reset-password?token=${token}`;
 
-  await sendEmail({
+  return sendEmail({
     to,
-    subject: "Reset your Knottiingale password",
+    subject: "Reset your Knottiingale password ✨",
     html: `
-      <h2>Reset your password</h2>
-      <p>We received a request to reset your password. Click the link below to choose a new one:</p>
-      <p><a href="${link}">Reset Password</a></p>
-      <p>This link is valid for 1 hour. If you did not request this, you can safely ignore this email.</p>
+      <div style="font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif; max-width: 520px; margin: 0 auto; padding: 32px 24px; color: #3B2924; background-color: #FFF8F0; border-radius: 24px; border: 1px solid #E8DCD0;">
+        <div style="text-align: center; margin-bottom: 24px;">
+          <h1 style="font-size: 26px; font-weight: 700; color: #B85C4A; margin: 0;">Knottiingale</h1>
+          <p style="font-size: 13px; color: #806E66; margin: 4px 0 0;">Handmade Crochet Treasures</p>
+        </div>
+        <div style="background-color: #FFFCF7; padding: 24px; border-radius: 16px; border: 1px solid #E8DCD0;">
+          <h2 style="font-size: 18px; font-weight: 600; color: #3B2924; margin: 0 0 12px;">Reset your password</h2>
+          <p style="font-size: 14px; line-height: 1.6; color: #5E463E; margin: 0 0 20px;">
+            We received a request to reset the password for your Knottiingale account. Tap the button below to choose a new secure password:
+          </p>
+          <div style="text-align: center; margin: 28px 0;">
+            <a href="${link}" style="background-color: #B85C4A; color: #ffffff; padding: 14px 28px; border-radius: 12px; font-size: 14px; font-weight: bold; text-decoration: none; display: inline-block; box-shadow: 0 4px 12px rgba(184, 92, 74, 0.25);">
+              Reset My Password →
+            </a>
+          </div>
+          <p style="font-size: 12px; line-height: 1.5; color: #806E66; margin: 20px 0 0; word-break: break-all;">
+            If the button doesn't work, copy and paste this link into your browser:<br/>
+            <a href="${link}" style="color: #B85C4A;">${link}</a>
+          </p>
+        </div>
+        <div style="text-align: center; margin-top: 24px;">
+          <p style="font-size: 12px; color: #806E66; margin: 0;">
+            This link is valid for 1 hour. If you didn't request this reset, you can safely ignore this email.
+          </p>
+        </div>
+      </div>
     `,
   });
 };

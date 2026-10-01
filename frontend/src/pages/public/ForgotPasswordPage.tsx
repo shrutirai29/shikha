@@ -1,15 +1,15 @@
+import { useState } from "react";
 import { Link } from "react-router-dom";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
-import { MailCheck, Send } from "lucide-react";
+import { ArrowRight, Check, Copy, ExternalLink, KeyRound, MailCheck, Send, ShieldAlert } from "lucide-react";
 import { api, getErrorMessage } from "@/lib/api";
 import { usePageTitle } from "@/hooks/usePageTitle";
 import { useToast } from "@/context/ToastContext";
 import { Button } from "@/components/ui/Button";
 import { Input } from "@/components/ui/Input";
 import { Logo } from "@/components/layout/Logo";
-import { useState } from "react";
 
 const forgotSchema = z.object({
   email: z.string().email("Enter a valid email address"),
@@ -18,9 +18,13 @@ const forgotSchema = z.object({
 type ForgotForm = z.infer<typeof forgotSchema>;
 
 export const ForgotPasswordPage = () => {
-  usePageTitle("Forgot password");
+  usePageTitle("Reset Password — Knottiingale");
   const toast = useToast();
   const [sent, setSent] = useState(false);
+  const [delivered, setDelivered] = useState(false);
+  const [resetLink, setResetLink] = useState<string | null>(null);
+  const [copied, setCopied] = useState(false);
+  const [submittedEmail, setSubmittedEmail] = useState("");
 
   const {
     register,
@@ -33,50 +37,145 @@ export const ForgotPasswordPage = () => {
 
   const onSubmit = async (values: ForgotForm) => {
     try {
-      await api.post("/auth/forgot-password", { email: values.email });
+      setSubmittedEmail(values.email);
+      const res = await api.post("/auth/forgot-password", { email: values.email });
+      const data = res.data;
+
+      setDelivered(Boolean(data.delivered));
+      if (data.resetLink) {
+        setResetLink(data.resetLink);
+      }
       setSent(true);
+
+      if (data.delivered) {
+        toast.success("Password reset link sent to your email!");
+      } else {
+        toast.info("Reset link generated. You can reset your password immediately below.");
+      }
     } catch (error) {
       toast.error(getErrorMessage(error));
     }
   };
 
+  const handleCopyLink = async () => {
+    if (!resetLink) return;
+    try {
+      await navigator.clipboard.writeText(resetLink);
+      setCopied(true);
+      toast.success("Reset link copied to clipboard!");
+      setTimeout(() => setCopied(false), 3000);
+    } catch {
+      toast.error("Could not copy automatically. Please open the link directly.");
+    }
+  };
+
   return (
-    <div className="mx-auto flex min-h-[70vh] w-full max-w-md flex-col justify-center px-4 py-12">
+    <div className="mx-auto flex min-h-[75vh] w-full max-w-lg flex-col justify-center px-4 py-12">
       <div className="mb-8 text-center">
         <Logo className="mb-4 justify-center" />
-        <h1 className="text-2xl font-bold tracking-tight text-slate-900 dark:text-white">
+        <h1 className="font-display text-2xl sm:text-3xl font-bold tracking-tight text-[#3B2924] dark:text-[#FFF4E8]">
           Reset your password
         </h1>
-        <p className="mt-1 text-sm text-slate-500 dark:text-slate-400">
-          Enter your email and we&apos;ll send you a reset link
+        <p className="mt-1 text-sm text-[#806E66] dark:text-[#C7B8AE]">
+          Enter your registered email and we&apos;ll provide your secure reset link
         </p>
       </div>
 
       {sent ? (
-        <div className="flex flex-col items-center gap-3 rounded-2xl border border-emerald-200 bg-emerald-50 p-8 text-center dark:border-emerald-500/30 dark:bg-emerald-500/10">
-          <MailCheck className="size-10 text-emerald-600 dark:text-emerald-400" />
-          <h2 className="text-base font-semibold text-emerald-900 dark:text-emerald-200">
-            Check your inbox
-          </h2>
-          <p className="text-sm text-emerald-700 dark:text-emerald-300/80">
-            If an account exists for that email, a password reset link is on
-            its way. The link expires in 1 hour.
-          </p>
-          <Link
-            to="/login"
-            className="mt-2 text-sm font-semibold text-emerald-700 underline dark:text-emerald-300"
-          >
-            Back to login
-          </Link>
+        <div className="space-y-5 rounded-3xl border border-[#E8DCD0] bg-[#FFFCF7] p-6 sm:p-8 shadow-soft dark:border-[#382823] dark:bg-[#1E1614]">
+          {delivered ? (
+            <div className="flex flex-col items-center gap-3 text-center">
+              <span className="flex size-14 items-center justify-center rounded-2xl bg-[#7A8B68]/15 text-[#7A8B68] dark:bg-[#9BAF83]/20 dark:text-[#9BAF83]">
+                <MailCheck className="size-7" />
+              </span>
+              <h2 className="font-display text-lg font-bold text-[#3B2924] dark:text-[#FFF4E8]">
+                Check your inbox
+              </h2>
+              <p className="text-sm leading-relaxed text-[#806E66] dark:text-[#C7B8AE]">
+                A password reset link was sent to <strong className="text-[#3B2924] dark:text-[#FFF4E8]">{submittedEmail}</strong>. Please check your inbox and spam folder. The link is valid for 1 hour.
+              </p>
+            </div>
+          ) : (
+            <div className="space-y-4">
+              <div className="flex items-start gap-3 rounded-2xl border border-[#D8A85B]/40 bg-[#D8A85B]/10 p-4 dark:border-[#E0B86A]/30 dark:bg-[#E0B86A]/10">
+                <ShieldAlert className="size-5 shrink-0 text-[#B85C4A] dark:text-[#D47763] mt-0.5" />
+                <div className="text-xs leading-relaxed text-[#5E463E] dark:text-[#E0B86A]">
+                  <p className="font-semibold text-sm text-[#3B2924] dark:text-[#FFF4E8] mb-1">
+                    Direct Password Reset Ready
+                  </p>
+                  <p>
+                    External Brevo email delivery is currently restricted by IP whitelisting. To make sure you are never locked out, you can choose a new password immediately below.
+                  </p>
+                </div>
+              </div>
+
+              {resetLink && (
+                <div className="space-y-3 pt-2">
+                  <a
+                    href={resetLink}
+                    className="flex h-12 w-full items-center justify-center gap-2 rounded-2xl bg-[#B85C4A] px-6 text-sm font-bold text-white shadow-soft transition hover:bg-[#914536] hover:shadow-lift active:scale-98 dark:bg-[#D47763] dark:text-[#1F1816]"
+                  >
+                    <KeyRound className="size-4.5" />
+                    Reset Password Now
+                    <ArrowRight className="size-4" />
+                  </a>
+
+                  <button
+                    type="button"
+                    onClick={handleCopyLink}
+                    className="flex h-11 w-full items-center justify-center gap-2 rounded-xl border border-[#E8DCD0] bg-white px-4 text-xs font-semibold text-[#3B2924] shadow-xs transition hover:bg-[#F5EDE4] active:scale-98 dark:border-[#382823] dark:bg-[#251B18] dark:text-[#FFF4E8] dark:hover:bg-[#352925]"
+                  >
+                    {copied ? (
+                      <>
+                        <Check className="size-4 text-[#7A8B68] dark:text-[#9BAF83]" />
+                        <span>Copied link to clipboard!</span>
+                      </>
+                    ) : (
+                      <>
+                        <Copy className="size-4 text-[#806E66] dark:text-[#B3A198]" />
+                        <span>Copy Direct Reset Link</span>
+                      </>
+                    )}
+                  </button>
+                </div>
+              )}
+
+              <div className="rounded-xl bg-[#F5EDE4]/70 p-3 text-[11px] text-[#806E66] dark:bg-[#251B18]/70 dark:text-[#B3A198]">
+                <p className="font-medium text-[#3B2924] dark:text-[#FFF4E8] mb-1">
+                  Want emails delivered directly to your Gmail inbox?
+                </p>
+                <p>
+                  Add your current IP to Brevo:{" "}
+                  <a
+                    href="https://app.brevo.com/security/authorised_ips"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="inline-flex items-center gap-0.5 text-[#B85C4A] underline font-semibold dark:text-[#D47763]"
+                  >
+                    Brevo Authorized IPs <ExternalLink className="size-3" />
+                  </a>
+                </p>
+              </div>
+            </div>
+          )}
+
+          <div className="border-t border-[#E8DCD0] pt-4 text-center dark:border-[#382823]">
+            <Link
+              to="/login"
+              className="text-xs font-semibold text-[#B85C4A] hover:underline dark:text-[#D47763]"
+            >
+              ← Back to log in
+            </Link>
+          </div>
         </div>
       ) : (
         <form
           onSubmit={handleSubmit(onSubmit)}
-          className="space-y-4 rounded-2xl border border-slate-200 bg-white p-6 shadow-sm dark:border-slate-700 dark:bg-slate-800/60"
+          className="space-y-4 rounded-3xl border border-[#E8DCD0] bg-[#FFFCF7] p-6 sm:p-8 shadow-soft dark:border-[#382823] dark:bg-[#1E1614]"
           noValidate
         >
           <Input
-            label="Email"
+            label="Your Registered Email"
             type="email"
             autoComplete="email"
             placeholder="you@example.com"
@@ -84,20 +183,25 @@ export const ForgotPasswordPage = () => {
             {...register("email")}
           />
 
-          <Button type="submit" className="w-full" loading={isSubmitting} size="lg">
-            <Send className="size-5" />
-            Send reset link
+          <Button
+            type="submit"
+            className="w-full h-12 rounded-2xl bg-[#B85C4A] text-white hover:bg-[#914536] dark:bg-[#D47763] dark:text-[#1F1816]"
+            loading={isSubmitting}
+            size="lg"
+          >
+            <Send className="size-4.5" />
+            Send Reset Link
           </Button>
         </form>
       )}
 
-      <p className="mt-6 text-center text-sm text-slate-500 dark:text-slate-400">
+      <p className="mt-6 text-center text-xs text-[#806E66] dark:text-[#C7B8AE]">
         Remembered your password?{" "}
         <Link
           to="/login"
-          className="font-semibold text-indigo-600 transition hover:text-indigo-500 dark:text-indigo-400"
+          className="font-semibold text-[#B85C4A] transition hover:underline dark:text-[#D47763]"
         >
-          Log in
+          Log in here
         </Link>
       </p>
     </div>
