@@ -12,9 +12,9 @@ export const TermsPage = () => {
       subtitle="Last updated: September 2026. Please read these terms carefully before using Knottiingale."
     >
       <div className="mx-auto max-w-4xl space-y-8">
-        <Card className="p-6 sm:p-8 space-y-6 text-sm leading-relaxed text-slate-700 dark:text-slate-300">
+        <Card className="p-6 sm:p-8 space-y-6 text-sm leading-relaxed text-[#5E463E] dark:text-[#C7B8AE]">
           <div>
-            <h2 className="text-lg font-bold text-slate-900 dark:text-white mb-2">
+            <h2 className="font-display text-lg font-bold text-[#3B2924] dark:text-[#FFF4E8] mb-2">
               1. Introduction & Brand Ownership
             </h2>
             <p>
@@ -23,7 +23,7 @@ export const TermsPage = () => {
           </div>
 
           <div>
-            <h2 className="text-lg font-bold text-slate-900 dark:text-white mb-2">
+            <h2 className="font-display text-lg font-bold text-[#3B2924] dark:text-[#FFF4E8] mb-2">
               2. Handcrafted Products & Uniqueness
             </h2>
             <p>
@@ -32,7 +32,7 @@ export const TermsPage = () => {
           </div>
 
           <div>
-            <h2 className="text-lg font-bold text-slate-900 dark:text-white mb-2">
+            <h2 className="font-display text-lg font-bold text-[#3B2924] dark:text-[#FFF4E8] mb-2">
               3. Orders, Pricing & Taxes
             </h2>
             <p>
@@ -41,7 +41,7 @@ export const TermsPage = () => {
           </div>
 
           <div>
-            <h2 className="text-lg font-bold text-slate-900 dark:text-white mb-2">
+            <h2 className="font-display text-lg font-bold text-[#3B2924] dark:text-[#FFF4E8] mb-2">
               4. Payment Gateways & Security
             </h2>
             <p>
@@ -50,23 +50,23 @@ export const TermsPage = () => {
           </div>
 
           <div>
-            <h2 className="text-lg font-bold text-slate-900 dark:text-white mb-2">
+            <h2 className="font-display text-lg font-bold text-[#3B2924] dark:text-[#FFF4E8] mb-2">
               5. Shipping & Cancellations
             </h2>
             <p>
               Orders are dispatched within 24 to 48 hours for in-stock pieces. You can cancel your order directly from your Orders page before the item is dispatched. For detailed information, please review our{" "}
-              <Link to="/shipping-policy" className="font-medium text-indigo-600 hover:underline dark:text-indigo-400">
+              <Link to="/shipping-policy" className="font-medium text-[#B85C4A] hover:underline dark:text-[#D47763]">
                 Shipping Policy
               </Link>{" "}
               and{" "}
-              <Link to="/refund-policy" className="font-medium text-indigo-600 hover:underline dark:text-indigo-400">
+              <Link to="/refund-policy" className="font-medium text-[#B85C4A] hover:underline dark:text-[#D47763]">
                 Refund Policy
               </Link>.
             </p>
           </div>
 
           <div>
-            <h2 className="text-lg font-bold text-slate-900 dark:text-white mb-2">
+            <h2 className="font-display text-lg font-bold text-[#3B2924] dark:text-[#FFF4E8] mb-2">
               6. Intellectual Property
             </h2>
             <p>
@@ -75,17 +75,17 @@ export const TermsPage = () => {
           </div>
 
           <div>
-            <h2 className="text-lg font-bold text-slate-900 dark:text-white mb-2">
+            <h2 className="font-display text-lg font-bold text-[#3B2924] dark:text-[#FFF4E8] mb-2">
               7. Merchant & Grievance Contact
             </h2>
             <p>
               For questions or disputes regarding our terms, please contact:
               <br />
-              <strong>Owner:</strong> Shikha Rai
+              <strong className="text-[#3B2924] dark:text-[#FFF4E8]">Owner:</strong> Shikha Rai
               <br />
-              <strong>Phone:</strong> +91 7985835558
+              <strong className="text-[#3B2924] dark:text-[#FFF4E8]">Phone:</strong> +91 7985835558
               <br />
-              <strong>Technical Support:</strong> Shruti Rai (+91 7007787536, shruti.rai2901@gmail.com)
+              <strong className="text-[#3B2924] dark:text-[#FFF4E8]">Technical Support:</strong> Shruti Rai (+91 7007787536, shruti.rai2901@gmail.com)
             </p>
           </div>
         </Card>

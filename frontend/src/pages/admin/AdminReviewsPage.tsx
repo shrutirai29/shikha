@@ -168,7 +168,7 @@ export const AdminReviewsPage = () => {
                     <Button
                       variant="outline"
                       size="sm"
-                      className="border-rose-300 text-rose-700 hover:bg-rose-50 hover:border-rose-400 dark:border-rose-500/40 dark:text-rose-300 dark:hover:bg-rose-500/10"
+                      className="border-[#B85C4A]/30 text-[#914536] hover:bg-[#B85C4A]/10 hover:border-[#B85C4A]/50 dark:border-[#D47763]/30 dark:text-[#E28A76] dark:hover:bg-[#D47763]/15"
                       onClick={() => setToDelete(review._id)}
                     >
                       <Trash2 className="size-3.5" /> Remove

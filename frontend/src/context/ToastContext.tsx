@@ -27,9 +27,9 @@ interface ToastContextValue {
 const ToastContext = createContext<ToastContextValue | null>(null);
 
 const icons: Record<ToastKind, ReactNode> = {
-  success: <CheckCircle2 className="size-5 text-emerald-500" />,
-  error: <AlertCircle className="size-5 text-rose-500" />,
-  info: <Info className="size-5 text-sky-500" />,
+  success: <CheckCircle2 className="size-5 text-[#7A8B68] dark:text-[#9BAF83]" />,
+  error: <AlertCircle className="size-5 text-[#B85C4A] dark:text-[#D47763]" />,
+  info: <Info className="size-5 text-[#D8A85B] dark:text-[#E0B86A]" />,
 };
 
 export const ToastProvider = ({ children }: { children: ReactNode }) => {
@@ -79,18 +79,18 @@ export const ToastProvider = ({ children }: { children: ReactNode }) => {
               exit={{ opacity: 0, y: -8, scale: 0.96 }}
               transition={{ duration: 0.18 }}
               className={cn(
-                "pointer-events-auto flex w-full max-w-sm items-start gap-3 rounded-xl border border-slate-200 bg-white p-4 shadow-lg shadow-slate-900/5 dark:border-slate-700 dark:bg-slate-800"
+                "pointer-events-auto flex w-full max-w-sm items-start gap-3 rounded-2xl border border-[#E8DCD0] bg-[#FFFCF7]/95 p-4 shadow-lift backdrop-blur-md dark:border-[#382823] dark:bg-[#1E1614]/95"
               )}
               role="status"
             >
               <span className="mt-0.5 shrink-0">{icons[item.kind]}</span>
-              <p className="flex-1 text-sm font-medium text-slate-700 dark:text-slate-200">
+              <p className="flex-1 text-sm font-medium text-[#3B2924] dark:text-[#FFF4E8]">
                 {item.message}
               </p>
               <button
                 type="button"
                 onClick={() => remove(item.id)}
-                className="shrink-0 rounded-md p-1 text-slate-400 transition hover:bg-slate-100 hover:text-slate-600 dark:hover:bg-slate-700 dark:hover:text-slate-300"
+                className="shrink-0 rounded-lg p-1 text-[#806E66] transition hover:bg-[#F5EDE4] hover:text-[#3B2924] dark:text-[#B3A198] dark:hover:bg-[#251B18] dark:hover:text-[#FFF4E8]"
                 aria-label="Dismiss notification"
               >
                 <X className="size-4" />

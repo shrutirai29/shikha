@@ -121,7 +121,7 @@ export const PaymentPage = () => {
     return (
       <PageLayout>
         <div className="flex flex-col items-center gap-3 py-16 text-center">
-          <TriangleAlert className="size-10 text-rose-500" />
+          <TriangleAlert className="size-10 text-[#B85C4A] dark:text-[#D47763]" />
           <h1 className="text-xl font-bold text-[#3B2924] dark:text-[#FFF4E8]">Order not found</h1>
           <Link to="/orders" className="text-sm font-semibold text-[#B85C4A] hover:text-[#914536] dark:text-[#D47763] dark:hover:text-[#E28A76]">
             Back to my orders
@@ -206,7 +206,7 @@ export const PaymentPage = () => {
           </dl>
 
           {error && (
-            <p className="mt-4 rounded-xl bg-rose-50 px-4 py-3 text-sm font-medium text-rose-700 dark:bg-rose-500/10 dark:text-rose-300">
+            <p className="mt-4 rounded-xl border border-[#B85C4A]/30 bg-[#B85C4A]/10 px-4 py-3 text-sm font-medium text-[#914536] dark:border-[#D47763]/30 dark:bg-[#D47763]/10 dark:text-[#E28A76]">
               {error}
             </p>
           )}
@@ -233,7 +233,7 @@ export const PaymentPage = () => {
         </Card>
 
         {loading && (
-          <p className="mt-4 flex items-center justify-center gap-2 text-sm text-slate-400">
+          <p className="mt-4 flex items-center justify-center gap-2 text-sm text-[#806E66] dark:text-[#B3A198]">
             <Loader2 className="size-4 animate-spin" /> Contacting payment gateway…
           </p>
         )}

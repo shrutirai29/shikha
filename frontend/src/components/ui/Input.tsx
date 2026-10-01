@@ -4,6 +4,9 @@ import { cn } from "@/lib/utils";
 const baseField =
   "w-full rounded-xl border border-[#E8DCD0] bg-[#FFFCF7] px-3.5 py-2.5 text-sm text-[#3B2924] shadow-sm placeholder:text-[#806E66]/60 transition-colors focus:border-[#B85C4A] focus:outline-none focus:ring-2 focus:ring-[#B85C4A]/20 disabled:cursor-not-allowed disabled:bg-[#F5EDE4] disabled:text-[#806E66] dark:border-[#382823] dark:bg-[#1A1210]/90 dark:text-[#FFF4E8] dark:placeholder:text-[#B3A198]/50 dark:focus:border-[#D47763] dark:focus:bg-[#201714] dark:focus:ring-[#D47763]/25 dark:disabled:bg-[#150F0D] dark:disabled:text-[#806E66]";
 
+const errorField =
+  "border-[#B85C4A] focus:border-[#914536] focus:ring-[#B85C4A]/20 dark:border-[#D47763] dark:focus:border-[#E28A76] dark:focus:ring-[#D47763]/25";
+
 interface FieldWrapperProps {
   label?: string;
   error?: string;
@@ -46,11 +49,7 @@ export const Input = forwardRef<HTMLInputElement, InputProps>(
           ref={ref}
           id={fieldId}
           aria-invalid={Boolean(error)}
-          className={cn(
-            baseField,
-            error && "border-rose-500 focus:border-rose-500 focus:ring-rose-500/20",
-            className
-          )}
+          className={cn(baseField, error && errorField, className)}
           {...props}
         />
       </FieldWrapper>
@@ -76,7 +75,7 @@ export const Textarea = forwardRef<HTMLTextAreaElement, TextareaProps>(
           ref={ref}
           id={fieldId}
           aria-invalid={Boolean(error)}
-          className={cn(baseField, "min-h-24 resize-y", error && "border-rose-500 focus:border-rose-500 focus:ring-rose-500/20", className)}
+          className={cn(baseField, "min-h-24 resize-y", error && errorField, className)}
           {...props}
         />
       </FieldWrapper>
@@ -101,7 +100,7 @@ export const Select = forwardRef<HTMLSelectElement, SelectProps>(
           ref={ref}
           id={fieldId}
           aria-invalid={Boolean(error)}
-          className={cn(baseField, "pr-8", error && "border-rose-500 focus:border-rose-500 focus:ring-rose-500/20", className)}
+          className={cn(baseField, "pr-8", error && errorField, className)}
           {...props}
         >
           {children}

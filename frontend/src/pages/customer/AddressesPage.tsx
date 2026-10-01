@@ -176,7 +176,7 @@ export const AddressesPage = () => {
             <Card key={address._id} className="flex flex-col p-5">
               <div className="mb-3 flex items-start justify-between">
                 <div className="flex items-center gap-2">
-                  <Home className="size-4.5 text-slate-400" />
+                  <Home className="size-4.5 text-[#806E66] dark:text-[#B3A198]" />
                   {address.isDefault ? (
                     <Badge variant="info">
                       <Star className="size-3.5 fill-current" /> Default
@@ -203,7 +203,7 @@ export const AddressesPage = () => {
                   <button
                     type="button"
                     onClick={() => setDeleting(address)}
-                    className="rounded-lg p-1.5 text-[#806E66] transition hover:bg-rose-50 hover:text-rose-600 dark:text-[#C7B8AE] dark:hover:bg-rose-500/10"
+                    className="rounded-lg p-1.5 text-[#806E66] transition hover:bg-[#B85C4A]/10 hover:text-[#914536] dark:text-[#C7B8AE] dark:hover:bg-[#D47763]/15 dark:hover:text-[#E28A76]"
                     aria-label={`Delete address for ${address.fullName}`}
                   >
                     <Trash2 className="size-4" />

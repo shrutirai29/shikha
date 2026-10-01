@@ -11,9 +11,9 @@ export const PrivacyPage = () => {
       subtitle="How Knottiingale collects, protects, and respects your personal information."
     >
       <div className="mx-auto max-w-4xl space-y-8">
-        <Card className="p-6 sm:p-8 space-y-6 text-sm leading-relaxed text-slate-700 dark:text-slate-300">
+        <Card className="p-6 sm:p-8 space-y-6 text-sm leading-relaxed text-[#5E463E] dark:text-[#C7B8AE]">
           <div>
-            <h2 className="text-lg font-bold text-slate-900 dark:text-white mb-2">
+            <h2 className="font-display text-lg font-bold text-[#3B2924] dark:text-[#FFF4E8] mb-2">
               1. Information We Collect
             </h2>
             <p>
@@ -28,7 +28,7 @@ export const PrivacyPage = () => {
           </div>
 
           <div>
-            <h2 className="text-lg font-bold text-slate-900 dark:text-white mb-2">
+            <h2 className="font-display text-lg font-bold text-[#3B2924] dark:text-[#FFF4E8] mb-2">
               2. How We Use Your Information
             </h2>
             <p>
@@ -43,7 +43,7 @@ export const PrivacyPage = () => {
           </div>
 
           <div>
-            <h2 className="text-lg font-bold text-slate-900 dark:text-white mb-2">
+            <h2 className="font-display text-lg font-bold text-[#3B2924] dark:text-[#FFF4E8] mb-2">
               3. Payment Security & Third Parties
             </h2>
             <p>
@@ -52,7 +52,7 @@ export const PrivacyPage = () => {
           </div>
 
           <div>
-            <h2 className="text-lg font-bold text-slate-900 dark:text-white mb-2">
+            <h2 className="font-display text-lg font-bold text-[#3B2924] dark:text-[#FFF4E8] mb-2">
               4. Data Sharing & Non-Disclosure
             </h2>
             <p>
@@ -61,15 +61,15 @@ export const PrivacyPage = () => {
           </div>
 
           <div>
-            <h2 className="text-lg font-bold text-slate-900 dark:text-white mb-2">
+            <h2 className="font-display text-lg font-bold text-[#3B2924] dark:text-[#FFF4E8] mb-2">
               5. Your Rights & Data Contact
             </h2>
             <p>
               You have the right to review, update, or request deletion of your account and saved addresses at any time via your Profile settings or by contacting our team:
               <br />
-              <strong>Owner:</strong> Shikha Rai (+91 7985835558)
+              <strong className="text-[#3B2924] dark:text-[#FFF4E8]">Owner:</strong> Shikha Rai (+91 7985835558)
               <br />
-              <strong>Developer & Data Support:</strong> Shruti Rai (+91 7007787536, shruti.rai2901@gmail.com)
+              <strong className="text-[#3B2924] dark:text-[#FFF4E8]">Developer & Data Support:</strong> Shruti Rai (+91 7007787536, shruti.rai2901@gmail.com)
             </p>
           </div>
         </Card>

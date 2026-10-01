@@ -69,7 +69,7 @@ export const SearchPage = () => {
             value={sort}
             onChange={(event) => updateParams({ sort: event.target.value })}
             aria-label="Sort results"
-            className="h-10 rounded-lg border border-slate-300 bg-white px-3 text-sm font-medium text-slate-700 shadow-sm focus:border-indigo-500 focus:outline-none dark:border-slate-600 dark:bg-slate-800 dark:text-slate-200"
+            className="h-10 rounded-xl border border-[#E8DCD0] bg-[#FFFCF7] px-3 text-sm font-medium text-[#3B2924] shadow-sm focus:border-[#B85C4A] focus:outline-none dark:border-[#382823] dark:bg-[#1E1614] dark:text-[#FFF4E8]"
           >
             {sortOptions.map((option) => (
               <option key={option.value} value={option.value}>
@@ -82,12 +82,12 @@ export const SearchPage = () => {
     >
       <form onSubmit={handleSubmit} className="mb-8 flex max-w-xl gap-2">
         <div className="relative flex-1">
-          <Search className="pointer-events-none absolute left-3 top-1/2 size-4 -translate-y-1/2 text-slate-400" />
+          <Search className="pointer-events-none absolute left-3 top-1/2 size-4 -translate-y-1/2 text-[#806E66] dark:text-[#B3A198]" />
           <input
             value={input}
             onChange={(event) => setInput(event.target.value)}
             placeholder="Search for products…"
-            className="h-12 w-full rounded-xl border border-slate-300 bg-white pl-10 pr-3 text-sm shadow-sm focus:border-indigo-500 focus:outline-none focus:ring-2 focus:ring-indigo-500/20 dark:border-slate-600 dark:bg-slate-800 dark:text-slate-100"
+            className="h-12 w-full rounded-2xl border border-[#E8DCD0] bg-[#FFFCF7] pl-10 pr-3 text-sm text-[#3B2924] placeholder-[#806E66]/60 shadow-sm focus:border-[#B85C4A] focus:outline-none focus:ring-2 focus:ring-[#B85C4A]/20 dark:border-[#382823] dark:bg-[#1E1614] dark:text-[#FFF4E8] dark:placeholder-[#B3A198]/60"
           />
         </div>
         <Button type="submit" size="lg">

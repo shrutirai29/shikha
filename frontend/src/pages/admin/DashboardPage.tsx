@@ -46,7 +46,7 @@ export const DashboardPage = () => {
       label: "Revenue",
       value: formatCurrency(data.totals.revenue),
       icon: IndianRupee,
-      color: "bg-emerald-500/10 text-emerald-600 border border-emerald-500/20 dark:bg-emerald-500/15 dark:text-emerald-300 dark:border-emerald-500/30",
+      color: "bg-[#7A8B68]/15 text-[#7A8B68] border border-[#7A8B68]/25 dark:bg-[#9BAF83]/20 dark:text-[#9BAF83] dark:border-[#9BAF83]/30",
     },
     {
       label: "Orders",
@@ -58,37 +58,37 @@ export const DashboardPage = () => {
       label: "Products",
       value: String(data.totals.products),
       icon: Package,
-      color: "bg-[#D8A85B]/15 text-[#8e6827] border border-[#D8A85B]/20 dark:bg-[#E0B86A]/15 dark:text-[#E0B86A] dark:border-[#E0B86A]/30",
+      color: "bg-[#D8A85B]/15 text-[#D8A85B] border border-[#D8A85B]/25 dark:bg-[#E0B86A]/20 dark:text-[#E0B86A] dark:border-[#E0B86A]/30",
     },
     {
       label: "Customers",
       value: String(data.totals.users),
       icon: Users,
-      color: "bg-sky-500/10 text-sky-600 border border-sky-500/20 dark:bg-sky-500/15 dark:text-sky-300 dark:border-sky-500/30",
+      color: "bg-[#806E66]/15 text-[#5E463E] border border-[#806E66]/20 dark:bg-[#B3A198]/15 dark:text-[#FFF4E8] dark:border-[#B3A198]/30",
     },
     {
       label: "Pending orders",
       value: String(data.totals.pendingOrders),
       icon: ShoppingBag,
-      color: "bg-amber-500/10 text-amber-600 border border-amber-500/20 dark:bg-amber-500/15 dark:text-amber-300 dark:border-amber-500/30",
+      color: "bg-[#D8A85B]/15 text-[#D8A85B] border border-[#D8A85B]/25 dark:bg-[#E0B86A]/20 dark:text-[#E0B86A] dark:border-[#E0B86A]/30",
     },
     {
       label: "Reviews",
       value: String(data.totals.reviews),
       icon: Banknote,
-      color: "bg-rose-500/10 text-rose-600 border border-rose-500/20 dark:bg-rose-500/15 dark:text-rose-300 dark:border-rose-500/30",
+      color: "bg-[#C98F8B]/20 text-[#A7635F] border border-[#C98F8B]/30 dark:bg-[#D8A09B]/20 dark:text-[#D8A09B] dark:border-[#D8A09B]/30",
     },
     {
       label: "Active coupons",
       value: String(data.totals.activeCoupons),
       icon: TicketPercent,
-      color: "bg-teal-500/10 text-teal-600 border border-teal-500/20 dark:bg-teal-500/15 dark:text-teal-300 dark:border-teal-500/30",
+      color: "bg-[#7A8B68]/15 text-[#7A8B68] border border-[#7A8B68]/25 dark:bg-[#9BAF83]/20 dark:text-[#9BAF83] dark:border-[#9BAF83]/30",
     },
     {
       label: "Categories",
       value: String(data.totals.categories),
       icon: Package,
-      color: "bg-[#7A8B68]/15 text-[#7A8B68] border border-[#7A8B68]/20 dark:bg-[#9BAF83]/15 dark:text-[#9BAF83] dark:border-[#9BAF83]/30",
+      color: "bg-[#B85C4A]/10 text-[#B85C4A] border border-[#B85C4A]/20 dark:bg-[#D47763]/15 dark:text-[#D47763] dark:border-[#D47763]/30",
     },
   ];
 

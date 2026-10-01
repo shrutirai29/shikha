@@ -7,14 +7,14 @@ import { getErrorMessage } from "@/lib/api";
 import { formatCurrency } from "@/lib/utils";
 
 const barColors: Record<string, string> = {
-  Paid: "bg-emerald-500",
-  Pending: "bg-amber-500",
-  Failed: "bg-rose-500",
-  Refunded: "bg-sky-500",
-  Delivered: "bg-emerald-500",
+  Paid: "bg-[#7A8B68]",
+  Pending: "bg-[#D8A85B]",
+  Failed: "bg-[#B85C4A]",
+  Refunded: "bg-[#D8A09B]",
+  Delivered: "bg-[#7A8B68]",
   Processing: "bg-[#D47763]",
   Shipped: "bg-[#E0B86A]",
-  Cancelled: "bg-rose-500",
+  Cancelled: "bg-[#B85C4A]",
 };
 
 export const AnalyticsPage = () => {

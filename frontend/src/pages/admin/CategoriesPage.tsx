@@ -207,7 +207,7 @@ export const CategoriesPage = () => {
                 <button
                   type="button"
                   onClick={() => setDeleting(category)}
-                  className="rounded-lg p-2 text-[#806E66] transition hover:bg-rose-50 hover:text-rose-600 dark:text-[#B3A198] dark:hover:bg-rose-500/10 dark:hover:text-rose-400"
+                  className="rounded-lg p-2 text-[#806E66] transition hover:bg-[#B85C4A]/10 hover:text-[#914536] dark:text-[#B3A198] dark:hover:bg-[#D47763]/15 dark:hover:text-[#E28A76]"
                   aria-label={`Delete ${category.name}`}
                 >
                   <Trash2 className="size-4" />

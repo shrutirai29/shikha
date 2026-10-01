@@ -71,7 +71,7 @@ export const ProductShareButton: React.FC<ProductShareButtonProps> = ({
         <button
           type="button"
           onClick={handleTwitterShare}
-          className="share-icon-link text-slate-700 hover:text-[#1DA1F2] dark:text-slate-300 dark:hover:text-[#1DA1F2]"
+          className="share-icon-link text-[#5E463E] hover:text-[#1DA1F2] dark:text-[#C7B8AE] dark:hover:text-[#1DA1F2]"
           title="Share on X / Twitter"
           aria-label="Share on X"
         >
@@ -89,7 +89,7 @@ export const ProductShareButton: React.FC<ProductShareButtonProps> = ({
         <button
           type="button"
           onClick={handleWhatsAppShare}
-          className="share-icon-link text-slate-700 hover:text-[#25D366] dark:text-slate-300 dark:hover:text-[#25D366]"
+          className="share-icon-link text-[#5E463E] hover:text-[#25D366] dark:text-[#C7B8AE] dark:hover:text-[#25D366]"
           title="Share via WhatsApp"
           aria-label="Share via WhatsApp"
         >
@@ -106,12 +106,12 @@ export const ProductShareButton: React.FC<ProductShareButtonProps> = ({
         <button
           type="button"
           onClick={handleCopyLink}
-          className="share-icon-link text-slate-700 hover:text-indigo-600 dark:text-slate-300 dark:hover:text-indigo-400"
+          className="share-icon-link text-[#5E463E] hover:text-[#B85C4A] dark:text-[#C7B8AE] dark:hover:text-[#D47763]"
           title={copied ? "Link Copied!" : "Copy Product Link"}
           aria-label="Copy link"
         >
           {copied ? (
-            <Check className="size-4.5 text-emerald-500" />
+            <Check className="size-4.5 text-[#7A8B68] dark:text-[#9BAF83]" />
           ) : (
             <LinkIcon className="size-4.5" />
           )}

@@ -14,32 +14,32 @@ export const RefundPolicyPage = () => {
       <div className="mx-auto max-w-4xl space-y-8">
         <div className="grid gap-4 sm:grid-cols-2">
           <Card className="flex items-center gap-3 p-4">
-            <span className="flex size-10 shrink-0 items-center justify-center rounded-xl bg-indigo-50 text-indigo-600 dark:bg-indigo-500/10 dark:text-indigo-400">
+            <span className="flex size-10 shrink-0 items-center justify-center rounded-xl bg-[#B85C4A]/10 text-[#B85C4A] dark:bg-[#D47763]/15 dark:text-[#D47763]">
               <RefreshCcw className="size-5" />
             </span>
             <div>
-              <p className="text-xs uppercase tracking-wider text-slate-400">Return Window</p>
-              <p className="text-sm font-semibold text-slate-900 dark:text-white">7 Days from Delivery</p>
+              <p className="text-xs uppercase tracking-wider text-[#806E66] dark:text-[#B3A198]">Return Window</p>
+              <p className="text-sm font-semibold text-[#3B2924] dark:text-[#FFF4E8]">7 Days from Delivery</p>
             </div>
           </Card>
           <Card className="flex items-center gap-3 p-4">
-            <span className="flex size-10 shrink-0 items-center justify-center rounded-xl bg-emerald-50 text-emerald-600 dark:bg-emerald-500/10 dark:text-emerald-400">
+            <span className="flex size-10 shrink-0 items-center justify-center rounded-xl bg-[#7A8B68]/15 text-[#7A8B68] dark:bg-[#9BAF83]/20 dark:text-[#9BAF83]">
               <CheckCircle className="size-5" />
             </span>
             <div>
-              <p className="text-xs uppercase tracking-wider text-slate-400">Refund Processing</p>
-              <p className="text-sm font-semibold text-slate-900 dark:text-white">5 – 7 Business Days</p>
+              <p className="text-xs uppercase tracking-wider text-[#806E66] dark:text-[#B3A198]">Refund Processing</p>
+              <p className="text-sm font-semibold text-[#3B2924] dark:text-[#FFF4E8]">5 – 7 Business Days</p>
             </div>
           </Card>
         </div>
 
-        <Card className="p-6 sm:p-8 space-y-6 text-sm leading-relaxed text-slate-700 dark:text-slate-300">
+        <Card className="p-6 sm:p-8 space-y-6 text-sm leading-relaxed text-[#5E463E] dark:text-[#C7B8AE]">
           <div>
-            <h2 className="text-lg font-bold text-slate-900 dark:text-white mb-2">
+            <h2 className="font-display text-lg font-bold text-[#3B2924] dark:text-[#FFF4E8] mb-2">
               1. Order Cancellation
             </h2>
             <p>
-              You can cancel your order before it enters the "Shipped" status directly from your <a href="/orders" className="text-indigo-600 hover:underline dark:text-indigo-400">My Orders</a> dashboard.
+              You can cancel your order before it enters the "Shipped" status directly from your <a href="/orders" className="text-[#B85C4A] hover:underline dark:text-[#D47763]">My Orders</a> dashboard.
             </p>
             <ul className="list-disc pl-5 space-y-1 mt-2">
               <li><strong>Prepaid Orders (Razorpay):</strong> Upon cancellation, a 100% refund is initiated automatically to your original payment method within 24 hours and takes 5–7 business days to reflect in your account.</li>
@@ -48,7 +48,7 @@ export const RefundPolicyPage = () => {
           </div>
 
           <div>
-            <h2 className="text-lg font-bold text-slate-900 dark:text-white mb-2">
+            <h2 className="font-display text-lg font-bold text-[#3B2924] dark:text-[#FFF4E8] mb-2">
               2. 7-Day Hassle-Free Returns
             </h2>
             <p>
@@ -65,7 +65,7 @@ export const RefundPolicyPage = () => {
           </div>
 
           <div>
-            <h2 className="text-lg font-bold text-slate-900 dark:text-white mb-2">
+            <h2 className="font-display text-lg font-bold text-[#3B2924] dark:text-[#FFF4E8] mb-2">
               3. Refund Timeline & Mode
             </h2>
             <p>
@@ -79,7 +79,7 @@ export const RefundPolicyPage = () => {
           </div>
 
           <div>
-            <h2 className="text-lg font-bold text-slate-900 dark:text-white mb-2">
+            <h2 className="font-display text-lg font-bold text-[#3B2924] dark:text-[#FFF4E8] mb-2">
               4. Damaged or Defective Items
             </h2>
             <p>
@@ -88,25 +88,25 @@ export const RefundPolicyPage = () => {
           </div>
 
           <div>
-            <h2 className="text-lg font-bold text-slate-900 dark:text-white mb-2">
+            <h2 className="font-display text-lg font-bold text-[#3B2924] dark:text-[#FFF4E8] mb-2">
               5. How to Initiate a Return or Refund
             </h2>
             <p>
               Contact our team directly with your order number:
               <br />
-              <strong>Owner:</strong> Shikha Rai (+91 7985835558)
+              <strong className="text-[#3B2924] dark:text-[#FFF4E8]">Owner:</strong> Shikha Rai (+91 7985835558)
               <br />
-              <strong>WhatsApp Support:</strong>{" "}
+              <strong className="text-[#3B2924] dark:text-[#FFF4E8]">WhatsApp Support:</strong>{" "}
               <a
                 href="https://wa.me/917985835558"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="text-emerald-600 font-semibold hover:underline"
+                className="text-[#7A8B68] font-semibold hover:underline dark:text-[#9BAF83]"
               >
                 +91 7985835558
               </a>
               <br />
-              <strong>Developer & Tech Support:</strong> Shruti Rai (+91 7007787536, shruti.rai2901@gmail.com)
+              <strong className="text-[#3B2924] dark:text-[#FFF4E8]">Developer & Tech Support:</strong> Shruti Rai (+91 7007787536, shruti.rai2901@gmail.com)
             </p>
           </div>
         </Card>

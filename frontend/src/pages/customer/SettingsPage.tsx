@@ -15,10 +15,10 @@ export const SettingsPage = () => {
     <PageLayout title="Settings" subtitle="Account preferences and security">
       <div className="max-w-2xl space-y-6">
         <Card className="p-6">
-          <h3 className="mb-1 text-base font-semibold text-slate-900 dark:text-white">
+          <h3 className="font-display mb-1 text-base font-semibold text-[#3B2924] dark:text-[#FFF4E8]">
             Change password
           </h3>
-          <p className="mb-4 text-sm text-slate-500 dark:text-slate-400">
+          <p className="mb-4 text-sm text-[#806E66] dark:text-[#C7B8AE]">
             Keep your account secure with a strong, unique password.
           </p>
 
@@ -64,28 +64,28 @@ export const SettingsPage = () => {
         </Card>
 
         <Card className="p-6">
-          <h3 className="mb-1 text-base font-semibold text-slate-900 dark:text-white">
+          <h3 className="font-display mb-1 text-base font-semibold text-[#3B2924] dark:text-[#FFF4E8]">
             Account
           </h3>
-          <p className="text-sm text-slate-500 dark:text-slate-400">
+          <p className="text-sm text-[#806E66] dark:text-[#C7B8AE]">
             Manage your addresses and order history.
           </p>
           <div className="mt-4 flex flex-wrap gap-3">
             <Link
               to="/addresses"
-              className="rounded-lg border border-slate-300 px-4 py-2 text-sm font-medium text-slate-700 transition hover:bg-slate-50 dark:border-slate-600 dark:text-slate-200 dark:hover:bg-slate-700"
+              className="rounded-xl border border-[#E8DCD0] px-4 py-2 text-sm font-medium text-[#3B2924] transition hover:bg-[#F5EDE4] dark:border-[#382823] dark:text-[#FFF4E8] dark:hover:bg-[#251B18]"
             >
               Manage addresses
             </Link>
             <Link
               to="/orders"
-              className="rounded-lg border border-slate-300 px-4 py-2 text-sm font-medium text-slate-700 transition hover:bg-slate-50 dark:border-slate-600 dark:text-slate-200 dark:hover:bg-slate-700"
+              className="rounded-xl border border-[#E8DCD0] px-4 py-2 text-sm font-medium text-[#3B2924] transition hover:bg-[#F5EDE4] dark:border-[#382823] dark:text-[#FFF4E8] dark:hover:bg-[#251B18]"
             >
               View orders
             </Link>
             <Link
               to="/profile"
-              className="rounded-lg border border-slate-300 px-4 py-2 text-sm font-medium text-slate-700 transition hover:bg-slate-50 dark:border-slate-600 dark:text-slate-200 dark:hover:bg-slate-700"
+              className="rounded-xl border border-[#E8DCD0] px-4 py-2 text-sm font-medium text-[#3B2924] transition hover:bg-[#F5EDE4] dark:border-[#382823] dark:text-[#FFF4E8] dark:hover:bg-[#251B18]"
             >
               Edit profile
             </Link>

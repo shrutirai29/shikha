@@ -143,7 +143,7 @@ export const CartPage = () => {
                   {product.images[0] ? (
                     <img src={product.images[0]} alt={product.name} loading="lazy" className="size-full object-cover" />
                   ) : (
-                    <div className="flex size-full items-center justify-center text-slate-300 dark:text-slate-600">
+                    <div className="flex size-full items-center justify-center text-[#C7B8AE] dark:text-[#806E66]">
                       <ShoppingBag className="size-6" />
                     </div>
                   )}

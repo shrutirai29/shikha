@@ -15,37 +15,37 @@ export const ShippingPolicyPage = () => {
         {/* Highlight Perks */}
         <div className="grid gap-4 sm:grid-cols-3">
           <Card className="flex items-center gap-3 p-4">
-            <span className="flex size-10 shrink-0 items-center justify-center rounded-xl bg-indigo-50 text-indigo-600 dark:bg-indigo-500/10 dark:text-indigo-400">
+            <span className="flex size-10 shrink-0 items-center justify-center rounded-xl bg-[#B85C4A]/10 text-[#B85C4A] dark:bg-[#D47763]/15 dark:text-[#D47763]">
               <Truck className="size-5" />
             </span>
             <div>
-              <p className="text-xs uppercase tracking-wider text-slate-400">Shipping Cost</p>
-              <p className="text-sm font-semibold text-slate-900 dark:text-white">Free over ₹500 (else ₹50)</p>
+              <p className="text-xs uppercase tracking-wider text-[#806E66] dark:text-[#B3A198]">Shipping Cost</p>
+              <p className="text-sm font-semibold text-[#3B2924] dark:text-[#FFF4E8]">Free over ₹500 (else ₹50)</p>
             </div>
           </Card>
           <Card className="flex items-center gap-3 p-4">
-            <span className="flex size-10 shrink-0 items-center justify-center rounded-xl bg-emerald-50 text-emerald-600 dark:bg-emerald-500/10 dark:text-emerald-400">
+            <span className="flex size-10 shrink-0 items-center justify-center rounded-xl bg-[#7A8B68]/15 text-[#7A8B68] dark:bg-[#9BAF83]/20 dark:text-[#9BAF83]">
               <Clock className="size-5" />
             </span>
             <div>
-              <p className="text-xs uppercase tracking-wider text-slate-400">Dispatch Time</p>
-              <p className="text-sm font-semibold text-slate-900 dark:text-white">24 – 48 Hours</p>
+              <p className="text-xs uppercase tracking-wider text-[#806E66] dark:text-[#B3A198]">Dispatch Time</p>
+              <p className="text-sm font-semibold text-[#3B2924] dark:text-[#FFF4E8]">24 – 48 Hours</p>
             </div>
           </Card>
           <Card className="flex items-center gap-3 p-4">
-            <span className="flex size-10 shrink-0 items-center justify-center rounded-xl bg-amber-50 text-amber-600 dark:bg-amber-500/10 dark:text-amber-400">
+            <span className="flex size-10 shrink-0 items-center justify-center rounded-xl bg-[#D8A85B]/15 text-[#D8A85B] dark:bg-[#E0B86A]/20 dark:text-[#E0B86A]">
               <ShieldCheck className="size-5" />
             </span>
             <div>
-              <p className="text-xs uppercase tracking-wider text-slate-400">Safe Delivery</p>
-              <p className="text-sm font-semibold text-slate-900 dark:text-white">India-Wide Tracking</p>
+              <p className="text-xs uppercase tracking-wider text-[#806E66] dark:text-[#B3A198]">Safe Delivery</p>
+              <p className="text-sm font-semibold text-[#3B2924] dark:text-[#FFF4E8]">India-Wide Tracking</p>
             </div>
           </Card>
         </div>
 
-        <Card className="p-6 sm:p-8 space-y-6 text-sm leading-relaxed text-slate-700 dark:text-slate-300">
+        <Card className="p-6 sm:p-8 space-y-6 text-sm leading-relaxed text-[#5E463E] dark:text-[#C7B8AE]">
           <div>
-            <h2 className="text-lg font-bold text-slate-900 dark:text-white mb-2">
+            <h2 className="font-display text-lg font-bold text-[#3B2924] dark:text-[#FFF4E8] mb-2">
               1. Order Processing & Crafting Time
             </h2>
             <p>
@@ -54,20 +54,20 @@ export const ShippingPolicyPage = () => {
           </div>
 
           <div>
-            <h2 className="text-lg font-bold text-slate-900 dark:text-white mb-2">
+            <h2 className="font-display text-lg font-bold text-[#3B2924] dark:text-[#FFF4E8] mb-2">
               2. Shipping Charges
             </h2>
             <ul className="list-disc pl-5 space-y-1">
               <li><strong>Orders ₹500 and above:</strong> FREE Shipping across India.</li>
               <li><strong>Orders under ₹500:</strong> Standard flat shipping rate of ₹50.</li>
             </ul>
-            <p className="mt-2 text-xs text-slate-500 dark:text-slate-400">
+            <p className="mt-2 text-xs text-[#806E66] dark:text-[#C7B8AE]">
               Shipping charges, if applicable, are clearly calculated and displayed before you make your payment.
             </p>
           </div>
 
           <div>
-            <h2 className="text-lg font-bold text-slate-900 dark:text-white mb-2">
+            <h2 className="font-display text-lg font-bold text-[#3B2924] dark:text-[#FFF4E8] mb-2">
               3. Estimated Delivery Timelines
             </h2>
             <p>
@@ -81,24 +81,24 @@ export const ShippingPolicyPage = () => {
           </div>
 
           <div>
-            <h2 className="text-lg font-bold text-slate-900 dark:text-white mb-2">
+            <h2 className="font-display text-lg font-bold text-[#3B2924] dark:text-[#FFF4E8] mb-2">
               4. Order Tracking
             </h2>
             <p>
-              As soon as your order is shipped, tracking information including courier partner and tracking ID will be updated on your <a href="/orders" className="text-indigo-600 hover:underline dark:text-indigo-400">Orders</a> page. You can follow your parcel's journey right to your doorstep.
+              As soon as your order is shipped, tracking information including courier partner and tracking ID will be updated on your <a href="/orders" className="text-[#B85C4A] hover:underline dark:text-[#D47763]">Orders</a> page. You can follow your parcel's journey right to your doorstep.
             </p>
           </div>
 
           <div>
-            <h2 className="text-lg font-bold text-slate-900 dark:text-white mb-2">
+            <h2 className="font-display text-lg font-bold text-[#3B2924] dark:text-[#FFF4E8] mb-2">
               5. Delivery Queries & Assistance
             </h2>
             <p>
               If your package is delayed, damaged in transit, or you have delivery instructions:
               <br />
-              <strong>Contact:</strong> Shikha Rai (+91 7985835558)
+              <strong className="text-[#3B2924] dark:text-[#FFF4E8]">Contact:</strong> Shikha Rai (+91 7985835558)
               <br />
-              <strong>Technical inquiries:</strong> Shruti Rai (shruti.rai2901@gmail.com)
+              <strong className="text-[#3B2924] dark:text-[#FFF4E8]">Technical inquiries:</strong> Shruti Rai (shruti.rai2901@gmail.com)
             </p>
           </div>
         </Card>

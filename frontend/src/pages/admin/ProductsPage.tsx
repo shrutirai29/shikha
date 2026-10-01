@@ -393,7 +393,7 @@ export const ProductsPage = () => {
                 ))}
               </select>
               {errors.category && (
-                <p className="mt-1 text-xs font-medium text-rose-600">{errors.category.message}</p>
+                <p className="mt-1 text-xs font-medium text-[#914536] dark:text-[#E28A76]">{errors.category.message}</p>
               )}
             </div>
             <div className="flex flex-wrap items-end gap-4">
@@ -430,7 +430,7 @@ export const ProductsPage = () => {
                     type="button"
                     onClick={() => setRemovedImages([...removedImages, url])}
                     aria-label="Remove image"
-                    className="absolute -right-1.5 -top-1.5 grid size-5 place-items-center rounded-full bg-rose-500 text-white shadow hover:bg-rose-600"
+                    className="absolute -right-1.5 -top-1.5 grid size-5 place-items-center rounded-full bg-[#B85C4A] text-white shadow hover:bg-[#914536] dark:bg-[#D47763] dark:hover:bg-[#E28A76] dark:text-[#1F1816]"
                   >
                     <X className="size-3" />
                   </button>
@@ -452,7 +452,7 @@ export const ProductsPage = () => {
                       setNewImages(newImages.filter((_, i) => i !== index))
                     }
                     aria-label={`Remove ${file.name}`}
-                    className="absolute -right-1.5 -top-1.5 grid size-5 place-items-center rounded-full bg-rose-500 text-white shadow hover:bg-rose-600"
+                    className="absolute -right-1.5 -top-1.5 grid size-5 place-items-center rounded-full bg-[#B85C4A] text-white shadow hover:bg-[#914536] dark:bg-[#D47763] dark:hover:bg-[#E28A76] dark:text-[#1F1816]"
                   >
                     <X className="size-3" />
                   </button>

@@ -61,15 +61,15 @@ const STEP_LABELS: Record<string, string> = {
 const StatusTimeline = ({ status }: { status: string }) => {
   if (status === "Cancelled") {
     return (
-      <div className="flex items-center gap-3 rounded-2xl border border-rose-200 bg-rose-50/70 px-5 py-4 dark:border-rose-500/25 dark:bg-rose-500/10">
-        <span className="flex size-10 shrink-0 items-center justify-center rounded-full bg-rose-600 text-white">
+      <div className="flex items-center gap-3 rounded-2xl border border-[#B85C4A]/30 bg-[#B85C4A]/10 px-5 py-4 dark:border-[#D47763]/30 dark:bg-[#D47763]/10">
+        <span className="flex size-10 shrink-0 items-center justify-center rounded-full bg-[#B85C4A] text-white dark:bg-[#D47763] dark:text-[#1F1816]">
           <X className="size-5" />
         </span>
         <div>
-          <p className="text-sm font-semibold text-rose-800 dark:text-rose-200">
+          <p className="text-sm font-semibold text-[#914536] dark:text-[#E28A76]">
             Order cancelled
           </p>
-          <p className="text-xs text-rose-600/80 dark:text-rose-300/70">
+          <p className="text-xs text-[#806E66] dark:text-[#C7B8AE]">
             Any reserved stock has been returned to inventory.
           </p>
         </div>
@@ -351,7 +351,7 @@ export const OrderDetailsPage = () => {
             {canCancel && !isAdminViewer && (
               <Button
                 variant="outline"
-                className="mt-3 w-full border-rose-300 text-rose-700 hover:bg-rose-50 hover:border-rose-400 dark:border-rose-500/40 dark:text-rose-300 dark:hover:bg-rose-500/10"
+                className="mt-3 w-full border-[#B85C4A]/35 text-[#914536] hover:bg-[#B85C4A]/10 hover:border-[#B85C4A]/50 dark:border-[#D47763]/35 dark:text-[#E28A76] dark:hover:bg-[#D47763]/15"
                 onClick={() => setCancelOpen(true)}
                 loading={cancelOrder.isPending}
               >
