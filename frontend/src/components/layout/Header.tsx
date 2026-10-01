@@ -110,7 +110,7 @@ export const Header = () => {
             href="https://wa.me/917985835558"
             target="_blank"
             rel="noopener noreferrer"
-            className="hidden lg:inline-flex items-center gap-1 font-semibold text-[#D8A85B] transition-colors hover:text-[#FFF4E8] dark:text-[#E0B86A] shrink-0"
+            className="hidden xl:inline-flex items-center gap-1 font-semibold text-[#D8A85B] transition-colors hover:text-[#FFF4E8] dark:text-[#E0B86A] shrink-0"
           >
             Custom Orders: WhatsApp +91 7985835558 →
           </a>
@@ -121,7 +121,7 @@ export const Header = () => {
         <div className="flex items-center gap-1 sm:gap-2 shrink-0">
           <button
             type="button"
-            className="rounded-lg p-1.5 sm:p-2 text-[#806E66] hover:bg-[#F5EDE4] lg:hidden dark:text-[#B3A198] dark:hover:bg-[#251B18]"
+            className="rounded-lg p-1.5 sm:p-2 text-[#806E66] hover:bg-[#F5EDE4] xl:hidden dark:text-[#B3A198] dark:hover:bg-[#251B18]"
             onClick={() => setMobileOpen((open) => !open)}
             aria-label="Toggle navigation menu"
           >
@@ -130,7 +130,7 @@ export const Header = () => {
           <Logo />
         </div>
 
-        <nav className="hidden items-center gap-1 lg:flex" aria-label="Main navigation">
+        <nav className="hidden items-center gap-1 xl:flex" aria-label="Main navigation">
           <NavLink to="/" className={navLinkClass} end>
             Home
           </NavLink>
@@ -338,7 +338,7 @@ export const Header = () => {
       </AnimatePresence>
 
       {mobileOpen && (
-        <div className="border-t border-[#E8DCD0] px-4 py-3 lg:hidden dark:border-[#382823] bg-[#FFFCF7] dark:bg-[#140E0C]">
+        <div className="border-t border-[#E8DCD0] px-4 py-3 xl:hidden dark:border-[#382823] bg-[#FFFCF7] dark:bg-[#140E0C]">
           <form onSubmit={handleSearch} className="relative mb-3">
             <Search className="pointer-events-none absolute left-3 top-1/2 size-4 -translate-y-1/2 text-[#806E66] dark:text-[#B3A198]" />
             <input

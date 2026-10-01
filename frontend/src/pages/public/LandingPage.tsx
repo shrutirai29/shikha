@@ -296,8 +296,8 @@ export const LandingPage = () => {
       {/* ============================================================
           TOP E-COMMERCE CATEGORY RAIL (Flipkart-style)
           ============================================================ */}
-      <nav aria-label="Quick Categories" className="border-b border-[#E8DCD0] bg-[#FFFCF7] shadow-xs dark:border-[#382823] dark:bg-[#1E1614]">
-        <div className="mx-auto flex max-w-7xl items-center justify-start sm:justify-between gap-2.5 sm:gap-3 overflow-x-auto px-3 py-3 sm:px-6 scrollbar-none touch-pan-x [-webkit-overflow-scrolling:touch]">
+      <nav aria-label="Quick Categories" className="border-b border-[#E8DCD0] bg-[#FFFCF7] shadow-xs dark:border-[#382823] dark:bg-[#1E1614] w-full max-w-full overflow-hidden">
+        <div className="mx-auto flex max-w-7xl items-center justify-start xl:justify-between gap-2.5 sm:gap-3 overflow-x-auto px-3 py-3 sm:px-6 scrollbar-none touch-pan-x [-webkit-overflow-scrolling:touch]">
           {QUICK_CATEGORIES.map((cat) => (
             <Link
               key={cat.name}
@@ -356,13 +356,13 @@ export const LandingPage = () => {
         </div>
 
         {/* Hero Content Container */}
-        <div className="relative mx-auto grid max-w-7xl items-center gap-8 sm:gap-10 px-4 py-12 sm:px-6 sm:py-20 lg:grid-cols-12 lg:gap-8 lg:py-28">
+        <div className="relative mx-auto grid max-w-7xl items-center gap-8 sm:gap-10 px-4 py-12 sm:px-6 sm:py-16 lg:grid-cols-12 lg:gap-6 xl:gap-8 lg:py-24 overflow-hidden w-full max-w-full">
           {/* Left Column: Brand Story & Call-to-actions */}
           <motion.div
             initial={{ opacity: 0, y: 24 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
-            className="lg:col-span-7 xl:col-span-7 max-w-2xl"
+            className="min-w-0 lg:col-span-7 xl:col-span-7 max-w-2xl"
           >
             {/* Pill: Hand-Stitched by Shikha Rai */}
             <div className="inline-flex items-center gap-2 rounded-full border border-[#B85C4A]/25 bg-[#FFFCF7]/90 px-3.5 sm:px-4 py-1.5 text-[11px] sm:text-xs font-semibold text-[#B85C4A] shadow-soft backdrop-blur-md dark:border-[#D47763]/30 dark:bg-[#1E1614]/90 dark:text-[#D47763]">
@@ -374,7 +374,7 @@ export const LandingPage = () => {
             </div>
 
             {/* Display Headline */}
-            <h1 className="font-display mt-4 sm:mt-5 text-3xl sm:text-5xl lg:text-7xl font-semibold leading-[1.12] sm:leading-[1.08] tracking-tight text-[#3B2924] dark:text-[#FFF4E8]">
+            <h1 className="font-display mt-4 sm:mt-5 text-3xl sm:text-4xl md:text-5xl lg:text-5xl xl:text-6xl 2xl:text-7xl font-semibold leading-[1.15] sm:leading-[1.1] tracking-tight text-[#3B2924] dark:text-[#FFF4E8]">
               Handmade with love,{" "}
               <span className="block font-normal italic text-[#B85C4A] dark:text-[#D47763]">
                 one stitch at a time.
@@ -429,10 +429,10 @@ export const LandingPage = () => {
             initial={{ opacity: 0, scale: 0.95, y: 16 }}
             animate={{ opacity: 1, scale: 1, y: 0 }}
             transition={{ duration: 0.7, delay: 0.15, ease: [0.22, 1, 0.36, 1] }}
-            className="lg:col-span-5 xl:col-span-5 flex flex-col justify-end lg:items-end"
+            className="min-w-0 lg:col-span-5 xl:col-span-5 flex flex-col justify-end lg:items-end w-full"
           >
             {/* Elegant glassmorphic showcase card floating harmoniously over the photo */}
-            <div className="w-full max-w-sm rounded-3xl border border-[#E8DCD0]/90 bg-[#FFFCF7]/90 p-5 shadow-lift backdrop-blur-md dark:border-[#493A34]/80 dark:bg-[#2A211E]/90">
+            <div className="w-full max-w-[340px] sm:max-w-sm rounded-3xl border border-[#E8DCD0]/90 bg-[#FFFCF7]/90 p-4 sm:p-5 shadow-lift backdrop-blur-md dark:border-[#493A34]/80 dark:bg-[#2A211E]/90">
               <div className="flex items-center justify-between border-b border-[#E8DCD0]/80 pb-3 dark:border-[#493A34]/80">
                 <div className="flex items-center gap-2">
                   <span className="flex size-7 items-center justify-center rounded-lg bg-[#B85C4A]/15 text-[#B85C4A] dark:bg-[#D47763]/20 dark:text-[#D47763]">
@@ -621,7 +621,7 @@ export const LandingPage = () => {
       {/* ============================================================
           FLIPKART-STYLE HORIZONTAL RAIL 1: TRENDING BESTSELLERS
           ============================================================ */}
-      <section className="mx-auto max-w-7xl px-4 py-6 sm:px-6 sm:py-8">
+      <section className="mx-auto max-w-7xl px-4 py-6 sm:px-6 sm:py-8 overflow-hidden w-full max-w-full">
         <div className="rounded-3xl border border-[#E8DCD0] bg-gradient-to-b from-[#FFFCF7] to-[#F5EDE4]/30 p-4 sm:p-6 shadow-soft dark:border-[#382823] dark:from-[#1E1614] dark:to-[#150F0D]">
           {/* Header with Title and Scroll Controls */}
           <div className="mb-5 flex items-center justify-between gap-4">
@@ -748,7 +748,7 @@ export const LandingPage = () => {
       {/* ============================================================
           FLIPKART-STYLE HORIZONTAL RAIL 2: POCKET-FRIENDLY UNDER ₹499
           ============================================================ */}
-      <section className="mx-auto max-w-7xl px-4 py-4 sm:px-6 sm:py-6">
+      <section className="mx-auto max-w-7xl px-4 py-4 sm:px-6 sm:py-6 overflow-hidden w-full max-w-full">
         <div className="rounded-3xl border border-[#E8DCD0] bg-[#FFFCF7] p-4 sm:p-6 shadow-soft dark:border-[#382823] dark:bg-[#1E1614]">
           {/* Header */}
           <div className="mb-5 flex items-center justify-between gap-4">
