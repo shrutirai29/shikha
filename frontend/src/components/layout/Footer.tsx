@@ -7,7 +7,7 @@ export const Footer = () => (
     <div className="mx-auto grid max-w-7xl gap-8 px-4 py-12 sm:grid-cols-2 sm:px-6 lg:grid-cols-4">
       {/* Brand & Owner Info */}
       <div className="space-y-4">
-        <Logo />
+        <Logo inverted />
         <p className="text-sm text-[#C7B8AE] dark:text-[#B3A198] leading-relaxed">
           Handmade crochet treasures, stitched with love and delivered to your
           door across India. Every piece is made slowly, with care.

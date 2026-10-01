@@ -95,14 +95,14 @@ export const Header = () => {
   return (
     <header className="sticky top-0 z-50 border-b border-[#E8DCD0] bg-[#FFFCF7]/95 backdrop-blur-xl dark:border-[#382823] dark:bg-[#140E0C]/90">
       {/* Top micro-announcement bar */}
-      <div className="border-b border-[#E8DCD0]/20 bg-[#3B2924] px-3 sm:px-4 py-1.5 text-[10px] sm:text-[11px] font-medium text-[#FFF4E8] dark:bg-[#0E0908] dark:border-[#382823]">
-        <div className="mx-auto flex max-w-7xl items-center justify-between gap-2">
+      <div className="border-b border-[#E8DCD0]/20 bg-[#3B2924] px-2.5 sm:px-4 py-1.5 text-[10px] sm:text-[11px] font-medium text-[#FFF4E8] dark:bg-[#0E0908] dark:border-[#382823] overflow-hidden">
+        <div className="mx-auto flex max-w-7xl items-center justify-between gap-2 min-w-0">
           <div className="hidden sm:flex items-center gap-1.5 shrink-0">
             <span className="flex size-2 rounded-full bg-[#7A8B68] animate-pulse dark:bg-[#9BAF83]" />
             <span className="font-semibold text-white">Knottiingale Studio</span>
             <span className="hidden md:inline text-[#C7B8AE] dark:text-[#B3A198]">· Handcrafted by Shikha Rai</span>
           </div>
-          <p className="mx-auto sm:mx-0 flex items-center gap-1.5 text-[#F5EDE4] truncate text-center sm:text-left">
+          <p className="mx-auto sm:mx-0 flex items-center justify-center sm:justify-start gap-1.5 text-[#F5EDE4] truncate text-center sm:text-left min-w-0 max-w-full">
             <Sparkles className="size-3 text-[#D8A85B] dark:text-[#E0B86A] shrink-0" />
             <span className="truncate">Free Shipping across India on orders &gt; ₹500 · COD Available</span>
           </p>
@@ -117,8 +117,8 @@ export const Header = () => {
         </div>
       </div>
 
-      <div className="mx-auto flex h-16 max-w-7xl items-center justify-between gap-2 sm:gap-3 px-3 sm:px-6">
-        <div className="flex items-center gap-1.5 sm:gap-2">
+      <div className="mx-auto flex h-16 max-w-7xl items-center justify-between gap-1.5 sm:gap-3 px-2.5 sm:px-6">
+        <div className="flex items-center gap-1 sm:gap-2 shrink-0">
           <button
             type="button"
             className="rounded-lg p-1.5 sm:p-2 text-[#806E66] hover:bg-[#F5EDE4] lg:hidden dark:text-[#B3A198] dark:hover:bg-[#251B18]"
@@ -150,7 +150,7 @@ export const Header = () => {
           )}
         </nav>
 
-        <div className="flex items-center gap-0.5 sm:gap-1">
+        <div className="flex items-center gap-0.5 sm:gap-1 shrink-0">
           {searchOpen && (
             <form onSubmit={handleSearch} className="relative mr-1 hidden sm:block">
               <Search className="pointer-events-none absolute left-3.5 top-1/2 size-4 -translate-y-1/2 text-[#806E66] dark:text-[#B3A198]" />
@@ -167,16 +167,17 @@ export const Header = () => {
           <button
             type="button"
             onClick={() => setSearchOpen((open) => !open)}
-            className="rounded-xl p-2 sm:p-2.5 text-[#806E66] transition hover:bg-[#F5EDE4] hover:text-[#3B2924] dark:text-[#B3A198] dark:hover:bg-[#251B18] dark:hover:text-[#FFF4E8]"
+            className="rounded-xl p-1.5 sm:p-2.5 text-[#806E66] transition hover:bg-[#F5EDE4] hover:text-[#3B2924] dark:text-[#B3A198] dark:hover:bg-[#251B18] dark:hover:text-[#FFF4E8]"
             aria-label={searchOpen ? "Close search" : "Open search"}
           >
             {searchOpen ? <X className="size-4.5 sm:size-5" /> : <Search className="size-4.5 sm:size-5" />}
           </button>
 
+          {/* Theme toggle: visible on sm+ screens; on mobile it's located in the menu and user dropdown */}
           <button
             type="button"
             onClick={toggleTheme}
-            className="rounded-xl p-2 sm:p-2.5 text-[#806E66] transition hover:bg-[#F5EDE4] hover:text-[#3B2924] dark:text-[#B3A198] dark:hover:bg-[#251B18] dark:hover:text-[#FFF4E8]"
+            className="hidden sm:flex rounded-xl p-2 sm:p-2.5 text-[#806E66] transition hover:bg-[#F5EDE4] hover:text-[#3B2924] dark:text-[#B3A198] dark:hover:bg-[#251B18] dark:hover:text-[#FFF4E8]"
             aria-label={`Switch to ${theme === "dark" ? "light" : "dark"} mode`}
           >
             {theme === "dark" ? <Sun className="size-4.5 sm:size-5 text-[#E0B86A]" /> : <Moon className="size-4.5 sm:size-5 text-[#B85C4A]" />}
@@ -184,7 +185,7 @@ export const Header = () => {
 
           <Link
             to={isAuthenticated ? "/wishlist" : "/login"}
-            className="relative rounded-xl p-2 sm:p-2.5 text-[#806E66] transition hover:bg-[#F5EDE4] hover:text-[#3B2924] dark:text-[#B3A198] dark:hover:bg-[#251B18] dark:hover:text-[#FFF4E8]"
+            className="relative rounded-xl p-1.5 sm:p-2.5 text-[#806E66] transition hover:bg-[#F5EDE4] hover:text-[#3B2924] dark:text-[#B3A198] dark:hover:bg-[#251B18] dark:hover:text-[#FFF4E8]"
             aria-label="Wishlist"
           >
             <Heart className="size-4.5 sm:size-5" />
@@ -197,7 +198,7 @@ export const Header = () => {
 
           <Link
             to={isAuthenticated ? "/cart" : "/login"}
-            className="relative rounded-xl p-2 sm:p-2.5 text-[#806E66] transition hover:bg-[#F5EDE4] hover:text-[#3B2924] dark:text-[#B3A198] dark:hover:bg-[#251B18] dark:hover:text-[#FFF4E8]"
+            className="relative rounded-xl p-1.5 sm:p-2.5 text-[#806E66] transition hover:bg-[#F5EDE4] hover:text-[#3B2924] dark:text-[#B3A198] dark:hover:bg-[#251B18] dark:hover:text-[#FFF4E8]"
             aria-label="Cart"
           >
             <ShoppingBag className="size-4.5 sm:size-5" />
@@ -226,7 +227,7 @@ export const Header = () => {
                     animate={{ opacity: 1, y: 0, scale: 1 }}
                     exit={{ opacity: 0, y: 6, scale: 0.98 }}
                     transition={{ duration: 0.15 }}
-                    className="absolute right-0 top-11 sm:top-12 w-60 overflow-hidden rounded-2xl border border-[#E8DCD0] bg-[#FFFCF7] shadow-xl dark:border-[#382823] dark:bg-[#1E1614]/95 dark:backdrop-blur-xl dark:shadow-[0_12px_40px_rgba(0,0,0,0.5)]"
+                    className="absolute right-0 top-11 sm:top-12 w-60 overflow-hidden rounded-2xl border border-[#E8DCD0] bg-[#FFFCF7] shadow-xl dark:border-[#382823] dark:bg-[#1E1614]/95 dark:backdrop-blur-xl dark:shadow-[0_12px_40px_rgba(0,0,0,0.5)] z-50"
                   >
                     <div className="border-b border-[#E8DCD0] px-4 py-3 dark:border-[#382823]">
                       <p className="text-sm font-semibold text-[#3B2924] dark:text-[#FFF4E8]">
@@ -248,6 +249,22 @@ export const Header = () => {
                           {link.label}
                         </Link>
                       ))}
+
+                      {/* Theme toggle in user dropdown */}
+                      <button
+                        type="button"
+                        onClick={toggleTheme}
+                        className="flex w-full items-center justify-between rounded-lg px-3 py-2 text-sm text-[#3B2924] transition hover:bg-[#F5EDE4] dark:text-[#FFF4E8] dark:hover:bg-[#251B18]"
+                      >
+                        <span className="flex items-center gap-2.5">
+                          {theme === "dark" ? <Sun className="size-4 text-[#E0B86A]" /> : <Moon className="size-4 text-[#B85C4A]" />}
+                          Theme
+                        </span>
+                        <span className="text-xs font-medium text-[#806E66] dark:text-[#B3A198] capitalize">
+                          {theme === "dark" ? "Dark" : "Light"}
+                        </span>
+                      </button>
+
                       <button
                         type="button"
                         onClick={handleLogout}
@@ -262,20 +279,30 @@ export const Header = () => {
               </AnimatePresence>
             </div>
           ) : (
-            <div className="ml-1 hidden items-center gap-2 sm:flex">
+            <>
+              {/* Mobile Guest Account Icon */}
               <Link
                 to="/login"
-                className="rounded-xl px-3 py-1.5 text-xs sm:text-sm font-medium text-[#3B2924] transition hover:text-[#B85C4A] hover:bg-[#F5EDE4]/60 dark:text-[#FFF4E8] dark:hover:text-[#D47763] dark:hover:bg-[#251B18]/60"
+                className="rounded-xl p-1.5 text-[#806E66] transition hover:bg-[#F5EDE4] hover:text-[#3B2924] sm:hidden dark:text-[#B3A198] dark:hover:bg-[#251B18] dark:hover:text-[#FFF4E8]"
+                aria-label="Account"
               >
-                Log in
+                <UserIcon className="size-5" />
               </Link>
-              <Link
-                to="/register"
-                className="rounded-xl bg-[#B85C4A] px-3.5 sm:px-4.5 py-1.5 sm:py-2 text-xs sm:text-sm font-semibold text-white shadow-soft transition hover:bg-[#914536] hover:shadow-lift dark:bg-gradient-to-r dark:from-[#D47763] dark:to-[#B85C4A] dark:text-white"
-              >
-                Sign up
-              </Link>
-            </div>
+              <div className="ml-1 hidden items-center gap-2 sm:flex">
+                <Link
+                  to="/login"
+                  className="rounded-xl px-3 py-1.5 text-xs sm:text-sm font-medium text-[#3B2924] transition hover:text-[#B85C4A] hover:bg-[#F5EDE4]/60 dark:text-[#FFF4E8] dark:hover:text-[#D47763] dark:hover:bg-[#251B18]/60"
+                >
+                  Log in
+                </Link>
+                <Link
+                  to="/register"
+                  className="rounded-xl bg-[#B85C4A] px-3.5 sm:px-4.5 py-1.5 sm:py-2 text-xs sm:text-sm font-semibold text-white shadow-soft transition hover:bg-[#914536] hover:shadow-lift dark:bg-gradient-to-r dark:from-[#D47763] dark:to-[#B85C4A] dark:text-white"
+                >
+                  Sign up
+                </Link>
+              </div>
+            </>
           )}
         </div>
       </div>
@@ -339,6 +366,26 @@ export const Header = () => {
                 Admin Dashboard
               </Link>
             )}
+
+            {/* Mobile Theme Switcher Bar */}
+            <div className="mt-2 flex items-center justify-between rounded-xl px-3.5 py-2.5 bg-[#F5EDE4]/70 dark:bg-[#251B18]/70">
+              <span className="flex items-center gap-2 text-sm font-medium text-[#3B2924] dark:text-[#FFF4E8]">
+                {theme === "dark" ? (
+                  <Moon className="size-4 text-[#D47763]" />
+                ) : (
+                  <Sun className="size-4 text-[#D8A85B]" />
+                )}
+                {theme === "dark" ? "Dark Theme" : "Light Theme"}
+              </span>
+              <button
+                type="button"
+                onClick={toggleTheme}
+                className="rounded-lg bg-[#FFFCF7] px-3 py-1 text-xs font-semibold text-[#B85C4A] shadow-xs border border-[#E8DCD0] transition active:scale-95 dark:bg-[#1E1614] dark:border-[#382823] dark:text-[#D47763]"
+              >
+                Switch
+              </button>
+            </div>
+
             {!isAuthenticated && (
               <div className="mt-2 flex gap-2">
                 <Link

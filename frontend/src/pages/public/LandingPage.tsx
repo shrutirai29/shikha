@@ -325,8 +325,8 @@ export const LandingPage = () => {
       {/* ============================================================
           MYNTRA-STYLE FIRST ORDER OFFER STRIP
           ============================================================ */}
-      <div className="bg-gradient-to-r from-[#B85C4A] via-[#914536] to-[#B85C4A] px-3 sm:px-4 py-2 text-center text-xs font-semibold tracking-wide text-white shadow-xs">
-        <span className="inline-flex items-center gap-2">
+      <div className="bg-gradient-to-r from-[#B85C4A] via-[#914536] to-[#B85C4A] px-3 sm:px-4 py-1.5 sm:py-2 text-center text-[11px] sm:text-xs font-semibold tracking-wide text-white shadow-xs">
+        <span className="inline-flex flex-wrap items-center justify-center gap-x-2 gap-y-0.5">
           <span>🎟️ <strong>FLAT 10% OFF</strong> on your 1st order with code <span className="underline decoration-white/60 font-mono font-bold tracking-wider">KNOTTY10</span></span>
           <span className="hidden sm:inline">•</span>
           <span className="hidden sm:inline">📦 Free Express Shipping Over ₹500 across India</span>
@@ -406,19 +406,19 @@ export const LandingPage = () => {
             </div>
 
             {/* Craft Highlights */}
-            <div className="mt-10 flex flex-wrap items-center gap-6 border-t border-[#E8DCD0]/70 pt-6 text-xs font-medium text-[#806E66] dark:border-[#493A34]/70 dark:text-[#C7B8AE]">
-              <span className="flex items-center gap-2">
-                <span className="flex size-6 items-center justify-center rounded-full bg-[#7A8B68]/15 text-[#7A8B68] dark:bg-[#9BAF83]/20 dark:text-[#9BAF83]">✓</span>
+            <div className="mt-8 sm:mt-10 flex flex-wrap items-center gap-3 sm:gap-6 border-t border-[#E8DCD0]/70 pt-5 sm:pt-6 text-[11px] sm:text-xs font-medium text-[#806E66] dark:border-[#493A34]/70 dark:text-[#C7B8AE]">
+              <span className="flex items-center gap-1.5 sm:gap-2">
+                <span className="flex size-5 sm:size-6 items-center justify-center rounded-full bg-[#7A8B68]/15 text-[#7A8B68] dark:bg-[#9BAF83]/20 dark:text-[#9BAF83]">✓</span>
                 100% Handcrafted
               </span>
-              <span className="flex items-center gap-2">
-                <span className="flex size-6 items-center justify-center rounded-full bg-[#D8A85B]/20 text-[#D8A85B] dark:bg-[#E0B86A]/20 dark:text-[#E0B86A]">
-                  <Star className="size-3.5 fill-current" />
+              <span className="flex items-center gap-1.5 sm:gap-2">
+                <span className="flex size-5 sm:size-6 items-center justify-center rounded-full bg-[#D8A85B]/20 text-[#D8A85B] dark:bg-[#E0B86A]/20 dark:text-[#E0B86A]">
+                  <Star className="size-3 sm:size-3.5 fill-current" />
                 </span>
                 5.0 Rated by Buyers
               </span>
-              <span className="flex items-center gap-2">
-                <span className="flex size-6 items-center justify-center rounded-full bg-[#B85C4A]/15 text-[#B85C4A] dark:bg-[#D47763]/20 dark:text-[#D47763]">⚡</span>
+              <span className="flex items-center gap-1.5 sm:gap-2">
+                <span className="flex size-5 sm:size-6 items-center justify-center rounded-full bg-[#B85C4A]/15 text-[#B85C4A] dark:bg-[#D47763]/20 dark:text-[#D47763]">⚡</span>
                 Fast Pan-India Dispatch
               </span>
             </div>

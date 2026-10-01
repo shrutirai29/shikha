@@ -50,9 +50,9 @@ const withSuspense = (element: React.ReactNode) => (
 );
 
 const SiteLayout = () => (
-  <div className="flex min-h-screen flex-col">
+  <div className="flex min-h-screen flex-col overflow-x-hidden w-full max-w-full">
     <Header />
-    <main className="flex-1">
+    <main className="flex-1 overflow-x-hidden w-full max-w-full">
       <Suspense fallback={<PageLoader />}>
         <Routes>
           <Route path="/" element={<LandingPage />} />
