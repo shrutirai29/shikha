@@ -1,10 +1,12 @@
 services:
-  # 1. Backend Web Service (Docker Express API)
+  # 1. Backend Web Service (Node.js Express API)
   - type: web
     name: knottiingale-backend
-    runtime: docker
-    dockerfilePath: ./backend/Dockerfile
+    runtime: node
     plan: free
+    rootDir: backend
+    buildCommand: npm install --include=dev && npm run build
+    startCommand: npm run start
     healthCheckPath: /
     envVars:
       - key: NODE_ENV
