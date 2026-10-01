@@ -102,9 +102,10 @@ describe("Security Audit & Permission Enforcement", () => {
 
     it("issues XSRF-TOKEN cookie on initial read request", async () => {
       const res = await request(app).get("/");
-      const cookies = res.headers["set-cookie"];
-      expect(cookies).toBeDefined();
-      expect(cookies.some((c: string) => c.startsWith("XSRF-TOKEN="))).toBe(true);
+      const cookieHeader = res.headers["set-cookie"];
+      expect(cookieHeader).toBeDefined();
+      const cookieList = Array.isArray(cookieHeader) ? cookieHeader : [cookieHeader];
+      expect(cookieList.some((c) => typeof c === "string" && c.startsWith("XSRF-TOKEN="))).toBe(true);
     });
   });
 

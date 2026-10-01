@@ -261,8 +261,8 @@ export const forgotPassword = async (email: string) => {
       ? "Password reset link has been sent to your email"
       : "If an account exists for this email, a reset link has been generated",
     delivered,
-    resetLink: !delivered || isDevOrLocal ? resetLink : undefined,
-    resetToken: !delivered || isDevOrLocal ? resetToken : undefined,
+    resetLink: isDevOrLocal ? resetLink : undefined,
+    resetToken: isDevOrLocal ? resetToken : undefined,
   };
 };
 

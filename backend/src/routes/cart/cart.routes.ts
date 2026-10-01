@@ -84,6 +84,12 @@ import {
 } from "../../controllers/cart/cart.controller";
 
 import { authenticate } from "../../middleware/auth.middleware";
+import { validateObjectId } from "../../middleware/validateObjectId.middleware";
+import { validate } from "../../middleware/validate.middleware";
+import {
+  addToCartSchema,
+  updateCartSchema,
+} from "../../validators/cart/cart.validator";
 
 const router = Router();
 
@@ -92,11 +98,20 @@ router.use(authenticate);
 
 router.get("/", getCart);
 
-router.post("/", addToCart);
+router.post("/", validate(addToCartSchema), addToCart);
 
-router.patch("/:productId", updateQuantity);
+router.patch(
+  "/:productId",
+  validateObjectId("productId"),
+  validate(updateCartSchema),
+  updateQuantity
+);
 
-router.delete("/:productId", removeItem);
+router.delete(
+  "/:productId",
+  validateObjectId("productId"),
+  removeItem
+);
 
 router.delete("/", clearCart);
 

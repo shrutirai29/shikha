@@ -77,6 +77,8 @@ import { authenticate } from "../../middleware/auth.middleware";
 import { authorize } from "../../middleware/authorize.middleware";
 import { validateObjectId } from "../../middleware/validateObjectId.middleware";
 import { reviewRateLimiter } from "../../middleware/rateLimit.middleware";
+import { validate } from "../../middleware/validate.middleware";
+import { createReviewSchema } from "../../validators/review/review.validator";
 
 const router = Router();
 
@@ -110,6 +112,7 @@ router.post(
   authenticate,
   reviewRateLimiter,
   validateObjectId("productId"),
+  validate(createReviewSchema),
   createReview
 );
 
@@ -123,6 +126,7 @@ router.patch(
   "/:reviewId",
   authenticate,
   validateObjectId("reviewId"),
+  validate(createReviewSchema),
   editReview
 );
 

@@ -86,6 +86,34 @@ const userSchema = new Schema<IUser>(
   },
   {
     timestamps: true,
+    toJSON: {
+      transform: (_doc, ret: Record<string, any>) => {
+        delete ret.password;
+        delete ret.emailOtpCode;
+        delete ret.emailOtpExpires;
+        delete ret.phoneOtpCode;
+        delete ret.phoneOtpExpires;
+        delete ret.resetPasswordToken;
+        delete ret.resetPasswordExpires;
+        delete ret.verificationToken;
+        delete ret.__v;
+        return ret;
+      },
+    },
+    toObject: {
+      transform: (_doc, ret: Record<string, any>) => {
+        delete ret.password;
+        delete ret.emailOtpCode;
+        delete ret.emailOtpExpires;
+        delete ret.phoneOtpCode;
+        delete ret.phoneOtpExpires;
+        delete ret.resetPasswordToken;
+        delete ret.resetPasswordExpires;
+        delete ret.verificationToken;
+        delete ret.__v;
+        return ret;
+      },
+    },
   }
 );
 

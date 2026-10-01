@@ -7,7 +7,8 @@ import { ConflictError } from "../../errors/ConflictError";
 import { UnauthorizedError } from "../../errors/UnauthorizedError";
 import { escapeRegex } from "../../utils/regex.util";
 
-const userSelect = "-password";
+const userSelect =
+  "-password -resetPasswordToken -resetPasswordExpires -emailOtpCode -emailOtpExpires -phoneOtpCode -phoneOtpExpires -verificationToken";
 
 export const getProfile = async (userId: string) => {
   const user = await User.findById(userId).select(userSelect);

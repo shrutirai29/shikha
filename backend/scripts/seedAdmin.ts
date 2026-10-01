@@ -1,4 +1,5 @@
 import dns from "node:dns";
+import crypto from "node:crypto";
 
 // Force Google DNS for MongoDB SRV lookup
 dns.setServers(["8.8.8.8", "8.8.4.4"]);
@@ -14,25 +15,26 @@ dotenv.config();
 
 const seedAdmin = async (): Promise<void> => {
   try {
-    // Connect using your existing database function
     await connectDatabase();
 
-    // Check if admin already exists
     const existingAdmin = await User.findOne({ role: "admin" });
 
     if (existingAdmin) {
-      console.log("⚠️ Admin already exists.");
+      console.log("⚠️ Admin user already exists in database.");
       await mongoose.connection.close();
       process.exit(0);
     }
 
-    // Hash password
-    const hashedPassword = await bcrypt.hash("Admin@123", 10);
+    const adminEmail = process.env.ADMIN_EMAIL || "admin@knottiingale.com";
+    const adminPassword =
+      process.env.ADMIN_PASSWORD ||
+      crypto.randomBytes(8).toString("hex") + "A1!";
 
-    // Create admin
+    const hashedPassword = await bcrypt.hash(adminPassword, 10);
+
     const admin = await User.create({
-      name: "Admin",
-      email: "admin@knottiingale.com",
+      name: "Store Administrator",
+      email: adminEmail.toLowerCase().trim(),
       password: hashedPassword,
       role: "admin",
       isVerified: true,
@@ -40,10 +42,15 @@ const seedAdmin = async (): Promise<void> => {
     });
 
     console.log("\n====================================");
-    console.log("🎉 Admin created successfully!");
+    console.log("🎉 Admin user created successfully!");
     console.log("====================================");
     console.log(`📧 Email    : ${admin.email}`);
-    console.log(`🔑 Password : Admin@123`);
+    if (!process.env.ADMIN_PASSWORD) {
+      console.log(`🔑 One-Time Generated Password: ${adminPassword}`);
+      console.log("⚠️ Please save this password securely and change it immediately upon login.");
+    } else {
+      console.log("🔑 Password configured via ADMIN_PASSWORD environment variable.");
+    }
     console.log("====================================");
 
     await mongoose.connection.close();

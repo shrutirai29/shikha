@@ -81,15 +81,20 @@ import {
 } from "../../controllers/address/address.controller";
 import { authenticate } from "../../middleware/auth.middleware";
 import { validateObjectId } from "../../middleware/validateObjectId.middleware";
+import { validate } from "../../middleware/validate.middleware";
+import {
+  createAddressSchema,
+  updateAddressSchema,
+} from "../../validators/address/address.validator";
 
 const router = Router();
 
 router.use(authenticate);
 
-router.post("/", createAddress);
+router.post("/", validate(createAddressSchema), createAddress);
 router.get("/", getMyAddresses);
 router.get("/:id", validateObjectId("id"), getAddressById);
-router.patch("/:id", validateObjectId("id"), updateAddress);
+router.patch("/:id", validateObjectId("id"), validate(updateAddressSchema), updateAddress);
 router.patch("/:id/default", validateObjectId("id"), setDefaultAddress);
 router.delete("/:id", validateObjectId("id"), deleteAddress);
 

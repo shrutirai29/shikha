@@ -112,6 +112,13 @@ import {
 import { authenticate } from "../../middleware/auth.middleware";
 import { authorize } from "../../middleware/authorize.middleware";
 import { validateObjectId } from "../../middleware/validateObjectId.middleware";
+import { validate } from "../../middleware/validate.middleware";
+import { orderRateLimiter } from "../../middleware/rateLimit.middleware";
+import {
+  createOrderSchema,
+  updateOrderStatusSchema,
+  updateShippingSchema,
+} from "../../validators/order/order.validator";
 
 const router = Router();
 
@@ -120,7 +127,12 @@ router.use(authenticate);
 
 // ---------------- Customer ----------------
 
-router.post("/", createOrder);
+router.post(
+  "/",
+  orderRateLimiter,
+  validate(createOrderSchema),
+  createOrder
+);
 
 router.get("/", getMyOrders);
 
@@ -143,6 +155,7 @@ router.patch(
   "/admin/:id/status",
   authorize("admin"),
   validateObjectId("id"),
+  validate(updateOrderStatusSchema),
   updateOrderStatus
 );
 
@@ -150,6 +163,7 @@ router.patch(
   "/admin/:id/shipping",
   authorize("admin"),
   validateObjectId("id"),
+  validate(updateShippingSchema),
   updateShipping
 );
 

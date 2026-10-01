@@ -164,6 +164,11 @@ import { uploadRateLimiter } from "../../middleware/rateLimit.middleware";
 import { authenticate } from "../../middleware/auth.middleware";
 import { authorize } from "../../middleware/authorize.middleware";
 import { validateObjectId } from "../../middleware/validateObjectId.middleware";
+import { validate } from "../../middleware/validate.middleware";
+import {
+  createProductSchema,
+  updateProductSchema,
+} from "../../validators/product/product.validator";
 
 const router = Router();
 
@@ -193,6 +198,7 @@ router.post(
   "/",
   authenticate,
   authorize("admin"),
+  validate(createProductSchema),
   create
 );
 
@@ -201,6 +207,7 @@ router.patch(
   authenticate,
   authorize("admin"),
   validateObjectId("id"),
+  validate(updateProductSchema),
   update
 );
 

@@ -26,6 +26,7 @@ import {
   globalRateLimiter,
   authRateLimiter,
   paymentRateLimiter,
+  searchRateLimiter,
 } from "./middleware/rateLimit.middleware";
 import { sanitizeMiddleware } from "./middleware/sanitize.middleware";
 import { xssMiddleware } from "./middleware/xss.middleware";
@@ -218,7 +219,7 @@ app.use("/api/users", userRoutes);
 app.use("/api/addresses", addressRoutes);
 app.use("/api/dashboard", dashboardRoutes);
 app.use("/api/analytics", analyticsRoutes);
-app.use("/api/search", searchRoutes);
+app.use("/api/search", searchRateLimiter, searchRoutes);
 app.use("/api/categories", categoryRoutes);
 app.use("/api/products", productRoutes);
 app.use("/api/cart", cartRoutes);

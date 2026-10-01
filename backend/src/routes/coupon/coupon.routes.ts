@@ -97,6 +97,7 @@ import { authenticate } from "../../middleware/auth.middleware";
 import { authorize } from "../../middleware/authorize.middleware";
 import { validate } from "../../middleware/validate.middleware";
 import { validateObjectId } from "../../middleware/validateObjectId.middleware";
+import { couponRateLimiter } from "../../middleware/rateLimit.middleware";
 import {
   createCouponSchema,
   updateCouponSchema,
@@ -152,6 +153,7 @@ router.delete(
 router.post(
   "/apply",
   authenticate,
+  couponRateLimiter,
   validate(applyCouponSchema),
   couponController.applyCoupon
 );

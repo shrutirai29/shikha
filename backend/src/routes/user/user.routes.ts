@@ -117,14 +117,21 @@ import {
 import { authenticate } from "../../middleware/auth.middleware";
 import { authorize } from "../../middleware/authorize.middleware";
 import { validateObjectId } from "../../middleware/validateObjectId.middleware";
+import { validate } from "../../middleware/validate.middleware";
+import {
+  updateProfileSchema,
+  changePasswordSchema,
+  updateUserStatusSchema,
+  updateUserRoleSchema,
+} from "../../validators/user/user.validator";
 
 const router = Router();
 
 router.use(authenticate);
 
 router.get("/me", getMe);
-router.patch("/me", updateMe);
-router.patch("/me/password", changePassword);
+router.patch("/me", validate(updateProfileSchema), updateMe);
+router.patch("/me/password", validate(changePasswordSchema), changePassword);
 
 router.get(
   "/admin/all",
@@ -143,6 +150,7 @@ router.patch(
   "/admin/:id/status",
   authorize("admin"),
   validateObjectId("id"),
+  validate(updateUserStatusSchema),
   updateUserStatus
 );
 
@@ -150,6 +158,7 @@ router.patch(
   "/admin/:id/role",
   authorize("admin"),
   validateObjectId("id"),
+  validate(updateUserRoleSchema),
   updateUserRole
 );
 
