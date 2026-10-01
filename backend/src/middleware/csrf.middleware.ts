@@ -20,8 +20,8 @@ export const csrfProtection = (
     csrfCookie = crypto.randomBytes(24).toString("hex");
     res.cookie(CSRF_COOKIE_NAME, csrfCookie, {
       httpOnly: false, // Axios reads this to set X-XSRF-TOKEN header
-      secure: isProd,
-      sameSite: "lax",
+      secure: true,
+      sameSite: "none",
       path: "/",
       maxAge: 24 * 60 * 60 * 1000,
     });
@@ -34,6 +34,17 @@ export const csrfProtection = (
 
   // Exempt webhooks (e.g., Razorpay webhook) which are validated by HMAC signatures
   if (req.originalUrl.includes("/webhook")) {
+    return next();
+  }
+
+  // Exempt unauthenticated public auth routes (login, register, forgot/reset password).
+  // CSRF protection protects authenticated user sessions from forged requests.
+  if (
+    req.originalUrl.includes("/auth/login") ||
+    req.originalUrl.includes("/auth/register") ||
+    req.originalUrl.includes("/auth/forgot-password") ||
+    req.originalUrl.includes("/auth/reset-password")
+  ) {
     return next();
   }
 
