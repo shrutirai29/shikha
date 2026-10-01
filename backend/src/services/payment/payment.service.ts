@@ -14,6 +14,7 @@ import { RefundPaymentDto } from "../../dtos/payment/refund-payment.dto";
 import { NotFoundError } from "../../errors/NotFoundError";
 import { ConflictError } from "../../errors/ConflictError";
 import { BadRequestError } from "../../errors/BadRequestError";
+import { ForbiddenError } from "../../errors/ForbiddenError";
 import {
   getOrderById,
   getPaymentByRazorpayOrderId,
@@ -234,12 +235,14 @@ export const getPaymentById =
       );
     }
 
-    if (
-      userId &&
-      !isAdmin &&
-      payment.user._id.toString() !== userId
-    ) {
-      throw new ConflictError(
+    const rawUser = payment.user as any;
+    const paymentUserId =
+      rawUser && typeof rawUser === "object" && "_id" in rawUser
+        ? rawUser._id.toString()
+        : rawUser?.toString();
+
+    if (userId && !isAdmin && paymentUserId !== userId) {
+      throw new ForbiddenError(
         "You are not authorized to access this payment"
       );
     }

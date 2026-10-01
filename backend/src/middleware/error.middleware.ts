@@ -4,11 +4,12 @@ import { AppError } from "../errors/AppError";
 
 export const errorHandler = (
   err: Error,
-  req: Request,
+  _req: Request,
   res: Response,
-  next: NextFunction
+  _next: NextFunction
 ): void => {
   const requestId = res.locals.requestId as string | undefined;
+  const isDev = process.env.NODE_ENV === "development";
 
   const common = {
     requestId,
@@ -27,6 +28,16 @@ export const errorHandler = (
     return;
   }
 
+  // Handle Mongoose CastError (invalid ObjectId)
+  if ((err as any).name === "CastError") {
+    res.status(400).json({
+      success: false,
+      message: "Invalid resource identifier format",
+      ...common,
+    });
+    return;
+  }
+
   if (err instanceof AppError) {
     res.status(err.statusCode).json({
       success: false,
@@ -37,12 +48,14 @@ export const errorHandler = (
     return;
   }
 
-  console.error(`[${requestId ?? "-"}]`, err);
+  // Log detailed error server-side with correlation requestId
+  console.error(`[${requestId ?? "-"}] Internal Server Error:`, err);
 
+  // In production, debug details and raw stack traces are never leaked
   res.status(500).json({
     success: false,
-    message: "Internal server error",
+    message: isDev ? err.message || "Internal server error" : "Internal server error",
     ...common,
-    stack: process.env.NODE_ENV === "development" ? err.stack : undefined,
+    stack: isDev ? err.stack : undefined,
   });
 };

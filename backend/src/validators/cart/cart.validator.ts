@@ -5,12 +5,14 @@ export const addToCartSchema = z.object({
   quantity: z
     .number()
     .int()
-    .min(1, "Quantity must be at least 1"),
+    .min(1, "Quantity must be at least 1")
+    .max(50, "Quantity cannot exceed 50 per item"),
 });
 
 export const updateCartSchema = z.object({
   quantity: z
     .number()
     .int()
-    .min(1, "Quantity must be at least 1"),
+    .min(1, "Quantity must be at least 1")
+    .max(50, "Quantity cannot exceed 50 per item"),
 });

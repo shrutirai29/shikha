@@ -248,7 +248,8 @@ export const forgotPassword = async (email: string) => {
 
   await user.save();
 
-  const { delivered } = await sendPasswordResetEmail(user.email, resetToken);
+  const emailResult = await sendPasswordResetEmail(user.email, resetToken);
+  const delivered = Boolean(emailResult?.delivered);
 
   const clientUrl = env().CLIENT_URL ?? "http://localhost:5173";
   const resetLink = `${clientUrl}/reset-password?token=${resetToken}`;

@@ -9,6 +9,7 @@ import { CreateReviewDto } from "../../dtos/review/create-review.dto";
 import { NotFoundError } from "../../errors/NotFoundError";
 import { ConflictError } from "../../errors/ConflictError";
 import { ForbiddenError } from "../../errors/ForbiddenError";
+import { escapeRegex } from "../../utils/regex.util";
 
 const updateProductRating = async (productId: string) => {
   const stats = await Review.aggregate([
@@ -172,7 +173,7 @@ export const getAllReviews = async (
   }
 
   if (search) {
-    filter.comment = { $regex: search, $options: "i" };
+    filter.comment = { $regex: escapeRegex(search), $options: "i" };
   }
 
   const total = await Review.countDocuments(filter);

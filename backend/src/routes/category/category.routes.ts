@@ -107,6 +107,7 @@ import {
 } from "../../controllers/category/category.controller";
 
 import { uploadImages } from "../../middleware/upload.middleware";
+import { uploadRateLimiter } from "../../middleware/rateLimit.middleware";
 
 import { authenticate } from "../../middleware/auth.middleware";
 import { authorize } from "../../middleware/authorize.middleware";
@@ -156,6 +157,7 @@ router.post(
   authenticate,
   authorize("admin"),
   validateObjectId("id"),
+  uploadRateLimiter,
   uploadImages.single("image"),
   uploadCategoryImage
 );

@@ -5,6 +5,7 @@ import { IProduct } from "../../interfaces/product/product.interface";
 
 import { ConflictError } from "../../errors/ConflictError";
 import { NotFoundError } from "../../errors/NotFoundError";
+import { escapeRegex } from "../../utils/regex.util";
 
 const generateSlug = (name: string): string =>
   name
@@ -84,16 +85,17 @@ export const getAllProducts = async ({
   }
 
   if (search) {
+    const escapedSearch = escapeRegex(search);
     filter.$or = [
       {
         name: {
-          $regex: search,
+          $regex: escapedSearch,
           $options: "i",
         },
       },
       {
         description: {
-          $regex: search,
+          $regex: escapedSearch,
           $options: "i",
         },
       },

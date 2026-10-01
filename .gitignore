@@ -1,8 +1,14 @@
 # Environment files (never commit real secrets)
 .env
+.env.*
 .env.local
 .env.*.local
 !.env.example
+!*.env.example
+
+# Temporary test / debug scripts
+*test-db.js
+*dns-test.js
 
 # Dependencies
 node_modules/

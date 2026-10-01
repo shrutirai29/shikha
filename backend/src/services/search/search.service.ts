@@ -1,5 +1,6 @@
 import Product from "../../models/product/product.model";
 import { ProductSearchQuery } from "../../interfaces/search/search.interface";
+import { escapeRegex } from "../../utils/regex.util";
 
 const allowedSortFields = new Set([
   "createdAt",
@@ -26,16 +27,17 @@ export const searchProducts = async ({
   };
 
   if (q) {
+    const escapedQuery = escapeRegex(q);
     filter.$or = [
       {
         name: {
-          $regex: q,
+          $regex: escapedQuery,
           $options: "i",
         },
       },
       {
         description: {
-          $regex: q,
+          $regex: escapedQuery,
           $options: "i",
         },
       },

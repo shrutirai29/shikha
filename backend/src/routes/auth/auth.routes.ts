@@ -165,6 +165,7 @@ import {
   authRateLimiter,
   otpVerifyLimiter,
   otpResendLimiter,
+  forgotPasswordLimiter,
 } from "../../middleware/rateLimit.middleware";
 
 const router = Router();
@@ -177,7 +178,7 @@ router.post("/resend-otp", otpResendLimiter, validate(resendOtpSchema), resendOt
 
 router.post("/login", authRateLimiter, validate(loginSchema), loginUser);
 
-router.post("/forgot-password", authRateLimiter, validate(forgotPasswordSchema), forgotPasswordRequest);
+router.post("/forgot-password", forgotPasswordLimiter, validate(forgotPasswordSchema), forgotPasswordRequest);
 
 router.post("/reset-password", authRateLimiter, validate(resetPasswordSchema), resetPasswordRequest);
 

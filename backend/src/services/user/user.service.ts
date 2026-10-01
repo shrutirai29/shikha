@@ -5,6 +5,7 @@ import { IUserListQuery } from "../../interfaces/user/user.interface";
 import { NotFoundError } from "../../errors/NotFoundError";
 import { ConflictError } from "../../errors/ConflictError";
 import { UnauthorizedError } from "../../errors/UnauthorizedError";
+import { escapeRegex } from "../../utils/regex.util";
 
 const userSelect = "-password";
 
@@ -50,16 +51,17 @@ export const getAllUsers = async ({
   const filter: Record<string, unknown> = {};
 
   if (search) {
+    const escapedSearch = escapeRegex(search);
     filter.$or = [
       {
         name: {
-          $regex: search,
+          $regex: escapedSearch,
           $options: "i",
         },
       },
       {
         email: {
-          $regex: search,
+          $regex: escapedSearch,
           $options: "i",
         },
       },

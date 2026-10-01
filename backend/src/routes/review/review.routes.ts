@@ -76,6 +76,7 @@ import {
 import { authenticate } from "../../middleware/auth.middleware";
 import { authorize } from "../../middleware/authorize.middleware";
 import { validateObjectId } from "../../middleware/validateObjectId.middleware";
+import { reviewRateLimiter } from "../../middleware/rateLimit.middleware";
 
 const router = Router();
 
@@ -107,6 +108,7 @@ router.delete(
 router.post(
   "/:productId",
   authenticate,
+  reviewRateLimiter,
   validateObjectId("productId"),
   createReview
 );

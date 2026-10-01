@@ -8,7 +8,11 @@ import { CreateOrderDto } from "../../dtos/order/create-order.dto";
 import { NotFoundError } from "../../errors/NotFoundError";
 import { ConflictError } from "../../errors/ConflictError";
 import { ForbiddenError } from "../../errors/ForbiddenError";
+import { BadRequestError } from "../../errors/BadRequestError";
+import { escapeRegex } from "../../utils/regex.util";
 import Coupon from "../../models/coupon/coupon.model";
+
+const MAX_ORDER_AMOUNT = 500000; // Spending control: Max ₹500,000 per order
 
 const populateOrderQuery = (query: any) =>
   query
@@ -90,6 +94,16 @@ export const createOrder = async (
     discountedSubtotal +
     shippingCharge +
     tax;
+
+  if (totalAmount <= 0) {
+    throw new BadRequestError("Invalid order total amount");
+  }
+
+  if (totalAmount > MAX_ORDER_AMOUNT) {
+    throw new BadRequestError(
+      `Order total exceeds maximum transaction limit of ₹${MAX_ORDER_AMOUNT.toLocaleString()}`
+    );
+  }
 
   const order = await Order.create({
     user: userId,
@@ -266,11 +280,12 @@ export const getAllOrders = async (filters: OrderFilters = {}) => {
   // Search by order id, or the customer's name/email.
   if (q) {
     const isObjectId = /^[a-fA-F0-9]{24}$/.test(q);
+    const escapedQ = escapeRegex(q);
 
     const userMatches = await User.find({
       $or: [
-        { name: { $regex: q, $options: "i" } },
-        { email: { $regex: q, $options: "i" } },
+        { name: { $regex: escapedQ, $options: "i" } },
+        { email: { $regex: escapedQ, $options: "i" } },
       ],
     }).select("_id");
 

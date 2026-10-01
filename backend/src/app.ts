@@ -28,6 +28,8 @@ import {
   paymentRateLimiter,
 } from "./middleware/rateLimit.middleware";
 import { sanitizeMiddleware } from "./middleware/sanitize.middleware";
+import { xssMiddleware } from "./middleware/xss.middleware";
+import { csrfProtection } from "./middleware/csrf.middleware";
 import { env } from "./config/env";
 import { requestIdMiddleware } from "./middleware/requestId.middleware";
 import { notFoundHandler } from "./middleware/notFound.middleware";
@@ -36,13 +38,117 @@ import { swaggerSpec } from "./config/swagger";
 
 const app = express();
 
-// Behind a single proxy hop (Railway ingress) — needed so req.ip resolves
+// Disable x-powered-by to prevent framework fingerprinting
+app.disable("x-powered-by");
+
+// Behind a single proxy hop (Railway, Render, Vercel) — needed so req.ip resolves
 // to the real client IP and express-rate-limit works correctly.
 app.set("trust proxy", 1);
 
 const config = env();
+const isProd = config.NODE_ENV === "production";
 
-// Body Parsers
+// Enforce HTTPS in production behind reverse proxies
+app.use((req, res, next) => {
+  if (
+    isProd &&
+    req.headers["x-forwarded-proto"] &&
+    req.headers["x-forwarded-proto"] !== "https"
+  ) {
+    return res.redirect(301, `https://${req.hostname}${req.originalUrl}`);
+  }
+  next();
+});
+
+// Comprehensive security headers with Helmet
+const allowedOrigins = [
+  config.CLIENT_URL,
+  "http://localhost:5173",
+  "http://localhost:5174",
+  "http://localhost:3000",
+  "http://127.0.0.1:5173",
+].filter(Boolean) as string[];
+
+app.use(
+  helmet({
+    contentSecurityPolicy: {
+      directives: {
+        defaultSrc: ["'self'"],
+        scriptSrc: ["'self'", "'unsafe-inline'"],
+        styleSrc: ["'self'", "'unsafe-inline'", "https://fonts.googleapis.com"],
+        imgSrc: [
+          "'self'",
+          "data:",
+          "blob:",
+          "https://res.cloudinary.com",
+          "https://images.unsplash.com",
+          "https://*",
+        ],
+        fontSrc: ["'self'", "https://fonts.gstatic.com", "data:"],
+        connectSrc: [
+          "'self'",
+          ...allowedOrigins,
+          "https://api.razorpay.com",
+          "https://*.razorpay.com",
+          "https://api.cloudinary.com",
+        ],
+        frameAncestors: ["'none'"],
+        objectSrc: ["'none'"],
+        baseUri: ["'self'"],
+      },
+    },
+    crossOriginEmbedderPolicy: false,
+    crossOriginResourcePolicy: { policy: "cross-origin" },
+    crossOriginOpenerPolicy: { policy: "same-origin-allow-popups" },
+    referrerPolicy: { policy: "strict-origin-when-cross-origin" },
+    hsts: isProd
+      ? {
+          maxAge: 31536000,
+          includeSubDomains: true,
+          preload: true,
+        }
+      : false,
+    frameguard: { action: "deny" },
+    noSniff: true,
+  })
+);
+
+// Standard Permissions-Policy header
+app.use((_req, res, next) => {
+  res.setHeader(
+    "Permissions-Policy",
+    "camera=(), microphone=(), geolocation=(), payment=(self 'https://api.razorpay.com')"
+  );
+  next();
+});
+
+// Strict CORS with credentials: preserve client URLs, allow localhost development
+app.use(
+  cors({
+    origin: (requestOrigin, callback) => {
+      // Allow requests with no origin (e.g. mobile apps, curl, server-to-server)
+      if (!requestOrigin) return callback(null, true);
+
+      // In development or test, allow local dev origins
+      if (!isProd) {
+        return callback(null, true);
+      }
+
+      // In production, strictly enforce origin allowlist
+      if (
+        allowedOrigins.includes(requestOrigin) ||
+        (config.CLIENT_URL && requestOrigin === config.CLIENT_URL)
+      ) {
+        return callback(null, true);
+      }
+
+      return callback(new Error("CORS policy violation: origin not allowed"));
+    },
+    credentials: true,
+  })
+);
+
+// Body Parsers with 10mb limit and rawBody buffer preservation for webhook signature verification
 app.use(
   express.json({
     limit: "10mb",
@@ -56,65 +162,33 @@ app.use(express.urlencoded({ extended: true, limit: "10mb" }));
 // Request ID / correlation ID
 app.use(requestIdMiddleware);
 
-// Defensive NoSQL injection sanitizer
+// Defensive NoSQL injection sanitizer (strips $ and . keys)
 app.use(sanitizeMiddleware);
+
+// Defensive XSS sanitizer (neutralizes scripts and malicious handlers)
+app.use(xssMiddleware);
+
+// Cookie parser with optional signing key
+app.use(cookieParser(config.COOKIE_SECRET));
+
+// CSRF Protection (defends state-changing requests, integrates with Axios XSRF)
+app.use(csrfProtection);
 
 // Global Middlewares
 app.use(compression());
 
-// Strict CORS with credentials: preserve client URLs, allow localhost development
-const allowedOrigins = [
-  config.CLIENT_URL,
-  "http://localhost:5173",
-  "http://localhost:5174",
-  "http://localhost:3000",
-  "http://127.0.0.1:5173",
-].filter(Boolean) as string[];
-
 app.use(
-  cors({
-    origin: (requestOrigin, callback) => {
-      // Allow requests with no origin (e.g. mobile apps, curl, server-to-server)
-      if (!requestOrigin) return callback(null, true);
-
-      // In development or test, allow all local dev origins
-      if (config.NODE_ENV !== "production") {
-        return callback(null, true);
-      }
-
-      // In production, enforce origin allowlist
-      if (allowedOrigins.includes(requestOrigin) || (config.CLIENT_URL && requestOrigin === config.CLIENT_URL)) {
-        return callback(null, true);
-      }
-
-      return callback(new Error("CORS policy violation: origin not allowed"));
-    },
-    credentials: true,
+  morgan(isProd ? "combined" : "dev", {
+    skip: (req, res) => res.statusCode >= 400,
   })
-);
-
-app.use(
-  helmet({
-    crossOriginResourcePolicy: { policy: "cross-origin" },
-  })
-);
-app.use(cookieParser());
-app.use(
-  morgan(
-    config.NODE_ENV === "production" ? "combined" : "dev",
-    {
-      skip: (req, res) => res.statusCode >= 400,
-    }
-  )
 );
 app.use((req, res, next) => {
-  morgan(
-    ":method :url :status :response-time ms - :res[x-request-id]",
-    {
-      skip: (_, r) => r.statusCode < 400,
-    }
-  )(req, res, next);
+  morgan(":method :url :status :response-time ms - :res[x-request-id]", {
+    skip: (_, r) => r.statusCode < 400,
+  })(req, res, next);
 });
+
+// Global Rate Limiter
 app.use(globalRateLimiter);
 
 // Health Check
@@ -126,14 +200,16 @@ app.get("/", (req, res) => {
   });
 });
 
-// API Documentation
-app.use(
-  "/api/docs",
-  swaggerUi.serve,
-  swaggerUi.setup(swaggerSpec, {
-    customSiteTitle: "Knottiingale API Docs",
-  })
-);
+// API Documentation (Available in dev or when explicitly enabled in prod)
+if (!isProd || config.ENABLE_SWAGGER === "true") {
+  app.use(
+    "/api/docs",
+    swaggerUi.serve,
+    swaggerUi.setup(swaggerSpec, {
+      customSiteTitle: "Knottiingale API Docs",
+    })
+  );
+}
 
 // Routes
 app.use("/api/auth", authRateLimiter, authRoutes);

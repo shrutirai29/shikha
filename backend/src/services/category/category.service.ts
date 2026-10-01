@@ -2,6 +2,7 @@ import Category from "../../models/category/category.model";
 import { ICategory } from "../../interfaces/category/category.interface";
 import { ConflictError } from "../../errors/ConflictError";
 import { NotFoundError } from "../../errors/NotFoundError";
+import { escapeRegex } from "../../utils/regex.util";
 
 const generateSlug = (name: string): string =>
   name
@@ -56,7 +57,7 @@ export const getAllCategories = async ({
 
   if (search) {
     filter.name = {
-      $regex: search,
+      $regex: escapeRegex(search),
       $options: "i",
     };
   }
