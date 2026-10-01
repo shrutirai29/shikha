@@ -5,9 +5,7 @@ import Order from "../../models/order/order.model";
 
 import { NotFoundError } from "../../errors/NotFoundError";
 
-export const getOrderById = async (
-  orderId: string
-) => {
+export const getOrderById = async (orderId: string) => {
   const order = await Order.findById(orderId);
 
   if (!order) {
@@ -17,63 +15,59 @@ export const getOrderById = async (
   return order;
 };
 
-export const getPaymentByRazorpayOrderId =
-  async (razorpayOrderId: string) => {
-    const payment = await Payment.findOne({
-      razorpayOrderId,
-    });
+export const getPaymentByRazorpayOrderId = async (razorpayOrderId: string) => {
+  const payment = await Payment.findOne({
+    razorpayOrderId,
+  });
 
-    if (!payment) {
-      throw new NotFoundError(
-        "Payment not found"
-      );
-    }
+  if (!payment) {
+    throw new NotFoundError("Payment not found");
+  }
 
-    return payment;
-  };
+  return payment;
+};
 
-export const generatePaymentSignature =
-  (
-    razorpayOrderId: string,
-    razorpayPaymentId: string
-  ) => {
-    return crypto
-      .createHmac(
-        "sha256",
-        process.env.RAZORPAY_KEY_SECRET!
-      )
-      .update(
-        `${razorpayOrderId}|${razorpayPaymentId}`
-      )
-      .digest("hex");
-  };
+export const generatePaymentSignature = (
+  razorpayOrderId: string,
+  razorpayPaymentId: string
+) => {
+  return crypto
+    .createHmac("sha256", process.env.RAZORPAY_KEY_SECRET!)
+    .update(`${razorpayOrderId}|${razorpayPaymentId}`)
+    .digest("hex");
+};
 
-export const verifyPaymentSignature =
-  (
-    razorpayOrderId: string,
-    razorpayPaymentId: string,
-    razorpaySignature: string
-  ) => {
-    const generatedSignature =
-      generatePaymentSignature(
-        razorpayOrderId,
-        razorpayPaymentId
-      );
+export const verifyPaymentSignature = (
+  razorpayOrderId: string,
+  razorpayPaymentId: string,
+  razorpaySignature: string
+) => {
+  if (!razorpaySignature) {
+    return false;
+  }
 
-    return (
-      generatedSignature ===
-      razorpaySignature
-    );
-  };
+  const generatedSignature = generatePaymentSignature(
+    razorpayOrderId,
+    razorpayPaymentId
+  );
+
+  const genBuf = Buffer.from(generatedSignature, "utf8");
+  const sigBuf = Buffer.from(razorpaySignature, "utf8");
+
+  if (genBuf.length !== sigBuf.length) {
+    return false;
+  }
+
+  return crypto.timingSafeEqual(genBuf, sigBuf);
+};
 
 export const verifyWebhookSignature = (
   rawBody: Buffer,
   razorpaySignature: string
 ) => {
-  const webhookSecret =
-    process.env.RAZORPAY_WEBHOOK_SECRET;
+  const webhookSecret = process.env.RAZORPAY_WEBHOOK_SECRET;
 
-  if (!webhookSecret) {
+  if (!webhookSecret || !razorpaySignature) {
     return false;
   }
 
@@ -82,5 +76,12 @@ export const verifyWebhookSignature = (
     .update(rawBody)
     .digest("hex");
 
-  return generatedSignature === razorpaySignature;
+  const genBuf = Buffer.from(generatedSignature, "utf8");
+  const sigBuf = Buffer.from(razorpaySignature, "utf8");
+
+  if (genBuf.length !== sigBuf.length) {
+    return false;
+  }
+
+  return crypto.timingSafeEqual(genBuf, sigBuf);
 };

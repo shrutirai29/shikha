@@ -253,13 +253,15 @@ export const forgotPassword = async (email: string) => {
   const clientUrl = env().CLIENT_URL ?? "http://localhost:5173";
   const resetLink = `${clientUrl}/reset-password?token=${resetToken}`;
 
+  const isDevOrLocal = process.env.NODE_ENV !== "production";
+
   return {
     message: delivered
       ? "Password reset link has been sent to your email"
       : "If an account exists for this email, a reset link has been generated",
     delivered,
-    resetLink,
-    resetToken,
+    resetLink: !delivered || isDevOrLocal ? resetLink : undefined,
+    resetToken: !delivered || isDevOrLocal ? resetToken : undefined,
   };
 };
 

@@ -255,7 +255,7 @@ export const ProductDetailsPage = () => {
           </p>
 
           <div className="flex flex-col sm:flex-row sm:items-center gap-3">
-            <div className="flex items-center gap-2.5 sm:gap-3">
+            <div className="flex flex-wrap items-center gap-2.5 sm:gap-3">
               <div className="flex items-center rounded-xl border border-[#E8DCD0] bg-[#FFFCF7] dark:border-[#382823] dark:bg-[#1E1614]">
                 <button
                   type="button"

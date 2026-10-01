@@ -27,6 +27,7 @@ import {
   authRateLimiter,
   paymentRateLimiter,
 } from "./middleware/rateLimit.middleware";
+import { sanitizeMiddleware } from "./middleware/sanitize.middleware";
 import { env } from "./config/env";
 import { requestIdMiddleware } from "./middleware/requestId.middleware";
 import { notFoundHandler } from "./middleware/notFound.middleware";
@@ -55,15 +56,48 @@ app.use(express.urlencoded({ extended: true, limit: "10mb" }));
 // Request ID / correlation ID
 app.use(requestIdMiddleware);
 
+// Defensive NoSQL injection sanitizer
+app.use(sanitizeMiddleware);
+
 // Global Middlewares
 app.use(compression());
+
+// Strict CORS with credentials: preserve client URLs, allow localhost development
+const allowedOrigins = [
+  config.CLIENT_URL,
+  "http://localhost:5173",
+  "http://localhost:5174",
+  "http://localhost:3000",
+  "http://127.0.0.1:5173",
+].filter(Boolean) as string[];
+
 app.use(
   cors({
-    origin: config.CLIENT_URL || true,
+    origin: (requestOrigin, callback) => {
+      // Allow requests with no origin (e.g. mobile apps, curl, server-to-server)
+      if (!requestOrigin) return callback(null, true);
+
+      // In development or test, allow all local dev origins
+      if (config.NODE_ENV !== "production") {
+        return callback(null, true);
+      }
+
+      // In production, enforce origin allowlist
+      if (allowedOrigins.includes(requestOrigin) || (config.CLIENT_URL && requestOrigin === config.CLIENT_URL)) {
+        return callback(null, true);
+      }
+
+      return callback(new Error("CORS policy violation: origin not allowed"));
+    },
     credentials: true,
   })
 );
-app.use(helmet());
+
+app.use(
+  helmet({
+    crossOriginResourcePolicy: { policy: "cross-origin" },
+  })
+);
 app.use(cookieParser());
 app.use(
   morgan(

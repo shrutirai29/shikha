@@ -79,7 +79,7 @@ export const Modal = ({
   return (
     <AnimatePresence>
       {open && (
-        <div className="fixed inset-0 z-[90] flex items-end justify-center p-4 sm:items-center">
+        <div className="fixed inset-0 z-[90] flex items-center justify-center p-3 sm:p-4">
           <motion.div
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
@@ -124,7 +124,7 @@ export const Modal = ({
 };
 
 const cnRelative = (size: string) =>
-  `relative w-full ${size} rounded-2xl bg-[#FFFCF7] border border-[#E8DCD0] shadow-2xl dark:bg-[#1E1614]/95 dark:backdrop-blur-xl dark:border-[#382823] dark:shadow-[0_20px_50px_rgba(0,0,0,0.6)]`;
+  `relative w-full ${size} max-h-[90vh] overflow-y-auto rounded-2xl bg-[#FFFCF7] border border-[#E8DCD0] shadow-2xl dark:bg-[#1E1614]/95 dark:backdrop-blur-xl dark:border-[#382823] dark:shadow-[0_20px_50px_rgba(0,0,0,0.6)]`;
 
 export const ConfirmDialog = ({
   open,
