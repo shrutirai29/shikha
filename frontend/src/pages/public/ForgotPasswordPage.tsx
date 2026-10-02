@@ -10,6 +10,7 @@ import { useToast } from "@/context/ToastContext";
 import { Button } from "@/components/ui/Button";
 import { Input } from "@/components/ui/Input";
 import { Logo } from "@/components/layout/Logo";
+import authBackdrop from "@/assets/auth-backdrop.jpg";
 
 const forgotSchema = z.object({
   email: z.string().email("Enter a valid email address"),
@@ -70,8 +71,19 @@ export const ForgotPasswordPage = () => {
   };
 
   return (
-    <div className="mx-auto flex min-h-[75vh] w-full max-w-lg flex-col justify-center px-4 py-12">
-      <div className="mb-8 text-center">
+    <div className="relative flex min-h-[calc(100vh-140px)] w-full items-center justify-center px-4 py-12">
+      {/* Handcrafted Crochet Backdrop */}
+      <div className="pointer-events-none fixed inset-0 z-0 overflow-hidden select-none">
+        <img
+          src={authBackdrop}
+          alt="Crochet background"
+          className="size-full object-cover object-center opacity-85 dark:opacity-35 transition-opacity duration-500"
+        />
+        <div className="absolute inset-0 bg-[#FFF8F0]/40 dark:bg-gradient-to-br dark:from-[#150F0D]/85 dark:via-[#1B1311]/80 dark:to-[#120C0A]/90 backdrop-blur-[1px]" />
+      </div>
+
+      <div className="relative z-10 w-full max-w-lg">
+        <div className="mb-8 text-center">
         <Logo className="mb-4 justify-center" />
         <h1 className="font-display text-2xl sm:text-3xl font-bold tracking-tight text-[#3B2924] dark:text-[#FFF4E8]">
           Reset your password
@@ -204,6 +216,7 @@ export const ForgotPasswordPage = () => {
           Log in here
         </Link>
       </p>
+      </div>
     </div>
   );
 };

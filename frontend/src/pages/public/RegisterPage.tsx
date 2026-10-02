@@ -11,6 +11,7 @@ import { getErrorMessage } from "@/lib/api";
 import { Button } from "@/components/ui/Button";
 import { Input } from "@/components/ui/Input";
 import { Logo } from "@/components/layout/Logo";
+import authBackdrop from "@/assets/auth-backdrop.jpg";
 
 const registerSchema = z
   .object({
@@ -151,25 +152,36 @@ export const RegisterPage = () => {
 
   if (pendingEmail) {
     return (
-      <div className="mx-auto flex min-h-[70vh] w-full max-w-md flex-col justify-center px-4 py-12">
-        <div className="mb-8 text-center">
-          <Logo className="mb-4 justify-center" />
-          <h1 className="text-2xl font-bold tracking-tight text-[#3B2924] dark:text-[#FFF4E8]">
-            Verify your email
-          </h1>
-          <p className="mt-1 text-sm text-[#806E66] dark:text-[#C7B8AE]">
-            Enter the 6-digit code we emailed to{" "}
-            <span className="font-semibold text-[#3B2924] dark:text-[#FFF4E8]">
-              {pendingEmail}
-            </span>
-          </p>
+      <div className="relative flex min-h-[calc(100vh-140px)] w-full items-center justify-center px-4 py-12">
+        {/* Handcrafted Crochet Backdrop */}
+        <div className="pointer-events-none fixed inset-0 z-0 overflow-hidden select-none">
+          <img
+            src={authBackdrop}
+            alt="Crochet background"
+            className="size-full object-cover object-center opacity-85 dark:opacity-35 transition-opacity duration-500"
+          />
+          <div className="absolute inset-0 bg-[#FFF8F0]/40 dark:bg-gradient-to-br dark:from-[#150F0D]/85 dark:via-[#1B1311]/80 dark:to-[#120C0A]/90 backdrop-blur-[1px]" />
         </div>
 
-        <form
-          onSubmit={handleOtpSubmit(onVerify)}
-          className="space-y-4 rounded-2xl border border-[#E8DCD0] bg-[#FFFCF7] p-6 shadow-sm dark:border-[#493A34] dark:bg-[#2A211E]"
-          noValidate
-        >
+        <div className="relative z-10 w-full max-w-md">
+          <div className="mb-8 text-center">
+            <Logo className="mb-4 justify-center" />
+            <h1 className="text-2xl font-bold tracking-tight text-[#3B2924] dark:text-[#FFF4E8]">
+              Verify your email
+            </h1>
+            <p className="mt-1 text-sm text-[#806E66] dark:text-[#C7B8AE]">
+              Enter the 6-digit code we emailed to{" "}
+              <span className="font-semibold text-[#3B2924] dark:text-[#FFF4E8]">
+                {pendingEmail}
+              </span>
+            </p>
+          </div>
+
+          <form
+            onSubmit={handleOtpSubmit(onVerify)}
+            className="space-y-4 rounded-3xl border border-[#E8DCD0]/90 bg-[#FFFCF7]/95 p-6 sm:p-8 shadow-2xl backdrop-blur-xl dark:border-[#493A34]/80 dark:bg-[#1E1614]/95 dark:shadow-[0_20px_50px_rgba(0,0,0,0.6)]"
+            noValidate
+          >
           <div className="rounded-xl bg-[#B85C4A]/10 p-4 text-sm text-[#B85C4A] dark:bg-[#D47763]/20 dark:text-[#D47763]">
             <p className="flex items-start gap-2">
               <MailCheck className="mt-0.5 size-4 shrink-0" />
@@ -229,27 +241,39 @@ export const RegisterPage = () => {
             Use a different email
           </button>
         </form>
+        </div>
       </div>
     );
   }
 
   return (
-    <div className="mx-auto flex min-h-[70vh] w-full max-w-md flex-col justify-center px-4 py-12">
-      <div className="mb-8 text-center">
-        <Logo className="mb-4 justify-center" />
-        <h1 className="text-2xl font-bold tracking-tight text-[#3B2924] dark:text-[#FFF4E8]">
-          Create your account
-        </h1>
-        <p className="mt-1 text-sm text-[#806E66] dark:text-[#C7B8AE]">
-          Join Knottiingale for faster checkout and exclusive offers
-        </p>
+    <div className="relative flex min-h-[calc(100vh-140px)] w-full items-center justify-center px-4 py-12">
+      {/* Handcrafted Crochet Backdrop */}
+      <div className="pointer-events-none fixed inset-0 z-0 overflow-hidden select-none">
+        <img
+          src={authBackdrop}
+          alt="Crochet background"
+          className="size-full object-cover object-center opacity-85 dark:opacity-35 transition-opacity duration-500"
+        />
+        <div className="absolute inset-0 bg-[#FFF8F0]/40 dark:bg-gradient-to-br dark:from-[#150F0D]/85 dark:via-[#1B1311]/80 dark:to-[#120C0A]/90 backdrop-blur-[1px]" />
       </div>
 
-      <form
-        onSubmit={handleSubmit(onSubmit)}
-        className="space-y-4 rounded-2xl border border-[#E8DCD0] bg-[#FFFCF7] p-6 shadow-sm dark:border-[#493A34] dark:bg-[#2A211E]"
-        noValidate
-      >
+      <div className="relative z-10 w-full max-w-md">
+        <div className="mb-8 text-center">
+          <Logo className="mb-4 justify-center" />
+          <h1 className="text-2xl font-bold tracking-tight text-[#3B2924] dark:text-[#FFF4E8]">
+            Create your account
+          </h1>
+          <p className="mt-1 text-sm text-[#806E66] dark:text-[#C7B8AE]">
+            Join Knottiingale for faster checkout and exclusive offers
+          </p>
+        </div>
+
+        <form
+          onSubmit={handleSubmit(onSubmit)}
+          className="space-y-4 rounded-3xl border border-[#E8DCD0]/90 bg-[#FFFCF7]/95 p-6 sm:p-8 shadow-2xl backdrop-blur-xl dark:border-[#493A34]/80 dark:bg-[#1E1614]/95 dark:shadow-[0_20px_50px_rgba(0,0,0,0.6)]"
+          noValidate
+        >
         <Input
           label="Full name"
           autoComplete="name"
@@ -320,6 +344,7 @@ export const RegisterPage = () => {
           Log in
         </Link>
       </p>
+      </div>
     </div>
   );
 };
