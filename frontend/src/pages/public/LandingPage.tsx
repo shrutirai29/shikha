@@ -9,6 +9,7 @@ import {
   Flame,
   Heart,
   MessageCircle,
+  PlusCircle,
   RefreshCcw,
   ShieldCheck,
   ShoppingBag,
@@ -18,7 +19,8 @@ import {
   Truck,
 } from "lucide-react";
 import { motion } from "framer-motion";
-import { useFeaturedProducts, useAddToCart } from "@/hooks/useApi";
+import { useFeaturedProducts, useAddToCart, useCategories } from "@/hooks/useApi";
+import { useAuth } from "@/context/AuthContext";
 import { useToast } from "@/context/ToastContext";
 import { ProductGrid } from "@/components/product/ProductGrid";
 import { Skeleton } from "@/components/ui/Card";
@@ -26,200 +28,16 @@ import type { Category, Product } from "@/types";
 import { formatCurrency } from "@/lib/utils";
 import heroBackdrop from "@/assets/hero-backdrop.jpg";
 
-// Flipkart-style quick categories
-const QUICK_CATEGORIES = [
-  { name: "Earbuds Cases", icon: "🎧", slug: "earbuds-cases", tag: "Hot", bg: "bg-[#C98F8B]/15 text-[#B85C4A] dark:bg-[#D8A09B]/20 dark:text-[#D47763]" },
-  { name: "Door Torans", icon: "🌸", slug: "torans", tag: "Festive", bg: "bg-[#D8A85B]/20 text-[#D8A85B] dark:bg-[#E0B86A]/20 dark:text-[#E0B86A]" },
-  { name: "Plushies & Toys", icon: "🐰", slug: "plushies", tag: "Popular", bg: "bg-[#B85C4A]/15 text-[#B85C4A] dark:bg-[#D47763]/20 dark:text-[#D47763]" },
-  { name: "Bags & Totes", icon: "👜", slug: "bags", tag: "Trending", bg: "bg-[#7A8B68]/15 text-[#7A8B68] dark:bg-[#9BAF83]/20 dark:text-[#9BAF83]" },
-  { name: "Flower Bouquets", icon: "💐", slug: "flowers", tag: "Gifts", bg: "bg-[#D8A85B]/20 text-[#D8A85B] dark:bg-[#E0B86A]/20 dark:text-[#E0B86A]" },
-  { name: "Home Décor", icon: "🏡", slug: "home-decor", tag: "Cozy", bg: "bg-[#7A8B68]/15 text-[#7A8B68] dark:bg-[#9BAF83]/20 dark:text-[#9BAF83]" },
-  { name: "Wearables", icon: "🧣", slug: "wearables", tag: "", bg: "bg-[#9B7A68]/15 text-[#9B7A68] dark:bg-[#BFA597]/20 dark:text-[#BFA597]" },
-  { name: "All Products", icon: "✨", slug: "", tag: "", bg: "bg-[#F5EDE4] text-[#3B2924] dark:bg-[#352925] dark:text-[#FFF4E8]" },
-];
-
-// Amazon-style visual category showcase cards
-const VISUAL_CATEGORIES = [
-  {
-    id: "earbuds-cases",
-    title: "Crochet Earbuds Cases",
-    subtitle: "Snug floral & bear covers for AirPods",
-    startingPrice: "From ₹249",
-    tag: "🔥 Most Popular",
-    tagStyle: "bg-[#B85C4A]/15 text-[#B85C4A] dark:bg-[#D47763]/25 dark:text-[#D47763]",
-    image: "/images/categories/earbuds-covers.jpg",
-    link: "/products?category=earbuds-cases",
-  },
-  {
-    id: "torans",
-    title: "Handmade Door Torans",
-    subtitle: "Traditional marigold & festive door hangings",
-    startingPrice: "From ₹599",
-    tag: "✨ Indian Artisanal",
-    tagStyle: "bg-[#D8A85B]/20 text-[#D8A85B] dark:bg-[#E0B86A]/25 dark:text-[#E0B86A]",
-    image: "/images/categories/door-torans.jpg",
-    link: "/products?category=torans",
-  },
-  {
-    id: "plushies",
-    title: "Amigurumi Plush Toys",
-    subtitle: "Lovingly hand-stitched bunny & bear dolls",
-    startingPrice: "From ₹399",
-    tag: "🐰 Bestseller",
-    tagStyle: "bg-[#C98F8B]/20 text-[#B85C4A] dark:bg-[#D8A09B]/25 dark:text-[#D47763]",
-    image: "/images/categories/plush-toys.jpg",
-    link: "/products?category=plushies",
-  },
-  {
-    id: "bags",
-    title: "Granny Square Bags",
-    subtitle: "Sunflower & daisy cotton shoulder totes",
-    startingPrice: "From ₹699",
-    tag: "👜 Handwoven Daily",
-    tagStyle: "bg-[#7A8B68]/15 text-[#7A8B68] dark:bg-[#9BAF83]/25 dark:text-[#9BAF83]",
-    image: "/images/categories/tote-bags.jpg",
-    link: "/products?category=bags",
-  },
-  {
-    id: "flowers",
-    title: "Everlasting Bouquets",
-    subtitle: "Crochet sunflowers & roses that never fade",
-    startingPrice: "From ₹299",
-    tag: "💐 Forever Blooms",
-    tagStyle: "bg-[#D8A85B]/20 text-[#D8A85B] dark:bg-[#E0B86A]/25 dark:text-[#E0B86A]",
-    image: "/images/categories/flower-bouquets.jpg",
-    link: "/products?category=flowers",
-  },
-  {
-    id: "home-decor",
-    title: "Coasters & Dining Décor",
-    subtitle: "Hand-knit floral table mats & mug cozies",
-    startingPrice: "From ₹199",
-    tag: "☕ Cozy Living",
-    tagStyle: "bg-[#7A8B68]/15 text-[#7A8B68] dark:bg-[#9BAF83]/25 dark:text-[#9BAF83]",
-    image: "/images/categories/home-decor.jpg",
-    link: "/products?category=home-decor",
-  },
-];
-
-// Curated live showcase for the Flipkart-style trending rail
-const CURATED_TRENDING = [
-  {
-    _id: "trend-1",
-    name: "Pastel Daisy AirPods Case Cover",
-    categoryName: "Earbuds Cases",
-    price: 349,
-    originalPrice: 499,
-    rating: 4.9,
-    reviewCount: 38,
-    image: "/images/categories/earbuds-covers.jpg",
-    badge: "Trending #1",
-    slug: "pastel-daisy-airpods-case",
-  },
-  {
-    _id: "trend-2",
-    name: "Marigold & Jasmine Door Toran (3.5 ft)",
-    categoryName: "Door Torans",
-    price: 799,
-    originalPrice: 1199,
-    rating: 5.0,
-    reviewCount: 52,
-    image: "/images/categories/door-torans.jpg",
-    badge: "Festive Pick",
-    slug: "marigold-jasmine-door-toran",
-  },
-  {
-    _id: "trend-3",
-    name: "Amigurumi Bunny in Knitted Overalls",
-    categoryName: "Plush Toys",
-    price: 549,
-    originalPrice: 799,
-    rating: 4.9,
-    reviewCount: 46,
-    image: "/images/categories/plush-toys.jpg",
-    badge: "Bestseller",
-    slug: "amigurumi-bunny-overalls",
-  },
-  {
-    _id: "trend-4",
-    name: "Granny Square Sunflower Tote Bag",
-    categoryName: "Bags & Totes",
-    price: 899,
-    originalPrice: 1299,
-    rating: 4.8,
-    reviewCount: 29,
-    image: "/images/categories/tote-bags.jpg",
-    badge: "Artisan Made",
-    slug: "granny-square-sunflower-tote",
-  },
-  {
-    _id: "trend-5",
-    name: "Handmade Sunflower & Rose Crochet Bouquet",
-    categoryName: "Everlasting Flowers",
-    price: 499,
-    originalPrice: 699,
-    rating: 5.0,
-    reviewCount: 64,
-    image: "/images/categories/flower-bouquets.jpg",
-    badge: "Gift Choice",
-    slug: "sunflower-rose-crochet-bouquet",
-  },
-  {
-    _id: "trend-6",
-    name: "Handmade Floral Coasters & Table Mat Set",
-    categoryName: "Home Décor",
-    price: 399,
-    originalPrice: 599,
-    rating: 4.9,
-    reviewCount: 31,
-    image: "/images/categories/home-decor.jpg",
-    badge: "Under ₹499",
-    slug: "floral-coasters-mat-set",
-  },
-];
-
-// Budget Savers Under ₹499
-const CURATED_UNDER_499 = [
-  {
-    _id: "budget-1",
-    name: "Mini Bear AirPods Pouch with Clasp",
-    price: 299,
-    originalPrice: 449,
-    image: "/images/categories/earbuds-covers.jpg",
-    slug: "mini-bear-airpods-pouch",
-  },
-  {
-    _id: "budget-2",
-    name: "Daisy Flower Car Mirror Hanging",
-    price: 249,
-    originalPrice: 349,
-    image: "/images/categories/flower-bouquets.jpg",
-    slug: "daisy-car-mirror-hanging",
-  },
-  {
-    _id: "budget-3",
-    name: "Handmade Blossom Mug Cozy & Coaster",
-    price: 199,
-    originalPrice: 299,
-    image: "/images/categories/home-decor.jpg",
-    slug: "blossom-mug-cozy-coaster",
-  },
-  {
-    _id: "budget-4",
-    name: "Cute Amigurumi Strawberry Keychain",
-    price: 189,
-    originalPrice: 259,
-    image: "/images/categories/plush-toys.jpg",
-    slug: "amigurumi-strawberry-keychain",
-  },
-  {
-    _id: "budget-5",
-    name: "Mini Sunflower Stem (Single Bloom)",
-    price: 229,
-    originalPrice: 319,
-    image: "/images/categories/flower-bouquets.jpg",
-    slug: "mini-sunflower-stem",
-  },
+// Category style & icon palettes for dynamically mapped categories
+const CATEGORY_STYLES = [
+  { bg: "bg-[#C98F8B]/15 text-[#B85C4A] dark:bg-[#D8A09B]/20 dark:text-[#D47763]", icon: "✨" },
+  { bg: "bg-[#D8A85B]/20 text-[#D8A85B] dark:bg-[#E0B86A]/20 dark:text-[#E0B86A]", icon: "🌸" },
+  { bg: "bg-[#B85C4A]/15 text-[#B85C4A] dark:bg-[#D47763]/20 dark:text-[#D47763]", icon: "🐰" },
+  { bg: "bg-[#7A8B68]/15 text-[#7A8B68] dark:bg-[#9BAF83]/20 dark:text-[#9BAF83]", icon: "👜" },
+  { bg: "bg-[#9B7A68]/15 text-[#9B7A68] dark:bg-[#BFA597]/20 dark:text-[#BFA597]", icon: "💐" },
+  { bg: "bg-[#7A8B68]/15 text-[#7A8B68] dark:bg-[#9BAF83]/20 dark:text-[#9BAF83]", icon: "🏡" },
+  { bg: "bg-[#C98F8B]/15 text-[#B85C4A] dark:bg-[#D8A09B]/20 dark:text-[#D47763]", icon: "🧣" },
+  { bg: "bg-[#D8A85B]/20 text-[#D8A85B] dark:bg-[#E0B86A]/20 dark:text-[#E0B86A]", icon: "🎧" },
 ];
 
 const perks = [
@@ -248,12 +66,23 @@ const perks = [
 export const LandingPage = () => {
   usePageTitle("Handmade Crochet Treasures");
   const { data: featured, isLoading: productsLoading } = useFeaturedProducts(24);
+  const { data: categories, isLoading: categoriesLoading } = useCategories();
+  const { isAdmin } = useAuth();
   const heroProduct = featured?.[0];
   const addToCart = useAddToCart();
   const toast = useToast();
 
   const trendingRailRef = useRef<HTMLDivElement>(null);
   const budgetRailRef = useRef<HTMLDivElement>(null);
+
+  // Derived real product rails
+  const trendingProducts = useMemo(() => {
+    return (featured ?? []).filter((p) => p.isFeatured || p.stock > 0).slice(0, 10);
+  }, [featured]);
+
+  const budgetProducts = useMemo(() => {
+    return (featured ?? []).filter((p) => (p.discountPrice || p.price) <= 499).slice(0, 10);
+  }, [featured]);
 
   const scrollRail = (ref: React.RefObject<HTMLDivElement | null>, direction: "left" | "right") => {
     if (ref.current) {
@@ -294,36 +123,91 @@ export const LandingPage = () => {
   return (
     <div>
       {/* ============================================================
-          TOP E-COMMERCE CATEGORY RAIL (Flipkart-style)
+          TOP E-COMMERCE CATEGORY RAIL (Dynamic)
           ============================================================ */}
       <nav aria-label="Quick Categories" className="border-b border-[#E8DCD0] bg-[#FFFCF7] shadow-xs dark:border-[#382823] dark:bg-[#1E1614] w-full max-w-full overflow-hidden">
         <div className="mx-auto flex max-w-7xl items-center justify-start xl:justify-between gap-2.5 sm:gap-3 overflow-x-auto px-3 py-3 sm:px-6 scrollbar-none touch-pan-x [-webkit-overflow-scrolling:touch]">
-          {QUICK_CATEGORIES.map((cat) => (
-            <Link
-              key={cat.name}
-              to={cat.slug ? `/products?category=${cat.slug}` : "/products"}
-              className="group flex flex-col items-center gap-1.5 shrink-0 px-2 py-1 rounded-xl transition hover:-translate-y-0.5"
-            >
-              <div className="relative">
-                <span className={`flex size-12 sm:size-14 items-center justify-center rounded-2xl text-2xl sm:text-3xl shadow-xs transition group-hover:scale-108 group-hover:shadow-md ${cat.bg}`}>
-                  {cat.icon}
+          {categoriesLoading ? (
+            <div className="flex gap-3 py-1">
+              {Array.from({ length: 5 }).map((_, i) => (
+                <div key={i} className="flex flex-col items-center gap-1.5 shrink-0 px-2">
+                  <Skeleton className="size-12 sm:size-14 rounded-2xl" />
+                  <Skeleton className="h-3 w-14" />
+                </div>
+              ))}
+            </div>
+          ) : categories && categories.length > 0 ? (
+            <>
+              {categories.map((cat, idx) => {
+                const style = CATEGORY_STYLES[idx % CATEGORY_STYLES.length];
+                return (
+                  <Link
+                    key={cat._id}
+                    to={`/products?category=${cat.slug}`}
+                    className="group flex flex-col items-center gap-1.5 shrink-0 px-2 py-1 rounded-xl transition hover:-translate-y-0.5"
+                  >
+                    <div className="relative">
+                      {cat.image ? (
+                        <img
+                          src={cat.image}
+                          alt={cat.name}
+                          className="size-12 sm:size-14 rounded-2xl object-cover shadow-xs transition group-hover:scale-108 group-hover:shadow-md"
+                        />
+                      ) : (
+                        <span
+                          className={`flex size-12 sm:size-14 items-center justify-center rounded-2xl text-2xl sm:text-3xl shadow-xs transition group-hover:scale-108 group-hover:shadow-md ${style.bg}`}
+                        >
+                          {style.icon}
+                        </span>
+                      )}
+                    </div>
+                    <span className="text-[11px] sm:text-xs font-semibold text-[#3B2924] transition group-hover:text-[#B85C4A] whitespace-nowrap dark:text-[#FFF4E8] dark:group-hover:text-[#D47763]">
+                      {cat.name}
+                    </span>
+                  </Link>
+                );
+              })}
+              <Link
+                to="/products"
+                className="group flex flex-col items-center gap-1.5 shrink-0 px-2 py-1 rounded-xl transition hover:-translate-y-0.5"
+              >
+                <span className="flex size-12 sm:size-14 items-center justify-center rounded-2xl text-2xl sm:text-3xl shadow-xs transition group-hover:scale-108 group-hover:shadow-md bg-[#F5EDE4] text-[#3B2924] dark:bg-[#352925] dark:text-[#FFF4E8]">
+                  ✨
                 </span>
-                {cat.tag && (
-                  <span className="absolute -top-1.5 -right-2 rounded-full bg-[#B85C4A] px-1.5 py-0.2 text-[9px] font-bold text-white uppercase tracking-wider dark:bg-[#D47763]">
-                    {cat.tag}
-                  </span>
-                )}
-              </div>
-              <span className="text-[11px] sm:text-xs font-semibold text-[#3B2924] transition group-hover:text-[#B85C4A] whitespace-nowrap dark:text-[#FFF4E8] dark:group-hover:text-[#D47763]">
-                {cat.name}
+                <span className="text-[11px] sm:text-xs font-semibold text-[#3B2924] transition group-hover:text-[#B85C4A] whitespace-nowrap dark:text-[#FFF4E8] dark:group-hover:text-[#D47763]">
+                  All Products
+                </span>
+              </Link>
+            </>
+          ) : isAdmin ? (
+            <div className="flex w-full items-center justify-between py-1 text-xs text-[#806E66] dark:text-[#C7B8AE]">
+              <span className="font-medium">
+                Store catalog is clean & ready for your creations!
               </span>
-            </Link>
-          ))}
+              <Link
+                to="/admin/categories"
+                className="inline-flex items-center gap-1 rounded-lg bg-[#B85C4A] px-3 py-1 text-xs font-bold text-white shadow-xs transition hover:bg-[#914536] dark:bg-[#D47763] dark:text-[#1F1816]"
+              >
+                <PlusCircle className="size-3.5" />
+                Add Categories
+              </Link>
+            </div>
+          ) : (
+            <div className="flex w-full items-center justify-center gap-4 py-1 text-xs font-semibold text-[#806E66] dark:text-[#C7B8AE]">
+              <Link to="/products" className="hover:text-[#B85C4A] transition">
+                ✨ Browse All Creations
+              </Link>
+              <span>•</span>
+              <Link to="/contact" className="hover:text-[#B85C4A] transition">
+                💌 Custom Crochet Orders
+              </Link>
+            </div>
+          )}
         </div>
       </nav>
 
       {/* ============================================================
-          MYNTRA-STYLE FIRST ORDER OFFER STRIP
+          PROMOTIONAL OFFER STRIP
           ============================================================ */}
       <div className="bg-gradient-to-r from-[#B85C4A] via-[#914536] to-[#B85C4A] px-3 sm:px-4 py-1.5 sm:py-2 text-center text-[11px] sm:text-xs font-semibold tracking-wide text-white shadow-xs">
         <span className="inline-flex flex-wrap items-center justify-center gap-x-2 gap-y-0.5">
@@ -433,7 +317,6 @@ export const LandingPage = () => {
             transition={{ duration: 0.7, delay: 0.15, ease: [0.22, 1, 0.36, 1] }}
             className="min-w-0 lg:col-span-5 xl:col-span-5 flex flex-col justify-end lg:items-end w-full"
           >
-            {/* Elegant glassmorphic showcase card floating harmoniously over the photo */}
             <div className="w-full max-w-[340px] sm:max-w-sm rounded-3xl border border-[#E8DCD0]/90 bg-[#FFFCF7]/90 p-4 sm:p-5 shadow-lift backdrop-blur-md dark:border-[#493A34]/80 dark:bg-[#2A211E]/90">
               <div className="flex items-center justify-between border-b border-[#E8DCD0]/80 pb-3 dark:border-[#493A34]/80">
                 <div className="flex items-center gap-2">
@@ -450,7 +333,7 @@ export const LandingPage = () => {
                   </div>
                 </div>
                 <span className="rounded-full bg-[#7A8B68]/15 px-2.5 py-0.5 text-[11px] font-semibold text-[#7A8B68] dark:bg-[#9BAF83]/20 dark:text-[#9BAF83]">
-                  In Stock
+                  {heroProduct ? "In Stock" : "Handcrafted"}
                 </span>
               </div>
 
@@ -474,7 +357,7 @@ export const LandingPage = () => {
                       {heroProduct.name}
                     </p>
                     <p className="text-xs font-bold text-[#B85C4A] dark:text-[#D47763]">
-                      {formatCurrency(heroProduct.price)}
+                      {formatCurrency(heroProduct.discountPrice || heroProduct.price)}
                     </p>
                     <p className="mt-0.5 text-[11px] text-[#806E66] line-clamp-1 dark:text-[#C7B8AE]">
                       Made slowly with 100% cotton
@@ -490,48 +373,50 @@ export const LandingPage = () => {
                 </div>
               ) : (
                 <div className="mt-4 flex items-center gap-3">
-                  <span className="text-3xl">🐰</span>
+                  <span className="text-3xl">🧶</span>
                   <div>
                     <p className="text-sm font-semibold text-[#3B2924] dark:text-[#FFF4E8]">
-                      Bunny & Flora Collection
+                      Artisan Workshop
                     </p>
                     <p className="text-xs text-[#806E66] dark:text-[#C7B8AE]">
-                      Hand-crocheted daisy blossoms & plushies
+                      Handmade crochet creations crafted to order
                     </p>
                   </div>
                 </div>
               )}
 
-              {/* Popular category chips */}
+              {/* Quick Explore chips */}
               <div className="mt-4 border-t border-[#E8DCD0]/70 pt-3 dark:border-[#493A34]/70">
                 <p className="mb-2 text-[10px] font-bold uppercase tracking-wider text-[#806E66] dark:text-[#C7B8AE]">
                   Quick Explore
                 </p>
                 <div className="flex flex-wrap gap-1.5">
-                  <Link
-                    to="/categories/plushies"
-                    className="rounded-lg bg-[#F5EDE4]/90 px-2.5 py-1 text-[11px] font-medium text-[#3B2924] transition hover:bg-[#B85C4A] hover:text-white dark:bg-[#352925] dark:text-[#FFF4E8] dark:hover:bg-[#D47763] dark:hover:text-[#1F1816]"
-                  >
-                    🐰 Plushies
-                  </Link>
-                  <Link
-                    to="/categories/torans"
-                    className="rounded-lg bg-[#F5EDE4]/90 px-2.5 py-1 text-[11px] font-medium text-[#3B2924] transition hover:bg-[#B85C4A] hover:text-white dark:bg-[#352925] dark:text-[#FFF4E8] dark:hover:bg-[#D47763] dark:hover:text-[#1F1816]"
-                  >
-                    🌸 Daisy Torans
-                  </Link>
-                  <Link
-                    to="/categories/earbuds-cases"
-                    className="rounded-lg bg-[#F5EDE4]/90 px-2.5 py-1 text-[11px] font-medium text-[#3B2924] transition hover:bg-[#B85C4A] hover:text-white dark:bg-[#352925] dark:text-[#FFF4E8] dark:hover:bg-[#D47763] dark:hover:text-[#1F1816]"
-                  >
-                    🎧 Earbuds Cases
-                  </Link>
-                  <Link
-                    to="/categories/bags"
-                    className="rounded-lg bg-[#F5EDE4]/90 px-2.5 py-1 text-[11px] font-medium text-[#3B2924] transition hover:bg-[#B85C4A] hover:text-white dark:bg-[#352925] dark:text-[#FFF4E8] dark:hover:bg-[#D47763] dark:hover:text-[#1F1816]"
-                  >
-                    👜 Bags
-                  </Link>
+                  {categories && categories.length > 0 ? (
+                    categories.slice(0, 4).map((c) => (
+                      <Link
+                        key={c._id}
+                        to={`/categories/${c.slug}`}
+                        className="rounded-lg bg-[#F5EDE4]/90 px-2.5 py-1 text-[11px] font-medium text-[#3B2924] transition hover:bg-[#B85C4A] hover:text-white dark:bg-[#352925] dark:text-[#FFF4E8] dark:hover:bg-[#D47763] dark:hover:text-[#1F1816]"
+                      >
+                        {c.name}
+                      </Link>
+                    ))
+                  ) : (
+                    <>
+                      <Link
+                        to="/products"
+                        className="rounded-lg bg-[#F5EDE4]/90 px-2.5 py-1 text-[11px] font-medium text-[#3B2924] transition hover:bg-[#B85C4A] hover:text-white dark:bg-[#352925] dark:text-[#FFF4E8] dark:hover:bg-[#D47763] dark:hover:text-[#1F1816]"
+                      >
+                        ✨ All Products
+                      </Link>
+                      <Link
+                        to="/contact"
+                        className="rounded-lg bg-[#F5EDE4]/90 px-2.5 py-1 text-[11px] font-medium text-[#3B2924] transition hover:bg-[#B85C4A] hover:text-white dark:bg-[#352925] dark:text-[#FFF4E8] dark:hover:bg-[#D47763] dark:hover:text-[#1F1816]"
+                      >
+                        💌 Custom Orders
+                      </Link>
+                    </>
+                  )}
                 </div>
               </div>
             </div>
@@ -546,7 +431,7 @@ export const LandingPage = () => {
       </section>
 
       {/* ============================================================
-          AMAZON-STYLE VISUAL CATEGORIES GRID: "Shop What We Make"
+          DYNAMIC SPECIALTIES GRID: "Explore What We Make"
           ============================================================ */}
       <section className="mx-auto max-w-7xl px-4 py-8 sm:px-6 sm:py-12">
         <div className="mb-6 flex flex-wrap items-end justify-between gap-3">
@@ -563,7 +448,7 @@ export const LandingPage = () => {
             </p>
           </div>
           <Link
-            to="/products"
+            to="/categories"
             className="group inline-flex items-center gap-1 text-xs sm:text-sm font-semibold text-[#B85C4A] transition hover:text-[#914536] dark:text-[#D47763] dark:hover:text-[#E28A76]"
           >
             <span>See All Collections</span>
@@ -571,290 +456,360 @@ export const LandingPage = () => {
           </Link>
         </div>
 
-        <div className="grid grid-cols-2 gap-3.5 sm:grid-cols-3 lg:grid-cols-6 sm:gap-4">
-          {VISUAL_CATEGORIES.map((cat, idx) => (
-            <motion.div
-              key={cat.id}
-              initial={{ opacity: 0, y: 16 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.4, delay: idx * 0.05 }}
-            >
-              <Link
-                to={cat.link}
-                className="group flex h-full flex-col overflow-hidden rounded-2xl border border-[#E8DCD0] bg-[#FFFCF7] p-3 shadow-soft transition-all duration-300 hover:-translate-y-1.5 hover:border-[#B85C4A]/40 hover:shadow-lift dark:border-[#493A34] dark:bg-[#2A211E] dark:hover:border-[#D47763]/40"
-              >
-                {/* Visual Image container with tag & zoom */}
-                <div className="relative aspect-[4/3] w-full overflow-hidden rounded-xl bg-[#F5EDE4] dark:bg-[#352925]">
-                  <img
-                    src={cat.image}
-                    alt={cat.title}
-                    className="size-full object-cover transition-transform duration-500 group-hover:scale-108"
-                    loading="lazy"
-                    decoding="async"
-                  />
-                  <span className={`absolute top-2 left-2 rounded-full px-2 py-0.5 text-[10px] font-bold backdrop-blur-md ${cat.tagStyle}`}>
-                    {cat.tag}
-                  </span>
-                </div>
-
-                {/* Details */}
-                <div className="mt-3 flex flex-1 flex-col justify-between">
-                  <div>
-                    <h3 className="text-sm font-bold text-[#3B2924] transition group-hover:text-[#B85C4A] dark:text-[#FFF4E8] dark:group-hover:text-[#D47763] line-clamp-1">
-                      {cat.title}
-                    </h3>
-                    <p className="mt-0.5 text-[11px] leading-snug text-[#806E66] dark:text-[#C7B8AE] line-clamp-2">
-                      {cat.subtitle}
-                    </p>
-                  </div>
-                  <div className="mt-3 flex items-center justify-between border-t border-[#E8DCD0]/60 pt-2.5 dark:border-[#493A34]/60">
-                    <span className="text-xs font-bold text-[#B85C4A] dark:text-[#D47763]">
-                      {cat.startingPrice}
-                    </span>
-                    <span className="flex size-6 items-center justify-center rounded-full bg-[#F5EDE4] text-[#3B2924] transition group-hover:bg-[#B85C4A] group-hover:text-white dark:bg-[#352925] dark:text-[#FFF4E8] dark:group-hover:bg-[#D47763] dark:group-hover:text-[#1F1816]">
-                      <ArrowRight className="size-3.5" />
-                    </span>
-                  </div>
-                </div>
-              </Link>
-            </motion.div>
-          ))}
-        </div>
-      </section>
-
-      {/* ============================================================
-          FLIPKART-STYLE HORIZONTAL RAIL 1: TRENDING BESTSELLERS
-          ============================================================ */}
-      <section className="mx-auto max-w-7xl px-4 py-6 sm:px-6 sm:py-8 overflow-hidden w-full max-w-full">
-        <div className="rounded-3xl border border-[#E8DCD0] bg-gradient-to-b from-[#FFFCF7] to-[#F5EDE4]/30 p-4 sm:p-6 shadow-soft dark:border-[#382823] dark:from-[#1E1614] dark:to-[#150F0D]">
-          {/* Header with Title and Scroll Controls */}
-          <div className="mb-5 flex items-center justify-between gap-4">
-            <div className="flex items-center gap-3">
-              <span className="flex size-10 shrink-0 items-center justify-center rounded-xl bg-[#B85C4A]/15 text-[#B85C4A] dark:bg-[#D47763]/20 dark:text-[#D47763]">
-                <Flame className="size-5" />
-              </span>
-              <div>
-                <div className="flex items-center gap-2">
-                  <h2 className="font-display text-xl sm:text-2xl font-semibold tracking-tight text-[#3B2924] dark:text-[#FFF4E8]">
-                    Trending Right Now
-                  </h2>
-                  <span className="hidden sm:inline-block rounded-full bg-[#B85C4A] px-2 py-0.5 text-[10px] font-bold uppercase tracking-wider text-white dark:bg-[#D47763] dark:text-[#1F1816]">
-                    Top Sellers
-                  </span>
-                </div>
-                <p className="text-xs text-[#806E66] dark:text-[#C7B8AE]">
-                  Most loved pieces crocheted this week
-                </p>
-              </div>
-            </div>
-
-            {/* Desktop Carousel Navigation */}
-            <div className="flex items-center gap-2">
-              <button
-                type="button"
-                onClick={() => scrollRail(trendingRailRef, "left")}
-                aria-label="Scroll left"
-                className="flex size-9 items-center justify-center rounded-xl border border-[#E8DCD0] bg-white text-[#3B2924] shadow-xs transition hover:bg-[#F5EDE4] active:scale-95 dark:border-[#382823] dark:bg-[#251B18] dark:text-[#FFF4E8] dark:hover:bg-[#352925]"
-              >
-                <ChevronLeft className="size-4" />
-              </button>
-              <button
-                type="button"
-                onClick={() => scrollRail(trendingRailRef, "right")}
-                aria-label="Scroll right"
-                className="flex size-9 items-center justify-center rounded-xl border border-[#E8DCD0] bg-white text-[#3B2924] shadow-xs transition hover:bg-[#F5EDE4] active:scale-95 dark:border-[#382823] dark:bg-[#251B18] dark:text-[#FFF4E8] dark:hover:bg-[#352925]"
-              >
-                <ChevronRight className="size-4" />
-              </button>
-            </div>
+        {categoriesLoading ? (
+          <div className="grid grid-cols-2 gap-3.5 sm:grid-cols-3 lg:grid-cols-6 sm:gap-4">
+            {Array.from({ length: 6 }).map((_, idx) => (
+              <Skeleton key={idx} className="aspect-[4/3] rounded-2xl" />
+            ))}
           </div>
-
-          {/* Horizontal Snap Scroll Track */}
-          <div
-            ref={trendingRailRef}
-            className="flex gap-3 sm:gap-4 overflow-x-auto pb-2 scrollbar-none snap-x snap-mandatory touch-pan-x [-webkit-overflow-scrolling:touch]"
-          >
-            {CURATED_TRENDING.map((item) => {
-              const discountPercent = Math.round(
-                ((item.originalPrice - item.price) / item.originalPrice) * 100
-              );
-
-              return (
-                <div
-                  key={item._id}
-                  className="group relative flex w-[195px] sm:w-[260px] shrink-0 snap-start flex-col justify-between overflow-hidden rounded-2xl border border-[#E8DCD0] bg-white p-3 shadow-xs transition-all duration-300 hover:-translate-y-1 hover:border-[#B85C4A]/40 hover:shadow-lift dark:border-[#382823] dark:bg-[#1E1614]"
+        ) : categories && categories.length > 0 ? (
+          <div className="grid grid-cols-2 gap-3.5 sm:grid-cols-3 lg:grid-cols-6 sm:gap-4">
+            {categories.map((cat, idx) => (
+              <motion.div
+                key={cat._id}
+                initial={{ opacity: 0, y: 16 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ duration: 0.4, delay: idx * 0.05 }}
+              >
+                <Link
+                  to={`/categories/${cat.slug}`}
+                  className="group flex h-full flex-col overflow-hidden rounded-2xl border border-[#E8DCD0] bg-[#FFFCF7] p-3 shadow-soft transition-all duration-300 hover:-translate-y-1.5 hover:border-[#B85C4A]/40 hover:shadow-lift dark:border-[#493A34] dark:bg-[#2A211E] dark:hover:border-[#D47763]/40"
                 >
-                  {/* Image & Product Link */}
-                  <Link to={`/products/${item.slug}`} className="block">
-                    <div className="relative aspect-square w-full overflow-hidden rounded-xl bg-[#F5EDE4] dark:bg-[#251B18]">
+                  <div className="relative aspect-[4/3] w-full overflow-hidden rounded-xl bg-[#F5EDE4] dark:bg-[#352925]">
+                    {cat.image ? (
                       <img
-                        src={item.image}
-                        alt={item.name}
+                        src={cat.image}
+                        alt={cat.name}
                         className="size-full object-cover transition-transform duration-500 group-hover:scale-108"
                         loading="lazy"
                         decoding="async"
                       />
-                      <span className="absolute top-2 left-2 rounded-full bg-[#B85C4A] px-2 py-0.5 text-[10px] font-bold text-white shadow-xs dark:bg-[#D47763] dark:text-[#1F1816]">
-                        {item.badge}
-                      </span>
-                      <span className="absolute bottom-2 right-2 rounded-full bg-black/60 px-1.5 py-0.5 text-[10px] font-semibold text-white backdrop-blur-xs">
-                        {discountPercent}% OFF
-                      </span>
-                    </div>
+                    ) : (
+                      <div className="flex size-full items-center justify-center bg-gradient-to-br from-[#F5EDE4] to-[#E8DCD0] text-3xl font-bold text-[#B85C4A] dark:from-[#352925] dark:to-[#2A211E] dark:text-[#D47763]">
+                        {cat.name.slice(0, 1)}
+                      </div>
+                    )}
+                  </div>
 
-                    {/* Metadata */}
-                    <div className="mt-3">
-                      <span className="text-[10px] font-bold uppercase tracking-wider text-[#7A8B68] dark:text-[#9BAF83]">
-                        {item.categoryName}
-                      </span>
-                      <h3 className="mt-0.5 text-xs sm:text-sm font-semibold text-[#3B2924] transition group-hover:text-[#B85C4A] dark:text-[#FFF4E8] dark:group-hover:text-[#D47763] line-clamp-1">
-                        {item.name}
+                  <div className="mt-3 flex flex-1 flex-col justify-between">
+                    <div>
+                      <h3 className="text-sm font-bold text-[#3B2924] transition group-hover:text-[#B85C4A] dark:text-[#FFF4E8] dark:group-hover:text-[#D47763] line-clamp-1">
+                        {cat.name}
                       </h3>
-
-                      {/* Rating */}
-                      <div className="mt-1 flex items-center gap-1.5 text-[11px] text-[#806E66] dark:text-[#C7B8AE]">
-                        <span className="inline-flex items-center gap-0.5 rounded-sm bg-[#7A8B68]/15 px-1 py-0.2 font-semibold text-[#7A8B68] dark:bg-[#9BAF83]/20 dark:text-[#9BAF83]">
-                          <Star className="size-3 fill-current text-[#7A8B68] dark:text-[#9BAF83]" />
-                          {item.rating}
-                        </span>
-                        <span>({item.reviewCount})</span>
-                      </div>
-
-                      {/* Pricing */}
-                      <div className="mt-2 flex items-baseline gap-2">
-                        <span className="text-sm sm:text-base font-bold text-[#B85C4A] dark:text-[#D47763]">
-                          {formatCurrency(item.price)}
-                        </span>
-                        <span className="text-xs text-[#806E66] line-through dark:text-[#C7B8AE]">
-                          {formatCurrency(item.originalPrice)}
-                        </span>
-                      </div>
+                      {cat.description && (
+                        <p className="mt-0.5 text-[11px] leading-snug text-[#806E66] dark:text-[#C7B8AE] line-clamp-2">
+                          {cat.description}
+                        </p>
+                      )}
                     </div>
-                  </Link>
-
-                  {/* Quick Action Button */}
-                  <div className="mt-3 pt-2 border-t border-[#E8DCD0]/60 dark:border-[#382823]/60">
-                    <button
-                      type="button"
-                      onClick={() => handleQuickAdd(item)}
-                      className="flex w-full items-center justify-center gap-1.5 rounded-xl bg-[#F5EDE4] py-2 text-xs font-bold text-[#3B2924] transition hover:bg-[#B85C4A] hover:text-white active:scale-98 dark:bg-[#251B18] dark:text-[#FFF4E8] dark:hover:bg-[#D47763] dark:hover:text-[#1F1816]"
-                    >
-                      <ShoppingBag className="size-3.5" />
-                      Add to Bag
-                    </button>
-                  </div>
-                </div>
-              );
-            })}
-          </div>
-        </div>
-      </section>
-
-      {/* ============================================================
-          FLIPKART-STYLE HORIZONTAL RAIL 2: POCKET-FRIENDLY UNDER ₹499
-          ============================================================ */}
-      <section className="mx-auto max-w-7xl px-4 py-4 sm:px-6 sm:py-6 overflow-hidden w-full max-w-full">
-        <div className="rounded-3xl border border-[#E8DCD0] bg-[#FFFCF7] p-4 sm:p-6 shadow-soft dark:border-[#382823] dark:bg-[#1E1614]">
-          {/* Header */}
-          <div className="mb-5 flex items-center justify-between gap-4">
-            <div className="flex items-center gap-3">
-              <span className="flex size-10 shrink-0 items-center justify-center rounded-xl bg-[#7A8B68]/15 text-[#7A8B68] dark:bg-[#9BAF83]/20 dark:text-[#9BAF83]">
-                <Tag className="size-5" />
-              </span>
-              <div>
-                <div className="flex items-center gap-2">
-                  <h2 className="font-display text-xl sm:text-2xl font-semibold tracking-tight text-[#3B2924] dark:text-[#FFF4E8]">
-                    Pocket-Friendly Treats • Under ₹499
-                  </h2>
-                  <span className="rounded-full bg-[#7A8B68]/15 px-2 py-0.5 text-[10px] font-bold uppercase tracking-wider text-[#7A8B68] dark:bg-[#9BAF83]/20 dark:text-[#9BAF83]">
-                    Budget Gifting
-                  </span>
-                </div>
-                <p className="text-xs text-[#806E66] dark:text-[#C7B8AE]">
-                  Adorable everyday pieces, keychains, coasters & accessories
-                </p>
-              </div>
-            </div>
-
-            {/* Scroll buttons */}
-            <div className="flex items-center gap-2">
-              <button
-                type="button"
-                onClick={() => scrollRail(budgetRailRef, "left")}
-                aria-label="Scroll left"
-                className="flex size-9 items-center justify-center rounded-xl border border-[#E8DCD0] bg-white text-[#3B2924] shadow-xs transition hover:bg-[#F5EDE4] active:scale-95 dark:border-[#382823] dark:bg-[#251B18] dark:text-[#FFF4E8] dark:hover:bg-[#352925]"
-              >
-                <ChevronLeft className="size-4" />
-              </button>
-              <button
-                type="button"
-                onClick={() => scrollRail(budgetRailRef, "right")}
-                aria-label="Scroll right"
-                className="flex size-9 items-center justify-center rounded-xl border border-[#E8DCD0] bg-white text-[#3B2924] shadow-xs transition hover:bg-[#F5EDE4] active:scale-95 dark:border-[#382823] dark:bg-[#251B18] dark:text-[#FFF4E8] dark:hover:bg-[#352925]"
-              >
-                <ChevronRight className="size-4" />
-              </button>
-            </div>
-          </div>
-
-          {/* Horizontal Snap Scroll Track */}
-          <div
-            ref={budgetRailRef}
-            className="flex gap-3 sm:gap-4 overflow-x-auto pb-2 scrollbar-none snap-x snap-mandatory touch-pan-x [-webkit-overflow-scrolling:touch]"
-          >
-            {CURATED_UNDER_499.map((item) => (
-              <div
-                key={item._id}
-                className="group relative flex w-[175px] sm:w-[210px] shrink-0 snap-start flex-col justify-between overflow-hidden rounded-2xl border border-[#E8DCD0] bg-white p-3 shadow-xs transition-all duration-300 hover:-translate-y-1 hover:border-[#7A8B68]/40 hover:shadow-lift dark:border-[#382823] dark:bg-[#1E1614]"
-              >
-                <Link to={`/products/${item.slug}`} className="block">
-                  <div className="relative aspect-square w-full overflow-hidden rounded-xl bg-[#F5EDE4] dark:bg-[#251B18]">
-                    <img
-                      src={item.image}
-                      alt={item.name}
-                      className="size-full object-cover transition-transform duration-500 group-hover:scale-108"
-                      loading="lazy"
-                      decoding="async"
-                    />
-                    <span className="absolute top-2 left-2 rounded-full bg-[#7A8B68] px-2 py-0.5 text-[9px] font-bold text-white shadow-xs dark:bg-[#9BAF83] dark:text-[#1F1816]">
-                      UNDER ₹499
-                    </span>
-                  </div>
-
-                  <div className="mt-2.5">
-                    <h3 className="text-xs font-semibold text-[#3B2924] transition group-hover:text-[#7A8B68] dark:text-[#FFF4E8] dark:group-hover:text-[#9BAF83] line-clamp-1">
-                      {item.name}
-                    </h3>
-                    <div className="mt-1 flex items-baseline gap-1.5">
-                      <span className="text-sm font-bold text-[#B85C4A] dark:text-[#D47763]">
-                        {formatCurrency(item.price)}
+                    <div className="mt-3 flex items-center justify-between border-t border-[#E8DCD0]/60 pt-2.5 dark:border-[#493A34]/60">
+                      <span className="text-xs font-bold text-[#B85C4A] dark:text-[#D47763]">
+                        Explore
                       </span>
-                      <span className="text-[11px] text-[#806E66] line-through dark:text-[#C7B8AE]">
-                        {formatCurrency(item.originalPrice)}
+                      <span className="flex size-6 items-center justify-center rounded-full bg-[#F5EDE4] text-[#3B2924] transition group-hover:bg-[#B85C4A] group-hover:text-white dark:bg-[#352925] dark:text-[#FFF4E8] dark:group-hover:bg-[#D47763] dark:group-hover:text-[#1F1816]">
+                        <ArrowRight className="size-3.5" />
                       </span>
                     </div>
                   </div>
                 </Link>
-
-                <div className="mt-2.5 pt-2 border-t border-[#E8DCD0]/60 dark:border-[#382823]/60">
-                  <button
-                    type="button"
-                    onClick={() => handleQuickAdd(item)}
-                    className="flex w-full items-center justify-center gap-1 rounded-lg bg-[#F5EDE4] py-1.5 text-[11px] font-bold text-[#3B2924] transition hover:bg-[#7A8B68] hover:text-white active:scale-98 dark:bg-[#251B18] dark:text-[#FFF4E8] dark:hover:bg-[#9BAF83] dark:hover:text-[#1F1816]"
-                  >
-                    <ShoppingBag className="size-3" />
-                    Quick Add
-                  </button>
-                </div>
-              </div>
+              </motion.div>
             ))}
           </div>
-        </div>
+        ) : (
+          <div className="rounded-3xl border border-dashed border-[#E8DCD0] bg-[#FFFCF7]/80 p-8 text-center dark:border-[#382823] dark:bg-[#1E1614]/80">
+            <div className="mx-auto flex size-12 items-center justify-center rounded-2xl bg-[#B85C4A]/10 text-2xl text-[#B85C4A] dark:bg-[#D47763]/15 dark:text-[#D47763]">
+              🧶
+            </div>
+            <h3 className="mt-3 text-base font-semibold text-[#3B2924] dark:text-[#FFF4E8]">
+              {isAdmin ? "Your Store Catalog Is Clean & Ready!" : "Artisan Collections In Progress"}
+            </h3>
+            <p className="mx-auto mt-1.5 max-w-md text-xs sm:text-sm text-[#806E66] dark:text-[#C7B8AE]">
+              {isAdmin
+                ? "All mock categories and test products have been removed. You can now add your real categories and products via the admin panel."
+                : "We are currently curating and hand-crafting new crochet collections. In the meantime, feel free to request a custom order!"}
+            </p>
+            <div className="mt-5 flex flex-wrap items-center justify-center gap-3">
+              {isAdmin ? (
+                <Link
+                  to="/admin/categories"
+                  className="inline-flex items-center gap-2 rounded-xl bg-[#B85C4A] px-5 py-2.5 text-xs sm:text-sm font-bold text-white shadow-soft transition hover:bg-[#914536] dark:bg-[#D47763] dark:text-[#1F1816]"
+                >
+                  <PlusCircle className="size-4" />
+                  Add First Category
+                </Link>
+              ) : (
+                <Link
+                  to="/contact"
+                  className="inline-flex items-center gap-2 rounded-xl bg-[#7A8B68] px-5 py-2.5 text-xs sm:text-sm font-bold text-white shadow-soft transition hover:bg-[#687757] dark:bg-[#9BAF83] dark:text-[#1F1816]"
+                >
+                  <MessageCircle className="size-4" />
+                  Request Custom Order
+                </Link>
+              )}
+            </div>
+          </div>
+        )}
       </section>
 
       {/* ============================================================
-          2. TRUST & PERKS STRIP (CollectUI Clean Cards)
+          HORIZONTAL RAIL 1: TRENDING BESTSELLERS (Dynamic - only shown when products exist)
+          ============================================================ */}
+      {trendingProducts.length > 0 && (
+        <section className="mx-auto max-w-7xl px-4 py-6 sm:px-6 sm:py-8 overflow-hidden w-full max-w-full">
+          <div className="rounded-3xl border border-[#E8DCD0] bg-gradient-to-b from-[#FFFCF7] to-[#F5EDE4]/30 p-4 sm:p-6 shadow-soft dark:border-[#382823] dark:from-[#1E1614] dark:to-[#150F0D]">
+            {/* Header with Title and Scroll Controls */}
+            <div className="mb-5 flex items-center justify-between gap-4">
+              <div className="flex items-center gap-3">
+                <span className="flex size-10 shrink-0 items-center justify-center rounded-xl bg-[#B85C4A]/15 text-[#B85C4A] dark:bg-[#D47763]/20 dark:text-[#D47763]">
+                  <Flame className="size-5" />
+                </span>
+                <div>
+                  <div className="flex items-center gap-2">
+                    <h2 className="font-display text-xl sm:text-2xl font-semibold tracking-tight text-[#3B2924] dark:text-[#FFF4E8]">
+                      Trending Right Now
+                    </h2>
+                    <span className="hidden sm:inline-block rounded-full bg-[#B85C4A] px-2 py-0.5 text-[10px] font-bold uppercase tracking-wider text-white dark:bg-[#D47763] dark:text-[#1F1816]">
+                      Top Sellers
+                    </span>
+                  </div>
+                  <p className="text-xs text-[#806E66] dark:text-[#C7B8AE]">
+                    Most loved pieces crocheted this week
+                  </p>
+                </div>
+              </div>
+
+              {/* Carousel Navigation */}
+              <div className="flex items-center gap-2">
+                <button
+                  type="button"
+                  onClick={() => scrollRail(trendingRailRef, "left")}
+                  aria-label="Scroll left"
+                  className="flex size-9 items-center justify-center rounded-xl border border-[#E8DCD0] bg-white text-[#3B2924] shadow-xs transition hover:bg-[#F5EDE4] active:scale-95 dark:border-[#382823] dark:bg-[#251B18] dark:text-[#FFF4E8] dark:hover:bg-[#352925]"
+                >
+                  <ChevronLeft className="size-4" />
+                </button>
+                <button
+                  type="button"
+                  onClick={() => scrollRail(trendingRailRef, "right")}
+                  aria-label="Scroll right"
+                  className="flex size-9 items-center justify-center rounded-xl border border-[#E8DCD0] bg-white text-[#3B2924] shadow-xs transition hover:bg-[#F5EDE4] active:scale-95 dark:border-[#382823] dark:bg-[#251B18] dark:text-[#FFF4E8] dark:hover:bg-[#352925]"
+                >
+                  <ChevronRight className="size-4" />
+                </button>
+              </div>
+            </div>
+
+            {/* Horizontal Snap Scroll Track */}
+            <div
+              ref={trendingRailRef}
+              className="flex gap-3 sm:gap-4 overflow-x-auto pb-2 scrollbar-none snap-x snap-mandatory touch-pan-x [-webkit-overflow-scrolling:touch]"
+            >
+              {trendingProducts.map((item) => {
+                const discountPrice = item.discountPrice;
+                const originalPrice = discountPrice ? item.price : undefined;
+                const currentPrice = discountPrice || item.price;
+                const discountPercent = originalPrice
+                  ? Math.round(((originalPrice - currentPrice) / originalPrice) * 100)
+                  : 0;
+
+                const categoryName =
+                  typeof item.category === "string"
+                    ? "Crochet"
+                    : item.category?.name || "Handmade";
+
+                return (
+                  <div
+                    key={item._id}
+                    className="group relative flex w-[195px] sm:w-[260px] shrink-0 snap-start flex-col justify-between overflow-hidden rounded-2xl border border-[#E8DCD0] bg-white p-3 shadow-xs transition-all duration-300 hover:-translate-y-1 hover:border-[#B85C4A]/40 hover:shadow-lift dark:border-[#382823] dark:bg-[#1E1614]"
+                  >
+                    <Link to={`/products/${item.slug}`} className="block">
+                      <div className="relative aspect-square w-full overflow-hidden rounded-xl bg-[#F5EDE4] dark:bg-[#251B18]">
+                        {item.images?.[0] ? (
+                          <img
+                            src={item.images[0]}
+                            alt={item.name}
+                            className="size-full object-cover transition-transform duration-500 group-hover:scale-108"
+                            loading="lazy"
+                            decoding="async"
+                          />
+                        ) : (
+                          <div className="flex size-full items-center justify-center text-4xl">🧶</div>
+                        )}
+                        {item.isFeatured && (
+                          <span className="absolute top-2 left-2 rounded-full bg-[#B85C4A] px-2 py-0.5 text-[10px] font-bold text-white shadow-xs dark:bg-[#D47763] dark:text-[#1F1816]">
+                            Featured
+                          </span>
+                        )}
+                        {discountPercent > 0 && (
+                          <span className="absolute bottom-2 right-2 rounded-full bg-black/60 px-1.5 py-0.5 text-[10px] font-semibold text-white backdrop-blur-xs">
+                            {discountPercent}% OFF
+                          </span>
+                        )}
+                      </div>
+
+                      <div className="mt-3">
+                        <span className="text-[10px] font-bold uppercase tracking-wider text-[#7A8B68] dark:text-[#9BAF83]">
+                          {categoryName}
+                        </span>
+                        <h3 className="mt-0.5 text-xs sm:text-sm font-semibold text-[#3B2924] transition group-hover:text-[#B85C4A] dark:text-[#FFF4E8] dark:group-hover:text-[#D47763] line-clamp-1">
+                          {item.name}
+                        </h3>
+
+                        <div className="mt-1 flex items-center gap-1.5 text-[11px] text-[#806E66] dark:text-[#C7B8AE]">
+                          <span className="inline-flex items-center gap-0.5 rounded-sm bg-[#7A8B68]/15 px-1 py-0.2 font-semibold text-[#7A8B68] dark:bg-[#9BAF83]/20 dark:text-[#9BAF83]">
+                            <Star className="size-3 fill-current text-[#7A8B68] dark:text-[#9BAF83]" />
+                            {item.averageRating > 0 ? item.averageRating.toFixed(1) : "5.0"}
+                          </span>
+                          <span>({item.totalReviews || 0})</span>
+                        </div>
+
+                        <div className="mt-2 flex items-baseline gap-2">
+                          <span className="text-sm sm:text-base font-bold text-[#B85C4A] dark:text-[#D47763]">
+                            {formatCurrency(currentPrice)}
+                          </span>
+                          {originalPrice && (
+                            <span className="text-xs text-[#806E66] line-through dark:text-[#C7B8AE]">
+                              {formatCurrency(originalPrice)}
+                            </span>
+                          )}
+                        </div>
+                      </div>
+                    </Link>
+
+                    <div className="mt-3 pt-2 border-t border-[#E8DCD0]/60 dark:border-[#382823]/60">
+                      <button
+                        type="button"
+                        onClick={() => handleQuickAdd(item)}
+                        className="flex w-full items-center justify-center gap-1.5 rounded-xl bg-[#F5EDE4] py-2 text-xs font-bold text-[#3B2924] transition hover:bg-[#B85C4A] hover:text-white active:scale-98 dark:bg-[#251B18] dark:text-[#FFF4E8] dark:hover:bg-[#D47763] dark:hover:text-[#1F1816]"
+                      >
+                        <ShoppingBag className="size-3.5" />
+                        Add to Bag
+                      </button>
+                    </div>
+                  </div>
+                );
+              })}
+            </div>
+          </div>
+        </section>
+      )}
+
+      {/* ============================================================
+          HORIZONTAL RAIL 2: POCKET-FRIENDLY UNDER ₹499 (Dynamic - only shown when products exist)
+          ============================================================ */}
+      {budgetProducts.length > 0 && (
+        <section className="mx-auto max-w-7xl px-4 py-4 sm:px-6 sm:py-6 overflow-hidden w-full max-w-full">
+          <div className="rounded-3xl border border-[#E8DCD0] bg-[#FFFCF7] p-4 sm:p-6 shadow-soft dark:border-[#382823] dark:bg-[#1E1614]">
+            <div className="mb-5 flex items-center justify-between gap-4">
+              <div className="flex items-center gap-3">
+                <span className="flex size-10 shrink-0 items-center justify-center rounded-xl bg-[#7A8B68]/15 text-[#7A8B68] dark:bg-[#9BAF83]/20 dark:text-[#9BAF83]">
+                  <Tag className="size-5" />
+                </span>
+                <div>
+                  <div className="flex items-center gap-2">
+                    <h2 className="font-display text-xl sm:text-2xl font-semibold tracking-tight text-[#3B2924] dark:text-[#FFF4E8]">
+                      Pocket-Friendly Treats • Under ₹499
+                    </h2>
+                    <span className="rounded-full bg-[#7A8B68]/15 px-2 py-0.5 text-[10px] font-bold uppercase tracking-wider text-[#7A8B68] dark:bg-[#9BAF83]/20 dark:text-[#9BAF83]">
+                      Budget Gifting
+                    </span>
+                  </div>
+                  <p className="text-xs text-[#806E66] dark:text-[#C7B8AE]">
+                    Everyday crochet pieces, keychains, coasters & accessories
+                  </p>
+                </div>
+              </div>
+
+              <div className="flex items-center gap-2">
+                <button
+                  type="button"
+                  onClick={() => scrollRail(budgetRailRef, "left")}
+                  aria-label="Scroll left"
+                  className="flex size-9 items-center justify-center rounded-xl border border-[#E8DCD0] bg-white text-[#3B2924] shadow-xs transition hover:bg-[#F5EDE4] active:scale-95 dark:border-[#382823] dark:bg-[#251B18] dark:text-[#FFF4E8] dark:hover:bg-[#352925]"
+                >
+                  <ChevronLeft className="size-4" />
+                </button>
+                <button
+                  type="button"
+                  onClick={() => scrollRail(budgetRailRef, "right")}
+                  aria-label="Scroll right"
+                  className="flex size-9 items-center justify-center rounded-xl border border-[#E8DCD0] bg-white text-[#3B2924] shadow-xs transition hover:bg-[#F5EDE4] active:scale-95 dark:border-[#382823] dark:bg-[#251B18] dark:text-[#FFF4E8] dark:hover:bg-[#352925]"
+                >
+                  <ChevronRight className="size-4" />
+                </button>
+              </div>
+            </div>
+
+            <div
+              ref={budgetRailRef}
+              className="flex gap-3 sm:gap-4 overflow-x-auto pb-2 scrollbar-none snap-x snap-mandatory touch-pan-x [-webkit-overflow-scrolling:touch]"
+            >
+              {budgetProducts.map((item) => {
+                const discountPrice = item.discountPrice;
+                const originalPrice = discountPrice ? item.price : undefined;
+                const currentPrice = discountPrice || item.price;
+
+                return (
+                  <div
+                    key={item._id}
+                    className="group relative flex w-[175px] sm:w-[210px] shrink-0 snap-start flex-col justify-between overflow-hidden rounded-2xl border border-[#E8DCD0] bg-white p-3 shadow-xs transition-all duration-300 hover:-translate-y-1 hover:border-[#7A8B68]/40 hover:shadow-lift dark:border-[#382823] dark:bg-[#1E1614]"
+                  >
+                    <Link to={`/products/${item.slug}`} className="block">
+                      <div className="relative aspect-square w-full overflow-hidden rounded-xl bg-[#F5EDE4] dark:bg-[#251B18]">
+                        {item.images?.[0] ? (
+                          <img
+                            src={item.images[0]}
+                            alt={item.name}
+                            className="size-full object-cover transition-transform duration-500 group-hover:scale-108"
+                            loading="lazy"
+                            decoding="async"
+                          />
+                        ) : (
+                          <div className="flex size-full items-center justify-center text-3xl">🧶</div>
+                        )}
+                        <span className="absolute top-2 left-2 rounded-full bg-[#7A8B68] px-2 py-0.5 text-[9px] font-bold text-white shadow-xs dark:bg-[#9BAF83] dark:text-[#1F1816]">
+                          UNDER ₹499
+                        </span>
+                      </div>
+
+                      <div className="mt-2.5">
+                        <h3 className="text-xs font-semibold text-[#3B2924] transition group-hover:text-[#7A8B68] dark:text-[#FFF4E8] dark:group-hover:text-[#9BAF83] line-clamp-1">
+                          {item.name}
+                        </h3>
+                        <div className="mt-1 flex items-baseline gap-1.5">
+                          <span className="text-sm font-bold text-[#B85C4A] dark:text-[#D47763]">
+                            {formatCurrency(currentPrice)}
+                          </span>
+                          {originalPrice && (
+                            <span className="text-[11px] text-[#806E66] line-through dark:text-[#C7B8AE]">
+                              {formatCurrency(originalPrice)}
+                            </span>
+                          )}
+                        </div>
+                      </div>
+                    </Link>
+
+                    <div className="mt-2.5 pt-2 border-t border-[#E8DCD0]/60 dark:border-[#382823]/60">
+                      <button
+                        type="button"
+                        onClick={() => handleQuickAdd(item)}
+                        className="flex w-full items-center justify-center gap-1 rounded-lg bg-[#F5EDE4] py-1.5 text-[11px] font-bold text-[#3B2924] transition hover:bg-[#7A8B68] hover:text-white active:scale-98 dark:bg-[#251B18] dark:text-[#FFF4E8] dark:hover:bg-[#9BAF83] dark:hover:text-[#1F1816]"
+                      >
+                        <ShoppingBag className="size-3" />
+                        Quick Add
+                      </button>
+                    </div>
+                  </div>
+                );
+              })}
+            </div>
+          </div>
+        </section>
+      )}
+
+      {/* ============================================================
+          2. TRUST & PERKS STRIP
           ============================================================ */}
       <section className="mx-auto max-w-7xl px-4 py-8 sm:px-6 sm:py-12">
         <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">
@@ -884,7 +839,7 @@ export const LandingPage = () => {
       </section>
 
       {/* ============================================================
-          3. FEATURED PRODUCTS BY CATEGORY
+          3. FEATURED PRODUCTS BY CATEGORY / MAIN CATALOG
           ============================================================ */}
       <section className="mx-auto max-w-7xl px-4 py-10 sm:px-6 sm:py-16">
         <motion.div
@@ -945,8 +900,43 @@ export const LandingPage = () => {
               </motion.section>
             ))}
           </div>
+        ) : featured && featured.length > 0 ? (
+          <ProductGrid products={featured} loading={false} />
         ) : (
-          <ProductGrid products={featured ?? []} loading={false} />
+          <div className="rounded-3xl border border-dashed border-[#E8DCD0] bg-[#FFFCF7]/80 p-8 sm:p-12 text-center dark:border-[#382823] dark:bg-[#1E1614]/80">
+            <div className="mx-auto flex size-14 items-center justify-center rounded-2xl bg-[#7A8B68]/15 text-3xl text-[#7A8B68] dark:bg-[#9BAF83]/20 dark:text-[#9BAF83]">
+              🛍️
+            </div>
+            <h3 className="mt-4 text-lg font-semibold text-[#3B2924] dark:text-[#FFF4E8]">
+              {isAdmin ? "No Products in Store Yet" : "Fresh Treasures Coming Soon"}
+            </h3>
+            <p className="mx-auto mt-2 max-w-md text-sm text-[#806E66] dark:text-[#C7B8AE]">
+              {isAdmin
+                ? "Your catalog is completely clean. Click below to add your first authentic handmade product listing."
+                : "Our artisans are currently preparing new limited batch crochet pieces. Follow along or request a custom piece!"}
+            </p>
+            <div className="mt-6 flex flex-wrap items-center justify-center gap-3">
+              {isAdmin ? (
+                <Link
+                  to="/admin/products"
+                  className="inline-flex items-center gap-2 rounded-xl bg-[#B85C4A] px-6 py-3 text-sm font-bold text-white shadow-soft transition hover:bg-[#914536] dark:bg-[#D47763] dark:text-[#1F1816]"
+                >
+                  <PlusCircle className="size-4" />
+                  Add First Product
+                </Link>
+              ) : (
+                <a
+                  href="https://wa.me/917985835558?text=Hello%20Shikha%2C%20I%20would%20like%20to%20inquire%20about%20your%20crochet%20products."
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="inline-flex items-center gap-2 rounded-xl bg-[#7A8B68] px-6 py-3 text-sm font-bold text-white shadow-soft transition hover:bg-[#687757] dark:bg-[#9BAF83] dark:text-[#1F1816]"
+                >
+                  <MessageCircle className="size-4" />
+                  Inquire on WhatsApp
+                </a>
+              )}
+            </div>
+          </div>
         )}
       </section>
 
