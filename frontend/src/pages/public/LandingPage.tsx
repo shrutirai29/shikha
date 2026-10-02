@@ -431,126 +431,96 @@ export const LandingPage = () => {
       </section>
 
       {/* ============================================================
-          DYNAMIC SPECIALTIES GRID: "Explore What We Make"
+          DYNAMIC SPECIALTIES GRID: "Explore What We Make" (Shown when categories exist)
           ============================================================ */}
-      <section className="mx-auto max-w-7xl px-4 py-8 sm:px-6 sm:py-12">
-        <div className="mb-6 flex flex-wrap items-end justify-between gap-3">
-          <div>
-            <div className="inline-flex items-center gap-1.5 text-xs font-bold uppercase tracking-[0.2em] text-[#B85C4A] dark:text-[#D47763]">
-              <Sparkles className="size-3.5" />
-              Handmade Specialties
+      {(categoriesLoading || (categories && categories.length > 0)) && (
+        <section className="mx-auto max-w-7xl px-4 py-8 sm:px-6 sm:py-12">
+          <div className="mb-6 flex flex-wrap items-end justify-between gap-3">
+            <div>
+              <div className="inline-flex items-center gap-1.5 text-xs font-bold uppercase tracking-[0.2em] text-[#B85C4A] dark:text-[#D47763]">
+                <Sparkles className="size-3.5" />
+                Handmade Specialties
+              </div>
+              <h2 className="font-display mt-1 text-2xl font-semibold tracking-tight text-[#3B2924] sm:text-3xl dark:text-[#FFF4E8]">
+                Explore What We Make
+              </h2>
+              <p className="mt-1 text-xs text-[#806E66] sm:text-sm dark:text-[#C7B8AE]">
+                Tap any category to explore authentic crochet pieces hand-stitched by Shikha Rai
+              </p>
             </div>
-            <h2 className="font-display mt-1 text-2xl font-semibold tracking-tight text-[#3B2924] sm:text-3xl dark:text-[#FFF4E8]">
-              Explore What We Make
-            </h2>
-            <p className="mt-1 text-xs text-[#806E66] sm:text-sm dark:text-[#C7B8AE]">
-              Tap any category to explore authentic crochet pieces hand-stitched by Shikha Rai
-            </p>
+            <Link
+              to="/categories"
+              className="group inline-flex items-center gap-1 text-xs sm:text-sm font-semibold text-[#B85C4A] transition hover:text-[#914536] dark:text-[#D47763] dark:hover:text-[#E28A76]"
+            >
+              <span>See All Collections</span>
+              <ArrowRight className="size-4 transition-transform group-hover:translate-x-1" />
+            </Link>
           </div>
-          <Link
-            to="/categories"
-            className="group inline-flex items-center gap-1 text-xs sm:text-sm font-semibold text-[#B85C4A] transition hover:text-[#914536] dark:text-[#D47763] dark:hover:text-[#E28A76]"
-          >
-            <span>See All Collections</span>
-            <ArrowRight className="size-4 transition-transform group-hover:translate-x-1" />
-          </Link>
-        </div>
 
-        {categoriesLoading ? (
-          <div className="grid grid-cols-2 gap-3.5 sm:grid-cols-3 lg:grid-cols-6 sm:gap-4">
-            {Array.from({ length: 6 }).map((_, idx) => (
-              <Skeleton key={idx} className="aspect-[4/3] rounded-2xl" />
-            ))}
-          </div>
-        ) : categories && categories.length > 0 ? (
-          <div className="grid grid-cols-2 gap-3.5 sm:grid-cols-3 lg:grid-cols-6 sm:gap-4">
-            {categories.map((cat, idx) => (
-              <motion.div
-                key={cat._id}
-                initial={{ opacity: 0, y: 16 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{ duration: 0.4, delay: idx * 0.05 }}
-              >
-                <Link
-                  to={`/categories/${cat.slug}`}
-                  className="group flex h-full flex-col overflow-hidden rounded-2xl border border-[#E8DCD0] bg-[#FFFCF7] p-3 shadow-soft transition-all duration-300 hover:-translate-y-1.5 hover:border-[#B85C4A]/40 hover:shadow-lift dark:border-[#493A34] dark:bg-[#2A211E] dark:hover:border-[#D47763]/40"
+          {categoriesLoading ? (
+            <div className="grid grid-cols-2 gap-3.5 sm:grid-cols-3 lg:grid-cols-6 sm:gap-4">
+              {Array.from({ length: 6 }).map((_, idx) => (
+                <Skeleton key={idx} className="aspect-[4/3] rounded-2xl" />
+              ))}
+            </div>
+          ) : (
+            <div className="grid grid-cols-2 gap-3.5 sm:grid-cols-3 lg:grid-cols-6 sm:gap-4">
+              {categories!.map((cat, idx) => (
+                <motion.div
+                  key={cat._id}
+                  initial={{ opacity: 0, y: 16 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true }}
+                  transition={{ duration: 0.4, delay: idx * 0.05 }}
                 >
-                  <div className="relative aspect-[4/3] w-full overflow-hidden rounded-xl bg-[#F5EDE4] dark:bg-[#352925]">
-                    {cat.image ? (
-                      <img
-                        src={cat.image}
-                        alt={cat.name}
-                        className="size-full object-cover transition-transform duration-500 group-hover:scale-108"
-                        loading="lazy"
-                        decoding="async"
-                      />
-                    ) : (
-                      <div className="flex size-full items-center justify-center bg-gradient-to-br from-[#F5EDE4] to-[#E8DCD0] text-3xl font-bold text-[#B85C4A] dark:from-[#352925] dark:to-[#2A211E] dark:text-[#D47763]">
-                        {cat.name.slice(0, 1)}
-                      </div>
-                    )}
-                  </div>
-
-                  <div className="mt-3 flex flex-1 flex-col justify-between">
-                    <div>
-                      <h3 className="text-sm font-bold text-[#3B2924] transition group-hover:text-[#B85C4A] dark:text-[#FFF4E8] dark:group-hover:text-[#D47763] line-clamp-1">
-                        {cat.name}
-                      </h3>
-                      {cat.description && (
-                        <p className="mt-0.5 text-[11px] leading-snug text-[#806E66] dark:text-[#C7B8AE] line-clamp-2">
-                          {cat.description}
-                        </p>
+                  <Link
+                    to={`/categories/${cat.slug}`}
+                    className="group flex h-full flex-col overflow-hidden rounded-2xl border border-[#E8DCD0] bg-[#FFFCF7] p-3 shadow-soft transition-all duration-300 hover:-translate-y-1.5 hover:border-[#B85C4A]/40 hover:shadow-lift dark:border-[#493A34] dark:bg-[#2A211E] dark:hover:border-[#D47763]/40"
+                  >
+                    <div className="relative aspect-[4/3] w-full overflow-hidden rounded-xl bg-[#F5EDE4] dark:bg-[#352925]">
+                      {cat.image ? (
+                        <img
+                          src={cat.image}
+                          alt={cat.name}
+                          className="size-full object-cover transition-transform duration-500 group-hover:scale-108"
+                          loading="lazy"
+                          decoding="async"
+                        />
+                      ) : (
+                        <div className="flex size-full items-center justify-center bg-gradient-to-br from-[#F5EDE4] to-[#E8DCD0] text-3xl font-bold text-[#B85C4A] dark:from-[#352925] dark:to-[#2A211E] dark:text-[#D47763]">
+                          {cat.name.slice(0, 1)}
+                        </div>
                       )}
                     </div>
-                    <div className="mt-3 flex items-center justify-between border-t border-[#E8DCD0]/60 pt-2.5 dark:border-[#493A34]/60">
-                      <span className="text-xs font-bold text-[#B85C4A] dark:text-[#D47763]">
-                        Explore
-                      </span>
-                      <span className="flex size-6 items-center justify-center rounded-full bg-[#F5EDE4] text-[#3B2924] transition group-hover:bg-[#B85C4A] group-hover:text-white dark:bg-[#352925] dark:text-[#FFF4E8] dark:group-hover:bg-[#D47763] dark:group-hover:text-[#1F1816]">
-                        <ArrowRight className="size-3.5" />
-                      </span>
+
+                    <div className="mt-3 flex flex-1 flex-col justify-between">
+                      <div>
+                        <h3 className="text-sm font-bold text-[#3B2924] transition group-hover:text-[#B85C4A] dark:text-[#FFF4E8] dark:group-hover:text-[#D47763] line-clamp-1">
+                          {cat.name}
+                        </h3>
+                        {cat.description && (
+                          <p className="mt-0.5 text-[11px] leading-snug text-[#806E66] dark:text-[#C7B8AE] line-clamp-2">
+                            {cat.description}
+                          </p>
+                        )}
+                      </div>
+                      <div className="mt-3 flex items-center justify-between border-t border-[#E8DCD0]/60 pt-2.5 dark:border-[#493A34]/60">
+                        <span className="text-xs font-bold text-[#B85C4A] dark:text-[#D47763]">
+                          Explore
+                        </span>
+                        <span className="flex size-6 items-center justify-center rounded-full bg-[#F5EDE4] text-[#3B2924] transition group-hover:bg-[#B85C4A] group-hover:text-white dark:bg-[#352925] dark:text-[#FFF4E8] dark:group-hover:bg-[#D47763] dark:group-hover:text-[#1F1816]">
+                          <ArrowRight className="size-3.5" />
+                        </span>
+                      </div>
                     </div>
-                  </div>
-                </Link>
-              </motion.div>
-            ))}
-          </div>
-        ) : (
-          <div className="rounded-3xl border border-dashed border-[#E8DCD0] bg-[#FFFCF7]/80 p-8 text-center dark:border-[#382823] dark:bg-[#1E1614]/80">
-            <div className="mx-auto flex size-12 items-center justify-center rounded-2xl bg-[#B85C4A]/10 text-2xl text-[#B85C4A] dark:bg-[#D47763]/15 dark:text-[#D47763]">
-              🧶
+                  </Link>
+                </motion.div>
+              ))}
             </div>
-            <h3 className="mt-3 text-base font-semibold text-[#3B2924] dark:text-[#FFF4E8]">
-              {isAdmin ? "Your Store Catalog Is Clean & Ready!" : "Artisan Collections In Progress"}
-            </h3>
-            <p className="mx-auto mt-1.5 max-w-md text-xs sm:text-sm text-[#806E66] dark:text-[#C7B8AE]">
-              {isAdmin
-                ? "All mock categories and test products have been removed. You can now add your real categories and products via the admin panel."
-                : "We are currently curating and hand-crafting new crochet collections. In the meantime, feel free to request a custom order!"}
-            </p>
-            <div className="mt-5 flex flex-wrap items-center justify-center gap-3">
-              {isAdmin ? (
-                <Link
-                  to="/admin/categories"
-                  className="inline-flex items-center gap-2 rounded-xl bg-[#B85C4A] px-5 py-2.5 text-xs sm:text-sm font-bold text-white shadow-soft transition hover:bg-[#914536] dark:bg-[#D47763] dark:text-[#1F1816]"
-                >
-                  <PlusCircle className="size-4" />
-                  Add First Category
-                </Link>
-              ) : (
-                <Link
-                  to="/contact"
-                  className="inline-flex items-center gap-2 rounded-xl bg-[#7A8B68] px-5 py-2.5 text-xs sm:text-sm font-bold text-white shadow-soft transition hover:bg-[#687757] dark:bg-[#9BAF83] dark:text-[#1F1816]"
-                >
-                  <MessageCircle className="size-4" />
-                  Request Custom Order
-                </Link>
-              )}
-            </div>
-          </div>
-        )}
-      </section>
+          )}
+        </section>
+      )}
+
 
       {/* ============================================================
           HORIZONTAL RAIL 1: TRENDING BESTSELLERS (Dynamic - only shown when products exist)
