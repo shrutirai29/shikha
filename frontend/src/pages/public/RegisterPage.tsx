@@ -158,6 +158,8 @@ export const RegisterPage = () => {
           <img
             src={authBackdrop}
             alt="Crochet background"
+            loading="lazy"
+            decoding="async"
             className="size-full object-cover object-center opacity-85 dark:opacity-35 transition-opacity duration-500"
           />
           <div className="absolute inset-0 bg-[#FFF8F0]/40 dark:bg-gradient-to-br dark:from-[#150F0D]/85 dark:via-[#1B1311]/80 dark:to-[#120C0A]/90 backdrop-blur-[1px]" />
@@ -253,6 +255,8 @@ export const RegisterPage = () => {
         <img
           src={authBackdrop}
           alt="Crochet background"
+          loading="lazy"
+          decoding="async"
           className="size-full object-cover object-center opacity-85 dark:opacity-35 transition-opacity duration-500"
         />
         <div className="absolute inset-0 bg-[#FFF8F0]/40 dark:bg-gradient-to-br dark:from-[#150F0D]/85 dark:via-[#1B1311]/80 dark:to-[#120C0A]/90 backdrop-blur-[1px]" />

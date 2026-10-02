@@ -138,6 +138,8 @@ export const ProductsPage = () => {
         <img
           src={shopBackdrop}
           alt="Crochet yarn basket and florals background"
+          loading="lazy"
+          decoding="async"
           className="size-full object-cover object-center opacity-85 dark:opacity-30 transition-opacity duration-500"
         />
         {/* Soft warm ambient scrim */}

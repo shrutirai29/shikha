@@ -342,6 +342,8 @@ export const LandingPage = () => {
           <img
             src={heroBackdrop}
             alt="Handmade crochet flowers, bunny and natural yarn flatlay"
+            fetchPriority="high"
+            decoding="async"
             className="size-full object-cover object-[78%_center] sm:object-[70%_center] lg:object-center opacity-95 dark:opacity-35 transition-opacity duration-500"
           />
 
@@ -459,6 +461,8 @@ export const LandingPage = () => {
                       <img
                         src={heroProduct.images[0]}
                         alt={heroProduct.name}
+                        loading="lazy"
+                        decoding="async"
                         className="size-full object-cover"
                       />
                     ) : (
@@ -587,6 +591,7 @@ export const LandingPage = () => {
                     alt={cat.title}
                     className="size-full object-cover transition-transform duration-500 group-hover:scale-108"
                     loading="lazy"
+                    decoding="async"
                   />
                   <span className={`absolute top-2 left-2 rounded-full px-2 py-0.5 text-[10px] font-bold backdrop-blur-md ${cat.tagStyle}`}>
                     {cat.tag}
@@ -688,6 +693,7 @@ export const LandingPage = () => {
                         alt={item.name}
                         className="size-full object-cover transition-transform duration-500 group-hover:scale-108"
                         loading="lazy"
+                        decoding="async"
                       />
                       <span className="absolute top-2 left-2 rounded-full bg-[#B85C4A] px-2 py-0.5 text-[10px] font-bold text-white shadow-xs dark:bg-[#D47763] dark:text-[#1F1816]">
                         {item.badge}
@@ -809,6 +815,7 @@ export const LandingPage = () => {
                       alt={item.name}
                       className="size-full object-cover transition-transform duration-500 group-hover:scale-108"
                       loading="lazy"
+                      decoding="async"
                     />
                     <span className="absolute top-2 left-2 rounded-full bg-[#7A8B68] px-2 py-0.5 text-[9px] font-bold text-white shadow-xs dark:bg-[#9BAF83] dark:text-[#1F1816]">
                       UNDER ₹499
