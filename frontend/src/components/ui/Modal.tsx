@@ -10,13 +10,19 @@ export const Modal = ({
   children,
   footer,
   size = "md",
+  hideHeader = false,
+  className,
+  bodyClassName,
 }: {
   open: boolean;
   onClose: () => void;
   title: string;
   children: ReactNode;
   footer?: ReactNode;
-  size?: "sm" | "md" | "lg";
+  size?: "sm" | "md" | "lg" | "xl";
+  hideHeader?: boolean;
+  className?: string;
+  bodyClassName?: string;
 }) => {
   const dialogRef = useRef<HTMLDivElement>(null);
 
@@ -74,6 +80,7 @@ export const Modal = ({
     sm: "max-w-sm",
     md: "max-w-lg",
     lg: "max-w-2xl",
+    xl: "max-w-3xl",
   };
 
   return (
@@ -97,20 +104,22 @@ export const Modal = ({
             aria-label={title}
             tabIndex={-1}
             ref={dialogRef}
-            className={cnRelative(sizes[size])}
+            className={className ?? cnRelative(sizes[size])}
           >
-            <div className="flex items-center justify-between border-b border-[#E8DCD0] px-5 py-4 dark:border-[#382823]">
-              <h2 className="text-base font-semibold text-[#3B2924] dark:text-[#FFF4E8]">{title}</h2>
-              <button
-                type="button"
-                onClick={onClose}
-                aria-label="Close dialog"
-                className="rounded-lg p-1.5 text-[#806E66] transition hover:bg-[#F5EDE4] hover:text-[#3B2924] dark:text-[#B3A198] dark:hover:bg-[#251B18] dark:hover:text-[#FFF4E8]"
-              >
-                <X className="size-5" />
-              </button>
-            </div>
-            <div className="px-5 py-4">{children}</div>
+            {!hideHeader && (
+              <div className="flex items-center justify-between border-b border-[#E8DCD0] px-5 py-4 dark:border-[#382823]">
+                <h2 className="text-base font-semibold text-[#3B2924] dark:text-[#FFF4E8]">{title}</h2>
+                <button
+                  type="button"
+                  onClick={onClose}
+                  aria-label="Close dialog"
+                  className="rounded-lg p-1.5 text-[#806E66] transition hover:bg-[#F5EDE4] hover:text-[#3B2924] dark:text-[#B3A198] dark:hover:bg-[#251B18] dark:hover:text-[#FFF4E8]"
+                >
+                  <X className="size-5" />
+                </button>
+              </div>
+            )}
+            <div className={bodyClassName ?? (hideHeader ? "p-0" : "px-5 py-4")}>{children}</div>
             {footer && (
               <div className="flex justify-end gap-3 border-t border-[#E8DCD0] px-5 py-4 dark:border-[#382823]">
                 {footer}

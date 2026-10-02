@@ -1,6 +1,24 @@
 import { useMemo, useState } from "react";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
-import { ImagePlus, Pencil, Plus, Search, Trash2, X } from "lucide-react";
+import {
+  ChevronDown,
+  Eye,
+  FileText,
+  Flower2,
+  Image as ImageIcon,
+  ImagePlus,
+  LayoutGrid,
+  Package,
+  Pencil,
+  Plus,
+  Search,
+  Sparkles,
+  Star,
+  Tag,
+  Trash2,
+  X,
+} from "lucide-react";
+import addProductBackdrop from "@/assets/add-product-backdrop.jpg";
 import { api, getErrorMessage } from "@/lib/api";
 import { useAdminProducts, useCategories } from "@/hooks/useApi";
 import { useToast } from "@/context/ToastContext";
@@ -9,7 +27,6 @@ import { ErrorState, EmptyState } from "@/components/ui/States";
 import { PageLoader } from "@/components/ui/Card";
 import { ConfirmDialog, Modal } from "@/components/ui/Modal";
 import { Button } from "@/components/ui/Button";
-import { Input, Textarea } from "@/components/ui/Input";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
@@ -364,137 +381,323 @@ export const ProductsPage = () => {
         onClose={() => setModalOpen(false)}
         title={editing ? "Edit product" : "Add product"}
         size="lg"
+        hideHeader
+        className="relative w-full max-w-2xl max-h-[92vh] overflow-y-auto rounded-[28px] sm:rounded-[32px] border border-[#E8DCD0] bg-[#FFF8F2] shadow-2xl shadow-[#3B2924]/25 dark:border-[#3E2D27] dark:bg-[#1C1412]"
       >
-        <form
-          onSubmit={handleSubmit((values) => saveMutation.mutate(values))}
-          className="space-y-4"
-          noValidate
-        >
-          <Input label="Name" error={errors.name?.message} {...register("name")} />
-          <Textarea label="Description" rows={4} error={errors.description?.message} {...register("description")} />
-          <div className="grid gap-4 sm:grid-cols-3">
-            <Input label="Price (₹)" type="number" min={0} step="0.01" error={errors.price?.message} {...register("price")} />
-            <Input label="Discount price" type="number" min={0} step="0.01" error={errors.discountPrice?.message} {...register("discountPrice")} />
-            <Input label="Stock" type="number" min={0} error={errors.stock?.message} {...register("stock")} />
-          </div>
-          <div className="grid gap-4 sm:grid-cols-2">
-            <div>
-              <label className="mb-1.5 block text-sm font-medium text-[#3B2924] dark:text-[#FFF4E8]">
-                Category
-              </label>
-              <select
-                className="w-full rounded-xl border border-[#E8DCD0] bg-[#FFFCF7] px-3.5 py-2.5 text-sm text-[#3B2924] shadow-sm focus:border-[#B85C4A] focus:outline-none focus:ring-2 focus:ring-[#B85C4A]/20 dark:border-[#382823] dark:bg-[#1A1210]/90 dark:text-[#FFF4E8] dark:focus:border-[#D47763] dark:focus:ring-[#D47763]/25"
-                {...register("category")}
-              >
-                {(categories ?? []).map((category) => (
-                  <option key={category._id} value={category._id}>
-                    {category.name}
-                  </option>
-                ))}
-              </select>
-              {errors.category && (
-                <p className="mt-1 text-xs font-medium text-[#914536] dark:text-[#E28A76]">{errors.category.message}</p>
-              )}
-            </div>
-            <div className="flex flex-wrap items-end gap-4">
-              <label className="flex items-center gap-2 pb-2 cursor-pointer">
-                <input
-                  type="checkbox"
-                  className="size-4 rounded border-[#E8DCD0] accent-[#B85C4A] dark:border-[#382823]"
-                  {...register("isFeatured")}
-                />
-                <span className="text-sm text-[#3B2924] dark:text-[#FFF4E8]">Featured product</span>
-              </label>
-              <label className="flex items-center gap-2 pb-2 cursor-pointer">
-                <input
-                  type="checkbox"
-                  className="size-4 rounded border-[#E8DCD0] accent-[#B85C4A] dark:border-[#382823]"
-                  {...register("isActive")}
-                />
-                <span className="text-sm text-[#3B2924] dark:text-[#FFF4E8]">Active (visible in store)</span>
-              </label>
-            </div>
-          </div>
-          <div>
-            <label className="mb-1.5 block text-sm font-medium text-[#3B2924] dark:text-[#FFF4E8]">
-              Product images
-            </label>
-            <div className="flex flex-wrap gap-3">
-              {existingImages.map((url) => (
-                <div
-                  key={url}
-                  className="relative size-20 overflow-hidden rounded-xl border border-[#E8DCD0] bg-[#F5EDE4] dark:border-[#382823] dark:bg-[#1A1210]"
-                >
-                  <img src={url} alt="" className="size-full object-cover" />
-                  <button
-                    type="button"
-                    onClick={() => setRemovedImages([...removedImages, url])}
-                    aria-label="Remove image"
-                    className="absolute -right-1.5 -top-1.5 grid size-5 place-items-center rounded-full bg-[#B85C4A] text-white shadow hover:bg-[#914536] dark:bg-[#D47763] dark:hover:bg-[#E28A76] dark:text-[#1F1816]"
-                  >
-                    <X className="size-3" />
-                  </button>
-                </div>
-              ))}
-              {newImages.map((file, index) => (
-                <div
-                  key={`${file.name}-${index}`}
-                  className="relative size-20 overflow-hidden rounded-xl border border-[#E8DCD0] bg-[#F5EDE4] dark:border-[#382823] dark:bg-[#1A1210]"
-                >
-                  <img
-                    src={newImagePreviews[index]}
-                    alt={file.name}
-                    className="size-full object-cover"
-                  />
-                  <button
-                    type="button"
-                    onClick={() =>
-                      setNewImages(newImages.filter((_, i) => i !== index))
-                    }
-                    aria-label={`Remove ${file.name}`}
-                    className="absolute -right-1.5 -top-1.5 grid size-5 place-items-center rounded-full bg-[#B85C4A] text-white shadow hover:bg-[#914536] dark:bg-[#D47763] dark:hover:bg-[#E28A76] dark:text-[#1F1816]"
-                  >
-                    <X className="size-3" />
-                  </button>
-                </div>
-              ))}
-              {!maxImagesReached && (
-                <label className="grid size-20 cursor-pointer place-items-center rounded-xl border-2 border-dashed border-[#E8DCD0] text-[#806E66] transition hover:border-[#D47763] hover:text-[#D47763] dark:border-[#382823] dark:text-[#B3A198] dark:hover:border-[#D47763]">
-                  <ImagePlus className="size-6" />
-                  <span className="sr-only">Upload images</span>
-                  <input
-                    type="file"
-                    accept="image/*"
-                    multiple
-                    className="hidden"
-                    onChange={(event) => {
-                      const files = Array.from(event.target.files ?? []);
-                      setNewImages(
-                        [...newImages, ...files].slice(
-                          0,
-                          5 - existingImages.length
-                        )
-                      );
-                      event.target.value = "";
-                    }}
-                  />
-                </label>
-              )}
-            </div>
-            <p className="mt-1.5 text-xs text-[#806E66] dark:text-[#B3A198]">
-              Up to 5 images — JPG, PNG, WebP, GIF or AVIF (max 5MB each).
-            </p>
+        <div className="relative overflow-hidden rounded-[28px] sm:rounded-[32px]">
+          {/* Handcrafted Botanical & Crochet Art Backdrop */}
+          <div className="pointer-events-none absolute inset-0 z-0 select-none">
+            <img
+              src={addProductBackdrop}
+              alt=""
+              className="size-full object-cover object-center opacity-95 dark:opacity-20 transition-opacity"
+            />
+            {/* Soft scrim so text is 100% legible in light & dark mode */}
+            <div className="absolute inset-0 bg-[#FFF8F2]/30 dark:bg-[#150F0D]/85 backdrop-blur-[0.5px]" />
           </div>
 
-          <div className="flex justify-end gap-3 pt-2">
-            <Button type="button" variant="outline" onClick={() => setModalOpen(false)}>
-              Cancel
-            </Button>
-            <Button type="submit" loading={saveMutation.isPending}>
-              {editing ? "Save changes" : "Create product"}
-            </Button>
+          <div className="relative z-10 p-5 sm:p-7 md:p-8">
+            {/* Header: Serif Title with Underline + Circular Close Button */}
+            <div className="mb-4 sm:mb-5 flex items-start justify-between">
+              <div>
+                <h2 className="font-serif text-2xl sm:text-[28px] font-bold text-[#3B2924] dark:text-[#FFF4E8] tracking-tight">
+                  {editing ? "Edit product" : "Add product"}
+                </h2>
+                <div className="mt-1 h-1 w-14 rounded-full bg-[#B85C4A]" />
+              </div>
+
+              <button
+                type="button"
+                onClick={() => setModalOpen(false)}
+                aria-label="Close dialog"
+                className="size-8 sm:size-9 rounded-full bg-[#3B2924]/5 hover:bg-[#3B2924]/10 text-[#4A352F] transition flex items-center justify-center dark:bg-white/10 dark:hover:bg-white/20 dark:text-[#FFF4E8]"
+              >
+                <X className="size-4 stroke-[2.2]" />
+              </button>
+            </div>
+
+            <form
+              onSubmit={handleSubmit((values) => saveMutation.mutate(values))}
+              className="space-y-4"
+              noValidate
+            >
+              {/* Field 1: Name */}
+              <div>
+                <label className="mb-1.5 flex items-center gap-1.5 text-xs sm:text-sm font-semibold text-[#4A352F] dark:text-[#FFF4E8]">
+                  <Flower2 className="size-4 text-[#B85C4A]" />
+                  <span>Name</span>
+                </label>
+                <div className="relative">
+                  <div className="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3.5 text-[#8A746C] dark:text-[#B3A198]">
+                    <Tag className="size-4" />
+                  </div>
+                  <input
+                    type="text"
+                    placeholder="Enter product name"
+                    className="w-full rounded-xl border border-[#E0D3C5] bg-[#FFFCF7]/90 py-2.5 pl-10 pr-3.5 text-sm text-[#3B2924] placeholder:text-[#A89890] shadow-2xs transition focus:border-[#B85C4A] focus:bg-white focus:outline-none focus:ring-2 focus:ring-[#B85C4A]/20 dark:border-[#42312A] dark:bg-[#201715]/90 dark:text-[#FFF4E8] dark:placeholder:text-[#7A6962]"
+                    {...register("name")}
+                  />
+                </div>
+                {errors.name && (
+                  <p className="mt-1 text-xs font-medium text-[#914536] dark:text-[#E28A76]">{errors.name.message}</p>
+                )}
+              </div>
+
+              {/* Field 2: Description */}
+              <div>
+                <label className="mb-1.5 flex items-center gap-1.5 text-xs sm:text-sm font-semibold text-[#4A352F] dark:text-[#FFF4E8]">
+                  <FileText className="size-4 text-[#B85C4A]" />
+                  <span>Description</span>
+                </label>
+                <textarea
+                  rows={3}
+                  placeholder="Write a detailed description about the product..."
+                  className="w-full rounded-xl border border-[#E0D3C5] bg-[#FFFCF7]/90 p-3 text-sm text-[#3B2924] placeholder:text-[#A89890] shadow-2xs transition focus:border-[#B85C4A] focus:bg-white focus:outline-none focus:ring-2 focus:ring-[#B85C4A]/20 dark:border-[#42312A] dark:bg-[#201715]/90 dark:text-[#FFF4E8] dark:placeholder:text-[#7A6962] min-h-[92px]"
+                  {...register("description")}
+                />
+                {errors.description && (
+                  <p className="mt-1 text-xs font-medium text-[#914536] dark:text-[#E28A76]">{errors.description.message}</p>
+                )}
+              </div>
+
+              {/* Row 3: Numeric 3 Columns */}
+              <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 sm:gap-3.5">
+                <div>
+                  <label className="mb-1.5 flex items-center gap-1 text-xs sm:text-sm font-semibold text-[#4A352F] dark:text-[#FFF4E8]">
+                    <span className="text-sm font-bold text-[#B85C4A]">₹</span>
+                    <span>Price (₹)</span>
+                  </label>
+                  <div className="relative">
+                    <div className="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3 text-[#8A746C] dark:text-[#B3A198] text-sm font-medium">
+                      ₹
+                    </div>
+                    <input
+                      type="number"
+                      min={0}
+                      step="0.01"
+                      placeholder="0.00"
+                      className="w-full rounded-xl border border-[#E0D3C5] bg-[#FFFCF7]/90 py-2.5 pl-8 pr-3 text-sm text-[#3B2924] placeholder:text-[#A89890] shadow-2xs transition focus:border-[#B85C4A] focus:bg-white focus:outline-none focus:ring-2 focus:ring-[#B85C4A]/20 dark:border-[#42312A] dark:bg-[#201715]/90 dark:text-[#FFF4E8]"
+                      {...register("price")}
+                    />
+                  </div>
+                  {errors.price && (
+                    <p className="mt-1 text-xs font-medium text-[#914536] dark:text-[#E28A76]">{errors.price.message}</p>
+                  )}
+                </div>
+
+                <div>
+                  <label className="mb-1.5 flex items-center gap-1.5 text-xs sm:text-sm font-semibold text-[#4A352F] dark:text-[#FFF4E8]">
+                    <Tag className="size-3.5 text-[#B85C4A]" />
+                    <span>Discount price</span>
+                  </label>
+                  <div className="relative">
+                    <div className="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3 text-[#8A746C] dark:text-[#B3A198]">
+                      <Tag className="size-3.5" />
+                    </div>
+                    <input
+                      type="number"
+                      min={0}
+                      step="0.01"
+                      placeholder="0.00"
+                      className="w-full rounded-xl border border-[#E0D3C5] bg-[#FFFCF7]/90 py-2.5 pl-8 pr-3 text-sm text-[#3B2924] placeholder:text-[#A89890] shadow-2xs transition focus:border-[#B85C4A] focus:bg-white focus:outline-none focus:ring-2 focus:ring-[#B85C4A]/20 dark:border-[#42312A] dark:bg-[#201715]/90 dark:text-[#FFF4E8]"
+                      {...register("discountPrice")}
+                    />
+                  </div>
+                  {errors.discountPrice && (
+                    <p className="mt-1 text-xs font-medium text-[#914536] dark:text-[#E28A76]">{errors.discountPrice.message}</p>
+                  )}
+                </div>
+
+                <div>
+                  <label className="mb-1.5 flex items-center gap-1.5 text-xs sm:text-sm font-semibold text-[#4A352F] dark:text-[#FFF4E8]">
+                    <Package className="size-3.5 text-[#B85C4A]" />
+                    <span>Stock</span>
+                  </label>
+                  <div className="relative">
+                    <div className="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3 text-[#8A746C] dark:text-[#B3A198]">
+                      <Package className="size-3.5" />
+                    </div>
+                    <input
+                      type="number"
+                      min={0}
+                      placeholder="0"
+                      className="w-full rounded-xl border border-[#E0D3C5] bg-[#FFFCF7]/90 py-2.5 pl-8 pr-3 text-sm text-[#3B2924] placeholder:text-[#A89890] shadow-2xs transition focus:border-[#B85C4A] focus:bg-white focus:outline-none focus:ring-2 focus:ring-[#B85C4A]/20 dark:border-[#42312A] dark:bg-[#201715]/90 dark:text-[#FFF4E8]"
+                      {...register("stock")}
+                    />
+                  </div>
+                  {errors.stock && (
+                    <p className="mt-1 text-xs font-medium text-[#914536] dark:text-[#E28A76]">{errors.stock.message}</p>
+                  )}
+                </div>
+              </div>
+
+              {/* Row 4: Category & Checkboxes */}
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-4 items-center">
+                <div>
+                  <label className="mb-1.5 flex items-center gap-1.5 text-xs sm:text-sm font-semibold text-[#4A352F] dark:text-[#FFF4E8]">
+                    <LayoutGrid className="size-3.5 text-[#B85C4A]" />
+                    <span>Category</span>
+                  </label>
+                  <div className="relative">
+                    <select
+                      className="w-full appearance-none rounded-xl border border-[#E0D3C5] bg-[#FFFCF7]/90 py-2.5 pl-3.5 pr-10 text-sm text-[#3B2924] shadow-2xs transition focus:border-[#B85C4A] focus:bg-white focus:outline-none focus:ring-2 focus:ring-[#B85C4A]/20 dark:border-[#42312A] dark:bg-[#201715]/90 dark:text-[#FFF4E8]"
+                      {...register("category")}
+                    >
+                      {(categories ?? []).map((category) => (
+                        <option key={category._id} value={category._id}>
+                          {category.name}
+                        </option>
+                      ))}
+                    </select>
+                    <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center pr-3.5 text-[#8A746C] dark:text-[#B3A198]">
+                      <ChevronDown className="size-4" />
+                    </div>
+                  </div>
+                  {errors.category && (
+                    <p className="mt-1 text-xs font-medium text-[#914536] dark:text-[#E28A76]">{errors.category.message}</p>
+                  )}
+                </div>
+
+                <div className="flex flex-col gap-2 pt-1 sm:pt-4 sm:pl-2">
+                  <label className="flex items-center gap-2 cursor-pointer select-none">
+                    <input
+                      type="checkbox"
+                      className="size-4 rounded border-[#D0BFB2] text-[#B85C4A] focus:ring-[#B85C4A] dark:border-[#42312A] accent-[#B85C4A]"
+                      {...register("isFeatured")}
+                    />
+                    <Star className="size-3.5 text-[#8A746C] dark:text-[#B3A198]" />
+                    <span className="text-xs sm:text-sm font-medium text-[#3B2924] dark:text-[#FFF4E8]">Featured product</span>
+                  </label>
+
+                  <label className="flex items-center gap-2 cursor-pointer select-none">
+                    <input
+                      type="checkbox"
+                      className="size-4 rounded border-[#D0BFB2] text-[#B85C4A] focus:ring-[#B85C4A] dark:border-[#42312A] accent-[#B85C4A]"
+                      {...register("isActive")}
+                    />
+                    <Eye className="size-3.5 text-[#8A746C] dark:text-[#B3A198]" />
+                    <span className="text-xs sm:text-sm font-medium text-[#3B2924] dark:text-[#FFF4E8]">Active (visible in store)</span>
+                  </label>
+                </div>
+              </div>
+
+              {/* Row 5: Product images */}
+              <div>
+                <label className="mb-1.5 flex items-center gap-1.5 text-xs sm:text-sm font-semibold text-[#4A352F] dark:text-[#FFF4E8]">
+                  <ImageIcon className="size-4 text-[#B85C4A]" />
+                  <span>Product images</span>
+                </label>
+                <div className="flex flex-wrap items-center gap-3">
+                  {existingImages.map((url) => (
+                    <div
+                      key={url}
+                      className="relative size-18 sm:size-20 overflow-hidden rounded-xl border border-[#E8DCD0] bg-[#FFFCF7] shadow-2xs"
+                    >
+                      <img src={url} alt="" className="size-full object-cover" />
+                      <button
+                        type="button"
+                        onClick={() => setRemovedImages([...removedImages, url])}
+                        aria-label="Remove image"
+                        className="absolute -right-1 -top-1 grid size-5 place-items-center rounded-full bg-[#B85C4A] text-white shadow hover:bg-[#914536]"
+                      >
+                        <X className="size-3" />
+                      </button>
+                    </div>
+                  ))}
+                  {newImages.map((file, index) => (
+                    <div
+                      key={`${file.name}-${index}`}
+                      className="relative size-18 sm:size-20 overflow-hidden rounded-xl border border-[#E8DCD0] bg-[#FFFCF7] shadow-2xs"
+                    >
+                      <img
+                        src={newImagePreviews[index]}
+                        alt={file.name}
+                        className="size-full object-cover"
+                      />
+                      <button
+                        type="button"
+                        onClick={() =>
+                          setNewImages(newImages.filter((_, i) => i !== index))
+                        }
+                        aria-label={`Remove ${file.name}`}
+                        className="absolute -right-1 -top-1 grid size-5 place-items-center rounded-full bg-[#B85C4A] text-white shadow hover:bg-[#914536]"
+                      >
+                        <X className="size-3" />
+                      </button>
+                    </div>
+                  ))}
+
+                  {!maxImagesReached && (
+                    <div className="flex items-center gap-3.5">
+                      <label className="flex size-18 sm:size-20 cursor-pointer flex-col items-center justify-center rounded-2xl border-2 border-dashed border-[#B85C4A]/40 bg-[#FFF5ED]/70 hover:bg-[#FFF0E5] hover:border-[#B85C4A] transition dark:bg-[#251A17]/80 dark:border-[#B85C4A]/50">
+                        <ImagePlus className="size-6 text-[#B85C4A]" />
+                        <input
+                          type="file"
+                          accept="image/*"
+                          multiple
+                          className="hidden"
+                          onChange={(event) => {
+                            const files = Array.from(event.target.files ?? []);
+                            setNewImages(
+                              [...newImages, ...files].slice(
+                                0,
+                                5 - existingImages.length
+                              )
+                            );
+                            event.target.value = "";
+                          }}
+                        />
+                      </label>
+                      <div className="text-left">
+                        <label className="cursor-pointer text-xs sm:text-sm font-semibold text-[#B85C4A] hover:underline dark:text-[#E28A76]">
+                          Click to upload product images
+                          <input
+                            type="file"
+                            accept="image/*"
+                            multiple
+                            className="hidden"
+                            onChange={(event) => {
+                              const files = Array.from(event.target.files ?? []);
+                              setNewImages(
+                                [...newImages, ...files].slice(
+                                  0,
+                                  5 - existingImages.length
+                                )
+                              );
+                              event.target.value = "";
+                            }}
+                          />
+                        </label>
+                        <p className="mt-0.5 text-[11px] sm:text-xs text-[#8A746C] dark:text-[#B3A198]">
+                          Up to 5 images — JPG, PNG, WebP, GIF or AVIF (max 5MB each).
+                        </p>
+                      </div>
+                    </div>
+                  )}
+                </div>
+              </div>
+
+              {/* Action Buttons */}
+              <div className="flex justify-end gap-3 pt-3">
+                <button
+                  type="button"
+                  onClick={() => setModalOpen(false)}
+                  className="rounded-xl border border-[#E0D3C5] bg-white/90 px-6 py-2.5 text-sm font-semibold text-[#3B2924] shadow-2xs transition hover:bg-white hover:border-[#C4B2A3] active:scale-98 dark:border-[#42312A] dark:bg-[#251A17] dark:text-[#FFF4E8]"
+                >
+                  Cancel
+                </button>
+                <button
+                  type="submit"
+                  disabled={saveMutation.isPending}
+                  className="inline-flex items-center gap-1.5 rounded-xl bg-gradient-to-r from-[#B85C4A] to-[#A24D3D] px-6 py-2.5 text-sm font-semibold text-white shadow-md shadow-[#B85C4A]/25 transition hover:from-[#A24D3D] hover:to-[#8E3F30] active:scale-98 disabled:opacity-60 cursor-pointer"
+                >
+                  <Sparkles className="size-4" />
+                  <span>{editing ? "Save changes" : "Create product"}</span>
+                </button>
+              </div>
+            </form>
           </div>
-        </form>
+        </div>
       </Modal>
 
       <ConfirmDialog
