@@ -14,7 +14,9 @@ export const CategoryProductsPage = () => {
   const page = Number(searchParams.get("page") ?? "1");
 
   const { data: categories, isLoading: categoriesLoading } = useCategories();
-  const category = categories?.find((item) => item.slug === slug);
+  const category = categories?.find(
+    (item) => item.slug === slug || item.slug.toLowerCase() === slug?.toLowerCase()
+  );
 
   const { data, isLoading, isError, error, refetch } = useProducts({
     page,

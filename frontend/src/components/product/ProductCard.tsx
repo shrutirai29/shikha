@@ -1,4 +1,4 @@
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { Heart, ShoppingBag, Sparkles } from "lucide-react";
 import { motion } from "framer-motion";
 import type { Product } from "@/types";
@@ -21,6 +21,7 @@ export const ProductCard = ({
   product: Product;
   index?: number;
 }) => {
+  const navigate = useNavigate();
   const { isAuthenticated } = useAuth();
   const toast = useToast();
   const { data: wishlist } = useWishlist();
@@ -43,6 +44,7 @@ export const ProductCard = ({
 
     if (!isAuthenticated) {
       toast.info("Please log in to save items to your wishlist");
+      navigate("/login", { state: { from: `/products/${product.slug}` } });
       return;
     }
 
@@ -65,6 +67,7 @@ export const ProductCard = ({
 
     if (!isAuthenticated) {
       toast.info("Please log in to add items to your cart");
+      navigate("/login", { state: { from: `/products/${product.slug}` } });
       return;
     }
 

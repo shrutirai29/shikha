@@ -390,7 +390,49 @@ export const Header = () => {
               </button>
             </div>
 
-            {!isAuthenticated && (
+            {isAuthenticated ? (
+              <div className="mt-3 border-t border-[#E8DCD0] pt-3 dark:border-[#382823]">
+                <div className="mb-2.5 flex items-center gap-3 px-2 py-1">
+                  <div className="flex size-9 items-center justify-center rounded-full bg-[#B85C4A] text-sm font-bold text-white shadow-soft dark:bg-gradient-to-r dark:from-[#D47763] dark:to-[#B85C4A]">
+                    {initials(user?.name ?? "U")}
+                  </div>
+                  <div className="min-w-0 flex-1">
+                    <p className="truncate text-sm font-semibold text-[#3B2924] dark:text-[#FFF4E8]">
+                      {user?.name}
+                    </p>
+                    <p className="truncate text-xs text-[#806E66] dark:text-[#B3A198]">
+                      {user?.email}
+                    </p>
+                  </div>
+                </div>
+
+                <div className="grid grid-cols-2 gap-1.5">
+                  {userLinks.map((link) => (
+                    <Link
+                      key={link.to}
+                      to={link.to}
+                      onClick={() => setMobileOpen(false)}
+                      className="flex items-center gap-2 rounded-xl border border-[#E8DCD0] bg-[#FFFCF7] px-3 py-2 text-xs font-medium text-[#3B2924] hover:border-[#B85C4A] hover:text-[#B85C4A] dark:border-[#382823] dark:bg-[#1E1614] dark:text-[#FFF4E8] dark:hover:text-[#D47763]"
+                    >
+                      <link.icon className="size-3.5 text-[#B85C4A] dark:text-[#D47763]" />
+                      <span>{link.label}</span>
+                    </Link>
+                  ))}
+                </div>
+
+                <button
+                  type="button"
+                  onClick={() => {
+                    setMobileOpen(false);
+                    handleLogout();
+                  }}
+                  className="mt-2.5 flex w-full items-center justify-center gap-2 rounded-xl border border-[#B85C4A]/20 bg-[#B85C4A]/10 py-2 text-xs font-semibold text-[#914536] transition hover:bg-[#B85C4A]/20 dark:text-[#E28A76] dark:hover:bg-[#D47763]/20"
+                >
+                  <LogOut className="size-3.5" />
+                  Log out
+                </button>
+              </div>
+            ) : (
               <div className="mt-2 flex gap-2">
                 <Link
                   to="/login"

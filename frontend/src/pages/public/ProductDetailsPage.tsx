@@ -10,6 +10,7 @@ import {
   ShieldCheck,
   ShoppingBag,
   Truck,
+  Zap,
 } from "lucide-react";
 import { useProductBySlug, useAddToCart, useAddToWishlist, useRemoveFromWishlist, useWishlist, useReviews, useAddReview } from "@/hooks/useApi";
 import { formatCurrency, getProductPrice, discountPercent, formatDate } from "@/lib/utils";
@@ -47,6 +48,7 @@ export const ProductDetailsPage = () => {
   const [rating, setRating] = useState(0);
   const [comment, setComment] = useState("");
   const [adding, setAdding] = useState(false);
+  const [buyingNow, setBuyingNow] = useState(false);
 
   useSEO({
     title: product?.name,
@@ -122,10 +124,28 @@ export const ProductDetailsPage = () => {
     }
   };
 
+  const handleBuyNow = async () => {
+    if (!isAuthenticated) {
+      toast.info("Please log in to continue checkout");
+      navigate("/login", { state: { from: `/products/${product.slug}` } });
+      return;
+    }
+
+    setBuyingNow(true);
+    try {
+      await addToCart.mutateAsync({ productId: product._id, quantity });
+      navigate("/checkout");
+    } catch (cartError) {
+      toast.error(getErrorMessage(cartError));
+    } finally {
+      setBuyingNow(false);
+    }
+  };
+
   const handleWishlist = async () => {
     if (!isAuthenticated) {
       toast.info("Please log in to save items to your wishlist");
-      navigate("/login");
+      navigate("/login", { state: { from: `/products/${product.slug}` } });
       return;
     }
 
@@ -147,7 +167,7 @@ export const ProductDetailsPage = () => {
 
     if (!isAuthenticated) {
       toast.info("Please log in to write a review");
-      navigate("/login");
+      navigate("/login", { state: { from: `/products/${product.slug}` } });
       return;
     }
 
@@ -274,7 +294,7 @@ export const ProductDetailsPage = () => {
             {product.description}
           </p>
 
-          <div className="flex flex-col sm:flex-row sm:items-center gap-3">
+          <div className="flex flex-col gap-3.5">
             <div className="flex flex-wrap items-center gap-2.5 sm:gap-3">
               <div className="flex items-center rounded-xl border border-[#E8DCD0] bg-[#FFFCF7] dark:border-[#382823] dark:bg-[#1E1614]">
                 <button
@@ -313,14 +333,26 @@ export const ProductDetailsPage = () => {
               <ProductShareButton title={product.name} />
             </div>
 
-            <AddToCartButton
-              onClick={handleAddToCart}
-              loading={adding}
-              disabled={product.stock <= 0}
-              className="w-full sm:flex-1 h-12 px-6"
-            >
-              Add to cart
-            </AddToCartButton>
+            <div className="flex flex-col sm:flex-row items-stretch gap-3">
+              <AddToCartButton
+                onClick={handleAddToCart}
+                loading={adding}
+                disabled={product.stock <= 0 || buyingNow}
+                className="w-full sm:flex-1 h-12 px-6"
+              >
+                Add to cart
+              </AddToCartButton>
+
+              <Button
+                type="button"
+                onClick={handleBuyNow}
+                disabled={product.stock <= 0 || buyingNow}
+                className="w-full sm:flex-1 h-12 px-6 font-semibold flex items-center justify-center gap-2 rounded-xl bg-gradient-to-r from-[#D47763] to-[#B85C4A] text-white shadow-soft hover:shadow-lift hover:brightness-105 active:scale-[0.98] transition-all disabled:opacity-50"
+              >
+                <Zap className="size-4 fill-current text-yellow-300" />
+                {buyingNow ? "Processing..." : "⚡ Buy Now"}
+              </Button>
+            </div>
           </div>
 
           <div className="grid gap-3 rounded-2xl border border-[#E8DCD0] bg-[#F5EDE4]/60 p-4 text-xs sm:text-sm dark:border-[#382823] dark:bg-[#1E1614]/60 sm:grid-cols-3">

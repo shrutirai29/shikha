@@ -509,25 +509,25 @@ export const LandingPage = () => {
                 </p>
                 <div className="flex flex-wrap gap-1.5">
                   <Link
-                    to="/products"
+                    to="/categories/plushies"
                     className="rounded-lg bg-[#F5EDE4]/90 px-2.5 py-1 text-[11px] font-medium text-[#3B2924] transition hover:bg-[#B85C4A] hover:text-white dark:bg-[#352925] dark:text-[#FFF4E8] dark:hover:bg-[#D47763] dark:hover:text-[#1F1816]"
                   >
                     🐰 Plushies
                   </Link>
                   <Link
-                    to="/products"
+                    to="/categories/torans"
                     className="rounded-lg bg-[#F5EDE4]/90 px-2.5 py-1 text-[11px] font-medium text-[#3B2924] transition hover:bg-[#B85C4A] hover:text-white dark:bg-[#352925] dark:text-[#FFF4E8] dark:hover:bg-[#D47763] dark:hover:text-[#1F1816]"
                   >
                     🌸 Daisy Torans
                   </Link>
                   <Link
-                    to="/products"
+                    to="/categories/earbuds-cases"
                     className="rounded-lg bg-[#F5EDE4]/90 px-2.5 py-1 text-[11px] font-medium text-[#3B2924] transition hover:bg-[#B85C4A] hover:text-white dark:bg-[#352925] dark:text-[#FFF4E8] dark:hover:bg-[#D47763] dark:hover:text-[#1F1816]"
                   >
                     🎧 Earbuds Cases
                   </Link>
                   <Link
-                    to="/products"
+                    to="/categories/bags"
                     className="rounded-lg bg-[#F5EDE4]/90 px-2.5 py-1 text-[11px] font-medium text-[#3B2924] transition hover:bg-[#B85C4A] hover:text-white dark:bg-[#352925] dark:text-[#FFF4E8] dark:hover:bg-[#D47763] dark:hover:text-[#1F1816]"
                   >
                     👜 Bags
@@ -685,8 +685,8 @@ export const LandingPage = () => {
                   key={item._id}
                   className="group relative flex w-[195px] sm:w-[260px] shrink-0 snap-start flex-col justify-between overflow-hidden rounded-2xl border border-[#E8DCD0] bg-white p-3 shadow-xs transition-all duration-300 hover:-translate-y-1 hover:border-[#B85C4A]/40 hover:shadow-lift dark:border-[#382823] dark:bg-[#1E1614]"
                 >
-                  {/* Image area */}
-                  <Link to={`/products?search=${encodeURIComponent(item.name)}`} className="block">
+                  {/* Image & Product Link */}
+                  <Link to={`/products/${item.slug}`} className="block">
                     <div className="relative aspect-square w-full overflow-hidden rounded-xl bg-[#F5EDE4] dark:bg-[#251B18]">
                       <img
                         src={item.image}
@@ -808,7 +808,7 @@ export const LandingPage = () => {
                 key={item._id}
                 className="group relative flex w-[175px] sm:w-[210px] shrink-0 snap-start flex-col justify-between overflow-hidden rounded-2xl border border-[#E8DCD0] bg-white p-3 shadow-xs transition-all duration-300 hover:-translate-y-1 hover:border-[#7A8B68]/40 hover:shadow-lift dark:border-[#382823] dark:bg-[#1E1614]"
               >
-                <Link to={`/products?search=${encodeURIComponent(item.name)}`} className="block">
+                <Link to={`/products/${item.slug}`} className="block">
                   <div className="relative aspect-square w-full overflow-hidden rounded-xl bg-[#F5EDE4] dark:bg-[#251B18]">
                     <img
                       src={item.image}

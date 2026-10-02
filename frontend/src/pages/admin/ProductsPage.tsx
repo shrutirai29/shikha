@@ -543,6 +543,7 @@ export const ProductsPage = () => {
                       className="w-full appearance-none rounded-xl border border-[#E0D3C5] bg-[#FFFCF7]/90 py-2.5 pl-3.5 pr-10 text-sm text-[#3B2924] shadow-2xs transition focus:border-[#B85C4A] focus:bg-white focus:outline-none focus:ring-2 focus:ring-[#B85C4A]/20 dark:border-[#42312A] dark:bg-[#201715]/90 dark:text-[#FFF4E8]"
                       {...register("category")}
                     >
+                      <option value="">Select a category</option>
                       {(categories ?? []).map((category) => (
                         <option key={category._id} value={category._id}>
                           {category.name}
