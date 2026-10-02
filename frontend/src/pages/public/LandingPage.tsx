@@ -121,11 +121,38 @@ export const LandingPage = () => {
   const showGrouped = categoryGroups.length > 0;
 
   return (
-    <div>
+    <div className="relative min-h-screen w-full overflow-hidden">
+      {/* ============================================================
+          CONSTANT FULL-PAGE BACKDROP (Fixed throughout entire scroll)
+          ============================================================ */}
+      <div className="pointer-events-none fixed inset-0 z-0 select-none">
+        <img
+          src={heroBackdrop}
+          alt="Handmade crochet flowers, bunny and natural yarn flatlay"
+          fetchPriority="high"
+          decoding="async"
+          className="size-full object-cover object-[78%_center] sm:object-[70%_center] lg:object-center opacity-85 dark:opacity-25 transition-opacity duration-500"
+        />
+
+        {/* Soft, warm ambient scrim that keeps every section readable while allowing the artisanal flatlay to be visible throughout */}
+        <div className="absolute inset-0 bg-[#FFF8F0]/80 dark:bg-gradient-to-br dark:from-[#150F0D]/92 dark:via-[#1B1311]/88 dark:to-[#120C0A]/92 backdrop-blur-[0.5px]" />
+
+        {/* Ambient warm glowing light orb accents */}
+        <div
+          aria-hidden="true"
+          className="pointer-events-none absolute -top-32 left-10 size-96 rounded-full bg-gradient-to-br from-[#C98F8B]/20 via-[#B85C4A]/15 to-transparent blur-3xl dark:from-[#D8A09B]/15 dark:via-[#D47763]/10"
+        />
+        <div
+          aria-hidden="true"
+          className="pointer-events-none absolute top-1/2 -right-32 size-[500px] rounded-full bg-gradient-to-tl from-[#D8A85B]/15 via-[#7A8B68]/10 to-transparent blur-3xl dark:from-[#E0B86A]/10 dark:via-[#9BAF83]/10"
+        />
+      </div>
+
+      <div className="relative z-10">
       {/* ============================================================
           TOP E-COMMERCE CATEGORY RAIL (Dynamic)
           ============================================================ */}
-      <nav aria-label="Quick Categories" className="border-b border-[#E8DCD0] bg-[#FFFCF7] shadow-xs dark:border-[#382823] dark:bg-[#1E1614] w-full max-w-full overflow-hidden">
+      <nav aria-label="Quick Categories" className="border-b border-[#E8DCD0] bg-[#FFFCF7]/85 backdrop-blur-md shadow-xs dark:border-[#382823] dark:bg-[#1E1614]/85 w-full max-w-full overflow-hidden">
         <div className="mx-auto flex max-w-7xl items-center justify-start xl:justify-between gap-2.5 sm:gap-3 overflow-x-auto px-3 py-3 sm:px-6 scrollbar-none touch-pan-x [-webkit-overflow-scrolling:touch]">
           {categoriesLoading ? (
             <div className="flex gap-3 py-1">
@@ -220,26 +247,9 @@ export const LandingPage = () => {
       {/* ============================================================
           1. HERO SECTION (Artisanal Photography Backdrop & Editorial Layout)
           ============================================================ */}
-      <section className="relative min-h-[540px] sm:min-h-[640px] lg:min-h-[700px] overflow-hidden bg-[#FFF8F0] dark:bg-[#1F1816]">
-        {/* Full-bleed photography backdrop */}
-        <div className="absolute inset-0 select-none">
-          <img
-            src={heroBackdrop}
-            alt="Handmade crochet flowers, bunny and natural yarn flatlay"
-            fetchPriority="high"
-            decoding="async"
-            className="size-full object-cover object-[78%_center] sm:object-[70%_center] lg:object-center opacity-95 dark:opacity-35 transition-opacity duration-500"
-          />
-
-          {/* Warm artistic gradient scrim: keeps text legible on the left while revealing the photography on the right */}
-          <div className="absolute inset-0 bg-gradient-to-r from-[#FFF8F0]/95 via-[#FFF8F0]/85 to-[#FFF8F0]/40 sm:to-transparent lg:via-[#FFF8F0]/65 dark:from-[#1F1816]/95 dark:via-[#1F1816]/85 dark:to-[#1F1816]/60" />
-
-          {/* Ambient soft glow orbs that accent the pottery and yarn tones */}
-          <div
-            aria-hidden="true"
-            className="pointer-events-none absolute -top-32 left-10 size-96 rounded-full bg-gradient-to-br from-[#C98F8B]/20 via-[#B85C4A]/15 to-transparent blur-3xl dark:from-[#D8A09B]/15 dark:via-[#D47763]/10"
-          />
-        </div>
+      <section className="relative min-h-[540px] sm:min-h-[640px] lg:min-h-[700px] overflow-hidden bg-transparent">
+        {/* Warm artistic gradient scrim: keeps text legible on the left while revealing the photography on the right */}
+        <div className="pointer-events-none absolute inset-0 bg-gradient-to-r from-[#FFF8F0]/90 via-[#FFF8F0]/65 to-transparent lg:via-[#FFF8F0]/40 dark:from-[#1F1816]/95 dark:via-[#1F1816]/80 dark:to-transparent" />
 
         {/* Hero Content Container */}
         <div className="relative mx-auto grid max-w-7xl items-center gap-8 sm:gap-10 px-4 py-12 sm:px-6 sm:py-16 lg:grid-cols-12 lg:gap-6 xl:gap-8 lg:py-24 overflow-hidden w-full max-w-full">
@@ -422,12 +432,6 @@ export const LandingPage = () => {
             </div>
           </motion.div>
         </div>
-
-        {/* Bottom smooth fade into content */}
-        <div
-          aria-hidden="true"
-          className="pointer-events-none absolute inset-x-0 bottom-0 h-16 bg-gradient-to-t from-[#FFF8F0] dark:from-[#1F1816] to-transparent"
-        />
       </section>
 
       {/* ============================================================
@@ -1017,6 +1021,7 @@ export const LandingPage = () => {
           </div>
         </motion.div>
       </section>
+      </div>
     </div>
   );
 };
