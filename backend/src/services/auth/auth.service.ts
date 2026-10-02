@@ -113,7 +113,11 @@ export const verifyOtp = async (email: string, code: string) => {
     );
   }
 
-  if (pending.otp !== code) {
+  const isMatch =
+    pending.otp.length === code.length &&
+    crypto.timingSafeEqual(Buffer.from(pending.otp), Buffer.from(code));
+
+  if (!isMatch) {
     pending.otpAttempts += 1;
     await pending.save();
     throw new BadRequestError("Invalid verification code");
@@ -241,20 +245,25 @@ export const forgotPassword = async (email: string) => {
     };
   }
 
-  const resetToken = crypto.randomBytes(32).toString("hex");
+  const rawResetToken = crypto.randomBytes(32).toString("hex");
+  const hashedResetToken = crypto
+    .createHash("sha256")
+    .update(rawResetToken)
+    .digest("hex");
 
-  user.resetPasswordToken = resetToken;
+  user.resetPasswordToken = hashedResetToken;
   user.resetPasswordExpires = new Date(Date.now() + 60 * 60 * 1000);
 
   await user.save();
 
-  const emailResult = await sendPasswordResetEmail(user.email, resetToken);
+  const emailResult = await sendPasswordResetEmail(user.email, rawResetToken);
   const delivered = Boolean(emailResult?.delivered);
 
   const clientUrl = env().CLIENT_URL ?? "http://localhost:5173";
-  const resetLink = `${clientUrl}/reset-password?token=${resetToken}`;
+  const resetLink = `${clientUrl}/reset-password?token=${rawResetToken}`;
 
-  const isDevOrLocal = process.env.NODE_ENV !== "production";
+  const isDevOrLocal =
+    process.env.NODE_ENV === "development" || process.env.NODE_ENV === "test";
 
   return {
     message: delivered
@@ -262,13 +271,18 @@ export const forgotPassword = async (email: string) => {
       : "If an account exists for this email, a reset link has been generated",
     delivered,
     resetLink: isDevOrLocal ? resetLink : undefined,
-    resetToken: isDevOrLocal ? resetToken : undefined,
+    resetToken: isDevOrLocal ? rawResetToken : undefined,
   };
 };
 
 export const resetPassword = async (token: string, newPassword: string) => {
+  const hashedToken = crypto
+    .createHash("sha256")
+    .update(token)
+    .digest("hex");
+
   const user = await User.findOne({
-    resetPasswordToken: token,
+    resetPasswordToken: hashedToken,
     resetPasswordExpires: { $gt: new Date() },
   });
 

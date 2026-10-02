@@ -82,10 +82,40 @@ export const createOrder = async (
     });
   }
 
-  const discountedSubtotal =
-    cart.finalAmount > 0
-      ? cart.finalAmount
-      : subtotal;
+  let discount = 0;
+  let activeCouponId: any = null;
+
+  if (cart.coupon) {
+    const couponDoc = await Coupon.findById(cart.coupon);
+    if (
+      !couponDoc ||
+      !couponDoc.isActive ||
+      couponDoc.expiresAt < new Date() ||
+      couponDoc.usedCount >= couponDoc.usageLimit ||
+      subtotal < couponDoc.minimumPurchase
+    ) {
+      throw new ConflictError(
+        "The applied coupon is expired, exhausted, or no longer valid for this order"
+      );
+    }
+
+    if (couponDoc.discountType === "PERCENTAGE") {
+      discount = (subtotal * couponDoc.discountValue) / 100;
+      if (couponDoc.maximumDiscount > 0 && discount > couponDoc.maximumDiscount) {
+        discount = couponDoc.maximumDiscount;
+      }
+    } else {
+      discount = couponDoc.discountValue;
+    }
+
+    if (discount > subtotal) {
+      discount = subtotal;
+    }
+    discount = Number(discount.toFixed(2));
+    activeCouponId = couponDoc._id;
+  }
+
+  const discountedSubtotal = Number(Math.max(0, subtotal - discount).toFixed(2));
 
   const shippingCharge =
     discountedSubtotal >= 500 ? 0 : 50;
@@ -94,10 +124,9 @@ export const createOrder = async (
     (discountedSubtotal * 0.18).toFixed(2)
   );
 
-  const totalAmount =
-    discountedSubtotal +
-    shippingCharge +
-    tax;
+  const totalAmount = Number(
+    (discountedSubtotal + shippingCharge + tax).toFixed(2)
+  );
 
   if (totalAmount <= 0) {
     throw new BadRequestError("Invalid order total amount");
@@ -117,15 +146,10 @@ export const createOrder = async (
     paymentStatus: "Pending",
     orderStatus: "Pending",
     subtotal,
-
-    discount: cart.discount,
-
-    coupon: cart.coupon,
-
+    discount,
+    coupon: activeCouponId,
     shippingCharge,
-
     tax,
-
     totalAmount,
   });
 
@@ -426,6 +450,11 @@ export const updateOrderStatus = async (
 
   if (status === "Cancelled" && wasStockDeducted) {
     await restoreStockForOrder(order);
+    if (order.coupon) {
+      await Coupon.findByIdAndUpdate(order.coupon, {
+        $inc: { usedCount: -1 },
+      });
+    }
   }
 
   await order.save();
@@ -469,6 +498,11 @@ export const cancelOrder = async (
   // deduct on successful payment, so nothing to restore there.
   if (order.paymentMethod === "COD") {
     await restoreStockForOrder(order);
+    if (order.coupon) {
+      await Coupon.findByIdAndUpdate(order.coupon, {
+        $inc: { usedCount: -1 },
+      });
+    }
   }
 
   return await populateOrderQuery(Order.findById(order._id));

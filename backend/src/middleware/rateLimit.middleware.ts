@@ -120,3 +120,23 @@ export const searchRateLimiter = rateLimit({
     message: "Too many search queries, please slow down.",
   },
 });
+
+export const contactRateLimiter = rateLimit({
+  ...rateLimitOptions,
+  windowMs: 15 * 60 * 1000,
+  max: 10,
+  message: {
+    success: false,
+    message: "Too many contact messages sent, please try again in a few minutes.",
+  },
+});
+
+export const newsletterRateLimiter = rateLimit({
+  ...rateLimitOptions,
+  windowMs: 15 * 60 * 1000,
+  max: 10,
+  message: {
+    success: false,
+    message: "Too many newsletter subscription attempts, please try again later.",
+  },
+});

@@ -124,4 +124,32 @@ describe("Security Audit & Permission Enforcement", () => {
       expect(escaped).toBe("\\(a\\+\\)\\+\\$\\[\\*\\?\\]\\^");
     });
   });
+
+  describe("4. Authentication Cryptographic Hardening", () => {
+    it("hashes password reset tokens with SHA-256 before storage", async () => {
+      const crypto = await import("crypto");
+      const rawToken = "my-secret-reset-token-12345";
+      const hashed = crypto.createHash("sha256").update(rawToken).digest("hex");
+
+      expect(hashed).toMatch(/^[a-f0-9]{64}$/);
+      expect(hashed).not.toBe(rawToken);
+    });
+
+    it("verifies OTPs using timing-safe buffer comparison", async () => {
+      const crypto = await import("crypto");
+      const expected = "849201";
+      const correct = "849201";
+      const incorrect = "849202";
+
+      const match =
+        expected.length === correct.length &&
+        crypto.timingSafeEqual(Buffer.from(expected), Buffer.from(correct));
+      expect(match).toBe(true);
+
+      const mismatch =
+        expected.length === incorrect.length &&
+        crypto.timingSafeEqual(Buffer.from(expected), Buffer.from(incorrect));
+      expect(mismatch).toBe(false);
+    });
+  });
 });

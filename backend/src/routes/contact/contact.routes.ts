@@ -13,14 +13,14 @@ import {
   createContactSchema,
   updateContactStatusSchema,
 } from "../../validators/contact/contact.validator";
-import { searchRateLimiter } from "../../middleware/rateLimit.middleware";
+import { contactRateLimiter } from "../../middleware/rateLimit.middleware";
 
 const router = Router();
 
 // Public: Submit inquiry
 router.post(
   "/",
-  searchRateLimiter,
+  contactRateLimiter,
   validate(createContactSchema),
   postContactMessage
 );

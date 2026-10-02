@@ -4,7 +4,7 @@ import NewsletterSubscriber from "../../models/newsletter/newsletter.model";
 import { authenticate } from "../../middleware/auth.middleware";
 import { authorize } from "../../middleware/authorize.middleware";
 import { validate } from "../../middleware/validate.middleware";
-import { searchRateLimiter } from "../../middleware/rateLimit.middleware";
+import { newsletterRateLimiter } from "../../middleware/rateLimit.middleware";
 
 const subscribeSchema = z.object({
   email: z.string().email("Please provide a valid email address"),
@@ -15,7 +15,7 @@ const router = Router();
 // Public: Subscribe to newsletter
 router.post(
   "/subscribe",
-  searchRateLimiter,
+  newsletterRateLimiter,
   validate(subscribeSchema),
   async (req: Request, res: Response, next: NextFunction) => {
     try {
