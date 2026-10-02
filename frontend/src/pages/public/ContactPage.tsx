@@ -20,6 +20,7 @@ import { Input, Textarea } from "@/components/ui/Input";
 import { useToast } from "@/context/ToastContext";
 import { useSubmitContact } from "@/hooks/useApi";
 import { getErrorMessage } from "@/lib/api";
+import contactBackdrop from "@/assets/contact-backdrop.jpg";
 
 export const ContactPage = () => {
   usePageTitle("Contact Us & Custom Orders");
@@ -51,10 +52,23 @@ export const ContactPage = () => {
   };
 
   return (
-    <PageLayout
-      title="Get in Touch"
-      subtitle="Have questions, need a custom crochet order, or looking for technical support? We'd love to hear from you."
-    >
+    <div className="relative min-h-[calc(100vh-140px)] w-full overflow-hidden">
+      {/* Handcrafted Crochet Backdrop for Contact Page */}
+      <div className="pointer-events-none absolute inset-0 z-0 select-none">
+        <img
+          src={contactBackdrop}
+          alt="Crochet supplies and flowers background"
+          className="size-full object-cover object-center opacity-85 dark:opacity-30 transition-opacity duration-500"
+        />
+        {/* Soft warm ambient scrim */}
+        <div className="absolute inset-0 bg-[#FFF8F0]/40 dark:bg-gradient-to-br dark:from-[#150F0D]/90 dark:via-[#1B1311]/85 dark:to-[#120C0A]/90 backdrop-blur-[1px]" />
+      </div>
+
+      <div className="relative z-10">
+        <PageLayout
+          title="Get in Touch"
+          subtitle="Have questions, need a custom crochet order, or looking for technical support? We'd love to hear from you."
+        >
       <div className="grid gap-8 lg:grid-cols-[1fr_420px]">
         {/* Contact Form */}
         <div className="space-y-6">
@@ -278,6 +292,8 @@ export const ContactPage = () => {
         </div>
       </div>
     </PageLayout>
+      </div>
+    </div>
   );
 };
 
