@@ -123,29 +123,20 @@ export const LandingPage = () => {
   return (
     <div className="relative min-h-screen w-full overflow-hidden">
       {/* ============================================================
-          CONSTANT FULL-PAGE BACKDROP (Fixed throughout entire scroll)
+          STICKY FULL-PAGE ARTISANAL BACKDROP
+          Fixed across the entire scroll - no bottom fade, stays constant throughout
           ============================================================ */}
-      <div className="pointer-events-none fixed inset-0 z-0 select-none">
+      <div className="pointer-events-none fixed inset-0 z-0 select-none overflow-hidden">
         <img
           src={heroBackdrop}
           alt="Handmade crochet flowers, bunny and natural yarn flatlay"
           fetchPriority="high"
           decoding="async"
-          className="size-full object-cover object-[78%_center] sm:object-[70%_center] lg:object-center opacity-85 dark:opacity-25 transition-opacity duration-500"
+          className="size-full object-cover object-[78%_center] sm:object-[70%_center] lg:object-center opacity-100 dark:opacity-35 transition-opacity duration-500"
         />
 
-        {/* Soft, warm ambient scrim that keeps every section readable while allowing the artisanal flatlay to be visible throughout */}
-        <div className="absolute inset-0 bg-[#FFF8F0]/80 dark:bg-gradient-to-br dark:from-[#150F0D]/92 dark:via-[#1B1311]/88 dark:to-[#120C0A]/92 backdrop-blur-[0.5px]" />
-
-        {/* Ambient warm glowing light orb accents */}
-        <div
-          aria-hidden="true"
-          className="pointer-events-none absolute -top-32 left-10 size-96 rounded-full bg-gradient-to-br from-[#C98F8B]/20 via-[#B85C4A]/15 to-transparent blur-3xl dark:from-[#D8A09B]/15 dark:via-[#D47763]/10"
-        />
-        <div
-          aria-hidden="true"
-          className="pointer-events-none absolute top-1/2 -right-32 size-[500px] rounded-full bg-gradient-to-tl from-[#D8A85B]/15 via-[#7A8B68]/10 to-transparent blur-3xl dark:from-[#E0B86A]/10 dark:via-[#9BAF83]/10"
-        />
+        {/* Soft, gentle left-only scrim so text on the left is crisp and readable, while the artisanal crochet flatlay on the right remains clear and un-faded throughout the entire scroll */}
+        <div className="absolute inset-0 bg-gradient-to-r from-[#FFF8F0]/90 via-[#FFF8F0]/55 to-transparent lg:via-[#FFF8F0]/35 dark:from-[#1F1816]/95 dark:via-[#1F1816]/85 dark:to-transparent" />
       </div>
 
       <div className="relative z-10">
@@ -248,9 +239,6 @@ export const LandingPage = () => {
           1. HERO SECTION (Artisanal Photography Backdrop & Editorial Layout)
           ============================================================ */}
       <section className="relative min-h-[540px] sm:min-h-[640px] lg:min-h-[700px] overflow-hidden bg-transparent">
-        {/* Warm artistic gradient scrim: keeps text legible on the left while revealing the photography on the right */}
-        <div className="pointer-events-none absolute inset-0 bg-gradient-to-r from-[#FFF8F0]/90 via-[#FFF8F0]/65 to-transparent lg:via-[#FFF8F0]/40 dark:from-[#1F1816]/95 dark:via-[#1F1816]/80 dark:to-transparent" />
-
         {/* Hero Content Container */}
         <div className="relative mx-auto grid max-w-7xl items-center gap-8 sm:gap-10 px-4 py-12 sm:px-6 sm:py-16 lg:grid-cols-12 lg:gap-6 xl:gap-8 lg:py-24 overflow-hidden w-full max-w-full">
           {/* Left Column: Brand Story & Call-to-actions */}
