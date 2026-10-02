@@ -9,6 +9,7 @@ import { ErrorState } from "@/components/ui/States";
 import { getErrorMessage } from "@/lib/api";
 import { Button } from "@/components/ui/Button";
 import { cn } from "@/lib/utils";
+import shopBackdrop from "@/assets/shop-backdrop.jpg";
 
 const sortOptions = [
   { value: "-createdAt", label: "Newest first" },
@@ -131,9 +132,22 @@ export const ProductsPage = () => {
   );
 
   return (
-    <PageLayout
-      title="Products"
-      subtitle={search ? `Results for "${search}"` : "Browse our full catalog"}
+    <div className="relative min-h-[calc(100vh-140px)] w-full overflow-hidden">
+      {/* Handcrafted Crochet Backdrop for Products Page */}
+      <div className="pointer-events-none absolute inset-0 z-0 select-none">
+        <img
+          src={shopBackdrop}
+          alt="Crochet yarn basket and florals background"
+          className="size-full object-cover object-center opacity-85 dark:opacity-30 transition-opacity duration-500"
+        />
+        {/* Soft warm ambient scrim */}
+        <div className="absolute inset-0 bg-[#FFF8F0]/40 dark:bg-gradient-to-br dark:from-[#150F0D]/90 dark:via-[#1B1311]/85 dark:to-[#120C0A]/90 backdrop-blur-[1px]" />
+      </div>
+
+      <div className="relative z-10">
+        <PageLayout
+          title="Products"
+          subtitle={search ? `Results for "${search}"` : "Browse our full catalog"}
       actions={
         <div className="flex items-center gap-2">
           <select
@@ -205,6 +219,8 @@ export const ProductsPage = () => {
         </div>
       )}
     </PageLayout>
+      </div>
+    </div>
   );
 };
 
