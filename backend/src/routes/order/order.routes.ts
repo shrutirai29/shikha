@@ -107,6 +107,7 @@ import {
   updateOrderStatus,
   updateShipping,
   cancelOrder,
+  getOrderInvoice,
 } from "../../controllers/order/order.controller";
 
 import { authenticate } from "../../middleware/auth.middleware";
@@ -166,6 +167,8 @@ router.patch(
   validate(updateShippingSchema),
   updateShipping
 );
+
+router.get("/:id/invoice", validateObjectId("id"), getOrderInvoice);
 
 // Keep this LAST
 router.get("/:id", validateObjectId("id"), getOrderById);

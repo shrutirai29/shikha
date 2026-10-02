@@ -252,3 +252,23 @@ export interface OrderQuery {
   from?: string;
   to?: string;
 }
+
+export interface ContactMessage {
+  _id: string;
+  name: string;
+  email: string;
+  phone?: string;
+  subject: string;
+  message: string;
+  status: "New" | "In Progress" | "Resolved";
+  notes?: string;
+  createdAt: string;
+  updatedAt: string;
+}
+
+export interface ContactQuery {
+  page?: number;
+  limit?: number;
+  status?: "New" | "In Progress" | "Resolved";
+  search?: string;
+}

@@ -5,6 +5,7 @@ import {
   Check,
   ChevronLeft,
   CreditCard,
+  FileText,
   MapPin,
   Package,
   ShoppingBag,
@@ -12,7 +13,7 @@ import {
   X,
 } from "lucide-react";
 import { useAuth } from "@/context/AuthContext";
-import { useCancelOrder, useOrder } from "@/hooks/useApi";
+import { downloadOrderInvoice, useCancelOrder, useOrder } from "@/hooks/useApi";
 import { PageLayout } from "@/components/layout/PageLayout";
 import { Badge, Card, PageLoader } from "@/components/ui/Card";
 import { ErrorState } from "@/components/ui/States";
@@ -139,6 +140,7 @@ export const OrderDetailsPage = () => {
   const cancelOrder = useCancelOrder();
   const toast = useToast();
   const [cancelOpen, setCancelOpen] = useState(false);
+  const [downloadingInvoice, setDownloadingInvoice] = useState(false);
 
   // Admins can open any order from the admin panel, but must not be able to
   // cancel or pay on the customer's behalf from this view.
@@ -177,6 +179,18 @@ export const OrderDetailsPage = () => {
       setCancelOpen(false);
     } catch (cancelError) {
       toast.error(getErrorMessage(cancelError));
+    }
+  };
+
+  const handleDownloadInvoice = async () => {
+    try {
+      setDownloadingInvoice(true);
+      await downloadOrderInvoice(order._id);
+      toast.success("Tax Invoice generated!");
+    } catch (err) {
+      toast.error(getErrorMessage(err));
+    } finally {
+      setDownloadingInvoice(false);
     }
   };
 
@@ -347,6 +361,15 @@ export const OrderDetailsPage = () => {
                 <Button className="w-full">Complete payment</Button>
               </Link>
             )}
+
+            <Button
+              variant="outline"
+              className="mt-3 w-full"
+              onClick={handleDownloadInvoice}
+              loading={downloadingInvoice}
+            >
+              <FileText className="size-4" /> Download Tax Invoice
+            </Button>
 
             {canCancel && !isAdminViewer && (
               <Button

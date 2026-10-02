@@ -23,6 +23,8 @@ import dashboardRoutes from "./routes/dashboard/dashboard.routes";
 import analyticsRoutes from "./routes/analytics/analytics.routes";
 import searchRoutes from "./routes/search/search.routes";
 import seoRoutes from "./routes/seo/seo.routes";
+import contactRoutes from "./routes/contact/contact.routes";
+import newsletterRoutes from "./routes/newsletter/newsletter.routes";
 import {
   globalRateLimiter,
   authRateLimiter,
@@ -254,6 +256,8 @@ app.use("/api/wishlist", wishlistRoutes);
 app.use("/api/reviews", reviewRoutes);
 app.use("/api/payments", paymentRateLimiter, paymentRoutes);
 app.use("/api/coupons", couponRoutes);
+app.use("/api/contact", contactRoutes);
+app.use("/api/newsletter", newsletterRoutes);
 
 // 404 Handler
 app.use(notFoundHandler);

@@ -44,6 +44,7 @@ const AdminOrdersPage = lazy(() => import("@/pages/admin/OrdersPage"));
 const AdminCouponsPage = lazy(() => import("@/pages/admin/CouponsPage"));
 const AdminPaymentsPage = lazy(() => import("@/pages/admin/PaymentsPage"));
 const AdminReviewsPage = lazy(() => import("@/pages/admin/AdminReviewsPage"));
+const AdminMessagesPage = lazy(() => import("@/pages/admin/MessagesPage"));
 
 const withSuspense = (element: React.ReactNode) => (
   <Suspense fallback={<PageLoader />}>{element}</Suspense>
@@ -115,6 +116,7 @@ const App = () => (
       <Route path="coupons" element={withSuspense(<AdminCouponsPage />)} />
       <Route path="payments" element={withSuspense(<AdminPaymentsPage />)} />
       <Route path="reviews" element={withSuspense(<AdminReviewsPage />)} />
+      <Route path="messages" element={withSuspense(<AdminMessagesPage />)} />
     </Route>
   </Routes>
 );

@@ -18,10 +18,13 @@ import { Card } from "@/components/ui/Card";
 import { Button } from "@/components/ui/Button";
 import { Input, Textarea } from "@/components/ui/Input";
 import { useToast } from "@/context/ToastContext";
+import { useSubmitContact } from "@/hooks/useApi";
+import { getErrorMessage } from "@/lib/api";
 
 export const ContactPage = () => {
   usePageTitle("Contact Us & Custom Orders");
   const toast = useToast();
+  const submitContact = useSubmitContact();
 
   const [form, setForm] = useState({
     name: "",
@@ -32,14 +35,19 @@ export const ContactPage = () => {
   });
   const [submitted, setSubmitted] = useState(false);
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!form.name || !form.email || !form.message) {
       toast.error("Please fill in your name, email, and message.");
       return;
     }
-    setSubmitted(true);
-    toast.success("Thank you! Your message has been sent. We'll get back to you shortly.");
+    try {
+      const res = await submitContact.mutateAsync(form);
+      setSubmitted(true);
+      toast.success(res.message || "Thank you! Your message has been sent.");
+    } catch (err) {
+      toast.error(getErrorMessage(err));
+    }
   };
 
   return (
@@ -130,7 +138,12 @@ export const ContactPage = () => {
                   placeholder="Tell us what you're looking for, crochet details, custom sizes/colors..."
                 />
 
-                <Button type="submit" size="lg" className="w-full sm:w-auto">
+                <Button
+                  type="submit"
+                  size="lg"
+                  className="w-full sm:w-auto"
+                  loading={submitContact.isPending}
+                >
                   <Send className="size-4" /> Send Message
                 </Button>
               </form>

@@ -7,6 +7,7 @@ import {
   LayoutDashboard,
   LogOut,
   Menu,
+  MessageSquare,
   Moon,
   Package,
   ShoppingBag,
@@ -34,6 +35,7 @@ const adminLinks = [
   { to: "/admin/coupons", label: "Coupons", icon: TicketPercent },
   { to: "/admin/payments", label: "Payments", icon: CreditCard },
   { to: "/admin/reviews", label: "Reviews", icon: Star },
+  { to: "/admin/messages", label: "Inquiries", icon: MessageSquare },
 ];
 
 const linkClass = ({ isActive }: { isActive: boolean }) =>
@@ -54,6 +56,7 @@ const ADMIN_TITLES: Record<string, string> = {
   "/admin/coupons": "Coupons",
   "/admin/payments": "Payments",
   "/admin/reviews": "Reviews",
+  "/admin/messages": "Inquiries & Custom Orders",
 };
 
 export const AdminLayout = () => {

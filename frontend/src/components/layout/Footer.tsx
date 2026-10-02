@@ -1,10 +1,71 @@
+import { useState } from "react";
 import { Link } from "react-router-dom";
-import { Mail, MapPin, Phone, MessageCircle, Heart, Code } from "lucide-react";
+import { Mail, MapPin, Phone, MessageCircle, Heart, Code, Sparkles } from "lucide-react";
 import { Logo } from "./Logo";
+import { useSubscribeNewsletter } from "@/hooks/useApi";
+import { useToast } from "@/context/ToastContext";
+import { getErrorMessage } from "@/lib/api";
 
-export const Footer = () => (
-  <footer className="border-t border-[#493A34] bg-[#3B2924] text-[#FFF4E8] dark:border-[#382823] dark:bg-[#0E0908]">
-    <div className="mx-auto grid max-w-7xl gap-8 px-4 py-12 sm:grid-cols-2 sm:px-6 lg:grid-cols-4">
+export const Footer = () => {
+  const [email, setEmail] = useState("");
+  const subscribe = useSubscribeNewsletter();
+  const toast = useToast();
+
+  const handleSubscribe = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!email || !email.includes("@")) {
+      toast.error("Please enter a valid email address");
+      return;
+    }
+    try {
+      const res = await subscribe.mutateAsync(email.trim());
+      toast.success(res.message || "Thank you for subscribing! ✨");
+      setEmail("");
+    } catch (err) {
+      toast.error(getErrorMessage(err));
+    }
+  };
+
+  return (
+    <footer className="border-t border-[#493A34] bg-[#3B2924] text-[#FFF4E8] dark:border-[#382823] dark:bg-[#0E0908]">
+      {/* Newsletter Section */}
+      <div className="border-b border-[#493A34] dark:border-[#382823] py-8">
+        <div className="mx-auto flex max-w-7xl flex-col items-center justify-between gap-6 px-4 sm:flex-row sm:px-6">
+          <div className="text-center sm:text-left">
+            <div className="flex items-center justify-center sm:justify-start gap-2">
+              <Sparkles className="size-4 text-[#D8A85B] dark:text-[#E0B86A]" />
+              <span className="text-xs font-semibold uppercase tracking-wider text-[#D8A85B] dark:text-[#E0B86A]">
+                Join the Knottiingale Circle
+              </span>
+            </div>
+            <h3 className="mt-1 text-lg font-semibold text-white">
+              Get 10% off your first handcrafted crochet order
+            </h3>
+            <p className="mt-0.5 text-xs text-[#C7B8AE] dark:text-[#B3A198]">
+              Be the first to hear about seasonal drops, secret coupon codes, and crochet care tips.
+            </p>
+          </div>
+          <form onSubmit={handleSubscribe} className="flex w-full max-w-md gap-2">
+            <input
+              type="email"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+              placeholder="Enter your email"
+              required
+              className="w-full rounded-xl border border-[#5A463E] bg-[#2C1F1B] px-4 py-2.5 text-sm text-white placeholder-[#806E66] outline-none transition focus:border-[#D8A85B] dark:border-[#3A2A24] dark:bg-[#1A1210]"
+            />
+            <button
+              type="submit"
+              disabled={subscribe.isPending}
+              className="inline-flex shrink-0 items-center justify-center gap-1.5 rounded-xl bg-[#D8A85B] px-5 py-2.5 text-sm font-semibold text-[#1F1816] transition hover:bg-[#E0B86A] disabled:opacity-50"
+            >
+              {subscribe.isPending ? "Subscribing..." : "Subscribe"}
+            </button>
+          </form>
+        </div>
+      </div>
+
+      <div className="mx-auto grid max-w-7xl gap-8 px-4 py-12 sm:grid-cols-2 sm:px-6 lg:grid-cols-4">
       {/* Brand & Owner Info */}
       <div className="space-y-4">
         <Logo inverted />
@@ -170,6 +231,7 @@ export const Footer = () => (
       </div>
     </div>
   </footer>
-);
+  );
+};
 
 export default Footer;

@@ -9,6 +9,8 @@ import type {
   Address,
   Cart,
   Category,
+  ContactMessage,
+  ContactQuery,
   Coupon,
   DashboardStats,
   Order,
@@ -533,5 +535,121 @@ export const useProductAnalytics = () =>
   });
 
 export const useWishlistProducts = useWishlist;
+
+/* -------------------------- Contact & Inquiries -------------------------- */
+
+export const useSubmitContact = () => {
+  return useMutation({
+    mutationFn: async (payload: {
+      name: string;
+      email: string;
+      phone?: string;
+      subject: string;
+      message: string;
+    }) => {
+      const { data } = await api.post<{
+        success: boolean;
+        message: string;
+        data: ContactMessage;
+      }>("/contact", payload);
+      return data;
+    },
+  });
+};
+
+export const useContactMessages = (query: ContactQuery = {}) => {
+  return useQuery({
+    queryKey: ["admin-contact-messages", query],
+    queryFn: async () => {
+      const { data } = await api.get<{
+        success: boolean;
+        data: ContactMessage[];
+        pagination: Pagination;
+      }>("/contact", { params: query });
+      return {
+        messages: data.data ?? [],
+        pagination: data.pagination,
+      };
+    },
+    placeholderData: keepPreviousData,
+  });
+};
+
+export const useUpdateContactStatus = () => {
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationFn: async ({
+      id,
+      status,
+      notes,
+    }: {
+      id: string;
+      status: "New" | "In Progress" | "Resolved";
+      notes?: string;
+    }) => {
+      const { data } = await api.patch<{
+        success: boolean;
+        message: string;
+        data: ContactMessage;
+      }>(`/contact/${id}/status`, { status, notes });
+      return data.data;
+    },
+    onSuccess: () => {
+      void queryClient.invalidateQueries({ queryKey: ["admin-contact-messages"] });
+    },
+  });
+};
+
+export const useDeleteContactMessage = () => {
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationFn: async (id: string) => {
+      const { data } = await api.delete<{ success: boolean; message: string }>(
+        `/contact/${id}`
+      );
+      return data;
+    },
+    onSuccess: () => {
+      void queryClient.invalidateQueries({ queryKey: ["admin-contact-messages"] });
+    },
+  });
+};
+
+/* ------------------------------ Newsletter ------------------------------ */
+
+export const useSubscribeNewsletter = () => {
+  return useMutation({
+    mutationFn: async (email: string) => {
+      const { data } = await api.post<{ success: boolean; message: string }>(
+        "/newsletter/subscribe",
+        { email }
+      );
+      return data;
+    },
+  });
+};
+
+/* ------------------------------- Invoice ------------------------------- */
+
+export const downloadOrderInvoice = async (orderId: string) => {
+  const response = await api.get<string>(`/orders/${orderId}/invoice`, {
+    responseType: "text" as "json",
+  });
+  const html = typeof response.data === "string" ? response.data : String(response.data);
+  const blob = new Blob([html], { type: "text/html;charset=utf-8" });
+  const url = URL.createObjectURL(blob);
+  const win = window.open(url, "_blank");
+  if (!win) {
+    // If popup blocked, create hidden download link
+    const a = document.createElement("a");
+    a.href = url;
+    a.download = `Invoice-${orderId.slice(-6).toUpperCase()}.html`;
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+  }
+};
 
 export { unwrap };

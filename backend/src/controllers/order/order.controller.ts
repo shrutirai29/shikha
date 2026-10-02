@@ -128,3 +128,16 @@ export const cancelOrder = asyncHandler(
     });
   }
 );
+
+export const getOrderInvoice = asyncHandler(
+  async (req: AuthRequest, res: Response) => {
+    const html = await orderService.generateOrderInvoiceHtml(
+      req.user!._id.toString(),
+      req.params.id as string,
+      req.user!.role === "admin"
+    );
+
+    res.setHeader("Content-Type", "text/html; charset=utf-8");
+    res.status(200).send(html);
+  }
+);
