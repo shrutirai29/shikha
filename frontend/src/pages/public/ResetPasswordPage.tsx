@@ -61,9 +61,9 @@ export const ResetPasswordPage = () => {
   };
 
   return (
-    <div className="relative flex min-h-[calc(100vh-140px)] w-full items-center justify-center px-4 py-12">
+    <div className="relative flex min-h-[calc(100vh-140px)] w-full items-center justify-center overflow-hidden px-4 py-12">
       {/* Handcrafted Crochet Backdrop */}
-      <div className="pointer-events-none fixed inset-0 z-0 overflow-hidden select-none">
+      <div className="pointer-events-none absolute inset-0 z-0 overflow-hidden select-none">
         <img
           src={authBackdrop}
           alt="Crochet background"

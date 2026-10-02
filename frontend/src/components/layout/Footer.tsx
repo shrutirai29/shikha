@@ -27,7 +27,7 @@ export const Footer = () => {
   };
 
   return (
-    <footer className="border-t border-[#493A34] bg-[#3B2924] text-[#FFF4E8] dark:border-[#382823] dark:bg-[#0E0908]">
+    <footer className="relative z-20 border-t border-[#493A34] bg-[#3B2924] text-[#FFF4E8] dark:border-[#382823] dark:bg-[#0E0908]">
       {/* Newsletter Section */}
       <div className="border-b border-[#493A34] dark:border-[#382823] py-8">
         <div className="mx-auto flex max-w-7xl flex-col items-center justify-between gap-6 px-4 sm:flex-row sm:px-6">
