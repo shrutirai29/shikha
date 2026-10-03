@@ -3,6 +3,7 @@ import { Routes, Route } from "react-router-dom";
 import { Header } from "@/components/layout/Header";
 import { Footer } from "@/components/layout/Footer";
 import { FloatingContact } from "@/components/layout/FloatingContact";
+import { MobileBottomNav } from "@/components/layout/MobileBottomNav";
 import { ProtectedRoute, GuestRoute } from "@/components/layout/ProtectedRoute";
 import { AdminLayout } from "@/components/layout/AdminLayout";
 import { PageLoader } from "@/components/ui/Card";
@@ -53,7 +54,7 @@ const withSuspense = (element: React.ReactNode) => (
 const SiteLayout = () => (
   <div className="flex min-h-screen flex-col overflow-x-hidden w-full max-w-full">
     <Header />
-    <main className="flex-1 overflow-x-hidden w-full max-w-full">
+    <main className="flex-1 overflow-x-hidden w-full max-w-full pb-20 md:pb-0">
       <Suspense fallback={<PageLoader />}>
         <Routes>
           <Route path="/" element={<LandingPage />} />
@@ -94,6 +95,7 @@ const SiteLayout = () => (
     </main>
     <Footer />
     <FloatingContact />
+    <MobileBottomNav />
   </div>
 );
 

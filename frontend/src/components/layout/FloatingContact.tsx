@@ -6,7 +6,7 @@ export const FloatingContact = () => {
   const [isOpen, setIsOpen] = useState(false);
 
   return (
-    <div className="fixed bottom-4 right-4 sm:bottom-6 sm:right-6 z-40 flex flex-col items-end">
+    <div className="fixed bottom-20 right-4 md:bottom-6 md:right-6 z-40 flex flex-col items-end">
       {/* Popover Card */}
       <AnimatePresence>
         {isOpen && (
