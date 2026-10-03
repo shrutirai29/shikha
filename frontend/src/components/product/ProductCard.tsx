@@ -93,7 +93,7 @@ export const ProductCard = ({
     >
       <Link
         to={`/products/${product.slug}`}
-        className="collect-card group relative flex h-full flex-col overflow-hidden rounded-[1.25rem] sm:rounded-[1.5rem] border border-[#E8DCD0] bg-[#FFFCF7] shadow-soft transition-all duration-300 dark:border-[#382823] dark:bg-[#1E1614] hover:border-[#B85C4A]/50 dark:hover:border-[#D47763]/50"
+        className="collect-card group relative flex h-full flex-col overflow-hidden rounded-[1.25rem] sm:rounded-[1.5rem] border border-white/80 bg-[#FFFCF7]/75 backdrop-blur-md shadow-soft transition-all duration-300 dark:border-white/10 dark:bg-[#1E1614]/75 hover:bg-[#FFFCF7]/95 dark:hover:bg-[#1E1614]/95 hover:border-[#B85C4A]/50 dark:hover:border-[#D47763]/50"
       >
         {/* Image & Floating Tags */}
         <div className="relative aspect-square overflow-hidden bg-gradient-to-b from-[#F5EDE4]/60 to-[#E8DCD0]/40 dark:from-[#251B18]/60 dark:to-[#140E0C]/80 ring-1 ring-inset ring-[#3B2924]/5 dark:ring-white/5">
@@ -124,7 +124,7 @@ export const ProductCard = ({
             onClick={handleWishlist}
             aria-label={isInWishlist ? "Remove from wishlist" : "Add to wishlist"}
             className={cn(
-              "absolute right-2.5 top-2.5 sm:right-3 sm:top-3 flex size-8 sm:size-9 items-center justify-center rounded-full border border-[#E8DCD0] bg-[#FFFCF7]/90 shadow-sm backdrop-blur-md transition-all duration-200 hover:scale-110 active:scale-90 dark:border-[#382823] dark:bg-[#1E1614]/90",
+              "absolute right-2.5 top-2.5 sm:right-3 sm:top-3 flex size-8 sm:size-9 items-center justify-center rounded-full border border-white/80 bg-[#FFFCF7]/85 shadow-xs backdrop-blur-md transition-all duration-200 hover:scale-110 active:scale-90 dark:border-white/10 dark:bg-[#1E1614]/85",
               isInWishlist
                 ? "text-[#C98F8B] dark:text-[#D8A09B]"
                 : "text-[#806E66] hover:text-[#C98F8B] dark:text-[#C7B8AE] dark:hover:text-[#D8A09B]"

@@ -259,33 +259,104 @@ body {
     );
 }
 
-/* Calm surface card styling */
+/* ============================================================
+   ARTISANAL FADED GLASSMORPHISM SYSTEM
+   Translucent, milk-frosted surfaces that let underlying photography
+   softly blur through while maintaining razor-sharp text legibility
+   ============================================================ */
+
+.faded-glass {
+  background-color: rgba(255, 252, 247, 0.72);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid rgba(255, 255, 255, 0.75);
+  box-shadow: 0 8px 32px -4px rgba(59, 41, 36, 0.08);
+}
+
+.dark .faded-glass {
+  background-color: rgba(30, 22, 20, 0.75);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  box-shadow: 0 8px 32px -4px rgba(0, 0, 0, 0.45);
+}
+
+.faded-glass-subtle {
+  background-color: rgba(255, 255, 255, 0.6);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid rgba(255, 255, 255, 0.6);
+  box-shadow: 0 4px 20px -2px rgba(59, 41, 36, 0.05);
+}
+
+.dark .faded-glass-subtle {
+  background-color: rgba(37, 27, 24, 0.65);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid rgba(255, 255, 255, 0.06);
+  box-shadow: 0 4px 20px -2px rgba(0, 0, 0, 0.35);
+}
+
+.faded-glass-interactive {
+  transition: transform 0.25s ease, background-color 0.25s ease, border-color 0.25s ease, box-shadow 0.25s ease;
+}
+
+.faded-glass-interactive:hover {
+  background-color: rgba(255, 252, 247, 0.88);
+  border-color: rgba(184, 92, 74, 0.4);
+  box-shadow: 0 16px 36px -8px rgba(59, 41, 36, 0.14);
+  transform: translateY(-3px);
+}
+
+.dark .faded-glass-interactive:hover {
+  background-color: rgba(35, 26, 23, 0.88);
+  border-color: rgba(212, 119, 99, 0.4);
+  box-shadow: 0 16px 36px -8px rgba(0, 0, 0, 0.55);
+  transform: translateY(-3px);
+}
+
+/* Calm surface card styling with frosted glass */
 .glass-card {
-  background-color: var(--surface);
-  border: 1px solid var(--border);
+  background-color: rgba(255, 252, 247, 0.75);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid rgba(255, 255, 255, 0.75);
+  box-shadow: 0 8px 32px 0 rgba(59, 41, 36, 0.06);
 }
 
 .dark .glass-card {
-  background-color: rgba(30, 22, 20, 0.85);
+  background-color: rgba(30, 22, 20, 0.78);
   backdrop-filter: blur(16px);
-  border: 1px solid #382823;
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid rgba(255, 255, 255, 0.09);
   box-shadow: 0 8px 30px rgba(0, 0, 0, 0.35);
 }
 
-/* CollectUI smooth card hover */
+/* CollectUI smooth card hover with frosted glass */
 .collect-card {
-  background-color: var(--surface);
-  border: 1px solid var(--border);
-  transition: transform 0.25s ease, box-shadow 0.25s ease, border-color 0.25s ease;
+  background-color: rgba(255, 252, 247, 0.8);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+  border: 1px solid rgba(255, 255, 255, 0.8);
+  transition: transform 0.25s ease, box-shadow 0.25s ease, border-color 0.25s ease, background-color 0.25s ease;
 }
 
 .collect-card:hover {
   transform: translateY(-4px);
-  box-shadow: 0 16px 30px -10px rgba(59, 41, 36, 0.1);
+  background-color: rgba(255, 252, 247, 0.95);
+  box-shadow: 0 16px 30px -10px rgba(59, 41, 36, 0.12);
   border-color: var(--primary);
 }
 
+.dark .collect-card {
+  background-color: rgba(30, 22, 20, 0.8);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+}
+
 .dark .collect-card:hover {
+  background-color: rgba(30, 22, 20, 0.95);
   box-shadow: 0 16px 30px -10px rgba(0, 0, 0, 0.45);
   border-color: var(--primary);
 }

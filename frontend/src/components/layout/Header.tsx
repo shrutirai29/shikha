@@ -93,7 +93,7 @@ export const Header = () => {
       ];
 
   return (
-    <header className="sticky top-0 z-50 border-b border-[#E8DCD0] bg-[#FFFCF7]/95 backdrop-blur-xl dark:border-[#382823] dark:bg-[#140E0C]/90">
+    <header className="sticky top-0 z-50 border-b border-white/60 bg-[#FFFCF7]/80 backdrop-blur-xl dark:border-white/10 dark:bg-[#140E0C]/80">
       {/* Top micro-announcement bar */}
       <div className="border-b border-[#E8DCD0]/20 bg-[#3B2924] px-2.5 sm:px-4 py-1.5 text-[10px] sm:text-[11px] font-medium text-[#FFF4E8] dark:bg-[#0E0908] dark:border-[#382823] overflow-hidden">
         <div className="mx-auto flex max-w-7xl items-center justify-between gap-2 min-w-0">

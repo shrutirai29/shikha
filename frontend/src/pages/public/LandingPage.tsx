@@ -135,15 +135,15 @@ export const LandingPage = () => {
           className="size-full object-cover object-[78%_center] sm:object-[70%_center] lg:object-center opacity-100 dark:opacity-35 transition-opacity duration-500"
         />
 
-        {/* Soft, gentle scrim: on mobile, provides a smooth veil so phone screens have clear text legibility while desktop retains the full open flatlay on the right */}
-        <div className="absolute inset-0 bg-gradient-to-b from-[#FFF8F0]/92 via-[#FFF8F0]/80 to-[#FFF8F0]/30 lg:bg-gradient-to-r lg:from-[#FFF8F0]/90 lg:via-[#FFF8F0]/55 lg:to-transparent dark:from-[#1F1816]/95 dark:via-[#1F1816]/85 dark:to-transparent" />
+        {/* Subtle, soft ambient layer allowing the full artisanal flatlay to shine through constant across the entire scroll, while faded-glass divs handle contrast */}
+        <div className="absolute inset-0 bg-[#FFF8F0]/15 dark:bg-[#140E0C]/65" />
       </div>
 
       <div className="relative z-10">
       {/* ============================================================
           TOP E-COMMERCE CATEGORY RAIL (Dynamic)
           ============================================================ */}
-      <nav aria-label="Quick Categories" className="border-b border-[#E8DCD0] bg-[#FFFCF7]/85 backdrop-blur-md shadow-xs dark:border-[#382823] dark:bg-[#1E1614]/85 w-full max-w-full overflow-hidden">
+      <nav aria-label="Quick Categories" className="border-b border-white/60 bg-[#FFFCF7]/75 backdrop-blur-md shadow-xs dark:border-white/10 dark:bg-[#1E1614]/75 w-full max-w-full overflow-hidden">
         <div className="mx-auto flex max-w-7xl items-center justify-start xl:justify-between gap-2.5 sm:gap-3 overflow-x-auto px-3 py-3 sm:px-6 scrollbar-none touch-pan-x [-webkit-overflow-scrolling:touch]">
           {categoriesLoading ? (
             <div className="flex gap-3 py-1">
@@ -241,15 +241,15 @@ export const LandingPage = () => {
       <section className="relative min-h-[540px] sm:min-h-[640px] lg:min-h-[700px] overflow-hidden bg-transparent">
         {/* Hero Content Container */}
         <div className="relative mx-auto grid max-w-7xl items-center gap-8 sm:gap-10 px-4 py-12 sm:px-6 sm:py-16 lg:grid-cols-12 lg:gap-6 xl:gap-8 lg:py-24 overflow-hidden w-full max-w-full">
-          {/* Left Column: Brand Story & Call-to-actions */}
+          {/* Left Column: Brand Story & Call-to-actions in Faded Glass Card */}
           <motion.div
             initial={{ opacity: 0, y: 24 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
-            className="min-w-0 lg:col-span-7 xl:col-span-7 max-w-2xl rounded-3xl p-5 sm:p-7 lg:p-0 bg-[#FFFCF7]/85 lg:bg-transparent backdrop-blur-xs lg:backdrop-blur-none border border-[#E8DCD0]/70 lg:border-none shadow-soft lg:shadow-none dark:bg-[#1E1614]/85 dark:border-[#382823]/70"
+            className="min-w-0 lg:col-span-7 xl:col-span-7 max-w-2xl rounded-3xl p-6 sm:p-8 lg:p-10 bg-[#FFFCF7]/75 dark:bg-[#1E1614]/75 backdrop-blur-md border border-white/80 dark:border-white/10 shadow-soft"
           >
             {/* Pill: Hand-Stitched by Shikha Rai */}
-            <div className="inline-flex items-center gap-2 rounded-full border border-[#B85C4A]/25 bg-[#FFFCF7]/95 px-3.5 sm:px-4 py-1.5 text-[11px] sm:text-xs font-bold text-[#B85C4A] shadow-soft backdrop-blur-md dark:border-[#D47763]/30 dark:bg-[#1E1614]/90 dark:text-[#D47763]">
+            <div className="inline-flex items-center gap-2 rounded-full border border-[#B85C4A]/30 bg-white/80 px-3.5 sm:px-4 py-1.5 text-[11px] sm:text-xs font-bold text-[#B85C4A] shadow-xs backdrop-blur-sm dark:border-[#D47763]/30 dark:bg-[#1E1614]/90 dark:text-[#D47763]">
               <span className="relative flex size-2 shrink-0">
                 <span className="absolute inline-flex size-full animate-ping rounded-full bg-[#C98F8B] opacity-75" />
                 <span className="relative inline-flex size-2 rounded-full bg-[#B85C4A] dark:bg-[#D47763]" />
@@ -283,25 +283,25 @@ export const LandingPage = () => {
               </Link>
               <Link
                 to="/contact"
-                className="inline-flex h-12 items-center justify-center gap-2 rounded-2xl border border-[#7A8B68] bg-[#FFFCF7]/95 px-6 text-sm font-bold text-[#7A8B68] shadow-sm backdrop-blur-md transition hover:bg-[#7A8B68]/15 active:scale-98 dark:border-[#9BAF83] dark:bg-[#1E1614]/90 dark:text-[#9BAF83] dark:hover:bg-[#9BAF83]/15"
+                className="inline-flex h-12 items-center justify-center gap-2 rounded-2xl border border-[#7A8B68]/60 bg-white/75 px-6 text-sm font-bold text-[#5B6D4A] shadow-xs backdrop-blur-md transition hover:bg-white active:scale-98 dark:border-[#9BAF83]/60 dark:bg-[#1E1614]/85 dark:text-[#9BAF83] dark:hover:bg-[#1E1614]"
               >
                 Custom Order Inquiry
               </Link>
             </div>
 
-            {/* Craft Highlights - Frosted contrast badges on mobile */}
-            <div className="mt-8 sm:mt-10 flex flex-wrap items-center gap-2.5 sm:gap-6 border-t border-[#E8DCD0]/70 pt-5 sm:pt-6 text-xs font-semibold text-[#2B1813] dark:border-[#493A34]/70 dark:text-[#E2D5CC]">
-              <span className="flex items-center gap-1.5 sm:gap-2 rounded-full bg-[#FFFCF7]/90 px-3 py-1 shadow-xs border border-[#E8DCD0]/60 sm:border-none sm:bg-transparent sm:p-0 sm:shadow-none dark:bg-[#251B18]/90 dark:border-[#493A34]/60">
+            {/* Craft Highlights - Frosted contrast badges */}
+            <div className="mt-8 sm:mt-10 flex flex-wrap items-center gap-2.5 sm:gap-4 border-t border-white/60 dark:border-white/10 pt-5 sm:pt-6 text-xs font-semibold text-[#2B1813] dark:text-[#E2D5CC]">
+              <span className="flex items-center gap-1.5 sm:gap-2 rounded-full bg-white/75 dark:bg-[#251B18]/75 px-3 py-1 shadow-xs border border-white/70 dark:border-white/10 backdrop-blur-xs">
                 <span className="flex size-5 sm:size-6 items-center justify-center rounded-full bg-[#7A8B68]/15 text-[#7A8B68] dark:bg-[#9BAF83]/20 dark:text-[#9BAF83]">✓</span>
                 100% Handcrafted
               </span>
-              <span className="flex items-center gap-1.5 sm:gap-2 rounded-full bg-[#FFFCF7]/90 px-3 py-1 shadow-xs border border-[#E8DCD0]/60 sm:border-none sm:bg-transparent sm:p-0 sm:shadow-none dark:bg-[#251B18]/90 dark:border-[#493A34]/60">
+              <span className="flex items-center gap-1.5 sm:gap-2 rounded-full bg-white/75 dark:bg-[#251B18]/75 px-3 py-1 shadow-xs border border-white/70 dark:border-white/10 backdrop-blur-xs">
                 <span className="flex size-5 sm:size-6 items-center justify-center rounded-full bg-[#D8A85B]/20 text-[#D8A85B] dark:bg-[#E0B86A]/20 dark:text-[#E0B86A]">
                   <Star className="size-3 sm:size-3.5 fill-current" />
                 </span>
                 5.0 Rated by Buyers
               </span>
-              <span className="flex items-center gap-1.5 sm:gap-2 rounded-full bg-[#FFFCF7]/90 px-3 py-1 shadow-xs border border-[#E8DCD0]/60 sm:border-none sm:bg-transparent sm:p-0 sm:shadow-none dark:bg-[#251B18]/90 dark:border-[#493A34]/60">
+              <span className="flex items-center gap-1.5 sm:gap-2 rounded-full bg-white/75 dark:bg-[#251B18]/75 px-3 py-1 shadow-xs border border-white/70 dark:border-white/10 backdrop-blur-xs">
                 <span className="flex size-5 sm:size-6 items-center justify-center rounded-full bg-[#B85C4A]/15 text-[#B85C4A] dark:bg-[#D47763]/20 dark:text-[#D47763]">⚡</span>
                 Fast Pan-India Dispatch
               </span>
@@ -309,15 +309,15 @@ export const LandingPage = () => {
           </motion.div>
 
 
-          {/* Right Column: Floating Boutique Spotlight Card */}
+          {/* Right Column: Floating Boutique Spotlight Card in Faded Glass */}
           <motion.div
             initial={{ opacity: 0, scale: 0.95, y: 16 }}
             animate={{ opacity: 1, scale: 1, y: 0 }}
             transition={{ duration: 0.7, delay: 0.15, ease: [0.22, 1, 0.36, 1] }}
             className="min-w-0 lg:col-span-5 xl:col-span-5 flex flex-col justify-end lg:items-end w-full"
           >
-            <div className="w-full max-w-[340px] sm:max-w-sm rounded-3xl border border-[#E8DCD0]/90 bg-[#FFFCF7]/90 p-4 sm:p-5 shadow-lift backdrop-blur-md dark:border-[#493A34]/80 dark:bg-[#2A211E]/90">
-              <div className="flex items-center justify-between border-b border-[#E8DCD0]/80 pb-3 dark:border-[#493A34]/80">
+            <div className="w-full max-w-[340px] sm:max-w-sm rounded-3xl border border-white/80 dark:border-white/10 bg-[#FFFCF7]/75 dark:bg-[#2A211E]/75 p-5 sm:p-6 shadow-lift backdrop-blur-md">
+              <div className="flex items-center justify-between border-b border-white/60 pb-3 dark:border-white/10">
                 <div className="flex items-center gap-2">
                   <span className="flex size-7 items-center justify-center rounded-lg bg-[#B85C4A]/15 text-[#B85C4A] dark:bg-[#D47763]/20 dark:text-[#D47763]">
                     <Sparkles className="size-4" />
@@ -331,7 +331,7 @@ export const LandingPage = () => {
                     </p>
                   </div>
                 </div>
-                <span className="rounded-full bg-[#7A8B68]/15 px-2.5 py-0.5 text-[11px] font-semibold text-[#7A8B68] dark:bg-[#9BAF83]/20 dark:text-[#9BAF83]">
+                <span className="rounded-full bg-[#7A8B68]/20 px-2.5 py-0.5 text-[11px] font-bold text-[#5B6D4A] dark:bg-[#9BAF83]/20 dark:text-[#9BAF83]">
                   {heroProduct ? "In Stock" : "Handcrafted"}
                 </span>
               </div>
@@ -385,7 +385,7 @@ export const LandingPage = () => {
               )}
 
               {/* Quick Explore chips */}
-              <div className="mt-4 border-t border-[#E8DCD0]/70 pt-3 dark:border-[#493A34]/70">
+              <div className="mt-4 border-t border-white/60 pt-3 dark:border-white/10">
                 <p className="mb-2 text-[10px] font-bold uppercase tracking-wider text-[#806E66] dark:text-[#C7B8AE]">
                   Quick Explore
                 </p>
@@ -395,7 +395,7 @@ export const LandingPage = () => {
                       <Link
                         key={c._id}
                         to={`/categories/${c.slug}`}
-                        className="rounded-lg bg-[#F5EDE4]/90 px-2.5 py-1 text-[11px] font-medium text-[#3B2924] transition hover:bg-[#B85C4A] hover:text-white dark:bg-[#352925] dark:text-[#FFF4E8] dark:hover:bg-[#D47763] dark:hover:text-[#1F1816]"
+                        className="rounded-lg bg-white/75 dark:bg-[#352925]/75 border border-white/60 dark:border-white/10 px-2.5 py-1 text-[11px] font-semibold text-[#3B2924] backdrop-blur-xs transition hover:bg-[#B85C4A] hover:text-white dark:text-[#FFF4E8] dark:hover:bg-[#D47763] dark:hover:text-[#1F1816]"
                       >
                         {c.name}
                       </Link>
@@ -404,13 +404,13 @@ export const LandingPage = () => {
                     <>
                       <Link
                         to="/products"
-                        className="rounded-lg bg-[#F5EDE4]/90 px-2.5 py-1 text-[11px] font-medium text-[#3B2924] transition hover:bg-[#B85C4A] hover:text-white dark:bg-[#352925] dark:text-[#FFF4E8] dark:hover:bg-[#D47763] dark:hover:text-[#1F1816]"
+                        className="rounded-lg bg-white/75 dark:bg-[#352925]/75 border border-white/60 dark:border-white/10 px-2.5 py-1 text-[11px] font-semibold text-[#3B2924] backdrop-blur-xs transition hover:bg-[#B85C4A] hover:text-white dark:text-[#FFF4E8] dark:hover:bg-[#D47763] dark:hover:text-[#1F1816]"
                       >
                         ✨ All Products
                       </Link>
                       <Link
                         to="/contact"
-                        className="rounded-lg bg-[#F5EDE4]/90 px-2.5 py-1 text-[11px] font-medium text-[#3B2924] transition hover:bg-[#B85C4A] hover:text-white dark:bg-[#352925] dark:text-[#FFF4E8] dark:hover:bg-[#D47763] dark:hover:text-[#1F1816]"
+                        className="rounded-lg bg-white/75 dark:bg-[#352925]/75 border border-white/60 dark:border-white/10 px-2.5 py-1 text-[11px] font-semibold text-[#3B2924] backdrop-blur-xs transition hover:bg-[#B85C4A] hover:text-white dark:text-[#FFF4E8] dark:hover:bg-[#D47763] dark:hover:text-[#1F1816]"
                       >
                         💌 Custom Orders
                       </Link>
@@ -468,7 +468,7 @@ export const LandingPage = () => {
                 >
                   <Link
                     to={`/categories/${cat.slug}`}
-                    className="group flex h-full flex-col overflow-hidden rounded-2xl border border-[#E8DCD0] bg-[#FFFCF7] p-3 shadow-soft transition-all duration-300 hover:-translate-y-1.5 hover:border-[#B85C4A]/40 hover:shadow-lift dark:border-[#493A34] dark:bg-[#2A211E] dark:hover:border-[#D47763]/40"
+                    className="group flex h-full flex-col overflow-hidden rounded-2xl border border-white/80 dark:border-white/10 bg-[#FFFCF7]/75 dark:bg-[#2A211E]/75 backdrop-blur-md p-3 shadow-soft transition-all duration-300 hover:-translate-y-1.5 hover:bg-[#FFFCF7]/90 dark:hover:bg-[#2A211E]/90 hover:border-[#B85C4A]/40 hover:shadow-lift"
                   >
                     <div className="relative aspect-[4/3] w-full overflow-hidden rounded-xl bg-[#F5EDE4] dark:bg-[#352925]">
                       {cat.image ? (
@@ -497,11 +497,11 @@ export const LandingPage = () => {
                           </p>
                         )}
                       </div>
-                      <div className="mt-3 flex items-center justify-between border-t border-[#E8DCD0]/60 pt-2.5 dark:border-[#493A34]/60">
+                      <div className="mt-3 flex items-center justify-between border-t border-white/60 dark:border-white/10 pt-2.5">
                         <span className="text-xs font-bold text-[#B85C4A] dark:text-[#D47763]">
                           Explore
                         </span>
-                        <span className="flex size-6 items-center justify-center rounded-full bg-[#F5EDE4] text-[#3B2924] transition group-hover:bg-[#B85C4A] group-hover:text-white dark:bg-[#352925] dark:text-[#FFF4E8] dark:group-hover:bg-[#D47763] dark:group-hover:text-[#1F1816]">
+                        <span className="flex size-6 items-center justify-center rounded-full bg-white/80 dark:bg-[#352925]/80 text-[#3B2924] dark:text-[#FFF4E8] transition group-hover:bg-[#B85C4A] group-hover:text-white dark:group-hover:bg-[#D47763] dark:group-hover:text-[#1F1816]">
                           <ArrowRight className="size-3.5" />
                         </span>
                       </div>
@@ -520,7 +520,7 @@ export const LandingPage = () => {
           ============================================================ */}
       {trendingProducts.length > 0 && (
         <section className="mx-auto max-w-7xl px-4 py-6 sm:px-6 sm:py-8 overflow-hidden w-full max-w-full">
-          <div className="rounded-3xl border border-[#E8DCD0] bg-gradient-to-b from-[#FFFCF7] to-[#F5EDE4]/30 p-4 sm:p-6 shadow-soft dark:border-[#382823] dark:from-[#1E1614] dark:to-[#150F0D]">
+          <div className="rounded-3xl border border-white/80 dark:border-white/10 bg-[#FFFCF7]/75 dark:bg-[#1E1614]/75 backdrop-blur-md p-4 sm:p-6 shadow-soft">
             {/* Header with Title and Scroll Controls */}
             <div className="mb-5 flex items-center justify-between gap-4">
               <div className="flex items-center gap-3">
@@ -548,7 +548,7 @@ export const LandingPage = () => {
                   type="button"
                   onClick={() => scrollRail(trendingRailRef, "left")}
                   aria-label="Scroll left"
-                  className="flex size-9 items-center justify-center rounded-xl border border-[#E8DCD0] bg-white text-[#3B2924] shadow-xs transition hover:bg-[#F5EDE4] active:scale-95 dark:border-[#382823] dark:bg-[#251B18] dark:text-[#FFF4E8] dark:hover:bg-[#352925]"
+                  className="flex size-9 items-center justify-center rounded-xl border border-white/80 dark:border-white/10 bg-white/80 dark:bg-[#251B18]/80 text-[#3B2924] dark:text-[#FFF4E8] shadow-xs backdrop-blur-md transition hover:bg-white dark:hover:bg-[#251B18] active:scale-95"
                 >
                   <ChevronLeft className="size-4" />
                 </button>
@@ -556,7 +556,7 @@ export const LandingPage = () => {
                   type="button"
                   onClick={() => scrollRail(trendingRailRef, "right")}
                   aria-label="Scroll right"
-                  className="flex size-9 items-center justify-center rounded-xl border border-[#E8DCD0] bg-white text-[#3B2924] shadow-xs transition hover:bg-[#F5EDE4] active:scale-95 dark:border-[#382823] dark:bg-[#251B18] dark:text-[#FFF4E8] dark:hover:bg-[#352925]"
+                  className="flex size-9 items-center justify-center rounded-xl border border-white/80 dark:border-white/10 bg-white/80 dark:bg-[#251B18]/80 text-[#3B2924] dark:text-[#FFF4E8] shadow-xs backdrop-blur-md transition hover:bg-white dark:hover:bg-[#251B18] active:scale-95"
                 >
                   <ChevronRight className="size-4" />
                 </button>
@@ -584,7 +584,7 @@ export const LandingPage = () => {
                 return (
                   <div
                     key={item._id}
-                    className="group relative flex w-[195px] sm:w-[260px] shrink-0 snap-start flex-col justify-between overflow-hidden rounded-2xl border border-[#E8DCD0] bg-white p-3 shadow-xs transition-all duration-300 hover:-translate-y-1 hover:border-[#B85C4A]/40 hover:shadow-lift dark:border-[#382823] dark:bg-[#1E1614]"
+                    className="group relative flex w-[195px] sm:w-[260px] shrink-0 snap-start flex-col justify-between overflow-hidden rounded-2xl border border-white/80 dark:border-white/10 bg-white/75 dark:bg-[#1E1614]/80 backdrop-blur-md p-3 shadow-xs transition-all duration-300 hover:-translate-y-1 hover:bg-white/95 dark:hover:bg-[#1E1614]/95 hover:border-[#B85C4A]/40 hover:shadow-lift"
                   >
                     <Link to={`/products/${item.slug}`} className="block">
                       <div className="relative aspect-square w-full overflow-hidden rounded-xl bg-[#F5EDE4] dark:bg-[#251B18]">
@@ -640,11 +640,11 @@ export const LandingPage = () => {
                       </div>
                     </Link>
 
-                    <div className="mt-3 pt-2 border-t border-[#E8DCD0]/60 dark:border-[#382823]/60">
+                    <div className="mt-3 pt-2 border-t border-white/60 dark:border-white/10">
                       <button
                         type="button"
                         onClick={() => handleQuickAdd(item)}
-                        className="flex w-full items-center justify-center gap-1.5 rounded-xl bg-[#F5EDE4] py-2 text-xs font-bold text-[#3B2924] transition hover:bg-[#B85C4A] hover:text-white active:scale-98 dark:bg-[#251B18] dark:text-[#FFF4E8] dark:hover:bg-[#D47763] dark:hover:text-[#1F1816]"
+                        className="flex w-full items-center justify-center gap-1.5 rounded-xl border border-white/60 dark:border-white/5 bg-[#F5EDE4]/80 dark:bg-[#251B18]/80 backdrop-blur-xs py-2 text-xs font-bold text-[#3B2924] dark:text-[#FFF4E8] transition hover:bg-[#B85C4A] hover:border-[#B85C4A] hover:text-white dark:hover:bg-[#D47763] dark:hover:text-[#1F1816] active:scale-98"
                       >
                         <ShoppingBag className="size-3.5" />
                         Add to Bag
@@ -663,7 +663,7 @@ export const LandingPage = () => {
           ============================================================ */}
       {budgetProducts.length > 0 && (
         <section className="mx-auto max-w-7xl px-4 py-4 sm:px-6 sm:py-6 overflow-hidden w-full max-w-full">
-          <div className="rounded-3xl border border-[#E8DCD0] bg-[#FFFCF7] p-4 sm:p-6 shadow-soft dark:border-[#382823] dark:bg-[#1E1614]">
+          <div className="rounded-3xl border border-white/80 dark:border-white/10 bg-[#FFFCF7]/75 dark:bg-[#1E1614]/75 backdrop-blur-md p-4 sm:p-6 shadow-soft">
             <div className="mb-5 flex items-center justify-between gap-4">
               <div className="flex items-center gap-3">
                 <span className="flex size-10 shrink-0 items-center justify-center rounded-xl bg-[#7A8B68]/15 text-[#7A8B68] dark:bg-[#9BAF83]/20 dark:text-[#9BAF83]">
@@ -689,7 +689,7 @@ export const LandingPage = () => {
                   type="button"
                   onClick={() => scrollRail(budgetRailRef, "left")}
                   aria-label="Scroll left"
-                  className="flex size-9 items-center justify-center rounded-xl border border-[#E8DCD0] bg-white text-[#3B2924] shadow-xs transition hover:bg-[#F5EDE4] active:scale-95 dark:border-[#382823] dark:bg-[#251B18] dark:text-[#FFF4E8] dark:hover:bg-[#352925]"
+                  className="flex size-9 items-center justify-center rounded-xl border border-white/80 dark:border-white/10 bg-white/80 dark:bg-[#251B18]/80 text-[#3B2924] dark:text-[#FFF4E8] shadow-xs backdrop-blur-md transition hover:bg-white dark:hover:bg-[#251B18] active:scale-95"
                 >
                   <ChevronLeft className="size-4" />
                 </button>
@@ -697,7 +697,7 @@ export const LandingPage = () => {
                   type="button"
                   onClick={() => scrollRail(budgetRailRef, "right")}
                   aria-label="Scroll right"
-                  className="flex size-9 items-center justify-center rounded-xl border border-[#E8DCD0] bg-white text-[#3B2924] shadow-xs transition hover:bg-[#F5EDE4] active:scale-95 dark:border-[#382823] dark:bg-[#251B18] dark:text-[#FFF4E8] dark:hover:bg-[#352925]"
+                  className="flex size-9 items-center justify-center rounded-xl border border-white/80 dark:border-white/10 bg-white/80 dark:bg-[#251B18]/80 text-[#3B2924] dark:text-[#FFF4E8] shadow-xs backdrop-blur-md transition hover:bg-white dark:hover:bg-[#251B18] active:scale-95"
                 >
                   <ChevronRight className="size-4" />
                 </button>
@@ -716,7 +716,7 @@ export const LandingPage = () => {
                 return (
                   <div
                     key={item._id}
-                    className="group relative flex w-[175px] sm:w-[210px] shrink-0 snap-start flex-col justify-between overflow-hidden rounded-2xl border border-[#E8DCD0] bg-white p-3 shadow-xs transition-all duration-300 hover:-translate-y-1 hover:border-[#7A8B68]/40 hover:shadow-lift dark:border-[#382823] dark:bg-[#1E1614]"
+                    className="group relative flex w-[175px] sm:w-[210px] shrink-0 snap-start flex-col justify-between overflow-hidden rounded-2xl border border-white/80 dark:border-white/10 bg-white/75 dark:bg-[#1E1614]/80 backdrop-blur-md p-3 shadow-xs transition-all duration-300 hover:-translate-y-1 hover:bg-white/95 dark:hover:bg-[#1E1614]/95 hover:border-[#7A8B68]/40 hover:shadow-lift"
                   >
                     <Link to={`/products/${item.slug}`} className="block">
                       <div className="relative aspect-square w-full overflow-hidden rounded-xl bg-[#F5EDE4] dark:bg-[#251B18]">
@@ -753,11 +753,11 @@ export const LandingPage = () => {
                       </div>
                     </Link>
 
-                    <div className="mt-2.5 pt-2 border-t border-[#E8DCD0]/60 dark:border-[#382823]/60">
+                    <div className="mt-2.5 pt-2 border-t border-white/60 dark:border-white/10">
                       <button
                         type="button"
                         onClick={() => handleQuickAdd(item)}
-                        className="flex w-full items-center justify-center gap-1 rounded-lg bg-[#F5EDE4] py-1.5 text-[11px] font-bold text-[#3B2924] transition hover:bg-[#7A8B68] hover:text-white active:scale-98 dark:bg-[#251B18] dark:text-[#FFF4E8] dark:hover:bg-[#9BAF83] dark:hover:text-[#1F1816]"
+                        className="flex w-full items-center justify-center gap-1 rounded-lg border border-white/60 dark:border-white/5 bg-[#F5EDE4]/80 dark:bg-[#251B18]/80 backdrop-blur-xs py-1.5 text-[11px] font-bold text-[#3B2924] dark:text-[#FFF4E8] transition hover:bg-[#7A8B68] hover:border-[#7A8B68] hover:text-white dark:hover:bg-[#9BAF83] dark:hover:text-[#1F1816] active:scale-98"
                       >
                         <ShoppingBag className="size-3" />
                         Quick Add
@@ -783,9 +783,9 @@ export const LandingPage = () => {
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true, margin: "-40px" }}
               transition={{ duration: 0.4, delay: index * 0.05 }}
-              className="flex items-start gap-4 rounded-2xl border border-[#E8DCD0] bg-[#FFFCF7] p-5 shadow-soft transition-all duration-300 hover:-translate-y-1 hover:shadow-lift dark:border-[#493A34] dark:bg-[#2A211E]"
+              className="flex items-start gap-4 rounded-2xl border border-white/80 dark:border-white/10 bg-[#FFFCF7]/75 dark:bg-[#2A211E]/75 backdrop-blur-md p-5 shadow-soft transition-all duration-300 hover:-translate-y-1 hover:bg-[#FFFCF7]/95 dark:hover:bg-[#2A211E]/95 hover:shadow-lift"
             >
-              <span className="flex size-11 shrink-0 items-center justify-center rounded-xl bg-[#F5EDE4] text-[#B85C4A] dark:bg-[#352925] dark:text-[#D47763]">
+              <span className="flex size-11 shrink-0 items-center justify-center rounded-xl border border-white/60 dark:border-white/10 bg-white/75 dark:bg-[#352925]/75 text-[#B85C4A] dark:text-[#D47763] backdrop-blur-xs shadow-xs">
                 <perk.icon className="size-5" />
               </span>
               <div>
@@ -812,7 +812,7 @@ export const LandingPage = () => {
           transition={{ duration: 0.5 }}
           className="mb-12 text-center"
         >
-          <p className="inline-flex items-center gap-1.5 rounded-full border border-[#B85C4A]/25 bg-[#F5EDE4] px-4 py-1 text-xs font-bold uppercase tracking-[0.2em] text-[#B85C4A] dark:border-[#D47763]/25 dark:bg-[#352925] dark:text-[#D47763]">
+          <p className="inline-flex items-center gap-1.5 rounded-full border border-white/80 dark:border-white/10 bg-[#FFFCF7]/80 dark:bg-[#352925]/80 backdrop-blur-md px-4 py-1 text-xs font-bold uppercase tracking-[0.2em] text-[#B85C4A] dark:text-[#D47763] shadow-xs">
             <Sparkles className="size-3.5 text-[#D8A85B] dark:text-[#E0B86A]" />
             Curated Artisan Picks
           </p>
@@ -866,7 +866,7 @@ export const LandingPage = () => {
         ) : featured && featured.length > 0 ? (
           <ProductGrid products={featured} loading={false} />
         ) : (
-          <div className="rounded-3xl border border-dashed border-[#E8DCD0] bg-[#FFFCF7]/80 p-8 sm:p-12 text-center dark:border-[#382823] dark:bg-[#1E1614]/80">
+          <div className="rounded-3xl border border-dashed border-white/80 dark:border-white/10 bg-[#FFFCF7]/75 dark:bg-[#1E1614]/75 backdrop-blur-md p-8 sm:p-12 text-center">
             <div className="mx-auto flex size-14 items-center justify-center rounded-2xl bg-[#7A8B68]/15 text-3xl text-[#7A8B68] dark:bg-[#9BAF83]/20 dark:text-[#9BAF83]">
               🛍️
             </div>
@@ -904,7 +904,7 @@ export const LandingPage = () => {
       </section>
 
       {/* ============================================================
-          4. ARTISAN SPOTLIGHT & CUSTOM ORDERS (Story Block)
+          4. ARTISAN SPOTLIGHT & CUSTOM ORDERS (Story Block in Faded Glass)
           ============================================================ */}
       <section className="mx-auto max-w-7xl px-4 py-12 sm:px-6 sm:py-16">
         <motion.div
@@ -912,7 +912,7 @@ export const LandingPage = () => {
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true, margin: "-60px" }}
           transition={{ duration: 0.55 }}
-          className="relative overflow-hidden rounded-[2.5rem] border border-[#E8DCD0] bg-gradient-to-br from-[#F5EDE4]/70 via-[#FFFCF7] to-[#F5EDE4]/50 p-8 shadow-soft dark:border-[#493A34] dark:from-[#2A211E] dark:via-[#1F1816] dark:to-[#2A211E] sm:p-12"
+          className="relative overflow-hidden rounded-[2.5rem] border border-white/80 dark:border-white/10 bg-[#FFFCF7]/75 dark:bg-[#1F1816]/75 backdrop-blur-md p-8 shadow-soft sm:p-12"
         >
           <div className="grid items-center gap-8 lg:grid-cols-2">
             <div className="space-y-4">
@@ -937,28 +937,28 @@ export const LandingPage = () => {
                 </a>
                 <Link
                   to="/contact"
-                  className="inline-flex items-center gap-2 rounded-xl border border-[#E8DCD0] bg-[#FFFCF7] px-5 py-3 text-sm font-semibold text-[#3B2924] shadow-sm transition hover:bg-[#F5EDE4] dark:border-[#493A34] dark:bg-[#2A211E] dark:text-[#FFF4E8] dark:hover:bg-[#352925]"
+                  className="inline-flex items-center gap-2 rounded-xl border border-white/80 dark:border-white/10 bg-white/75 dark:bg-[#2A211E]/75 px-5 py-3 text-sm font-semibold text-[#3B2924] dark:text-[#FFF4E8] shadow-xs backdrop-blur-md transition hover:bg-white dark:hover:bg-[#352925]"
                 >
                   Contact Form & Details
                 </Link>
               </div>
             </div>
 
-            {/* Quick feature highlights */}
+            {/* Quick feature highlights in Faded Glass */}
             <div className="grid gap-3 sm:grid-cols-2">
-              <div className="rounded-2xl border border-[#E8DCD0] bg-[#FFFCF7]/90 p-5 shadow-sm backdrop-blur dark:border-[#493A34] dark:bg-[#2A211E]/90">
+              <div className="rounded-2xl border border-white/80 dark:border-white/10 bg-white/70 dark:bg-[#2A211E]/70 p-5 shadow-sm backdrop-blur-md">
                 <p className="font-display text-2xl font-bold text-[#B85C4A] dark:text-[#D47763]">Custom Colors</p>
                 <p className="mt-1 text-xs text-[#806E66] dark:text-[#C7B8AE]">Choose from dozens of premium yarn palettes to match your nursery or home decor.</p>
               </div>
-              <div className="rounded-2xl border border-[#E8DCD0] bg-[#FFFCF7]/90 p-5 shadow-sm backdrop-blur dark:border-[#493A34] dark:bg-[#2A211E]/90">
+              <div className="rounded-2xl border border-white/80 dark:border-white/10 bg-white/70 dark:bg-[#2A211E]/70 p-5 shadow-sm backdrop-blur-md">
                 <p className="font-display text-2xl font-bold text-[#C98F8B] dark:text-[#D8A09B]">Gift Packaging</p>
                 <p className="mt-1 text-xs text-[#806E66] dark:text-[#C7B8AE]">Every piece comes tied with satin ribbons, care instructions, and optional handwritten notes.</p>
               </div>
-              <div className="rounded-2xl border border-[#E8DCD0] bg-[#FFFCF7]/90 p-5 shadow-sm backdrop-blur dark:border-[#493A34] dark:bg-[#2A211E]/90">
+              <div className="rounded-2xl border border-white/80 dark:border-white/10 bg-white/70 dark:bg-[#2A211E]/70 p-5 shadow-sm backdrop-blur-md">
                 <p className="font-display text-2xl font-bold text-[#7A8B68] dark:text-[#9BAF83]">Safe & Soft</p>
                 <p className="mt-1 text-xs text-[#806E66] dark:text-[#C7B8AE]">Made with child-safe safety eyes, hypoallergenic fiberfill, and ultra-soft non-toxic yarn.</p>
               </div>
-              <div className="rounded-2xl border border-[#E8DCD0] bg-[#FFFCF7]/90 p-5 shadow-sm backdrop-blur dark:border-[#493A34] dark:bg-[#2A211E]/90">
+              <div className="rounded-2xl border border-white/80 dark:border-white/10 bg-white/70 dark:bg-[#2A211E]/70 p-5 shadow-sm backdrop-blur-md">
                 <p className="font-display text-2xl font-bold text-[#D8A85B] dark:text-[#E0B86A]">Direct Support</p>
                 <p className="mt-1 text-xs text-[#806E66] dark:text-[#C7B8AE]">Talk directly to Shikha Rai and developer Shruti Rai for smooth updates.</p>
               </div>
@@ -968,7 +968,7 @@ export const LandingPage = () => {
       </section>
 
       {/* ============================================================
-          5. CLOSING CTA (Warm Boutique Invitation)
+          5. CLOSING CTA (Warm Boutique Invitation in Faded Glass)
           ============================================================ */}
       <section className="mx-auto max-w-7xl px-4 py-16 sm:px-6 sm:py-20">
         <motion.div
@@ -976,7 +976,7 @@ export const LandingPage = () => {
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true, margin: "-60px" }}
           transition={{ duration: 0.55 }}
-          className="relative overflow-hidden rounded-[2.5rem] border border-[#493A34] bg-[#3B2924] px-8 py-16 text-center text-[#FFF4E8] shadow-lift dark:bg-[#1F1816] sm:py-20"
+          className="relative overflow-hidden rounded-[2.5rem] border border-white/20 dark:border-white/10 bg-[#3B2924]/85 backdrop-blur-md px-8 py-16 text-center text-[#FFF4E8] shadow-lift dark:bg-[#1F1816]/85 sm:py-20"
         >
           <div
             aria-hidden="true"
@@ -1003,7 +1003,7 @@ export const LandingPage = () => {
             </Link>
             <Link
               to="/products"
-              className="inline-flex h-13 items-center rounded-2xl border border-[#FFF4E8]/30 px-8 text-base font-semibold text-[#FFF4E8] backdrop-blur transition hover:border-[#FFF4E8]/60 hover:bg-white/5 active:scale-98"
+              className="inline-flex h-13 items-center rounded-2xl border border-white/30 bg-white/10 px-8 text-base font-semibold text-[#FFF4E8] backdrop-blur-md transition hover:border-white/60 hover:bg-white/20 active:scale-98"
             >
               Browse All Products
             </Link>
