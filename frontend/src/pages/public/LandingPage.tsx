@@ -135,8 +135,8 @@ export const LandingPage = () => {
           className="size-full object-cover object-[78%_center] sm:object-[70%_center] lg:object-center opacity-100 dark:opacity-35 transition-opacity duration-500"
         />
 
-        {/* Subtle, soft ambient layer allowing the full artisanal flatlay to shine through constant across the entire scroll, while faded-glass divs handle contrast */}
-        <div className="absolute inset-0 bg-[#FFF8F0]/15 dark:bg-[#140E0C]/65" />
+        {/* Subtle, soft ambient layer on mobile; gentle side scrim on desktop for seamless open typography legibility */}
+        <div className="absolute inset-0 bg-[#FFF8F0]/15 lg:bg-gradient-to-r lg:from-[#FFF8F0]/85 lg:via-[#FFF8F0]/40 lg:to-transparent dark:bg-[#140E0C]/65 dark:lg:from-[#1F1816]/95 dark:lg:via-[#1F1816]/70 dark:lg:to-transparent" />
       </div>
 
       <div className="relative z-10">
@@ -241,15 +241,15 @@ export const LandingPage = () => {
       <section className="relative min-h-[540px] sm:min-h-[640px] lg:min-h-[700px] overflow-hidden bg-transparent">
         {/* Hero Content Container */}
         <div className="relative mx-auto grid max-w-7xl items-center gap-8 sm:gap-10 px-4 py-12 sm:px-6 sm:py-16 lg:grid-cols-12 lg:gap-6 xl:gap-8 lg:py-24 overflow-hidden w-full max-w-full">
-          {/* Left Column: Brand Story & Call-to-actions in Faded Glass Card */}
+          {/* Left Column: Brand Story & Call-to-actions (Boxed card on mobile only, open editorial layout on desktop) */}
           <motion.div
             initial={{ opacity: 0, y: 24 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
-            className="min-w-0 lg:col-span-7 xl:col-span-7 max-w-2xl rounded-3xl p-6 sm:p-8 lg:p-10 bg-[#FFFCF7]/75 dark:bg-[#1E1614]/75 backdrop-blur-md border border-white/80 dark:border-white/10 shadow-soft"
+            className="min-w-0 lg:col-span-7 xl:col-span-7 max-w-2xl rounded-3xl p-6 sm:p-8 lg:p-0 bg-[#FFFCF7]/85 lg:bg-transparent backdrop-blur-md lg:backdrop-blur-none border border-white/80 lg:border-none shadow-soft lg:shadow-none dark:bg-[#1E1614]/85 dark:lg:bg-transparent dark:border-white/10 dark:lg:border-none"
           >
             {/* Pill: Hand-Stitched by Shikha Rai */}
-            <div className="inline-flex items-center gap-2 rounded-full border border-[#B85C4A]/30 bg-white/80 px-3.5 sm:px-4 py-1.5 text-[11px] sm:text-xs font-bold text-[#B85C4A] shadow-xs backdrop-blur-sm dark:border-[#D47763]/30 dark:bg-[#1E1614]/90 dark:text-[#D47763]">
+            <div className="inline-flex items-center gap-2 rounded-full border border-[#B85C4A]/30 bg-white/90 lg:bg-[#FFFCF7]/95 px-3.5 sm:px-4 py-1.5 text-[11px] sm:text-xs font-bold text-[#B85C4A] shadow-xs backdrop-blur-sm dark:border-[#D47763]/30 dark:bg-[#1E1614]/90 dark:text-[#D47763]">
               <span className="relative flex size-2 shrink-0">
                 <span className="absolute inline-flex size-full animate-ping rounded-full bg-[#C98F8B] opacity-75" />
                 <span className="relative inline-flex size-2 rounded-full bg-[#B85C4A] dark:bg-[#D47763]" />
@@ -283,25 +283,25 @@ export const LandingPage = () => {
               </Link>
               <Link
                 to="/contact"
-                className="inline-flex h-12 items-center justify-center gap-2 rounded-2xl border border-[#7A8B68]/60 bg-white/75 px-6 text-sm font-bold text-[#5B6D4A] shadow-xs backdrop-blur-md transition hover:bg-white active:scale-98 dark:border-[#9BAF83]/60 dark:bg-[#1E1614]/85 dark:text-[#9BAF83] dark:hover:bg-[#1E1614]"
+                className="inline-flex h-12 items-center justify-center gap-2 rounded-2xl border border-[#7A8B68]/60 bg-white/75 lg:bg-[#FFFCF7]/90 px-6 text-sm font-bold text-[#5B6D4A] shadow-xs backdrop-blur-md transition hover:bg-white active:scale-98 dark:border-[#9BAF83]/60 dark:bg-[#1E1614]/85 dark:text-[#9BAF83] dark:hover:bg-[#1E1614]"
               >
                 Custom Order Inquiry
               </Link>
             </div>
 
-            {/* Craft Highlights - Frosted contrast badges */}
-            <div className="mt-8 sm:mt-10 flex flex-wrap items-center gap-2.5 sm:gap-4 border-t border-white/60 dark:border-white/10 pt-5 sm:pt-6 text-xs font-semibold text-[#2B1813] dark:text-[#E2D5CC]">
-              <span className="flex items-center gap-1.5 sm:gap-2 rounded-full bg-white/75 dark:bg-[#251B18]/75 px-3 py-1 shadow-xs border border-white/70 dark:border-white/10 backdrop-blur-xs">
+            {/* Craft Highlights */}
+            <div className="mt-8 sm:mt-10 flex flex-wrap items-center gap-2.5 sm:gap-4 lg:gap-6 border-t border-[#E8DCD0]/70 dark:border-[#493A34]/70 pt-5 sm:pt-6 text-xs font-semibold text-[#2B1813] dark:text-[#E2D5CC]">
+              <span className="flex items-center gap-1.5 sm:gap-2 rounded-full bg-white/80 lg:bg-transparent px-3 py-1 lg:p-0 shadow-xs lg:shadow-none border border-white/70 lg:border-none backdrop-blur-xs lg:backdrop-blur-none dark:bg-[#251B18]/75 dark:lg:bg-transparent">
                 <span className="flex size-5 sm:size-6 items-center justify-center rounded-full bg-[#7A8B68]/15 text-[#7A8B68] dark:bg-[#9BAF83]/20 dark:text-[#9BAF83]">✓</span>
                 100% Handcrafted
               </span>
-              <span className="flex items-center gap-1.5 sm:gap-2 rounded-full bg-white/75 dark:bg-[#251B18]/75 px-3 py-1 shadow-xs border border-white/70 dark:border-white/10 backdrop-blur-xs">
+              <span className="flex items-center gap-1.5 sm:gap-2 rounded-full bg-white/80 lg:bg-transparent px-3 py-1 lg:p-0 shadow-xs lg:shadow-none border border-white/70 lg:border-none backdrop-blur-xs lg:backdrop-blur-none dark:bg-[#251B18]/75 dark:lg:bg-transparent">
                 <span className="flex size-5 sm:size-6 items-center justify-center rounded-full bg-[#D8A85B]/20 text-[#D8A85B] dark:bg-[#E0B86A]/20 dark:text-[#E0B86A]">
                   <Star className="size-3 sm:size-3.5 fill-current" />
                 </span>
                 5.0 Rated by Buyers
               </span>
-              <span className="flex items-center gap-1.5 sm:gap-2 rounded-full bg-white/75 dark:bg-[#251B18]/75 px-3 py-1 shadow-xs border border-white/70 dark:border-white/10 backdrop-blur-xs">
+              <span className="flex items-center gap-1.5 sm:gap-2 rounded-full bg-white/80 lg:bg-transparent px-3 py-1 lg:p-0 shadow-xs lg:shadow-none border border-white/70 lg:border-none backdrop-blur-xs lg:backdrop-blur-none dark:bg-[#251B18]/75 dark:lg:bg-transparent">
                 <span className="flex size-5 sm:size-6 items-center justify-center rounded-full bg-[#B85C4A]/15 text-[#B85C4A] dark:bg-[#D47763]/20 dark:text-[#D47763]">⚡</span>
                 Fast Pan-India Dispatch
               </span>
