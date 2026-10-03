@@ -143,7 +143,7 @@ export const LandingPage = () => {
       {/* ============================================================
           TOP E-COMMERCE CATEGORY RAIL (Dynamic)
           ============================================================ */}
-      <nav aria-label="Quick Categories" className="border-b border-white/20 bg-gradient-to-b from-[#261A16]/85 to-[#18100E]/85 backdrop-blur-2xl shadow-md w-full max-w-full overflow-hidden">
+      <nav aria-label="Quick Categories" className="border-b border-white/60 bg-[#FFFCF7]/75 backdrop-blur-md shadow-xs dark:border-white/10 dark:bg-[#1E1614]/75 w-full max-w-full overflow-hidden">
         <div className="mx-auto flex max-w-7xl items-center justify-start xl:justify-between gap-2.5 sm:gap-3 overflow-x-auto px-3 py-3 sm:px-6 scrollbar-none touch-pan-x [-webkit-overflow-scrolling:touch]">
           {categoriesLoading ? (
             <div className="flex gap-3 py-1">
@@ -162,24 +162,24 @@ export const LandingPage = () => {
                   <Link
                     key={cat._id}
                     to={`/products?category=${cat.slug}`}
-                    className="group flex flex-col items-center gap-1.5 shrink-0 px-2 py-1 rounded-2xl transition hover:-translate-y-0.5"
+                    className="group flex flex-col items-center gap-1.5 shrink-0 px-2 py-1 rounded-xl transition hover:-translate-y-0.5"
                   >
                     <div className="relative">
                       {cat.image ? (
                         <img
                           src={cat.image}
                           alt={cat.name}
-                          className="size-12 sm:size-14 rounded-2xl object-cover shadow-xs border border-white/20 transition group-hover:scale-108 group-hover:shadow-md"
+                          className="size-12 sm:size-14 rounded-2xl object-cover shadow-xs transition group-hover:scale-108 group-hover:shadow-md"
                         />
                       ) : (
                         <span
-                          className={`flex size-12 sm:size-14 items-center justify-center rounded-2xl text-2xl sm:text-3xl shadow-xs border border-white/20 transition group-hover:scale-108 group-hover:shadow-md ${style.bg}`}
+                          className={`flex size-12 sm:size-14 items-center justify-center rounded-2xl text-2xl sm:text-3xl shadow-xs transition group-hover:scale-108 group-hover:shadow-md ${style.bg}`}
                         >
                           {style.icon}
                         </span>
                       )}
                     </div>
-                    <span className="text-[11px] sm:text-xs font-semibold text-white/90 transition group-hover:text-[#FFC77D] whitespace-nowrap">
+                    <span className="text-[11px] sm:text-xs font-semibold text-[#3B2924] transition group-hover:text-[#B85C4A] whitespace-nowrap dark:text-[#FFF4E8] dark:group-hover:text-[#D47763]">
                       {cat.name}
                     </span>
                   </Link>
@@ -187,36 +187,36 @@ export const LandingPage = () => {
               })}
               <Link
                 to="/products"
-                className="group flex flex-col items-center gap-1.5 shrink-0 px-2 py-1 rounded-2xl transition hover:-translate-y-0.5"
+                className="group flex flex-col items-center gap-1.5 shrink-0 px-2 py-1 rounded-xl transition hover:-translate-y-0.5"
               >
-                <span className="flex size-12 sm:size-14 items-center justify-center rounded-2xl text-2xl sm:text-3xl shadow-xs transition group-hover:scale-108 group-hover:shadow-md bg-white/15 border border-white/20 text-white">
+                <span className="flex size-12 sm:size-14 items-center justify-center rounded-2xl text-2xl sm:text-3xl shadow-xs transition group-hover:scale-108 group-hover:shadow-md bg-[#F5EDE4] text-[#3B2924] dark:bg-[#352925] dark:text-[#FFF4E8]">
                   ✨
                 </span>
-                <span className="text-[11px] sm:text-xs font-semibold text-white/90 transition group-hover:text-[#FFC77D] whitespace-nowrap">
+                <span className="text-[11px] sm:text-xs font-semibold text-[#3B2924] transition group-hover:text-[#B85C4A] whitespace-nowrap dark:text-[#FFF4E8] dark:group-hover:text-[#D47763]">
                   All Products
                 </span>
               </Link>
             </>
           ) : isAdmin ? (
-            <div className="flex w-full items-center justify-between py-1 text-xs text-white/80">
+            <div className="flex w-full items-center justify-between py-1 text-xs text-[#806E66] dark:text-[#C7B8AE]">
               <span className="font-medium">
                 Store catalog is clean & ready for your creations!
               </span>
               <Link
                 to="/admin/categories"
-                className="inline-flex items-center gap-1 rounded-lg bg-[#B85C4A] px-3 py-1 text-xs font-bold text-white shadow-xs transition hover:bg-[#914536]"
+                className="inline-flex items-center gap-1 rounded-lg bg-[#B85C4A] px-3 py-1 text-xs font-bold text-white shadow-xs transition hover:bg-[#914536] dark:bg-[#D47763] dark:text-[#1F1816]"
               >
                 <PlusCircle className="size-3.5" />
                 Add Categories
               </Link>
             </div>
           ) : (
-            <div className="flex w-full items-center justify-center gap-4 py-1 text-xs font-semibold text-white/80">
-              <Link to="/products" className="hover:text-[#FFC77D] transition">
+            <div className="flex w-full items-center justify-center gap-4 py-1 text-xs font-semibold text-[#806E66] dark:text-[#C7B8AE]">
+              <Link to="/products" className="hover:text-[#B85C4A] transition">
                 ✨ Browse All Creations
               </Link>
               <span>•</span>
-              <Link to="/contact" className="hover:text-[#FFC77D] transition">
+              <Link to="/contact" className="hover:text-[#B85C4A] transition">
                 💌 Custom Crochet Orders
               </Link>
             </div>
@@ -227,7 +227,7 @@ export const LandingPage = () => {
       {/* ============================================================
           PROMOTIONAL OFFER STRIP
           ============================================================ */}
-      <div className="bg-gradient-to-r from-[#B85C4A]/95 via-[#8F3E30]/95 to-[#B85C4A]/95 backdrop-blur-md border-b border-white/10 px-3 sm:px-4 py-1.5 sm:py-2 text-center text-[11px] sm:text-xs font-semibold tracking-wide text-white shadow-xs">
+      <div className="bg-gradient-to-r from-[#B85C4A] via-[#914536] to-[#B85C4A] px-3 sm:px-4 py-1.5 sm:py-2 text-center text-[11px] sm:text-xs font-semibold tracking-wide text-white shadow-xs">
         <span className="inline-flex flex-wrap items-center justify-center gap-x-2 gap-y-0.5">
           <span>🎟️ <strong>FLAT 10% OFF</strong> on your 1st order with code <span className="underline decoration-white/60 font-mono font-bold tracking-wider">KNOTTY10</span></span>
           <span className="hidden sm:inline">•</span>
@@ -241,104 +241,104 @@ export const LandingPage = () => {
       <section className="relative min-h-[540px] sm:min-h-[640px] lg:min-h-[700px] overflow-hidden bg-transparent">
         {/* Hero Content Container */}
         <div className="relative mx-auto grid max-w-7xl items-center gap-8 sm:gap-10 px-4 py-12 sm:px-6 sm:py-16 lg:grid-cols-12 lg:gap-6 xl:gap-8 lg:py-24 overflow-hidden w-full max-w-full">
-          {/* Left Column: Brand Story & Call-to-actions in Liquid Smoked Glass Card */}
+          {/* Left Column: Brand Story & Call-to-actions in Faded Glass Card */}
           <motion.div
             initial={{ opacity: 0, y: 24 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
-            className="min-w-0 lg:col-span-7 xl:col-span-7 max-w-2xl rounded-[32px] faded-glass p-7 sm:p-9 lg:p-10"
+            className="min-w-0 lg:col-span-7 xl:col-span-7 max-w-2xl rounded-3xl p-6 sm:p-8 lg:p-10 bg-[#FFFCF7]/75 dark:bg-[#1E1614]/75 backdrop-blur-md border border-white/80 dark:border-white/10 shadow-soft"
           >
             {/* Pill: Hand-Stitched by Shikha Rai */}
-            <div className="inline-flex items-center gap-2 rounded-full border border-white/25 bg-white/12 px-3.5 sm:px-4 py-1.5 text-[11px] sm:text-xs font-bold text-white shadow-xs backdrop-blur-md">
+            <div className="inline-flex items-center gap-2 rounded-full border border-[#B85C4A]/30 bg-white/80 px-3.5 sm:px-4 py-1.5 text-[11px] sm:text-xs font-bold text-[#B85C4A] shadow-xs backdrop-blur-sm dark:border-[#D47763]/30 dark:bg-[#1E1614]/90 dark:text-[#D47763]">
               <span className="relative flex size-2 shrink-0">
-                <span className="absolute inline-flex size-full animate-ping rounded-full bg-[#E28A76] opacity-75" />
-                <span className="relative inline-flex size-2 rounded-full bg-[#E28A76]" />
+                <span className="absolute inline-flex size-full animate-ping rounded-full bg-[#C98F8B] opacity-75" />
+                <span className="relative inline-flex size-2 rounded-full bg-[#B85C4A] dark:bg-[#D47763]" />
               </span>
               <span>Pure Artisan Craft · Hand-Stitched by Shikha Rai</span>
             </div>
 
             {/* Display Headline */}
-            <h1 className="font-display mt-4 sm:mt-5 text-3xl sm:text-4xl md:text-5xl lg:text-5xl xl:text-6xl 2xl:text-7xl font-bold leading-[1.15] sm:leading-[1.1] tracking-tight text-white">
+            <h1 className="font-display mt-4 sm:mt-5 text-3xl sm:text-4xl md:text-5xl lg:text-5xl xl:text-6xl 2xl:text-7xl font-bold sm:font-semibold leading-[1.15] sm:leading-[1.1] tracking-tight text-[#1F120E] dark:text-[#FFF4E8]">
               Handmade with love,{" "}
-              <span className="block font-medium italic text-[#FFC77D]">
+              <span className="block font-medium italic text-[#A84332] dark:text-[#D47763]">
                 one stitch at a time.
               </span>
             </h1>
 
-            {/* Narrative description */}
-            <p className="mt-4 sm:mt-5 max-w-xl text-sm sm:text-lg leading-relaxed text-white/85 font-normal">
-              Welcome to <strong className="font-bold text-white">Knottiingale</strong>. Soft plush toys, cozy
+            {/* Narrative description - deep high-contrast text color */}
+            <p className="mt-4 sm:mt-5 max-w-xl text-sm sm:text-lg leading-relaxed text-[#2B1813] font-medium dark:text-[#D9CBC2]">
+              Welcome to <strong className="font-bold text-[#140A07] dark:text-[#FFF4E8]">Knottiingale</strong>. Soft plush toys, cozy
               home décor, torans, bags, and heartfelt handcrafted gifts — carefully crocheted with natural cotton yarn
-              by <strong className="font-bold text-white">Shikha Rai</strong> and delivered across India.
+              by <strong className="font-bold text-[#140A07] dark:text-[#FFF4E8]">Shikha Rai</strong> and delivered across India.
             </p>
 
             {/* Action buttons */}
             <div className="mt-6 sm:mt-8 flex flex-col sm:flex-row items-stretch sm:items-center gap-3">
               <Link
                 to="/products"
-                className="group relative inline-flex h-12 items-center justify-center gap-2 rounded-2xl bg-[#B85C4A] hover:bg-[#D47763] px-7 text-sm font-bold text-white shadow-lift transition active:scale-98"
+                className="group relative inline-flex h-12 items-center justify-center gap-2 rounded-2xl bg-[#B85C4A] px-7 text-sm font-bold text-white shadow-soft transition hover:bg-[#914536] hover:shadow-lift active:scale-98 dark:bg-[#D47763] dark:text-[#1F1816] dark:hover:bg-[#E28A76]"
               >
                 Explore Collection
                 <ArrowRight className="size-4.5 transition-transform group-hover:translate-x-1" />
               </Link>
               <Link
                 to="/contact"
-                className="inline-flex h-12 items-center justify-center gap-2 rounded-2xl border border-white/30 bg-white/12 hover:bg-white/22 px-6 text-sm font-bold text-white shadow-xs backdrop-blur-md transition active:scale-98"
+                className="inline-flex h-12 items-center justify-center gap-2 rounded-2xl border border-[#7A8B68]/60 bg-white/75 px-6 text-sm font-bold text-[#5B6D4A] shadow-xs backdrop-blur-md transition hover:bg-white active:scale-98 dark:border-[#9BAF83]/60 dark:bg-[#1E1614]/85 dark:text-[#9BAF83] dark:hover:bg-[#1E1614]"
               >
                 Custom Order Inquiry
               </Link>
             </div>
 
-            {/* Craft Highlights */}
-            <div className="mt-8 sm:mt-10 flex flex-wrap items-center gap-2.5 sm:gap-4 border-t border-white/20 pt-5 sm:pt-6 text-xs font-semibold text-white">
-              <span className="flex items-center gap-1.5 sm:gap-2 rounded-full bg-white/12 px-3.5 py-1.5 shadow-xs border border-white/20 backdrop-blur-md">
-                <span className="flex size-5 sm:size-6 items-center justify-center rounded-full bg-white/20 text-[#A7BA90]">✓</span>
+            {/* Craft Highlights - Frosted contrast badges */}
+            <div className="mt-8 sm:mt-10 flex flex-wrap items-center gap-2.5 sm:gap-4 border-t border-white/60 dark:border-white/10 pt-5 sm:pt-6 text-xs font-semibold text-[#2B1813] dark:text-[#E2D5CC]">
+              <span className="flex items-center gap-1.5 sm:gap-2 rounded-full bg-white/75 dark:bg-[#251B18]/75 px-3 py-1 shadow-xs border border-white/70 dark:border-white/10 backdrop-blur-xs">
+                <span className="flex size-5 sm:size-6 items-center justify-center rounded-full bg-[#7A8B68]/15 text-[#7A8B68] dark:bg-[#9BAF83]/20 dark:text-[#9BAF83]">✓</span>
                 100% Handcrafted
               </span>
-              <span className="flex items-center gap-1.5 sm:gap-2 rounded-full bg-white/12 px-3.5 py-1.5 shadow-xs border border-white/20 backdrop-blur-md">
-                <span className="flex size-5 sm:size-6 items-center justify-center rounded-full bg-white/20 text-[#FFD166]">
+              <span className="flex items-center gap-1.5 sm:gap-2 rounded-full bg-white/75 dark:bg-[#251B18]/75 px-3 py-1 shadow-xs border border-white/70 dark:border-white/10 backdrop-blur-xs">
+                <span className="flex size-5 sm:size-6 items-center justify-center rounded-full bg-[#D8A85B]/20 text-[#D8A85B] dark:bg-[#E0B86A]/20 dark:text-[#E0B86A]">
                   <Star className="size-3 sm:size-3.5 fill-current" />
                 </span>
                 5.0 Rated by Buyers
               </span>
-              <span className="flex items-center gap-1.5 sm:gap-2 rounded-full bg-white/12 px-3.5 py-1.5 shadow-xs border border-white/20 backdrop-blur-md">
-                <span className="flex size-5 sm:size-6 items-center justify-center rounded-full bg-white/20 text-[#FFC77D]">⚡</span>
+              <span className="flex items-center gap-1.5 sm:gap-2 rounded-full bg-white/75 dark:bg-[#251B18]/75 px-3 py-1 shadow-xs border border-white/70 dark:border-white/10 backdrop-blur-xs">
+                <span className="flex size-5 sm:size-6 items-center justify-center rounded-full bg-[#B85C4A]/15 text-[#B85C4A] dark:bg-[#D47763]/20 dark:text-[#D47763]">⚡</span>
                 Fast Pan-India Dispatch
               </span>
             </div>
           </motion.div>
 
 
-          {/* Right Column: Floating Boutique Spotlight Card in Liquid Smoked Glass */}
+          {/* Right Column: Floating Boutique Spotlight Card in Faded Glass */}
           <motion.div
             initial={{ opacity: 0, scale: 0.95, y: 16 }}
             animate={{ opacity: 1, scale: 1, y: 0 }}
             transition={{ duration: 0.7, delay: 0.15, ease: [0.22, 1, 0.36, 1] }}
             className="min-w-0 lg:col-span-5 xl:col-span-5 flex flex-col justify-end lg:items-end w-full"
           >
-            <div className="w-full max-w-[340px] sm:max-w-sm rounded-[28px] faded-glass p-5 sm:p-6">
-              <div className="flex items-center justify-between border-b border-white/20 pb-3">
+            <div className="w-full max-w-[340px] sm:max-w-sm rounded-3xl border border-white/80 dark:border-white/10 bg-[#FFFCF7]/75 dark:bg-[#2A211E]/75 p-5 sm:p-6 shadow-lift backdrop-blur-md">
+              <div className="flex items-center justify-between border-b border-white/60 pb-3 dark:border-white/10">
                 <div className="flex items-center gap-2">
-                  <span className="flex size-7 items-center justify-center rounded-lg bg-white/15 text-[#FFC77D]">
+                  <span className="flex size-7 items-center justify-center rounded-lg bg-[#B85C4A]/15 text-[#B85C4A] dark:bg-[#D47763]/20 dark:text-[#D47763]">
                     <Sparkles className="size-4" />
                   </span>
                   <div>
-                    <p className="text-xs font-bold text-white">
+                    <p className="text-xs font-bold text-[#3B2924] dark:text-[#FFF4E8]">
                       Artisan Spotlight
                     </p>
-                    <p className="text-[10px] text-white/70">
+                    <p className="text-[10px] text-[#806E66] dark:text-[#C7B8AE]">
                       Limited batch pieces
                     </p>
                   </div>
                 </div>
-                <span className="rounded-full bg-white/20 border border-white/25 px-2.5 py-0.5 text-[11px] font-bold text-white">
+                <span className="rounded-full bg-[#7A8B68]/20 px-2.5 py-0.5 text-[11px] font-bold text-[#5B6D4A] dark:bg-[#9BAF83]/20 dark:text-[#9BAF83]">
                   {heroProduct ? "In Stock" : "Handcrafted"}
                 </span>
               </div>
 
               {heroProduct ? (
                 <div className="mt-4 flex items-center gap-3.5">
-                  <div className="size-16 shrink-0 overflow-hidden rounded-2xl bg-white/15 ring-1 ring-white/20">
+                  <div className="size-16 shrink-0 overflow-hidden rounded-2xl bg-[#F5EDE4] ring-1 ring-[#3B2924]/10 dark:bg-[#352925] dark:ring-white/10">
                     {heroProduct.images?.[0] ? (
                       <img
                         src={heroProduct.images[0]}
@@ -352,19 +352,19 @@ export const LandingPage = () => {
                     )}
                   </div>
                   <div className="min-w-0 flex-1">
-                    <p className="truncate text-sm font-bold text-white">
+                    <p className="truncate text-sm font-semibold text-[#3B2924] dark:text-[#FFF4E8]">
                       {heroProduct.name}
                     </p>
-                    <p className="text-xs font-bold text-[#FFC77D]">
+                    <p className="text-xs font-bold text-[#B85C4A] dark:text-[#D47763]">
                       {formatCurrency(heroProduct.discountPrice || heroProduct.price)}
                     </p>
-                    <p className="mt-0.5 text-[11px] text-white/70 line-clamp-1">
+                    <p className="mt-0.5 text-[11px] text-[#806E66] line-clamp-1 dark:text-[#C7B8AE]">
                       Made slowly with 100% cotton
                     </p>
                   </div>
                   <Link
                     to={`/products/${heroProduct.slug}`}
-                    className="shrink-0 rounded-xl bg-white/20 hover:bg-white/30 border border-white/25 p-2 text-white shadow-soft transition"
+                    className="shrink-0 rounded-xl bg-[#B85C4A] p-2 text-white shadow-soft transition hover:bg-[#914536] dark:bg-[#D47763] dark:text-[#1F1816]"
                     aria-label={`View ${heroProduct.name}`}
                   >
                     <ArrowRight className="size-4" />
@@ -374,10 +374,10 @@ export const LandingPage = () => {
                 <div className="mt-4 flex items-center gap-3">
                   <span className="text-3xl">🧶</span>
                   <div>
-                    <p className="text-sm font-bold text-white">
+                    <p className="text-sm font-semibold text-[#3B2924] dark:text-[#FFF4E8]">
                       Artisan Workshop
                     </p>
-                    <p className="text-xs text-white/70">
+                    <p className="text-xs text-[#806E66] dark:text-[#C7B8AE]">
                       Handmade crochet creations crafted to order
                     </p>
                   </div>
@@ -385,8 +385,8 @@ export const LandingPage = () => {
               )}
 
               {/* Quick Explore chips */}
-              <div className="mt-4 border-t border-white/20 pt-3">
-                <p className="mb-2 text-[10px] font-bold uppercase tracking-wider text-white/70">
+              <div className="mt-4 border-t border-white/60 pt-3 dark:border-white/10">
+                <p className="mb-2 text-[10px] font-bold uppercase tracking-wider text-[#806E66] dark:text-[#C7B8AE]">
                   Quick Explore
                 </p>
                 <div className="flex flex-wrap gap-1.5">
@@ -395,7 +395,7 @@ export const LandingPage = () => {
                       <Link
                         key={c._id}
                         to={`/categories/${c.slug}`}
-                        className="rounded-xl bg-white/12 hover:bg-white/25 border border-white/20 px-2.5 py-1 text-[11px] font-semibold text-white backdrop-blur-md transition"
+                        className="rounded-lg bg-white/75 dark:bg-[#352925]/75 border border-white/60 dark:border-white/10 px-2.5 py-1 text-[11px] font-semibold text-[#3B2924] backdrop-blur-xs transition hover:bg-[#B85C4A] hover:text-white dark:text-[#FFF4E8] dark:hover:bg-[#D47763] dark:hover:text-[#1F1816]"
                       >
                         {c.name}
                       </Link>
@@ -404,13 +404,13 @@ export const LandingPage = () => {
                     <>
                       <Link
                         to="/products"
-                        className="rounded-xl bg-white/12 hover:bg-white/25 border border-white/20 px-2.5 py-1 text-[11px] font-semibold text-white backdrop-blur-md transition"
+                        className="rounded-lg bg-white/75 dark:bg-[#352925]/75 border border-white/60 dark:border-white/10 px-2.5 py-1 text-[11px] font-semibold text-[#3B2924] backdrop-blur-xs transition hover:bg-[#B85C4A] hover:text-white dark:text-[#FFF4E8] dark:hover:bg-[#D47763] dark:hover:text-[#1F1816]"
                       >
                         ✨ All Products
                       </Link>
                       <Link
                         to="/contact"
-                        className="rounded-xl bg-white/12 hover:bg-white/25 border border-white/20 px-2.5 py-1 text-[11px] font-semibold text-white backdrop-blur-md transition"
+                        className="rounded-lg bg-white/75 dark:bg-[#352925]/75 border border-white/60 dark:border-white/10 px-2.5 py-1 text-[11px] font-semibold text-[#3B2924] backdrop-blur-xs transition hover:bg-[#B85C4A] hover:text-white dark:text-[#FFF4E8] dark:hover:bg-[#D47763] dark:hover:text-[#1F1816]"
                       >
                         💌 Custom Orders
                       </Link>
@@ -468,9 +468,9 @@ export const LandingPage = () => {
                 >
                   <Link
                     to={`/categories/${cat.slug}`}
-                    className="group flex h-full flex-col overflow-hidden rounded-[26px] faded-glass faded-glass-interactive p-3.5"
+                    className="group flex h-full flex-col overflow-hidden rounded-2xl border border-white/80 dark:border-white/10 bg-[#FFFCF7]/75 dark:bg-[#2A211E]/75 backdrop-blur-md p-3 shadow-soft transition-all duration-300 hover:-translate-y-1.5 hover:bg-[#FFFCF7]/90 dark:hover:bg-[#2A211E]/90 hover:border-[#B85C4A]/40 hover:shadow-lift"
                   >
-                    <div className="relative aspect-[4/3] w-full overflow-hidden rounded-[18px] bg-black/20 ring-1 ring-white/15">
+                    <div className="relative aspect-[4/3] w-full overflow-hidden rounded-xl bg-[#F5EDE4] dark:bg-[#352925]">
                       {cat.image ? (
                         <img
                           src={cat.image}
@@ -480,7 +480,7 @@ export const LandingPage = () => {
                           decoding="async"
                         />
                       ) : (
-                        <div className="flex size-full items-center justify-center bg-white/10 text-3xl font-bold text-[#FFC77D]">
+                        <div className="flex size-full items-center justify-center bg-gradient-to-br from-[#F5EDE4] to-[#E8DCD0] text-3xl font-bold text-[#B85C4A] dark:from-[#352925] dark:to-[#2A211E] dark:text-[#D47763]">
                           {cat.name.slice(0, 1)}
                         </div>
                       )}
@@ -488,20 +488,20 @@ export const LandingPage = () => {
 
                     <div className="mt-3 flex flex-1 flex-col justify-between">
                       <div>
-                        <h3 className="text-sm font-bold text-white transition group-hover:text-[#FFC77D] line-clamp-1">
+                        <h3 className="text-sm font-bold text-[#3B2924] transition group-hover:text-[#B85C4A] dark:text-[#FFF4E8] dark:group-hover:text-[#D47763] line-clamp-1">
                           {cat.name}
                         </h3>
                         {cat.description && (
-                          <p className="mt-0.5 text-[11px] leading-snug text-white/75 line-clamp-2">
+                          <p className="mt-0.5 text-[11px] leading-snug text-[#806E66] dark:text-[#C7B8AE] line-clamp-2">
                             {cat.description}
                           </p>
                         )}
                       </div>
-                      <div className="mt-3 flex items-center justify-between border-t border-white/20 pt-2.5">
-                        <span className="text-xs font-bold text-[#FFC77D]">
+                      <div className="mt-3 flex items-center justify-between border-t border-white/60 dark:border-white/10 pt-2.5">
+                        <span className="text-xs font-bold text-[#B85C4A] dark:text-[#D47763]">
                           Explore
                         </span>
-                        <span className="flex size-6 items-center justify-center rounded-full bg-white/20 text-white transition group-hover:bg-[#FFC77D] group-hover:text-[#1F1816]">
+                        <span className="flex size-6 items-center justify-center rounded-full bg-white/80 dark:bg-[#352925]/80 text-[#3B2924] dark:text-[#FFF4E8] transition group-hover:bg-[#B85C4A] group-hover:text-white dark:group-hover:bg-[#D47763] dark:group-hover:text-[#1F1816]">
                           <ArrowRight className="size-3.5" />
                         </span>
                       </div>
@@ -520,23 +520,23 @@ export const LandingPage = () => {
           ============================================================ */}
       {trendingProducts.length > 0 && (
         <section className="mx-auto max-w-7xl px-4 py-6 sm:px-6 sm:py-8 overflow-hidden w-full max-w-full">
-          <div className="rounded-[32px] faded-glass p-5 sm:p-7">
+          <div className="rounded-3xl border border-white/80 dark:border-white/10 bg-[#FFFCF7]/75 dark:bg-[#1E1614]/75 backdrop-blur-md p-4 sm:p-6 shadow-soft">
             {/* Header with Title and Scroll Controls */}
             <div className="mb-5 flex items-center justify-between gap-4">
               <div className="flex items-center gap-3">
-                <span className="flex size-10 shrink-0 items-center justify-center rounded-2xl bg-white/15 text-[#FFC77D]">
+                <span className="flex size-10 shrink-0 items-center justify-center rounded-xl bg-[#B85C4A]/15 text-[#B85C4A] dark:bg-[#D47763]/20 dark:text-[#D47763]">
                   <Flame className="size-5" />
                 </span>
                 <div>
                   <div className="flex items-center gap-2">
-                    <h2 className="font-display text-xl sm:text-2xl font-bold tracking-tight text-white">
+                    <h2 className="font-display text-xl sm:text-2xl font-semibold tracking-tight text-[#3B2924] dark:text-[#FFF4E8]">
                       Trending Right Now
                     </h2>
-                    <span className="hidden sm:inline-block rounded-full bg-white/20 border border-white/25 px-2.5 py-0.5 text-[10px] font-bold uppercase tracking-wider text-white">
+                    <span className="hidden sm:inline-block rounded-full bg-[#B85C4A] px-2 py-0.5 text-[10px] font-bold uppercase tracking-wider text-white dark:bg-[#D47763] dark:text-[#1F1816]">
                       Top Sellers
                     </span>
                   </div>
-                  <p className="text-xs text-white/75">
+                  <p className="text-xs text-[#806E66] dark:text-[#C7B8AE]">
                     Most loved pieces crocheted this week
                   </p>
                 </div>
@@ -548,7 +548,7 @@ export const LandingPage = () => {
                   type="button"
                   onClick={() => scrollRail(trendingRailRef, "left")}
                   aria-label="Scroll left"
-                  className="flex size-9 items-center justify-center rounded-xl border border-white/25 bg-white/15 text-white shadow-xs backdrop-blur-md transition hover:bg-white/25 active:scale-95"
+                  className="flex size-9 items-center justify-center rounded-xl border border-white/80 dark:border-white/10 bg-white/80 dark:bg-[#251B18]/80 text-[#3B2924] dark:text-[#FFF4E8] shadow-xs backdrop-blur-md transition hover:bg-white dark:hover:bg-[#251B18] active:scale-95"
                 >
                   <ChevronLeft className="size-4" />
                 </button>
@@ -556,7 +556,7 @@ export const LandingPage = () => {
                   type="button"
                   onClick={() => scrollRail(trendingRailRef, "right")}
                   aria-label="Scroll right"
-                  className="flex size-9 items-center justify-center rounded-xl border border-white/25 bg-white/15 text-white shadow-xs backdrop-blur-md transition hover:bg-white/25 active:scale-95"
+                  className="flex size-9 items-center justify-center rounded-xl border border-white/80 dark:border-white/10 bg-white/80 dark:bg-[#251B18]/80 text-[#3B2924] dark:text-[#FFF4E8] shadow-xs backdrop-blur-md transition hover:bg-white dark:hover:bg-[#251B18] active:scale-95"
                 >
                   <ChevronRight className="size-4" />
                 </button>
@@ -584,10 +584,10 @@ export const LandingPage = () => {
                 return (
                   <div
                     key={item._id}
-                    className="group relative flex w-[195px] sm:w-[260px] shrink-0 snap-start flex-col justify-between overflow-hidden rounded-[22px] faded-glass-subtle faded-glass-interactive p-3.5"
+                    className="group relative flex w-[195px] sm:w-[260px] shrink-0 snap-start flex-col justify-between overflow-hidden rounded-2xl border border-white/80 dark:border-white/10 bg-white/75 dark:bg-[#1E1614]/80 backdrop-blur-md p-3 shadow-xs transition-all duration-300 hover:-translate-y-1 hover:bg-white/95 dark:hover:bg-[#1E1614]/95 hover:border-[#B85C4A]/40 hover:shadow-lift"
                   >
                     <Link to={`/products/${item.slug}`} className="block">
-                      <div className="relative aspect-square w-full overflow-hidden rounded-[16px] bg-black/20 ring-1 ring-white/15">
+                      <div className="relative aspect-square w-full overflow-hidden rounded-xl bg-[#F5EDE4] dark:bg-[#251B18]">
                         {item.images?.[0] ? (
                           <img
                             src={item.images[0]}
@@ -600,39 +600,39 @@ export const LandingPage = () => {
                           <div className="flex size-full items-center justify-center text-4xl">🧶</div>
                         )}
                         {item.isFeatured && (
-                          <span className="absolute top-2 left-2 rounded-full bg-[#B85C4A] px-2 py-0.5 text-[10px] font-bold text-white shadow-xs">
+                          <span className="absolute top-2 left-2 rounded-full bg-[#B85C4A] px-2 py-0.5 text-[10px] font-bold text-white shadow-xs dark:bg-[#D47763] dark:text-[#1F1816]">
                             Featured
                           </span>
                         )}
                         {discountPercent > 0 && (
-                          <span className="absolute bottom-2 right-2 rounded-full bg-black/70 px-1.5 py-0.5 text-[10px] font-bold text-white backdrop-blur-xs">
+                          <span className="absolute bottom-2 right-2 rounded-full bg-black/60 px-1.5 py-0.5 text-[10px] font-semibold text-white backdrop-blur-xs">
                             {discountPercent}% OFF
                           </span>
                         )}
                       </div>
 
                       <div className="mt-3">
-                        <span className="text-[10px] font-bold uppercase tracking-wider text-white/70">
+                        <span className="text-[10px] font-bold uppercase tracking-wider text-[#7A8B68] dark:text-[#9BAF83]">
                           {categoryName}
                         </span>
-                        <h3 className="mt-0.5 text-xs sm:text-sm font-bold text-white transition group-hover:text-[#FFC77D] line-clamp-1">
+                        <h3 className="mt-0.5 text-xs sm:text-sm font-semibold text-[#3B2924] transition group-hover:text-[#B85C4A] dark:text-[#FFF4E8] dark:group-hover:text-[#D47763] line-clamp-1">
                           {item.name}
                         </h3>
 
-                        <div className="mt-1 flex items-center gap-1.5 text-[11px] text-white/75">
-                          <span className="inline-flex items-center gap-0.5 rounded-sm bg-white/20 px-1 py-0.2 font-semibold text-[#FFD166]">
-                            <Star className="size-3 fill-current text-[#FFD166]" />
+                        <div className="mt-1 flex items-center gap-1.5 text-[11px] text-[#806E66] dark:text-[#C7B8AE]">
+                          <span className="inline-flex items-center gap-0.5 rounded-sm bg-[#7A8B68]/15 px-1 py-0.2 font-semibold text-[#7A8B68] dark:bg-[#9BAF83]/20 dark:text-[#9BAF83]">
+                            <Star className="size-3 fill-current text-[#7A8B68] dark:text-[#9BAF83]" />
                             {item.averageRating > 0 ? item.averageRating.toFixed(1) : "5.0"}
                           </span>
                           <span>({item.totalReviews || 0})</span>
                         </div>
 
                         <div className="mt-2 flex items-baseline gap-2">
-                          <span className="text-sm sm:text-base font-bold text-[#FFC77D]">
+                          <span className="text-sm sm:text-base font-bold text-[#B85C4A] dark:text-[#D47763]">
                             {formatCurrency(currentPrice)}
                           </span>
                           {originalPrice && (
-                            <span className="text-xs text-white/50 line-through">
+                            <span className="text-xs text-[#806E66] line-through dark:text-[#C7B8AE]">
                               {formatCurrency(originalPrice)}
                             </span>
                           )}
@@ -640,11 +640,11 @@ export const LandingPage = () => {
                       </div>
                     </Link>
 
-                    <div className="mt-3 pt-2 border-t border-white/20">
+                    <div className="mt-3 pt-2 border-t border-white/60 dark:border-white/10">
                       <button
                         type="button"
                         onClick={() => handleQuickAdd(item)}
-                        className="flex w-full items-center justify-center gap-1.5 rounded-xl border border-white/25 bg-white/15 text-white backdrop-blur-md py-2 text-xs font-bold transition hover:bg-[#B85C4A] hover:border-[#B85C4A] active:scale-98"
+                        className="flex w-full items-center justify-center gap-1.5 rounded-xl border border-white/60 dark:border-white/5 bg-[#F5EDE4]/80 dark:bg-[#251B18]/80 backdrop-blur-xs py-2 text-xs font-bold text-[#3B2924] dark:text-[#FFF4E8] transition hover:bg-[#B85C4A] hover:border-[#B85C4A] hover:text-white dark:hover:bg-[#D47763] dark:hover:text-[#1F1816] active:scale-98"
                       >
                         <ShoppingBag className="size-3.5" />
                         Add to Bag
@@ -663,22 +663,22 @@ export const LandingPage = () => {
           ============================================================ */}
       {budgetProducts.length > 0 && (
         <section className="mx-auto max-w-7xl px-4 py-4 sm:px-6 sm:py-6 overflow-hidden w-full max-w-full">
-          <div className="rounded-[32px] faded-glass p-5 sm:p-7">
+          <div className="rounded-3xl border border-white/80 dark:border-white/10 bg-[#FFFCF7]/75 dark:bg-[#1E1614]/75 backdrop-blur-md p-4 sm:p-6 shadow-soft">
             <div className="mb-5 flex items-center justify-between gap-4">
               <div className="flex items-center gap-3">
-                <span className="flex size-10 shrink-0 items-center justify-center rounded-2xl bg-white/15 text-[#A7BA90]">
+                <span className="flex size-10 shrink-0 items-center justify-center rounded-xl bg-[#7A8B68]/15 text-[#7A8B68] dark:bg-[#9BAF83]/20 dark:text-[#9BAF83]">
                   <Tag className="size-5" />
                 </span>
                 <div>
                   <div className="flex items-center gap-2">
-                    <h2 className="font-display text-xl sm:text-2xl font-bold tracking-tight text-white">
+                    <h2 className="font-display text-xl sm:text-2xl font-semibold tracking-tight text-[#3B2924] dark:text-[#FFF4E8]">
                       Pocket-Friendly Treats • Under ₹499
                     </h2>
-                    <span className="rounded-full bg-white/20 border border-white/25 px-2.5 py-0.5 text-[10px] font-bold uppercase tracking-wider text-white">
+                    <span className="rounded-full bg-[#7A8B68]/15 px-2 py-0.5 text-[10px] font-bold uppercase tracking-wider text-[#7A8B68] dark:bg-[#9BAF83]/20 dark:text-[#9BAF83]">
                       Budget Gifting
                     </span>
                   </div>
-                  <p className="text-xs text-white/75">
+                  <p className="text-xs text-[#806E66] dark:text-[#C7B8AE]">
                     Everyday crochet pieces, keychains, coasters & accessories
                   </p>
                 </div>
@@ -689,7 +689,7 @@ export const LandingPage = () => {
                   type="button"
                   onClick={() => scrollRail(budgetRailRef, "left")}
                   aria-label="Scroll left"
-                  className="flex size-9 items-center justify-center rounded-xl border border-white/25 bg-white/15 text-white shadow-xs backdrop-blur-md transition hover:bg-white/25 active:scale-95"
+                  className="flex size-9 items-center justify-center rounded-xl border border-white/80 dark:border-white/10 bg-white/80 dark:bg-[#251B18]/80 text-[#3B2924] dark:text-[#FFF4E8] shadow-xs backdrop-blur-md transition hover:bg-white dark:hover:bg-[#251B18] active:scale-95"
                 >
                   <ChevronLeft className="size-4" />
                 </button>
@@ -697,7 +697,7 @@ export const LandingPage = () => {
                   type="button"
                   onClick={() => scrollRail(budgetRailRef, "right")}
                   aria-label="Scroll right"
-                  className="flex size-9 items-center justify-center rounded-xl border border-white/25 bg-white/15 text-white shadow-xs backdrop-blur-md transition hover:bg-white/25 active:scale-95"
+                  className="flex size-9 items-center justify-center rounded-xl border border-white/80 dark:border-white/10 bg-white/80 dark:bg-[#251B18]/80 text-[#3B2924] dark:text-[#FFF4E8] shadow-xs backdrop-blur-md transition hover:bg-white dark:hover:bg-[#251B18] active:scale-95"
                 >
                   <ChevronRight className="size-4" />
                 </button>
@@ -716,10 +716,10 @@ export const LandingPage = () => {
                 return (
                   <div
                     key={item._id}
-                    className="group relative flex w-[175px] sm:w-[210px] shrink-0 snap-start flex-col justify-between overflow-hidden rounded-[22px] faded-glass-subtle faded-glass-interactive p-3.5"
+                    className="group relative flex w-[175px] sm:w-[210px] shrink-0 snap-start flex-col justify-between overflow-hidden rounded-2xl border border-white/80 dark:border-white/10 bg-white/75 dark:bg-[#1E1614]/80 backdrop-blur-md p-3 shadow-xs transition-all duration-300 hover:-translate-y-1 hover:bg-white/95 dark:hover:bg-[#1E1614]/95 hover:border-[#7A8B68]/40 hover:shadow-lift"
                   >
                     <Link to={`/products/${item.slug}`} className="block">
-                      <div className="relative aspect-square w-full overflow-hidden rounded-[16px] bg-black/20 ring-1 ring-white/15">
+                      <div className="relative aspect-square w-full overflow-hidden rounded-xl bg-[#F5EDE4] dark:bg-[#251B18]">
                         {item.images?.[0] ? (
                           <img
                             src={item.images[0]}
@@ -731,21 +731,21 @@ export const LandingPage = () => {
                         ) : (
                           <div className="flex size-full items-center justify-center text-3xl">🧶</div>
                         )}
-                        <span className="absolute top-2 left-2 rounded-full bg-[#7A8B68] px-2 py-0.5 text-[9px] font-bold text-white shadow-xs">
+                        <span className="absolute top-2 left-2 rounded-full bg-[#7A8B68] px-2 py-0.5 text-[9px] font-bold text-white shadow-xs dark:bg-[#9BAF83] dark:text-[#1F1816]">
                           UNDER ₹499
                         </span>
                       </div>
 
                       <div className="mt-2.5">
-                        <h3 className="text-xs font-bold text-white transition group-hover:text-[#A7BA90] line-clamp-1">
+                        <h3 className="text-xs font-semibold text-[#3B2924] transition group-hover:text-[#7A8B68] dark:text-[#FFF4E8] dark:group-hover:text-[#9BAF83] line-clamp-1">
                           {item.name}
                         </h3>
                         <div className="mt-1 flex items-baseline gap-1.5">
-                          <span className="text-sm font-bold text-[#FFC77D]">
+                          <span className="text-sm font-bold text-[#B85C4A] dark:text-[#D47763]">
                             {formatCurrency(currentPrice)}
                           </span>
                           {originalPrice && (
-                            <span className="text-[11px] text-white/50 line-through">
+                            <span className="text-[11px] text-[#806E66] line-through dark:text-[#C7B8AE]">
                               {formatCurrency(originalPrice)}
                             </span>
                           )}
@@ -753,11 +753,11 @@ export const LandingPage = () => {
                       </div>
                     </Link>
 
-                    <div className="mt-2.5 pt-2 border-t border-white/20">
+                    <div className="mt-2.5 pt-2 border-t border-white/60 dark:border-white/10">
                       <button
                         type="button"
                         onClick={() => handleQuickAdd(item)}
-                        className="flex w-full items-center justify-center gap-1 rounded-lg border border-white/25 bg-white/15 text-white backdrop-blur-md py-1.5 text-[11px] font-bold transition hover:bg-[#7A8B68] hover:border-[#7A8B68] active:scale-98"
+                        className="flex w-full items-center justify-center gap-1 rounded-lg border border-white/60 dark:border-white/5 bg-[#F5EDE4]/80 dark:bg-[#251B18]/80 backdrop-blur-xs py-1.5 text-[11px] font-bold text-[#3B2924] dark:text-[#FFF4E8] transition hover:bg-[#7A8B68] hover:border-[#7A8B68] hover:text-white dark:hover:bg-[#9BAF83] dark:hover:text-[#1F1816] active:scale-98"
                       >
                         <ShoppingBag className="size-3" />
                         Quick Add
@@ -783,16 +783,16 @@ export const LandingPage = () => {
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true, margin: "-40px" }}
               transition={{ duration: 0.4, delay: index * 0.05 }}
-              className="flex items-start gap-4 rounded-[24px] faded-glass faded-glass-interactive p-5 sm:p-6"
+              className="flex items-start gap-4 rounded-2xl border border-white/80 dark:border-white/10 bg-[#FFFCF7]/75 dark:bg-[#2A211E]/75 backdrop-blur-md p-5 shadow-soft transition-all duration-300 hover:-translate-y-1 hover:bg-[#FFFCF7]/95 dark:hover:bg-[#2A211E]/95 hover:shadow-lift"
             >
-              <span className="flex size-11 shrink-0 items-center justify-center rounded-2xl bg-white/15 border border-white/25 text-[#FFC77D] backdrop-blur-xs shadow-xs">
+              <span className="flex size-11 shrink-0 items-center justify-center rounded-xl border border-white/60 dark:border-white/10 bg-white/75 dark:bg-[#352925]/75 text-[#B85C4A] dark:text-[#D47763] backdrop-blur-xs shadow-xs">
                 <perk.icon className="size-5" />
               </span>
               <div>
-                <h3 className="text-sm font-bold text-white">
+                <h3 className="text-sm font-semibold text-[#3B2924] dark:text-[#FFF4E8]">
                   {perk.title}
                 </h3>
-                <p className="mt-0.5 text-xs leading-relaxed text-white/75">
+                <p className="mt-0.5 text-xs leading-relaxed text-[#806E66] dark:text-[#C7B8AE]">
                   {perk.description}
                 </p>
               </div>
@@ -812,14 +812,14 @@ export const LandingPage = () => {
           transition={{ duration: 0.5 }}
           className="mb-12 text-center"
         >
-          <p className="inline-flex items-center gap-1.5 rounded-full border border-white/25 bg-black/25 backdrop-blur-md px-4 py-1 text-xs font-bold uppercase tracking-[0.2em] text-[#FFC77D] shadow-xs">
-            <Sparkles className="size-3.5 text-[#FFC77D]" />
+          <p className="inline-flex items-center gap-1.5 rounded-full border border-white/80 dark:border-white/10 bg-[#FFFCF7]/80 dark:bg-[#352925]/80 backdrop-blur-md px-4 py-1 text-xs font-bold uppercase tracking-[0.2em] text-[#B85C4A] dark:text-[#D47763] shadow-xs">
+            <Sparkles className="size-3.5 text-[#D8A85B] dark:text-[#E0B86A]" />
             Curated Artisan Picks
           </p>
-          <h2 className="font-display mt-3 text-3xl font-bold tracking-tight text-white sm:text-5xl drop-shadow-sm">
+          <h2 className="font-display mt-3 text-3xl font-semibold tracking-tight text-[#3B2924] sm:text-5xl dark:text-[#FFF4E8]">
             Hand-crocheted treasures
           </h2>
-          <p className="mx-auto mt-3 max-w-xl text-sm font-medium text-white/80 sm:text-base">
+          <p className="mx-auto mt-3 max-w-xl text-sm text-[#806E66] sm:text-base dark:text-[#C7B8AE]">
             Every piece is made in limited batches with premium soft yarn, designed to bring joy and cozy comfort.
           </p>
         </motion.div>
@@ -841,18 +841,18 @@ export const LandingPage = () => {
                 transition={{ duration: 0.5, delay: Math.min(groupIndex * 0.05, 0.2) }}
                 aria-label={`Featured ${group.category.name}`}
               >
-                <div className="mb-6 flex flex-wrap items-end justify-between gap-3 border-b border-white/20 pb-4">
+                <div className="mb-6 flex flex-wrap items-end justify-between gap-3 border-b border-[#E8DCD0] pb-4 dark:border-[#493A34]">
                   <div>
-                    <span className="text-[11px] font-bold uppercase tracking-[0.2em] text-[#FFC77D]">
+                    <span className="text-[11px] font-bold uppercase tracking-[0.2em] text-[#7A8B68] dark:text-[#9BAF83]">
                       Collection
                     </span>
-                    <h3 className="font-display mt-0.5 text-2xl font-bold tracking-tight text-white sm:text-3xl drop-shadow-sm">
+                    <h3 className="font-display mt-0.5 text-2xl font-semibold tracking-tight text-[#3B2924] sm:text-3xl dark:text-[#FFF4E8]">
                       {group.category.name}
                     </h3>
                   </div>
                   <Link
                     to={`/categories/${group.category.slug}`}
-                    className="group inline-flex items-center gap-1.5 text-sm font-semibold text-[#FFC77D] transition hover:text-white"
+                    className="group inline-flex items-center gap-1.5 text-sm font-semibold text-[#B85C4A] transition hover:text-[#914536] dark:text-[#D47763] dark:hover:text-[#E28A76]"
                   >
                     View all {group.category.name}
                     <ArrowRight className="size-4 transition-transform group-hover:translate-x-1" />
@@ -866,14 +866,14 @@ export const LandingPage = () => {
         ) : featured && featured.length > 0 ? (
           <ProductGrid products={featured} loading={false} />
         ) : (
-          <div className="rounded-[32px] faded-glass p-8 sm:p-12 text-center">
-            <div className="mx-auto flex size-14 items-center justify-center rounded-2xl bg-white/15 border border-white/20 text-3xl shadow-inner">
+          <div className="rounded-3xl border border-dashed border-white/80 dark:border-white/10 bg-[#FFFCF7]/75 dark:bg-[#1E1614]/75 backdrop-blur-md p-8 sm:p-12 text-center">
+            <div className="mx-auto flex size-14 items-center justify-center rounded-2xl bg-[#7A8B68]/15 text-3xl text-[#7A8B68] dark:bg-[#9BAF83]/20 dark:text-[#9BAF83]">
               🛍️
             </div>
-            <h3 className="mt-4 text-xl font-bold text-white">
+            <h3 className="mt-4 text-lg font-semibold text-[#3B2924] dark:text-[#FFF4E8]">
               {isAdmin ? "No Products in Store Yet" : "Fresh Treasures Coming Soon"}
             </h3>
-            <p className="mx-auto mt-2 max-w-md text-sm text-white/80 leading-relaxed">
+            <p className="mx-auto mt-2 max-w-md text-sm text-[#806E66] dark:text-[#C7B8AE]">
               {isAdmin
                 ? "Your catalog is completely clean. Click below to add your first authentic handmade product listing."
                 : "Our artisans are currently preparing new limited batch crochet pieces. Follow along or request a custom piece!"}
@@ -882,7 +882,7 @@ export const LandingPage = () => {
               {isAdmin ? (
                 <Link
                   to="/admin/products"
-                  className="inline-flex items-center gap-2 rounded-2xl bg-gradient-to-r from-[#C26550] to-[#A84F3D] px-6 py-3.5 text-sm font-bold text-white shadow-soft transition hover:from-[#A84F3D] hover:to-[#8E3B2B] active:scale-98"
+                  className="inline-flex items-center gap-2 rounded-xl bg-[#B85C4A] px-6 py-3 text-sm font-bold text-white shadow-soft transition hover:bg-[#914536] dark:bg-[#D47763] dark:text-[#1F1816]"
                 >
                   <PlusCircle className="size-4" />
                   Add First Product
@@ -892,7 +892,7 @@ export const LandingPage = () => {
                   href="https://wa.me/917985835558?text=Hello%20Shikha%2C%20I%20would%20like%20to%20inquire%20about%20your%20crochet%20products."
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="inline-flex items-center gap-2 rounded-2xl bg-[#25D366] px-6 py-3.5 text-sm font-bold text-white shadow-soft transition hover:bg-[#1EBE5D] active:scale-98"
+                  className="inline-flex items-center gap-2 rounded-xl bg-[#7A8B68] px-6 py-3 text-sm font-bold text-white shadow-soft transition hover:bg-[#687757] dark:bg-[#9BAF83] dark:text-[#1F1816]"
                 >
                   <MessageCircle className="size-4" />
                   Inquire on WhatsApp
@@ -912,17 +912,17 @@ export const LandingPage = () => {
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true, margin: "-60px" }}
           transition={{ duration: 0.55 }}
-          className="relative overflow-hidden rounded-[36px] faded-glass p-8 sm:p-12"
+          className="relative overflow-hidden rounded-[2.5rem] border border-white/80 dark:border-white/10 bg-[#FFFCF7]/75 dark:bg-[#1F1816]/75 backdrop-blur-md p-8 shadow-soft sm:p-12"
         >
           <div className="grid items-center gap-8 lg:grid-cols-2">
             <div className="space-y-4">
-              <span className="inline-flex items-center gap-1.5 rounded-full border border-white/20 bg-white/10 backdrop-blur-md px-3.5 py-1 text-xs font-bold uppercase tracking-wider text-[#FFC77D]">
-                <Heart className="size-3.5 fill-current text-[#FF9E90]" /> Meet the Artisan
+              <span className="inline-flex items-center gap-1.5 rounded-full bg-[#C98F8B]/20 px-3 py-1 text-xs font-bold uppercase tracking-wider text-[#B85C4A] dark:bg-[#D8A09B]/20 dark:text-[#D47763]">
+                <Heart className="size-3.5 fill-current text-[#C98F8B]" /> Meet the Artisan
               </span>
-              <h2 className="font-display text-3xl font-bold tracking-tight text-white sm:text-4xl drop-shadow-sm">
+              <h2 className="font-display text-3xl font-semibold tracking-tight text-[#3B2924] sm:text-4xl dark:text-[#FFF4E8]">
                 Bespoke orders crafted with love by Shikha Rai
               </h2>
-              <p className="text-sm leading-relaxed text-white/85 sm:text-base">
+              <p className="text-sm leading-relaxed text-[#806E66] sm:text-base dark:text-[#C7B8AE]">
                 Looking for a special keepsake, baby nursery gift, or custom crochet plushie in specific color palettes? Every piece at Knottiingale is crafted slowly, stitch by stitch. Let us craft something memorable for your loved ones.
               </p>
               <div className="flex flex-wrap items-center gap-3 pt-2">
@@ -930,14 +930,14 @@ export const LandingPage = () => {
                   href="https://wa.me/917985835558?text=Hello%20Shikha%2C%20I%20would%20like%20to%20request%20a%20custom%20crochet%20order."
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="inline-flex items-center gap-2 rounded-2xl bg-[#25D366] px-5 py-3 text-sm font-bold text-white shadow-md transition hover:bg-[#1EBE5D] active:scale-98"
+                  className="inline-flex items-center gap-2 rounded-xl bg-[#7A8B68] px-5 py-3 text-sm font-bold text-white shadow-md transition hover:bg-[#687757] active:scale-98 dark:bg-[#9BAF83] dark:text-[#1F1816]"
                 >
                   <MessageCircle className="size-4.5" />
                   Order on WhatsApp (+91 7985835558)
                 </a>
                 <Link
                   to="/contact"
-                  className="inline-flex items-center gap-2 rounded-2xl border border-white/25 bg-white/10 px-5 py-3 text-sm font-semibold text-white backdrop-blur-md transition hover:bg-white/20 active:scale-98"
+                  className="inline-flex items-center gap-2 rounded-xl border border-white/80 dark:border-white/10 bg-white/75 dark:bg-[#2A211E]/75 px-5 py-3 text-sm font-semibold text-[#3B2924] dark:text-[#FFF4E8] shadow-xs backdrop-blur-md transition hover:bg-white dark:hover:bg-[#352925]"
                 >
                   Contact Form & Details
                 </Link>
@@ -946,21 +946,21 @@ export const LandingPage = () => {
 
             {/* Quick feature highlights in Faded Glass */}
             <div className="grid gap-3 sm:grid-cols-2">
-              <div className="rounded-[22px] border border-white/20 bg-white/10 p-5 backdrop-blur-xl shadow-xs">
-                <p className="font-display text-2xl font-bold text-[#FFC77D]">Custom Colors</p>
-                <p className="mt-1 text-xs text-white/80 leading-relaxed">Choose from dozens of premium yarn palettes to match your nursery or home decor.</p>
+              <div className="rounded-2xl border border-white/80 dark:border-white/10 bg-white/70 dark:bg-[#2A211E]/70 p-5 shadow-sm backdrop-blur-md">
+                <p className="font-display text-2xl font-bold text-[#B85C4A] dark:text-[#D47763]">Custom Colors</p>
+                <p className="mt-1 text-xs text-[#806E66] dark:text-[#C7B8AE]">Choose from dozens of premium yarn palettes to match your nursery or home decor.</p>
               </div>
-              <div className="rounded-[22px] border border-white/20 bg-white/10 p-5 backdrop-blur-xl shadow-xs">
-                <p className="font-display text-2xl font-bold text-[#FFB0A3]">Gift Packaging</p>
-                <p className="mt-1 text-xs text-white/80 leading-relaxed">Every piece comes tied with satin ribbons, care instructions, and optional handwritten notes.</p>
+              <div className="rounded-2xl border border-white/80 dark:border-white/10 bg-white/70 dark:bg-[#2A211E]/70 p-5 shadow-sm backdrop-blur-md">
+                <p className="font-display text-2xl font-bold text-[#C98F8B] dark:text-[#D8A09B]">Gift Packaging</p>
+                <p className="mt-1 text-xs text-[#806E66] dark:text-[#C7B8AE]">Every piece comes tied with satin ribbons, care instructions, and optional handwritten notes.</p>
               </div>
-              <div className="rounded-[22px] border border-white/20 bg-white/10 p-5 backdrop-blur-xl shadow-xs">
-                <p className="font-display text-2xl font-bold text-[#B4E09E]">Safe & Soft</p>
-                <p className="mt-1 text-xs text-white/80 leading-relaxed">Made with child-safe safety eyes, hypoallergenic fiberfill, and ultra-soft non-toxic yarn.</p>
+              <div className="rounded-2xl border border-white/80 dark:border-white/10 bg-white/70 dark:bg-[#2A211E]/70 p-5 shadow-sm backdrop-blur-md">
+                <p className="font-display text-2xl font-bold text-[#7A8B68] dark:text-[#9BAF83]">Safe & Soft</p>
+                <p className="mt-1 text-xs text-[#806E66] dark:text-[#C7B8AE]">Made with child-safe safety eyes, hypoallergenic fiberfill, and ultra-soft non-toxic yarn.</p>
               </div>
-              <div className="rounded-[22px] border border-white/20 bg-white/10 p-5 backdrop-blur-xl shadow-xs">
-                <p className="font-display text-2xl font-bold text-[#FFD479]">Direct Support</p>
-                <p className="mt-1 text-xs text-white/80 leading-relaxed">Talk directly to Shikha Rai and developer Shruti Rai for smooth updates.</p>
+              <div className="rounded-2xl border border-white/80 dark:border-white/10 bg-white/70 dark:bg-[#2A211E]/70 p-5 shadow-sm backdrop-blur-md">
+                <p className="font-display text-2xl font-bold text-[#D8A85B] dark:text-[#E0B86A]">Direct Support</p>
+                <p className="mt-1 text-xs text-[#806E66] dark:text-[#C7B8AE]">Talk directly to Shikha Rai and developer Shruti Rai for smooth updates.</p>
               </div>
             </div>
           </div>
@@ -976,34 +976,34 @@ export const LandingPage = () => {
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true, margin: "-60px" }}
           transition={{ duration: 0.55 }}
-          className="relative overflow-hidden rounded-[36px] faded-glass px-8 py-16 text-center text-white sm:py-20"
+          className="relative overflow-hidden rounded-[2.5rem] border border-white/20 dark:border-white/10 bg-[#3B2924]/85 backdrop-blur-md px-8 py-16 text-center text-[#FFF4E8] shadow-lift dark:bg-[#1F1816]/85 sm:py-20"
         >
           <div
             aria-hidden="true"
             className="pointer-events-none absolute inset-0"
             style={{
               background:
-                "radial-gradient(circle at 50% 0%, rgb(255 199 125 / 0.15), transparent 65%)",
+                "radial-gradient(circle at 50% 0%, rgb(216 168 91 / 0.18), transparent 65%)",
             }}
           />
-          <h2 className="font-display relative text-4xl font-bold tracking-tight text-white sm:text-5xl drop-shadow-md">
+          <h2 className="font-display relative text-4xl font-semibold tracking-tight text-[#FFF4E8] sm:text-5xl">
             Bring a little handmade warmth home.
           </h2>
-          <p className="relative mx-auto mt-4 max-w-xl text-white/85 text-base sm:text-lg">
+          <p className="relative mx-auto mt-4 max-w-xl text-[#C7B8AE]">
             Create an account for faster checkout, order tracking, and early
             access to new limited crochet drops.
           </p>
           <div className="relative mt-9 flex flex-wrap justify-center gap-3">
             <Link
               to="/register"
-              className="group inline-flex h-13 items-center gap-2 rounded-2xl bg-gradient-to-r from-[#C26550] to-[#A84F3D] px-8 text-base font-bold text-white shadow-soft transition hover:from-[#A84F3D] hover:to-[#8E3B2B] hover:shadow-lift active:scale-98"
+              className="group inline-flex h-13 items-center gap-2 rounded-2xl bg-[#B85C4A] px-8 text-base font-bold text-white shadow-soft transition hover:bg-[#914536] hover:shadow-lift active:scale-98 dark:bg-[#D47763] dark:text-[#1F1816]"
             >
               Create Free Account
               <ArrowRight className="size-5 transition-transform group-hover:translate-x-1" />
             </Link>
             <Link
               to="/products"
-              className="inline-flex h-13 items-center rounded-2xl border border-white/30 bg-white/10 px-8 text-base font-semibold text-white backdrop-blur-md transition hover:border-white/50 hover:bg-white/20 active:scale-98"
+              className="inline-flex h-13 items-center rounded-2xl border border-white/30 bg-white/10 px-8 text-base font-semibold text-[#FFF4E8] backdrop-blur-md transition hover:border-white/60 hover:bg-white/20 active:scale-98"
             >
               Browse All Products
             </Link>
