@@ -121,6 +121,7 @@ const sendViaHttpApi = async ({
       "https://api.brevo.com/v3/smtp/email";
 
     const sender = parseSender(config.EMAIL_FROM || config.SMTP_USER);
+    const recipient = parseSender(to);
 
     const response = await fetch(url, {
       method: "POST",
@@ -130,7 +131,7 @@ const sendViaHttpApi = async ({
       },
       body: JSON.stringify({
         sender,
-        to: [{ email: to }],
+        to: [{ email: recipient.email }],
         subject,
         htmlContent: html,
       }),
@@ -417,7 +418,9 @@ export const sendOrderStatusUpdateEmail = async (
 export const sendContactNotificationEmail = async (
   inquiry: { name: string; email: string; phone?: string; subject: string; message: string }
 ): Promise<{ delivered: boolean }> => {
-  const adminEmail = config.EMAIL_FROM || config.SMTP_USER || "shrutirai2901@gmail.com";
+  const adminEmail = parseSender(
+    config.EMAIL_FROM || config.SMTP_USER || "shruti.rai2901@gmail.com"
+  ).email;
 
   // Notify owner
   await sendEmail({

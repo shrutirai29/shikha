@@ -29,6 +29,7 @@ import { searchProducts } from "../../controllers/search/search.controller";
 
 const router = Router();
 
+router.get("/", searchProducts);
 router.get("/products", searchProducts);
 
 export default router;
