@@ -6,17 +6,26 @@ export const FloatingContact = () => {
   const [isOpen, setIsOpen] = useState(false);
 
   return (
-    <div className="fixed bottom-20 right-4 md:bottom-6 md:right-6 z-40 flex flex-col items-end">
+    <div className="fixed bottom-[4.75rem] right-3 sm:bottom-6 sm:right-6 z-40 flex flex-col items-end">
       {/* Popover Card */}
       <AnimatePresence>
         {isOpen && (
-          <motion.div
-            initial={{ opacity: 0, y: 15, scale: 0.95 }}
-            animate={{ opacity: 1, y: 0, scale: 1 }}
-            exit={{ opacity: 0, y: 10, scale: 0.95 }}
-            transition={{ duration: 0.2 }}
-            className="mb-3 w-[calc(100vw-2rem)] max-w-xs sm:w-80 overflow-hidden rounded-2xl border border-[#E8DCD0] bg-[#FFFCF7]/95 p-4 sm:p-5 shadow-2xl backdrop-blur-xl dark:border-[#382823] dark:bg-[#1E1614]/95"
-          >
+          <>
+            {/* Mobile backdrop scrim to dismiss on tap */}
+            <motion.div
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              onClick={() => setIsOpen(false)}
+              className="fixed inset-0 z-30 bg-black/25 backdrop-blur-xs sm:hidden"
+            />
+            <motion.div
+              initial={{ opacity: 0, y: 15, scale: 0.95 }}
+              animate={{ opacity: 1, y: 0, scale: 1 }}
+              exit={{ opacity: 0, y: 10, scale: 0.95 }}
+              transition={{ duration: 0.2 }}
+              className="relative z-40 mb-3 w-[calc(100vw-2rem)] max-w-xs sm:w-80 overflow-hidden rounded-2xl border border-[#E8DCD0] bg-[#FFFCF7]/95 p-4 sm:p-5 shadow-2xl backdrop-blur-xl dark:border-[#382823] dark:bg-[#1E1614]/95"
+            >
             <div className="flex items-center justify-between pb-3 border-b border-[#E8DCD0] dark:border-[#382823]">
               <div className="flex items-center gap-2">
                 <span className="relative flex size-2.5">
@@ -66,14 +75,15 @@ export const FloatingContact = () => {
               </a>
             </div>
           </motion.div>
-        )}
+        </>
+      )}
       </AnimatePresence>
 
       {/* Main Trigger Button */}
       <button
         type="button"
         onClick={() => setIsOpen((prev) => !prev)}
-        className="group relative flex size-12 sm:size-13 items-center justify-center rounded-full bg-[#7A8B68] text-white shadow-xl shadow-[#7A8B68]/30 transition duration-300 hover:scale-105 active:scale-95 dark:bg-[#9BAF83] dark:text-[#1F1816]"
+        className="group relative flex size-11 sm:size-13 items-center justify-center rounded-full bg-[#7A8B68] text-white shadow-xl shadow-[#7A8B68]/30 transition duration-300 hover:scale-105 active:scale-95 dark:bg-[#9BAF83] dark:text-[#1F1816]"
         aria-label="Open contact options"
       >
         <span className="absolute -inset-1 rounded-full bg-[#7A8B68]/30 blur-sm transition group-hover:opacity-100 opacity-60 dark:bg-[#9BAF83]/30" />

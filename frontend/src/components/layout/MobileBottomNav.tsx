@@ -69,7 +69,7 @@ export const MobileBottomNav = () => {
               aria-label={item.name}
               aria-current={active ? "page" : undefined}
               className={cn(
-                "relative flex flex-1 flex-col items-center justify-center py-1 transition-all duration-200 active:scale-95",
+                "relative flex flex-1 flex-col items-center justify-center py-1 transition-all duration-200 active:scale-95 touch-manipulation select-none",
                 active
                   ? "text-[#B85C4A] dark:text-[#D47763]"
                   : "text-[#806E66] hover:text-[#3B2924] dark:text-[#A89890] dark:hover:text-[#FFF4E8]"

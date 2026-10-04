@@ -124,7 +124,7 @@ export const ProductCard = ({
             onClick={handleWishlist}
             aria-label={isInWishlist ? "Remove from wishlist" : "Add to wishlist"}
             className={cn(
-              "absolute right-2.5 top-2.5 sm:right-3 sm:top-3 flex size-8 sm:size-9 items-center justify-center rounded-full border border-white/80 bg-[#FFFCF7]/85 shadow-xs backdrop-blur-md transition-all duration-200 hover:scale-110 active:scale-90 dark:border-white/10 dark:bg-[#1E1614]/85",
+              "absolute right-2 top-2 sm:right-3 sm:top-3 flex size-8.5 sm:size-9 items-center justify-center rounded-full border border-white/80 bg-[#FFFCF7]/90 shadow-xs backdrop-blur-md transition-all duration-200 active:scale-90 touch-manipulation dark:border-white/10 dark:bg-[#1E1614]/90",
               isInWishlist
                 ? "text-[#C98F8B] dark:text-[#D8A09B]"
                 : "text-[#806E66] hover:text-[#C98F8B] dark:text-[#C7B8AE] dark:hover:text-[#D8A09B]"
@@ -185,7 +185,7 @@ export const ProductCard = ({
               onClick={handleAddToCart}
               disabled={product.stock <= 0}
               aria-label={`Add ${product.name} to cart`}
-              className="cartBtn !min-w-0 !size-8 sm:!size-10 !p-0 !rounded-full shrink-0 shadow-md shadow-[#B85C4A]/20 transition-transform duration-200 hover:scale-110 active:scale-95"
+              className="cartBtn !min-w-0 !size-9 sm:!size-10 !p-0 !rounded-full shrink-0 shadow-md shadow-[#B85C4A]/20 transition-transform duration-200 hover:scale-110 active:scale-95 touch-manipulation"
             >
               <span className="cartBtn-icon-wrap" aria-hidden="true">
                 <svg

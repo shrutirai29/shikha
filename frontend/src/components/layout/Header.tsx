@@ -189,7 +189,7 @@ export const Header = () => {
 
           <Link
             to={isAuthenticated ? "/wishlist" : "/login"}
-            className="relative rounded-xl p-1.5 sm:p-2.5 text-[#806E66] transition hover:bg-[#F5EDE4] hover:text-[#3B2924] dark:text-[#B3A198] dark:hover:bg-[#251B18] dark:hover:text-[#FFF4E8]"
+            className="relative hidden sm:inline-flex rounded-xl p-1.5 sm:p-2.5 text-[#806E66] transition hover:bg-[#F5EDE4] hover:text-[#3B2924] dark:text-[#B3A198] dark:hover:bg-[#251B18] dark:hover:text-[#FFF4E8]"
             aria-label="Wishlist"
           >
             <Heart className="size-4.5 sm:size-5" />
