@@ -11,17 +11,22 @@ const getTransporter = (): Transporter | null => {
   }
 
   if (!transporter) {
+    const isGmail =
+      config.SMTP_HOST.toLowerCase().includes("gmail") ||
+      config.SMTP_USER.toLowerCase().endsWith("@gmail.com");
+    const port = config.SMTP_PORT || (isGmail ? 465 : 587);
+    const secure = port === 465;
+
     transporter = nodemailer.createTransport({
       host: config.SMTP_HOST,
-      port: config.SMTP_PORT,
-      secure: config.SMTP_PORT === 465,
+      port,
+      secure,
       auth: {
         user: config.SMTP_USER,
         pass: config.SMTP_PASS,
       },
-      // Fail fast: some hosts (e.g. Railway) block SMTP egress entirely.
-      connectionTimeout: 8000,
-      greetingTimeout: 8000,
+      connectionTimeout: 10000,
+      greetingTimeout: 10000,
       socketTimeout: 20000,
     });
   }
@@ -50,9 +55,56 @@ const parseSender = (
 };
 
 /**
- * Send via an HTTPS email API (Brevo-style REST). This is the preferred path:
- * it works from any host because it only needs outbound HTTPS (port 443), which
- * is never blocked — unlike SMTP ports. Configure EMAIL_API_KEY + EMAIL_API_URL.
+ * Send via Resend HTTPS API (https://resend.com).
+ * Zero IP whitelisting restrictions, highly reliable from Render/Vercel/cloud.
+ */
+const sendViaResend = async ({
+  to,
+  subject,
+  html,
+}: SendEmailOptions): Promise<boolean> => {
+  if (!config.RESEND_API_KEY) {
+    return false;
+  }
+
+  try {
+    const sender = parseSender(config.EMAIL_FROM);
+    const from = sender.email.includes("@")
+      ? `${sender.name} <${sender.email}>`
+      : "Knottiingale <onboarding@resend.dev>";
+
+    const response = await fetch("https://api.resend.com/emails", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${config.RESEND_API_KEY}`,
+      },
+      body: JSON.stringify({
+        from,
+        to: [to],
+        subject,
+        html,
+      }),
+    });
+
+    if (response.ok) {
+      console.log(`[resend] Email delivered to ${to}`);
+      return true;
+    }
+
+    const errorText = await response.text();
+    console.error(
+      `[resend] delivery failed (${response.status}): ${errorText.slice(0, 300)}`
+    );
+  } catch (error) {
+    console.error("[resend] delivery failed:", error);
+  }
+
+  return false;
+};
+
+/**
+ * Send via an HTTPS email API (Brevo-style REST).
  */
 const sendViaHttpApi = async ({
   to,
@@ -88,9 +140,18 @@ const sendViaHttpApi = async ({
       return true;
     }
 
+    const errorBody = await response.text();
     console.error(
-      `[email-api] provider returned ${response.status}: ${(await response.text()).slice(0, 300)}`
+      `[email-api] provider returned ${response.status}: ${errorBody.slice(0, 300)}`
     );
+
+    if (response.status === 401 && errorBody.includes("authorised_ips")) {
+      console.error(
+        "⚠️ [BREVO IP RESTRICTION ACTIVE] Brevo rejected this email because 'Authorised IPs' is enabled.\n" +
+        "To allow sending from any server/IP, log into Brevo and turn off 'Authorised IPs':\n" +
+        "➡️ https://app.brevo.com/security/authorised_ips"
+      );
+    }
   } catch (error) {
     console.error("[email-api] delivery failed:", error);
   }
@@ -109,11 +170,21 @@ export const sendEmail = async ({
   subject,
   html,
 }: SendEmailOptions): Promise<{ delivered: boolean }> => {
-  // Preferred: HTTPS email API — works from any host, no SMTP port needed.
-  if (await sendViaHttpApi({ to, subject, html })) {
-    return { delivered: true };
+  // 1. Resend API (preferred if RESEND_API_KEY configured - no IP restrictions)
+  if (config.RESEND_API_KEY) {
+    if (await sendViaResend({ to, subject, html })) {
+      return { delivered: true };
+    }
   }
 
+  // 2. Brevo HTTPS email API (works if Authorised IPs disabled in Brevo)
+  if (config.EMAIL_API_KEY) {
+    if (await sendViaHttpApi({ to, subject, html })) {
+      return { delivered: true };
+    }
+  }
+
+  // 3. SMTP (e.g. Gmail App Password, custom mail server)
   const transport = getTransporter();
 
   if (transport) {
@@ -131,7 +202,7 @@ export const sendEmail = async ({
     }
   }
 
-  // Nothing configured/reachable — log the body so flows stay testable in dev.
+  // Nothing configured/reachable — log the body so flows stay testable in dev/console.
   console.log(
     `[mail:dev] to=${to} subject="${subject}"\n${html.replace(/<[^>]+>/g, " ")}`
   );

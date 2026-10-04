@@ -44,6 +44,7 @@ export const RegisterPage = () => {
   const navigate = useNavigate();
   const [showPassword, setShowPassword] = useState(false);
   const [pendingEmail, setPendingEmail] = useState<string | null>(null);
+  const [fallbackOtp, setFallbackOtp] = useState<string | null>(null);
   const [countdown, setCountdown] = useState(0);
   const [resending, setResending] = useState(false);
   const [verifying, setVerifying] = useState(false);
@@ -61,6 +62,7 @@ export const RegisterPage = () => {
   const {
     register: registerOtp,
     handleSubmit: handleOtpSubmit,
+    setValue: setOtpValue,
     formState: { errors: otpErrors },
   } = useForm<OtpForm>({
     resolver: zodResolver(otpSchema),
@@ -99,7 +101,11 @@ export const RegisterPage = () => {
       setPendingEmail(result.email);
       startCountdown();
 
-      if (!result.delivered) {
+      if (result.fallbackOtp) {
+        setFallbackOtp(result.fallbackOtp);
+        setOtpValue("code", result.fallbackOtp);
+        toast.info("Direct verification code ready below.");
+      } else if (!result.delivered) {
         toast.error(
           "We couldn't deliver the code to your email right now. Please try resending in a moment."
         );
@@ -136,7 +142,11 @@ export const RegisterPage = () => {
       const result = await resendOtp(pendingEmail);
       startCountdown();
 
-      if (!result.delivered) {
+      if (result.fallbackOtp) {
+        setFallbackOtp(result.fallbackOtp);
+        setOtpValue("code", result.fallbackOtp);
+        toast.info("Direct verification code ready below.");
+      } else if (!result.delivered) {
         toast.error(
           "We couldn't deliver the code right now. Please try again shortly."
         );
@@ -193,6 +203,34 @@ export const RegisterPage = () => {
               </span>
             </p>
           </div>
+
+          {fallbackOtp && (
+            <div className="rounded-2xl border border-[#D8A85B]/40 bg-[#D8A85B]/15 p-4 text-sm dark:border-[#E0B86A]/30 dark:bg-[#E0B86A]/15">
+              <div className="flex items-center justify-between">
+                <span className="text-xs font-semibold text-[#806E66] dark:text-[#C7B8AE]">
+                  Direct Verification Code
+                </span>
+                <span className="rounded-full bg-[#7A8B68]/20 px-2 py-0.5 text-[10px] font-bold text-[#5B6D4A] dark:bg-[#9BAF83]/20 dark:text-[#9BAF83]">
+                  Ready
+                </span>
+              </div>
+              <div className="mt-2 flex items-center justify-between">
+                <span className="font-mono text-2xl font-bold tracking-widest text-[#B85C4A] dark:text-[#D47763]">
+                  {fallbackOtp}
+                </span>
+                <button
+                  type="button"
+                  onClick={() => setOtpValue("code", fallbackOtp)}
+                  className="rounded-xl bg-[#B85C4A] px-3 py-1.5 text-xs font-bold text-white shadow-soft transition hover:bg-[#914536] active:scale-95 dark:bg-[#D47763] dark:text-[#1F1816]"
+                >
+                  Auto-fill Code
+                </button>
+              </div>
+              <p className="mt-2 text-[11px] text-[#806E66] dark:text-[#C7B8AE]">
+                Mail delivery is currently restricted by IP whitelist. Your code has been provided directly above so you can proceed without delay.
+              </p>
+            </div>
+          )}
 
           <Input
             label="Verification code"

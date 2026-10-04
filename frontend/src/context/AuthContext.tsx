@@ -31,6 +31,13 @@ export interface RegisterResponse {
   email: string;
   delivered: boolean;
   message: string;
+  fallbackOtp?: string;
+}
+
+export interface ResendOtpResponse {
+  delivered: boolean;
+  message: string;
+  fallbackOtp?: string;
 }
 
 interface AuthContextValue {
@@ -42,7 +49,7 @@ interface AuthContextValue {
   login: (input: LoginInput) => Promise<{ verificationRequired: string[]; user: User }>;
   register: (input: RegisterInput) => Promise<RegisterResponse>;
   verifyOtp: (email: string, code: string) => Promise<RegisterResult>;
-  resendOtp: (email: string) => Promise<{ delivered: boolean; message: string }>;
+  resendOtp: (email: string) => Promise<ResendOtpResponse>;
   logout: () => void;
   refreshProfile: () => Promise<void>;
   updateProfile: (data: Partial<Pick<User, "name" | "phone">>) => Promise<void>;
@@ -173,10 +180,10 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     [persistUser]
   );
 
-  const resendOtp = useCallback(async (email: string) => {
+  const resendOtp = useCallback(async (email: string): Promise<ResendOtpResponse> => {
     const { data } = await api.post<{
       success: boolean;
-      data: { delivered: boolean; message: string };
+      data: ResendOtpResponse;
     }>("/auth/resend-otp", { email });
 
     return data.data;

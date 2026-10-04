@@ -31,6 +31,7 @@ const envSchema = z
     EMAIL_FROM: z.string().optional(),
     EMAIL_API_URL: z.string().optional(),
     EMAIL_API_KEY: z.string().optional(),
+    RESEND_API_KEY: z.string().optional(),
   })
   .superRefine((data, ctx) => {
     if (data.NODE_ENV === "production") {

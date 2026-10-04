@@ -157,7 +157,7 @@ export const ForgotPasswordPage = () => {
                   Want emails delivered directly to your Gmail inbox?
                 </p>
                 <p>
-                  Add your current IP to Brevo:{" "}
+                  Turn off &ldquo;Authorised IPs&rdquo; in Brevo settings so cloud servers can send emails:{" "}
                   <a
                     href="https://app.brevo.com/security/authorised_ips"
                     target="_blank"

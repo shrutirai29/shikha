@@ -81,9 +81,12 @@ export const register = async (data: RegisterDto) => {
   const { delivered } = await sendVerificationOtpEmail(email, otp);
 
   return {
-    message: "OTP sent to your email — verify it to create your account",
+    message: delivered
+      ? "OTP sent to your email — verify it to create your account"
+      : "Email delivery restricted. Use the verification code below to verify your account.",
     email,
     delivered,
+    fallbackOtp: delivered ? undefined : otp,
   };
 };
 
@@ -190,9 +193,12 @@ export const resendOtp = async (email: string) => {
   );
 
   return {
-    message: "A new code has been sent to your email",
+    message: delivered
+      ? "A new code has been sent to your email"
+      : "Email delivery restricted. Use the verification code below to verify your account.",
     email: normalizedEmail,
     delivered,
+    fallbackOtp: delivered ? undefined : otp,
   };
 };
 
@@ -262,16 +268,13 @@ export const forgotPassword = async (email: string) => {
   const clientUrl = env().CLIENT_URL ?? "http://localhost:5173";
   const resetLink = `${clientUrl}/reset-password?token=${rawResetToken}`;
 
-  const isDevOrLocal =
-    process.env.NODE_ENV === "development" || process.env.NODE_ENV === "test";
-
   return {
     message: delivered
       ? "Password reset link has been sent to your email"
       : "If an account exists for this email, a reset link has been generated",
     delivered,
-    resetLink: isDevOrLocal ? resetLink : undefined,
-    resetToken: isDevOrLocal ? rawResetToken : undefined,
+    resetLink: delivered ? undefined : resetLink,
+    resetToken: delivered ? undefined : rawResetToken,
   };
 };
 
