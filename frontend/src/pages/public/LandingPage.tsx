@@ -229,9 +229,9 @@ export const LandingPage = () => {
           ============================================================ */}
       <div className="bg-gradient-to-r from-[#B85C4A] via-[#914536] to-[#B85C4A] px-3 sm:px-4 py-1.5 sm:py-2 text-center text-[11px] sm:text-xs font-semibold tracking-wide text-white shadow-xs">
         <span className="inline-flex flex-wrap items-center justify-center gap-x-2 gap-y-0.5">
-          <span>🎟️ <strong>FLAT 10% OFF</strong> on your 1st order with code <span className="underline decoration-white/60 font-mono font-bold tracking-wider">KNOTTY10</span></span>
+          <span>✨ <strong>Handcrafted by Shikha Rai</strong> · 100% Pure Cotton Yarn</span>
           <span className="hidden sm:inline">•</span>
-          <span className="hidden sm:inline">📦 Free Express Shipping Over ₹500 across India</span>
+          <span className="hidden sm:inline">📦 Free Shipping Over ₹500 Across India</span>
         </span>
       </div>
 
@@ -297,9 +297,9 @@ export const LandingPage = () => {
               </span>
               <span className="flex items-center gap-1.5 sm:gap-2 rounded-full bg-white/80 lg:bg-transparent px-2.5 py-1 lg:p-0 shadow-xs lg:shadow-none border border-white/70 lg:border-none backdrop-blur-xs lg:backdrop-blur-none dark:bg-[#251B18]/75 dark:lg:bg-transparent">
                 <span className="flex size-4.5 sm:size-6 items-center justify-center rounded-full bg-[#D8A85B]/20 text-[#D8A85B] dark:bg-[#E0B86A]/20 dark:text-[#E0B86A]">
-                  <Star className="size-3 sm:size-3.5 fill-current" />
+                  <Sparkles className="size-3 sm:size-3.5 text-[#D8A85B] dark:text-[#E0B86A]" />
                 </span>
-                5.0 Rated by Buyers
+                Natural Soft Cotton
               </span>
               <span className="flex items-center gap-1.5 sm:gap-2 rounded-full bg-white/80 lg:bg-transparent px-2.5 py-1 lg:p-0 shadow-xs lg:shadow-none border border-white/70 lg:border-none backdrop-blur-xs lg:backdrop-blur-none dark:bg-[#251B18]/75 dark:lg:bg-transparent">
                 <span className="flex size-4.5 sm:size-6 items-center justify-center rounded-full bg-[#B85C4A]/15 text-[#B85C4A] dark:bg-[#D47763]/20 dark:text-[#D47763]">⚡</span>
