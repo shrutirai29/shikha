@@ -42,6 +42,8 @@ export const csrfProtection = (
   if (
     req.originalUrl.includes("/auth/login") ||
     req.originalUrl.includes("/auth/register") ||
+    req.originalUrl.includes("/auth/resend-otp") ||
+    req.originalUrl.includes("/auth/verify-otp") ||
     req.originalUrl.includes("/auth/forgot-password") ||
     req.originalUrl.includes("/auth/reset-password")
   ) {
