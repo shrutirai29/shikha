@@ -31,13 +31,11 @@ export interface RegisterResponse {
   email: string;
   delivered: boolean;
   message: string;
-  fallbackOtp?: string;
 }
 
 export interface ResendOtpResponse {
   delivered: boolean;
   message: string;
-  fallbackOtp?: string;
 }
 
 interface AuthContextValue {

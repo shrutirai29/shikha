@@ -83,10 +83,9 @@ export const register = async (data: RegisterDto) => {
   return {
     message: delivered
       ? "OTP sent to your email — verify it to create your account"
-      : "Email delivery restricted. Use the verification code below to verify your account.",
+      : "Could not send verification code right now. Please try again shortly.",
     email,
     delivered,
-    fallbackOtp: delivered ? undefined : otp,
   };
 };
 
@@ -195,10 +194,9 @@ export const resendOtp = async (email: string) => {
   return {
     message: delivered
       ? "A new code has been sent to your email"
-      : "Email delivery restricted. Use the verification code below to verify your account.",
+      : "Could not send verification code right now. Please try again shortly.",
     email: normalizedEmail,
     delivered,
-    fallbackOtp: delivered ? undefined : otp,
   };
 };
 
@@ -265,16 +263,9 @@ export const forgotPassword = async (email: string) => {
   const emailResult = await sendPasswordResetEmail(user.email, rawResetToken);
   const delivered = Boolean(emailResult?.delivered);
 
-  const clientUrl = env().CLIENT_URL ?? "http://localhost:5173";
-  const resetLink = `${clientUrl}/reset-password?token=${rawResetToken}`;
-
   return {
-    message: delivered
-      ? "Password reset link has been sent to your email"
-      : "If an account exists for this email, a reset link has been generated",
+    message: "If an account exists for this email, a reset link has been sent",
     delivered,
-    resetLink: delivered ? undefined : resetLink,
-    resetToken: delivered ? undefined : rawResetToken,
   };
 };
 
