@@ -171,7 +171,21 @@ export const sendEmail = async ({
   subject,
   html,
 }: SendEmailOptions): Promise<{ delivered: boolean }> => {
-  // 1. SMTP (e.g. Gmail App Password, verified custom mail server)
+  // 1. Brevo HTTPS email API (Port 443 - works everywhere in cloud without port restrictions)
+  if (config.EMAIL_API_KEY) {
+    if (await sendViaHttpApi({ to, subject, html })) {
+      return { delivered: true };
+    }
+  }
+
+  // 2. Resend HTTPS API (Port 443)
+  if (config.RESEND_API_KEY) {
+    if (await sendViaResend({ to, subject, html })) {
+      return { delivered: true };
+    }
+  }
+
+  // 3. SMTP (Nodemailer - for environments where outbound SMTP ports 465/587 are open)
   const transport = getTransporter();
 
   if (transport) {
@@ -186,20 +200,6 @@ export const sendEmail = async ({
       return { delivered: true };
     } catch (error) {
       console.error("[smtp] delivery failed:", error);
-    }
-  }
-
-  // 2. Resend API (if configured with custom verified domain)
-  if (config.RESEND_API_KEY) {
-    if (await sendViaResend({ to, subject, html })) {
-      return { delivered: true };
-    }
-  }
-
-  // 3. Brevo HTTPS email API (works if Authorised IPs disabled in Brevo)
-  if (config.EMAIL_API_KEY) {
-    if (await sendViaHttpApi({ to, subject, html })) {
-      return { delivered: true };
     }
   }
 
