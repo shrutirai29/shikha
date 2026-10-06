@@ -25,6 +25,7 @@ const getInitialTheme = (): Theme => {
     }
     // Clean up any legacy theme key that may have auto-saved dark mode
     localStorage.removeItem("shikha_theme");
+    localStorage.removeItem("shikkha_theme");
   } catch {}
 
   // Explicitly default to light mode

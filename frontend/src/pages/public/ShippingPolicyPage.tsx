@@ -49,7 +49,7 @@ export const ShippingPolicyPage = () => {
               1. Order Processing & Crafting Time
             </h2>
             <p>
-              Because Knottiingale specializes in handmade crochet products, each creation requires careful handling. Ready-to-ship catalog items are inspected, safely packed, and dispatched within <strong>24 to 48 hours</strong> of order placement. Custom or personalized crochet orders may take additional craftsmanship time as mutually agreed upon with Shikha Rai.
+              Because Knottiingale specializes in handmade crochet products, each creation requires careful handling. Ready-to-ship catalog items are inspected, safely packed, and dispatched within <strong>24 to 48 hours</strong> of order placement. Custom or personalized crochet orders may take additional craftsmanship time as mutually agreed upon with Shikkha Rai.
             </p>
           </div>
 
@@ -96,7 +96,7 @@ export const ShippingPolicyPage = () => {
             <p>
               If your package is delayed, damaged in transit, or you have delivery instructions:
               <br />
-              <strong className="text-[#3B2924] dark:text-[#FFF4E8]">Contact:</strong> Shikha Rai (+91 7985835558)
+              <strong className="text-[#3B2924] dark:text-[#FFF4E8]">Contact:</strong> Shikkha Rai (+91 7985835558)
               <br />
               <strong className="text-[#3B2924] dark:text-[#FFF4E8]">Technical inquiries:</strong> Shruti Rai (shruti.rai2901@gmail.com)
             </p>

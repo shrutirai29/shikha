@@ -51,13 +51,13 @@ export const FloatingContact = () => {
                 Looking for a custom crochet piece?
               </p>
               <p className="text-xs text-[#806E66] dark:text-[#C7B8AE]">
-                Connect directly with founder & artisan <strong className="text-[#3B2924] dark:text-[#FFF4E8]">Shikha Rai</strong> for custom sizes, personalized gifts, or order queries.
+                Connect directly with founder & artisan <strong className="text-[#3B2924] dark:text-[#FFF4E8]">Shikkha Rai</strong> for custom sizes, personalized gifts, or order queries.
               </p>
             </div>
 
             <div className="space-y-2 pt-1">
               <a
-                href="https://wa.me/917985835558?text=Hello%20Shikha%2C%20I%20have%20an%20inquiry%20regarding%20Knottiingale%20handmade%20crochet%20pieces."
+                href="https://wa.me/917985835558?text=Hello%20Shikkha%2C%20I%20have%20an%20inquiry%20regarding%20Knottiingale%20handmade%20crochet%20pieces."
                 target="_blank"
                 rel="noopener noreferrer"
                 className="group flex w-full items-center justify-center gap-2 rounded-xl bg-[#7A8B68] px-4 py-2.5 text-xs font-semibold text-white shadow-md transition hover:bg-[#687757] dark:bg-[#9BAF83] dark:text-[#1F1816]"

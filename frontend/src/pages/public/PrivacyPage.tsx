@@ -17,7 +17,7 @@ export const PrivacyPage = () => {
               1. Information We Collect
             </h2>
             <p>
-              When you visit or place an order on Knottiingale (owned by Shikha Rai), we collect essential personal information required to fulfill your purchases and provide support:
+              When you visit or place an order on Knottiingale (owned by Shikkha Rai), we collect essential personal information required to fulfill your purchases and provide support:
             </p>
             <ul className="mt-2 list-disc pl-5 space-y-1">
               <li>Contact details: Name, email address, and phone number.</li>
@@ -67,7 +67,7 @@ export const PrivacyPage = () => {
             <p>
               You have the right to review, update, or request deletion of your account and saved addresses at any time via your Profile settings or by contacting our team:
               <br />
-              <strong className="text-[#3B2924] dark:text-[#FFF4E8]">Owner:</strong> Shikha Rai (+91 7985835558)
+              <strong className="text-[#3B2924] dark:text-[#FFF4E8]">Owner:</strong> Shikkha Rai (+91 7985835558)
               <br />
               <strong className="text-[#3B2924] dark:text-[#FFF4E8]">Developer & Data Support:</strong> Shruti Rai (+91 7007787536, shruti.rai2901@gmail.com)
             </p>

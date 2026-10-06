@@ -700,7 +700,7 @@ export const generateOrderInvoiceHtml = async (
         <h1 class="brand-title">Knottiingale</h1>
         <div class="brand-sub">Artisanal Handmade Crochet Treasures</div>
         <div style="font-size: 12px; color: #806E66; margin-top: 6px;">
-          Founder & Artisan: Shikha Rai<br/>
+          Founder & Artisan: Shikkha Rai<br/>
           Website: https://knottiingale.com<br/>
           Support: hello@knottiingale.com | +91 7985835558
         </div>

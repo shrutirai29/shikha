@@ -33,29 +33,29 @@
   --cat-gifts: #A77C92;
 
   /* Tailwind scale bindings (Light mode) */
-  --shikha-slate-50: #FFF8F0;
-  --shikha-slate-100: #FFFCF7;
-  --shikha-slate-200: #F5EDE4;
-  --shikha-slate-300: #E8DCD0;
-  --shikha-slate-400: #C7B8AE;
-  --shikha-slate-500: #806E66;
-  --shikha-slate-600: #806E66;
-  --shikha-slate-700: #5E463E;
-  --shikha-slate-800: #493A34;
-  --shikha-slate-900: #3B2924;
-  --shikha-slate-950: #3B2924;
+  --shikkha-slate-50: #FFF8F0;
+  --shikkha-slate-100: #FFFCF7;
+  --shikkha-slate-200: #F5EDE4;
+  --shikkha-slate-300: #E8DCD0;
+  --shikkha-slate-400: #C7B8AE;
+  --shikkha-slate-500: #806E66;
+  --shikkha-slate-600: #806E66;
+  --shikkha-slate-700: #5E463E;
+  --shikkha-slate-800: #493A34;
+  --shikkha-slate-900: #3B2924;
+  --shikkha-slate-950: #3B2924;
 
-  --shikha-indigo-50: #FDF5F3;
-  --shikha-indigo-100: #F9E5E0;
-  --shikha-indigo-200: #F0C7BE;
-  --shikha-indigo-300: #C98F8B;
-  --shikha-indigo-400: #D07B6B;
-  --shikha-indigo-500: #B85C4A;
-  --shikha-indigo-600: #B85C4A;
-  --shikha-indigo-700: #914536;
-  --shikha-indigo-800: #78372A;
-  --shikha-indigo-900: #5C271C;
-  --shikha-indigo-950: #3B2924;
+  --shikkha-indigo-50: #FDF5F3;
+  --shikkha-indigo-100: #F9E5E0;
+  --shikkha-indigo-200: #F0C7BE;
+  --shikkha-indigo-300: #C98F8B;
+  --shikkha-indigo-400: #D07B6B;
+  --shikkha-indigo-500: #B85C4A;
+  --shikkha-indigo-600: #B85C4A;
+  --shikkha-indigo-700: #914536;
+  --shikkha-indigo-800: #78372A;
+  --shikkha-indigo-900: #5C271C;
+  --shikkha-indigo-950: #3B2924;
 }
 
 .dark {
@@ -80,29 +80,29 @@
   --cat-gifts: #D8A09B;
 
   /* Tailwind scale bindings (Dark mode) */
-  --shikha-slate-950: #140E0C;
-  --shikha-slate-900: #1E1614;
-  --shikha-slate-800: #271E1B;
-  --shikha-slate-700: #332724;
-  --shikha-slate-600: #493A34;
-  --shikha-slate-500: #806E66;
-  --shikha-slate-400: #B3A198;
-  --shikha-slate-300: #C7B8AE;
-  --shikha-slate-200: #FFF4E8;
-  --shikha-slate-100: #FFF4E8;
-  --shikha-slate-50: #FFF4E8;
+  --shikkha-slate-950: #140E0C;
+  --shikkha-slate-900: #1E1614;
+  --shikkha-slate-800: #271E1B;
+  --shikkha-slate-700: #332724;
+  --shikkha-slate-600: #493A34;
+  --shikkha-slate-500: #806E66;
+  --shikkha-slate-400: #B3A198;
+  --shikkha-slate-300: #C7B8AE;
+  --shikkha-slate-200: #FFF4E8;
+  --shikkha-slate-100: #FFF4E8;
+  --shikkha-slate-50: #FFF4E8;
 
-  --shikha-indigo-50: #271E1B;
-  --shikha-indigo-100: #382823;
-  --shikha-indigo-200: #D8A09B;
-  --shikha-indigo-300: #E28A76;
-  --shikha-indigo-400: #D47763;
-  --shikha-indigo-500: #D47763;
-  --shikha-indigo-600: #D47763;
-  --shikha-indigo-700: #E28A76;
-  --shikha-indigo-800: #E0B86A;
-  --shikha-indigo-900: #1E1614;
-  --shikha-indigo-950: #140E0C;
+  --shikkha-indigo-50: #271E1B;
+  --shikkha-indigo-100: #382823;
+  --shikkha-indigo-200: #D8A09B;
+  --shikkha-indigo-300: #E28A76;
+  --shikkha-indigo-400: #D47763;
+  --shikkha-indigo-500: #D47763;
+  --shikkha-indigo-600: #D47763;
+  --shikkha-indigo-700: #E28A76;
+  --shikkha-indigo-800: #E0B86A;
+  --shikkha-indigo-900: #1E1614;
+  --shikkha-indigo-950: #140E0C;
 }
 
 @theme inline {
@@ -131,30 +131,30 @@
   --color-cat-gifts: var(--cat-gifts);
 
   /* Neutral scale */
-  --color-slate-50: var(--shikha-slate-50);
-  --color-slate-100: var(--shikha-slate-100);
-  --color-slate-200: var(--shikha-slate-200);
-  --color-slate-300: var(--shikha-slate-300);
-  --color-slate-400: var(--shikha-slate-400);
-  --color-slate-500: var(--shikha-slate-500);
-  --color-slate-600: var(--shikha-slate-600);
-  --color-slate-700: var(--shikha-slate-700);
-  --color-slate-800: var(--shikha-slate-800);
-  --color-slate-900: var(--shikha-slate-900);
-  --color-slate-950: var(--shikha-slate-950);
+  --color-slate-50: var(--shikkha-slate-50);
+  --color-slate-100: var(--shikkha-slate-100);
+  --color-slate-200: var(--shikkha-slate-200);
+  --color-slate-300: var(--shikkha-slate-300);
+  --color-slate-400: var(--shikkha-slate-400);
+  --color-slate-500: var(--shikkha-slate-500);
+  --color-slate-600: var(--shikkha-slate-600);
+  --color-slate-700: var(--shikkha-slate-700);
+  --color-slate-800: var(--shikkha-slate-800);
+  --color-slate-900: var(--shikkha-slate-900);
+  --color-slate-950: var(--shikkha-slate-950);
 
   /* Brand terracotta scale */
-  --color-indigo-50: var(--shikha-indigo-50);
-  --color-indigo-100: var(--shikha-indigo-100);
-  --color-indigo-200: var(--shikha-indigo-200);
-  --color-indigo-300: var(--shikha-indigo-300);
-  --color-indigo-400: var(--shikha-indigo-400);
-  --color-indigo-500: var(--shikha-indigo-500);
-  --color-indigo-600: var(--shikha-indigo-600);
-  --color-indigo-700: var(--shikha-indigo-700);
-  --color-indigo-800: var(--shikha-indigo-800);
-  --color-indigo-900: var(--shikha-indigo-900);
-  --color-indigo-950: var(--shikha-indigo-950);
+  --color-indigo-50: var(--shikkha-indigo-50);
+  --color-indigo-100: var(--shikkha-indigo-100);
+  --color-indigo-200: var(--shikkha-indigo-200);
+  --color-indigo-300: var(--shikkha-indigo-300);
+  --color-indigo-400: var(--shikkha-indigo-400);
+  --color-indigo-500: var(--shikkha-indigo-500);
+  --color-indigo-600: var(--shikkha-indigo-600);
+  --color-indigo-700: var(--shikkha-indigo-700);
+  --color-indigo-800: var(--shikkha-indigo-800);
+  --color-indigo-900: var(--shikkha-indigo-900);
+  --color-indigo-950: var(--shikkha-indigo-950);
 
   /* Warm soft shadows */
   --shadow-soft: 0 4px 20px -4px rgba(59, 41, 36, 0.08);

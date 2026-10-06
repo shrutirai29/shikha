@@ -15,7 +15,7 @@ export interface UploadResult {
 }
 
 const CLOUDINARY_FOLDER =
-  env().NODE_ENV === "production" ? "shikha" : "shikha-dev";
+  env().NODE_ENV === "production" ? "shikkha" : "shikkha-dev";
 
 const isCloudinaryConfigured = (): boolean => {
   const config = env();

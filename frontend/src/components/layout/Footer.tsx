@@ -78,10 +78,10 @@ export const Footer = () => {
             Founded & Crafted By
           </p>
           <p className="text-sm font-semibold text-white">
-            Shikha Rai
+            Shikkha Rai
           </p>
           <a
-            href="https://wa.me/917985835558?text=Hello%20Shikha%2C%20I%20have%20an%20inquiry%20about%20Knottiingale%20crochet%20products."
+            href="https://wa.me/917985835558?text=Hello%20Shikkha%2C%20I%20have%20an%20inquiry%20about%20Knottiingale%20crochet%20products."
             target="_blank"
             rel="noopener noreferrer"
             className="mt-2 inline-flex items-center gap-1.5 text-xs font-semibold text-[#D8A85B] hover:text-[#FFF4E8] transition-colors dark:text-[#E0B86A]"
@@ -175,7 +175,7 @@ export const Footer = () => {
               className="mt-0.5 flex items-center gap-2 font-medium text-white transition hover:text-[#D8A85B] dark:hover:text-[#E0B86A]"
             >
               <Phone className="size-4 shrink-0 text-[#D8A85B]" />
-              +91 7985835558 (Shikha Rai)
+              +91 7985835558 (Shikkha Rai)
             </a>
           </li>
           <li className="pt-1">
@@ -209,7 +209,7 @@ export const Footer = () => {
     <div className="border-t border-[#493A34] dark:border-[#382823] py-5">
       <div className="mx-auto flex max-w-7xl flex-col items-center justify-between gap-3 px-4 text-xs text-[#A8988F] dark:text-[#B3A198] sm:flex-row sm:px-6">
         <p>
-          © {new Date().getFullYear()} <span className="font-semibold text-white">Knottiingale</span>. All rights reserved. Owned by Shikha Rai.
+          © {new Date().getFullYear()} <span className="font-semibold text-white">Knottiingale</span>. All rights reserved. Owned by Shikkha Rai.
         </p>
         <p className="flex items-center gap-1.5 text-center">
           <Code className="size-3.5" />

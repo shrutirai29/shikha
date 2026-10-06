@@ -302,7 +302,7 @@ export const sendOrderConfirmationEmail = async (
       <div style="font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif; max-width: 560px; margin: 0 auto; padding: 32px 24px; color: #3B2924; background-color: #FFF8F0; border-radius: 24px; border: 1px solid #E8DCD0;">
         <div style="text-align: center; margin-bottom: 24px;">
           <h1 style="font-size: 26px; font-weight: 700; color: #B85C4A; margin: 0;">Knottiingale</h1>
-          <p style="font-size: 13px; color: #806E66; margin: 4px 0 0;">Handmade with love by Shikha Rai</p>
+          <p style="font-size: 13px; color: #806E66; margin: 4px 0 0;">Handmade with love by Shikkha Rai</p>
         </div>
         <div style="background-color: #FFFCF7; padding: 24px; border-radius: 16px; border: 1px solid #E8DCD0;">
           <h2 style="font-size: 20px; font-weight: 700; color: #3B2924; margin: 0 0 10px;">Thank you for your order! 🎉</h2>
@@ -447,12 +447,12 @@ export const sendContactNotificationEmail = async (
       <div style="font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif; max-width: 520px; margin: 0 auto; padding: 32px 24px; color: #3B2924; background-color: #FFF8F0; border-radius: 24px; border: 1px solid #E8DCD0;">
         <h2 style="color: #B85C4A; margin-top: 0;">Thank you for contacting Knottiingale! ✨</h2>
         <p>Hi ${inquiry.name},</p>
-        <p>We've received your note regarding <strong>"${inquiry.subject}"</strong>. Shikha Rai will personally review your request and get back to you within 24 hours.</p>
+        <p>We've received your note regarding <strong>"${inquiry.subject}"</strong>. Shikkha Rai will personally review your request and get back to you within 24 hours.</p>
         <div style="background: #FFFCF7; padding: 16px; border-radius: 12px; border: 1px solid #E8DCD0; margin: 16px 0;">
           <p style="margin: 0; font-size: 13px; color: #806E66;">Your Message:</p>
           <p style="margin: 6px 0 0; font-size: 14px; color: #3B2924; white-space: pre-wrap;">${inquiry.message}</p>
         </div>
-        <p style="font-size: 13px; color: #806E66;">Warmly,<br/>Shikha Rai & The Knottiingale Team</p>
+        <p style="font-size: 13px; color: #806E66;">Warmly,<br/>Shikkha Rai & The Knottiingale Team</p>
       </div>
     `,
   });

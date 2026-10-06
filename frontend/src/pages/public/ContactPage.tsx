@@ -96,7 +96,7 @@ export const ContactPage = () => {
                   Message Sent!
                 </h3>
                 <p className="mt-1 text-sm text-[#806E66] dark:text-[#C7B8AE]">
-                  Thank you for reaching out. Shikha Rai and the Knottiingale team will respond within 24 hours.
+                  Thank you for reaching out. Shikkha Rai and the Knottiingale team will respond within 24 hours.
                 </p>
                 <Button
                   variant="outline"
@@ -180,7 +180,7 @@ export const ContactPage = () => {
                   Owner & Artisan
                 </h3>
                 <p className="text-sm font-medium text-[#B85C4A] dark:text-[#D47763]">
-                  Shikha Rai
+                  Shikkha Rai
                 </p>
               </div>
             </div>

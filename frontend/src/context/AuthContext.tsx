@@ -57,12 +57,13 @@ interface AuthContextValue {
 
 const AuthContext = createContext<AuthContextValue | null>(null);
 
-const USER_KEY = "shikha_user";
+const USER_KEY = "shikkha_user";
 
 export const AuthProvider = ({ children }: { children: ReactNode }) => {
   const [user, setUser] = useState<User | null>(() => {
     try {
-      const raw = localStorage.getItem(USER_KEY);
+      const raw =
+        localStorage.getItem(USER_KEY) || localStorage.getItem("shikha_user");
       return raw ? (JSON.parse(raw) as User) : null;
     } catch {
       return null;
@@ -77,6 +78,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
       localStorage.setItem(USER_KEY, JSON.stringify(nextUser));
     } else {
       localStorage.removeItem(USER_KEY);
+      localStorage.removeItem("shikha_user");
     }
   }, []);
 

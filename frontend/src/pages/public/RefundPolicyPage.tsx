@@ -94,7 +94,7 @@ export const RefundPolicyPage = () => {
             <p>
               Contact our team directly with your order number:
               <br />
-              <strong className="text-[#3B2924] dark:text-[#FFF4E8]">Owner:</strong> Shikha Rai (+91 7985835558)
+              <strong className="text-[#3B2924] dark:text-[#FFF4E8]">Owner:</strong> Shikkha Rai (+91 7985835558)
               <br />
               <strong className="text-[#3B2924] dark:text-[#FFF4E8]">WhatsApp Support:</strong>{" "}
               <a

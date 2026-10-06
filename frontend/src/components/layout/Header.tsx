@@ -100,7 +100,7 @@ export const Header = () => {
           <div className="hidden sm:flex items-center gap-1.5 shrink-0">
             <span className="flex size-2 rounded-full bg-[#7A8B68] animate-pulse dark:bg-[#9BAF83]" />
             <span className="font-semibold text-white">Knottiingale Studio</span>
-            <span className="hidden md:inline text-[#C7B8AE] dark:text-[#B3A198]">· Handcrafted by Shikha Rai</span>
+            <span className="hidden md:inline text-[#C7B8AE] dark:text-[#B3A198]">· Handcrafted by Shikkha Rai</span>
           </div>
           <p className="mx-auto sm:mx-0 flex items-center justify-center sm:justify-start gap-1.5 text-[#F5EDE4] truncate text-center sm:text-left min-w-0 max-w-full">
             <Sparkles className="size-3 text-[#D8A85B] dark:text-[#E0B86A] shrink-0" />

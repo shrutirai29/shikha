@@ -19,7 +19,7 @@ export interface SEOProps {
 
 const DEFAULT_TITLE = "Knottiingale — Artisanal Handmade Crochet Treasures";
 const DEFAULT_DESCRIPTION =
-  "Discover bespoke handmade crochet treasures, cuddly plushies, aesthetic torans, and cozy warm throws stitched with love by Shikha Rai. Secure checkout with COD and Razorpay.";
+  "Discover bespoke handmade crochet treasures, cuddly plushies, aesthetic torans, and cozy warm throws stitched with love by Shikkha Rai. Secure checkout with COD and Razorpay.";
 const DEFAULT_IMAGE = "https://knottiingale.com/og-image.jpg";
 const BASE_URL = "https://knottiingale.com";
 

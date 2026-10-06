@@ -18,7 +18,7 @@ export const TermsPage = () => {
               1. Introduction & Brand Ownership
             </h2>
             <p>
-              Welcome to <strong>Knottiingale</strong>. This e-commerce platform and its products are founded, owned, and operated by <strong>Shikha Rai</strong> ("Owner", "we", "us", or "our"). By accessing or purchasing from Knottiingale, you agree to comply with and be bound by these Terms and Conditions.
+              Welcome to <strong>Knottiingale</strong>. This e-commerce platform and its products are founded, owned, and operated by <strong>Shikkha Rai</strong> ("Owner", "we", "us", or "our"). By accessing or purchasing from Knottiingale, you agree to comply with and be bound by these Terms and Conditions.
             </p>
           </div>
 
@@ -70,7 +70,7 @@ export const TermsPage = () => {
               6. Intellectual Property
             </h2>
             <p>
-              All designs, crochet patterns, product photography, logos, and website assets are the intellectual property of Knottiingale and Shikha Rai. Reproduction or unauthorized commercial exploitation without written permission is strictly prohibited.
+              All designs, crochet patterns, product photography, logos, and website assets are the intellectual property of Knottiingale and Shikkha Rai. Reproduction or unauthorized commercial exploitation without written permission is strictly prohibited.
             </p>
           </div>
 
@@ -81,7 +81,7 @@ export const TermsPage = () => {
             <p>
               For questions or disputes regarding our terms, please contact:
               <br />
-              <strong className="text-[#3B2924] dark:text-[#FFF4E8]">Owner:</strong> Shikha Rai
+              <strong className="text-[#3B2924] dark:text-[#FFF4E8]">Owner:</strong> Shikkha Rai
               <br />
               <strong className="text-[#3B2924] dark:text-[#FFF4E8]">Phone:</strong> +91 7985835558
               <br />

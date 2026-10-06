@@ -1,10 +1,10 @@
 import axios from "axios";
 
-export const TOKEN_KEY = "shikha_token";
+export const TOKEN_KEY = "shikkha_token";
 
 // In dev, requests go through the Vite proxy (/api -> localhost:5000).
 // In production builds, point VITE_API_URL at the deployed backend,
-// e.g. VITE_API_URL=https://shikha-backend.up.railway.app
+// e.g. VITE_API_URL=https://knottiingale.onrender.com/api
 const rawApiUrl = import.meta.env.VITE_API_URL || "/api";
 
 // Ensure the base URL always points at the API root: if a full origin is
@@ -26,7 +26,8 @@ export const api = axios.create({
 });
 
 api.interceptors.request.use((config) => {
-  const token = localStorage.getItem(TOKEN_KEY);
+  const token =
+    localStorage.getItem(TOKEN_KEY) || localStorage.getItem("shikha_token");
 
   if (token) {
     config.headers.Authorization = `Bearer ${token}`;
@@ -40,6 +41,7 @@ api.interceptors.response.use(
   (error) => {
     if (error.response?.status === 401) {
       localStorage.removeItem(TOKEN_KEY);
+      localStorage.removeItem("shikha_token");
       window.dispatchEvent(new Event("auth:unauthorized"));
     }
 

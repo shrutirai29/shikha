@@ -59,7 +59,7 @@ const perks = [
   {
     icon: BadgeCheck,
     title: "Pure Artisan Craft",
-    description: "Crafted slowly, stitch by stitch by Shikha Rai",
+    description: "Crafted slowly, stitch by stitch by Shikkha Rai",
   },
 ];
 
@@ -229,7 +229,7 @@ export const LandingPage = () => {
           ============================================================ */}
       <div className="bg-gradient-to-r from-[#B85C4A] via-[#914536] to-[#B85C4A] px-3 sm:px-4 py-1.5 sm:py-2 text-center text-[11px] sm:text-xs font-semibold tracking-wide text-white shadow-xs">
         <span className="inline-flex flex-wrap items-center justify-center gap-x-2 gap-y-0.5">
-          <span>✨ <strong>Handcrafted by Shikha Rai</strong> · 100% Pure Cotton Yarn</span>
+          <span>✨ <strong>Handcrafted by Shikkha Rai</strong> · 100% Pure Cotton Yarn</span>
           <span className="hidden sm:inline">•</span>
           <span className="hidden sm:inline">📦 Free Shipping Over ₹500 Across India</span>
         </span>
@@ -248,13 +248,13 @@ export const LandingPage = () => {
             transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
             className="min-w-0 lg:col-span-7 xl:col-span-7 max-w-2xl rounded-3xl p-5 sm:p-8 lg:p-0 bg-[#FFFCF7]/90 lg:bg-transparent backdrop-blur-md lg:backdrop-blur-none border border-white/80 lg:border-none shadow-soft lg:shadow-none dark:bg-[#1E1614]/90 dark:lg:bg-transparent dark:border-white/10 dark:lg:border-none"
           >
-            {/* Pill: Hand-Stitched by Shikha Rai */}
+            {/* Pill: Hand-Stitched by Shikkha Rai */}
             <div className="inline-flex items-center gap-2 rounded-full border border-[#B85C4A]/30 bg-white/90 lg:bg-[#FFFCF7]/95 px-3 sm:px-4 py-1.5 text-[11px] sm:text-xs font-bold text-[#B85C4A] shadow-xs backdrop-blur-sm dark:border-[#D47763]/30 dark:bg-[#1E1614]/90 dark:text-[#D47763]">
               <span className="relative flex size-2 shrink-0">
                 <span className="absolute inline-flex size-full animate-ping rounded-full bg-[#C98F8B] opacity-75" />
                 <span className="relative inline-flex size-2 rounded-full bg-[#B85C4A] dark:bg-[#D47763]" />
               </span>
-              <span>Pure Artisan Craft · Hand-Stitched by Shikha Rai</span>
+              <span>Pure Artisan Craft · Hand-Stitched by Shikkha Rai</span>
             </div>
 
             {/* Display Headline */}
@@ -269,7 +269,7 @@ export const LandingPage = () => {
             <p className="mt-3 sm:mt-5 max-w-xl text-xs sm:text-lg leading-relaxed text-[#2B1813] font-medium dark:text-[#D9CBC2]">
               Welcome to <strong className="font-bold text-[#140A07] dark:text-[#FFF4E8]">Knottiingale</strong>. Soft plush toys, cozy
               home décor, torans, bags, and heartfelt handcrafted gifts — carefully crocheted with natural cotton yarn
-              by <strong className="font-bold text-[#140A07] dark:text-[#FFF4E8]">Shikha Rai</strong> and delivered across India.
+              by <strong className="font-bold text-[#140A07] dark:text-[#FFF4E8]">Shikkha Rai</strong> and delivered across India.
             </p>
 
             {/* Action buttons */}
@@ -437,7 +437,7 @@ export const LandingPage = () => {
                 Explore What We Make
               </h2>
               <p className="mt-1 text-xs text-[#806E66] sm:text-sm dark:text-[#C7B8AE]">
-                Tap any category to explore authentic crochet pieces hand-stitched by Shikha Rai
+                Tap any category to explore authentic crochet pieces hand-stitched by Shikkha Rai
               </p>
             </div>
             <Link
@@ -888,7 +888,7 @@ export const LandingPage = () => {
                 </Link>
               ) : (
                 <a
-                  href="https://wa.me/917985835558?text=Hello%20Shikha%2C%20I%20would%20like%20to%20inquire%20about%20your%20crochet%20products."
+                  href="https://wa.me/917985835558?text=Hello%20Shikkha%2C%20I%20would%20like%20to%20inquire%20about%20your%20crochet%20products."
                   target="_blank"
                   rel="noopener noreferrer"
                   className="inline-flex items-center gap-2 rounded-xl bg-[#7A8B68] px-6 py-3 text-sm font-bold text-white shadow-soft transition hover:bg-[#687757] dark:bg-[#9BAF83] dark:text-[#1F1816]"
@@ -919,14 +919,14 @@ export const LandingPage = () => {
                 <Heart className="size-3.5 fill-current text-[#C98F8B]" /> Meet the Artisan
               </span>
               <h2 className="font-display text-3xl font-semibold tracking-tight text-[#3B2924] sm:text-4xl dark:text-[#FFF4E8]">
-                Bespoke orders crafted with love by Shikha Rai
+                Bespoke orders crafted with love by Shikkha Rai
               </h2>
               <p className="text-sm leading-relaxed text-[#806E66] sm:text-base dark:text-[#C7B8AE]">
                 Looking for a special keepsake, baby nursery gift, or custom crochet plushie in specific color palettes? Every piece at Knottiingale is crafted slowly, stitch by stitch. Let us craft something memorable for your loved ones.
               </p>
               <div className="flex flex-wrap items-center gap-3 pt-2">
                 <a
-                  href="https://wa.me/917985835558?text=Hello%20Shikha%2C%20I%20would%20like%20to%20request%20a%20custom%20crochet%20order."
+                  href="https://wa.me/917985835558?text=Hello%20Shikkha%2C%20I%20would%20like%20to%20request%20a%20custom%20crochet%20order."
                   target="_blank"
                   rel="noopener noreferrer"
                   className="inline-flex items-center gap-2 rounded-xl bg-[#7A8B68] px-5 py-3 text-sm font-bold text-white shadow-md transition hover:bg-[#687757] active:scale-98 dark:bg-[#9BAF83] dark:text-[#1F1816]"
@@ -959,7 +959,7 @@ export const LandingPage = () => {
               </div>
               <div className="rounded-2xl border border-white/80 dark:border-white/10 bg-white/70 dark:bg-[#2A211E]/70 p-5 shadow-sm backdrop-blur-md">
                 <p className="font-display text-2xl font-bold text-[#D8A85B] dark:text-[#E0B86A]">Direct Support</p>
-                <p className="mt-1 text-xs text-[#806E66] dark:text-[#C7B8AE]">Talk directly to Shikha Rai and developer Shruti Rai for smooth updates.</p>
+                <p className="mt-1 text-xs text-[#806E66] dark:text-[#C7B8AE]">Talk directly to Shikkha Rai and developer Shruti Rai for smooth updates.</p>
               </div>
             </div>
           </div>
