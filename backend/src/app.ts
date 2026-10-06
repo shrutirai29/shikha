@@ -73,6 +73,9 @@ const configuredClientOrigins = (config.CLIENT_URL || "")
 // Comprehensive security headers with Helmet
 const allowedOrigins = [
   ...configuredClientOrigins,
+  "https://knottiingale.com",
+  "https://www.knottiingale.com",
+  "https://knottiingale-frontend.onrender.com",
   "http://localhost:5173",
   "http://localhost:5174",
   "http://localhost:3000",
